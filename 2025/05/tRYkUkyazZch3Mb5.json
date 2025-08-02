@@ -1,0 +1,205 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook Conversa Respondida": {
+      "main": [
+        [
+          {
+            "node": "Formatar Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Atendente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atendente": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Atendente",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Atendente",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-15T03:10:31.132Z",
+  "id": "tRYkUkyazZch3Mb5",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 10",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "responder-conversa",
+        "options": {}
+      },
+      "name": "Webhook Conversa Respondida",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        1280
+      ],
+      "webhookId": "responder-conversa-id",
+      "id": "f6c7abcf-b8eb-4085-902b-1ee543f9491a"
+    },
+    {
+      "parameters": {
+        "functionCode": "\n// Aguarda mensagem do lead e prepara dados para IA\nconst sessionId = $json.body?.sessionId || $json.sessionId || $execution.id;\nconst phone = sessionId.replace(/[^0-9]/g, '');\nconst message = $json.body?.mensagem || $json.body?.message || $json.message?.conversation || '';\n\nreturn [{\n  json: {\n    sessionId,\n    phone,\n    message\n  }\n}];\n"
+      },
+      "name": "Formatar Mensagem",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        1280
+      ],
+      "id": "d54c33e6-0373-4590-ae42-9f3189ad7f66"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        1560,
+        1280
+      ],
+      "id": "02be16b6-d547-4e65-bd0f-e2f0b3b7d20a"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.message }}",
+        "options": {
+          "systemMessage": "Você é Aurora, assistente comercial IA. Responda de forma consultiva e clara com base no que o lead disser."
+        }
+      },
+      "name": "Atendente",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        1280
+      ],
+      "id": "062430a2-8f69-46ff-9716-06166e7b74de"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "teste",
+        "remoteJid": "={{ $json.sessionId }}",
+        "messageText": "={{ $('Atendente').item.json.output }}",
+        "options_message": {}
+      },
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        2140,
+        1280
+      ],
+      "id": "6fd18ac7-2362-4859-bcf3-55f571b73760",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "name": "Simple Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1,
+      "position": [
+        1820,
+        1500
+      ],
+      "id": "eb86fc1d-4914-4db3-974e-72e10d948e29"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1700,
+        1480
+      ],
+      "id": "9f4887e6-c838-462a-95cf-28638bb79189",
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-15T03:10:31.132Z",
+  "versionId": "3c8aec8b-4326-421a-a7fe-331ded0c4811"
+}

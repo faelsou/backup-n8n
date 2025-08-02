@@ -1,0 +1,135 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook (Recebe Métricas)": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "PostgreSQL Insert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-26T06:06:31.754Z",
+  "id": "Ni5jM9qyUtw312d1",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Workflow de Logging",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "workflow_metrics",
+        "options": {}
+      },
+      "name": "Webhook (Recebe Métricas)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        464,
+        304
+      ],
+      "id": "c2df4e28-7935-4264-9c27-0e28d0d21a36",
+      "webhookId": "e1d99612-0445-4e2a-8ef6-846b9effc5c1"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "workflow_metrics",
+          "mode": "list",
+          "cachedResultName": "workflow_metrics"
+        },
+        "options": {}
+      },
+      "name": "PostgreSQL Insert",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        1008,
+        304
+      ],
+      "id": "67ff22c9-63d2-4001-a639-d109c60f17d4",
+      "credentials": {
+        "postgres": {
+          "id": "14tTXgURBrGAGzff",
+          "name": "Postgres findfruit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cbe9369c-1519-400b-b43e-7d546bd02a5d",
+              "name": "workflow",
+              "value": "={{ $json.body.workflow_name }}",
+              "type": "string"
+            },
+            {
+              "id": "242b4f93-9fc6-44c4-b3de-81d9014ee629",
+              "name": "duration",
+              "value": "={{ $json.body.execution_time }}",
+              "type": "string"
+            },
+            {
+              "id": "5d0e0c0a-60d4-4454-9516-aa66f9a7bce5",
+              "name": "status",
+              "value": "={{ $json.body.status }}",
+              "type": "string"
+            },
+            {
+              "id": "8bfcc494-8ce7-493b-b047-1abb3fc1d5c1",
+              "name": "timestamp",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        304
+      ],
+      "id": "d4f8dd1d-b2d7-4078-8d2e-afc7f3a19577",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-07-26T08:25:45.749Z",
+  "versionId": "e9ffe563-d83b-42d8-a417-fd053da4e926"
+}

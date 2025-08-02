@@ -1,0 +1,840 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "1. Validar e Formatar Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1. Validar e Formatar Dados": {
+      "main": [
+        [
+          {
+            "node": "2. Registrar/Atualizar Usuário",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Registrar/Atualizar Usuário": {
+      "main": [
+        [
+          {
+            "node": "3. Verificar Sessão Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Verificar Sessão Redis": {
+      "main": [
+        [
+          {
+            "node": "4. Switch Tipo Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4. Switch Tipo Mensagem": {
+      "main": [
+        [
+          {
+            "node": "5a. Baixar Imagem da URL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar Msg Boas-Vindas",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar Msg Boas-Vindas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5a. Baixar Imagem da URL": {
+      "main": [
+        [
+          {
+            "node": "5b. Converter para Binário",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5b. Converter para Binário": {
+      "main": [
+        [
+          {
+            "node": "5c. Análise Visual (IA)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5c. Análise Visual (IA)": {
+      "main": [
+        [
+          {
+            "node": "6. Análise da IA foi bem-sucedida?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "6. Análise da IA foi bem-sucedida?": {
+      "main": [
+        [
+          {
+            "node": "7. Preparar Prompt e Dados",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar Msg Erro IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "7. Preparar Prompt e Dados": {
+      "main": [
+        [
+          {
+            "node": "8. Salvar Consulta no DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "8. Salvar Consulta no DB": {
+      "main": [
+        [
+          {
+            "node": "9. Atualizar Sessão Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "9. Atualizar Sessão Redis": {
+      "main": [
+        [
+          {
+            "node": "10. Análise da Fruta (Agente)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "10. Análise da Fruta (Agente)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "10. Análise da Fruta (Agente)": {
+      "main": [
+        [
+          {
+            "node": "11. Enviar Resposta Evolution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "11. Enviar Resposta Evolution": {
+      "main": [
+        [
+          {
+            "node": "12. Atualizar Status Consulta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Msg Boas-Vindas": {
+      "main": [
+        [
+          {
+            "node": "Log Msg Boas-Vindas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-02T14:41:40.964Z",
+  "id": "HCMVVhy36CGa6A3x",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 38",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "find-fruit",
+        "options": {}
+      },
+      "id": "6e2909dd-6881-4876-b832-5706dc8622e5",
+      "name": "Webhook WhatsApp",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        160,
+        200
+      ],
+      "webhookId": "find-fruit-webhook-v3"
+    },
+    {
+      "parameters": {
+        "jsCode": "// --- CONFIGURAÇÕES GERAIS ---\nconst EVOLUTION_INSTANCE = 'find-fruit-instance';\n\n// --- EXTRAÇÃO DE DADOS DO WEBHOOK ---\nconst body = $json.body.data;\nconst items = [];\n\n// Função para formatar o número de telefone para o padrão brasileiro\nfunction formatBrazilianMobile(number) {\n  let cleanNumber = number.replace(/\\D/g, '');\n\n  // Garante que o número começa com 55\n  if (!cleanNumber.startsWith('55')) {\n    if (cleanNumber.length >= 10 && cleanNumber.length <= 11) {\n      cleanNumber = '55' + cleanNumber;\n    } else {\n      return number;\n    }\n  }\n\n  // Verifica se tem o 9º dígito e adiciona se necessário\n  if (cleanNumber.length === 12) {\n    const ddd = cleanNumber.substring(2, 4);\n    const numberPart = cleanNumber.substring(4);\n    return `55${ddd}9${numberPart}`;\n  }\n\n  return cleanNumber;\n}\n\nconst rawMobile = body.key.remoteJid;\nconst formattedMobile = formatBrazilianMobile(rawMobile);\n\n// Monta o objeto de saída\nconst output = {\n  mobile: formattedMobile,\n  messageType: body.messageType || 'unknown',\n  imageUrl: body.message.imageMessage?.url || '',\n  textMessage: body.message.conversation || body.message.extendedTextMessage?.text || '',\n  pushName: body.pushName || 'Usuário',\n  evolutionInstance: EVOLUTION_INSTANCE\n};\n\nitems.push({ json: output });\nreturn items;"
+      },
+      "id": "ad8039c1-14e9-4519-a851-4542d883ee83",
+      "name": "1. Validar e Formatar Dados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        380,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO usuarios_fruit (telefone, nome, created_at, last_activity)\nVALUES ($1, $2, NOW(), NOW())\nON CONFLICT (telefone)\nDO UPDATE SET\n  nome = EXCLUDED.nome,\n  last_activity = NOW(),\n  total_consultas = usuarios_fruit.total_consultas + 1\nRETURNING *;\n\n\n",
+        "options": {
+          "queryReplacement": "=[\n  \"{{$json['mobile']}}\",\n  \"{{$json['pushName']}}\"\n]\n"
+        }
+      },
+      "id": "3bc42479-d2d5-4c14-b6de-3592eded2b39",
+      "name": "2. Registrar/Atualizar Usuário",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        600,
+        200
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres Teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "session:{{ $json.mobile }}",
+        "options": {}
+      },
+      "id": "92236cb4-db80-4b6a-9345-665170e56cb6",
+      "name": "3. Verificar Sessão Redis",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        820,
+        200
+      ],
+      "credentials": {
+        "redis": {
+          "id": "25nYh9vN5nDeicvy",
+          "name": "Redis AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $item(0).$node['1. Validar e Formatar Dados'].json.messageType }}",
+                    "rightValue": "imageMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $item(0).$node['1. Validar e Formatar Dados'].json.messageType }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $item(0).$node['1. Validar e Formatar Dados'].json.messageType }}",
+                    "rightValue": "extendedTextMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "84b42f86-6d18-4e71-9b49-2b94165bea1a",
+      "name": "4. Switch Tipo Mensagem",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        1040,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $item(0).$node['1. Validar e Formatar Dados'].json.imageUrl }}",
+        "options": {}
+      },
+      "id": "9315c65d-ec45-4657-be93-7c40eca56679",
+      "name": "5a. Baixar Imagem da URL",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1260,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {
+          "fileName": "fruit-image.jpg",
+          "mimeType": "image/jpeg"
+        }
+      },
+      "id": "89b88648-b8dc-4bbf-ae1a-7b25e3e10be0",
+      "name": "5b. Converter para Binário",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1480,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4o"
+        },
+        "text": "Analise esta imagem de fruta/legume e retorne APENAS um JSON com as seguintes informações:\n{\n  \"nome\": \"nome da fruta ou legume\",\n  \"nome_cientifico\": \"nome científico, se souber\",\n  \"variedade\": \"variedade específica se identificável\",\n  \"estado\": \"verde\", \"maduro\" ou \"passado\",\n  \"observacoes\": \"descrição visual resumida em uma frase\",\n  \"confianca\": \"alta\", \"media\" ou \"baixa\",\n  \"categoria\": \"fruta\" ou \"legume\" ou \"verdura\",\n  \"cor_predominante\": \"cor principal observada\"\n}\n\nSe não conseguir identificar claramente, use confianca: \"baixa\" e preencha os outros campos como \"não identificado\".",
+        "inputType": "base64",
+        "options": {}
+      },
+      "id": "42fc8969-142b-4701-a501-477bc89676a7",
+      "name": "5c. Análise Visual (IA)",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.6,
+      "position": [
+        1700,
+        100
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.content }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "isNotEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d8b853d2-1f91-4180-90b7-ac22b8c4c19f",
+      "name": "6. Análise da IA foi bem-sucedida?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1920,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "let analysisResult;\ntry {\n  analysisResult = JSON.parse($json.content);\n} catch (e) {\n  analysisResult = {\n    nome: \"Não identificado\",\n    nome_cientifico: \"\",\n    variedade: \"\",\n    estado: \"indefinido\",\n    observacoes: \"A análise visual falhou ou retornou um formato inválido.\",\n    confianca: \"baixa\",\n    categoria: \"indefinido\",\n    cor_predominante: \"indefinido\"\n  };\n}\n\nconst fruitData = {\n  nome: analysisResult.nome || \"Não identificado\",\n  nome_cientifico: analysisResult.nome_cientifico || \"\",\n  variedade: analysisResult.variedade || \"\",\n  estado: analysisResult.estado || \"indefinido\",\n  observacoes: analysisResult.observacoes || \"\",\n  confianca: analysisResult.confianca || \"baixa\",\n  categoria: analysisResult.categoria || \"indefinido\",\n  cor_predominante: analysisResult.cor_predominante || \"indefinido\",\n  mobile: $item(\"0\").$node[\"1. Validar e Formatar Dados\"].json.mobile,\n  pushName: $item(\"0\").$node[\"1. Validar e Formatar Dados\"].json.pushName,\n  sessionId: `session:${$item(\"0\").$node[\"1. Validar e Formatar Dados\"].json.mobile}`,\n  timestamp: new Date().toISOString()\n};\n\nlet promptInput;\nif (fruitData.confianca === \"baixa\") {\n  promptInput = `O usuário enviou uma imagem, mas a análise inicial falhou ou não conseguiu identificar o item. Responda educadamente que não foi possível identificar e peça para tentar novamente.`;\n} else {\n  promptInput = `Análise da imagem: item identificado como ${fruitData.nome}${fruitData.variedade ? ` (variedade ${fruitData.variedade})` : ''}. Estado: ${fruitData.estado}. Categoria: ${fruitData.categoria}. Observações: ${fruitData.observacoes}. Cor predominante: ${fruitData.cor_predominante}.`;\n}\n\nreturn {\n  ...fruitData,\n  promptInput: promptInput\n};"
+      },
+      "id": "0a8fb1de-be5f-4ec0-b547-08267771d428",
+      "name": "7. Preparar Prompt e Dados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2140,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO consultas (usuario_telefone, tipo_consulta, nome_fruta, nome_cientifico, variedade, estado, categoria, confianca, observacoes, cor_predominante, created_at, resultado_json) \nVALUES (\n  '{{ $json.mobile }}', \n  'imagem', \n  '{{ $json.nome }}', \n  '{{ $json.nome_cientifico }}',\n  '{{ $json.variedade }}', \n  '{{ $json.estado }}', \n  '{{ $json.categoria }}', \n  '{{ $json.confianca }}', \n  '{{ $json.observacoes.replace(/'/g, \"''\") }}', \n  '{{ $json.cor_predominante }}', \n  NOW(), \n  '{{ JSON.stringify($json).replace(/'/g, \"''\") }}'::jsonb\n) RETURNING id;",
+        "options": {}
+      },
+      "id": "742d71d0-ae81-4e2d-adf0-2193c13884b1",
+      "name": "8. Salvar Consulta no DB",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2360,
+        100
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres Teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $json.sessionId }}",
+        "value": "={{ JSON.stringify({\n  lastFruit: $json.nome,\n  lastState: $json.estado,\n  consultationId: $item(0).$node['8. Salvar Consulta no DB'].json.id,\n  timestamp: $json.timestamp\n}) }}",
+        "expire": true,
+        "ttl": 3600
+      },
+      "id": "55874c20-a7ef-43ad-939e-9403c95e6900",
+      "name": "9. Atualizar Sessão Redis",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2540,
+        100
+      ],
+      "credentials": {
+        "redis": {
+          "id": "25nYh9vN5nDeicvy",
+          "name": "Redis AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxTokens": 800,
+          "temperature": 0.7
+        }
+      },
+      "id": "9ee2ccea-2d75-4242-81f6-e041f2eca0f3",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        2660,
+        340
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.promptInput }}"
+      },
+      "id": "2029427d-3866-46de-a418-246f3becba15",
+      "name": "10. Análise da Fruta (Agente)",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        2720,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://your-evolution-api.com/message/sendText/{{ $item(0).$node['1. Validar e Formatar Dados'].json.evolutionInstance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "apikey",
+              "value": "YOUR_EVOLUTION_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $item(0).$node['7. Preparar Prompt e Dados'].json.mobile }}\",\n  \"text\": \"{{ $json.text.replace(/\\n/g, '\\\\n').replace(/\"/g, '\\\\\"') }}\"\n}",
+        "options": {}
+      },
+      "id": "6a373fb1-6eaf-4810-849e-d8149d51ee85",
+      "name": "11. Enviar Resposta Evolution",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3020,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE consultas SET \n  resposta_enviada = '{{ $json.text.replace(/'/g, \"''\") }}',\n  status = 'concluida',\n  updated_at = NOW()\nWHERE id = {{ $('8. Salvar Consulta no DB').json.id }};",
+        "options": {}
+      },
+      "id": "a1574386-7c74-478f-aa2c-41a7e58010e4",
+      "name": "12. Atualizar Status Consulta",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3240,
+        100
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres Teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://your-evolution-api.com/message/sendText/{{ $item(0).$node['1. Validar e Formatar Dados'].json.evolutionInstance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "apikey",
+              "value": "YOUR_EVOLUTION_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $item(0).$node['1. Validar e Formatar Dados'].json.mobile }}\",\n  \"text\": \"Olá, {{ $item(0).$node['1. Validar e Formatar Dados'].json.pushName }}! 👋\\n\\nEu sou o **Find Fruit Agent** 🍓🍌🥦, seu assistente de IA para análise de frutas, legumes e verduras.\\n\\nÉ simples: envie uma foto nítida de um item e eu te direi:\\n\\n📈 Se está verde, maduro ou passado\\n✅ Informações nutricionais\\n📆 Qual a melhor época do ano para comprá-lo\\n🍽️ Sugestões de receitas e preparo\\n🏪 Dicas de como conservar em casa\\n💡 Curiosidades divertidas\\n\\n📸 **Estou pronto! Pode me enviar a foto.**\"\n}",
+        "options": {}
+      },
+      "id": "e6562495-0867-42e1-870c-d5fd368469e2",
+      "name": "Enviar Msg Boas-Vindas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1260,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://your-evolution-api.com/message/sendText/{{ $item(0).$node['1. Validar e Formatar Dados'].json.evolutionInstance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "apikey",
+              "value": "YOUR_EVOLUTION_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $item(0).$node['1. Validar e Formatar Dados'].json.mobile }}\",\n  \"text\": \"🤖 Ops! Parece que meu cérebro de IA está um pouco sobrecarregado no momento e não consegui analisar sua imagem.\\n\\nPor favor, tente novamente em alguns instantes. Desculpe pelo transtorno! 🙏\"\n}",
+        "options": {}
+      },
+      "id": "db9e2167-f0c2-45bc-860e-57b0bc2602a1",
+      "name": "Enviar Msg Erro IA",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2120,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO consultas (usuario_telefone, tipo_consulta, nome_fruta, estado, created_at, status, resposta_enviada) \nVALUES (\n  '{{ $('1. Validar e Formatar Dados').json.mobile }}', \n  'texto', \n  'boas-vindas', \n  'iniciado', \n  NOW(), \n  'concluida',\n  'Mensagem de boas-vindas enviada.'\n);",
+        "options": {}
+      },
+      "id": "8f8efe6b-2071-4724-94ac-16a5860c77fe",
+      "name": "Log Msg Boas-Vindas",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1480,
+        300
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres Teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Tabela de usuários\nCREATE TABLE IF NOT EXISTS usuarios (\n    id SERIAL PRIMARY KEY,\n    telefone VARCHAR(20) UNIQUE NOT NULL,\n    nome VARCHAR(255),\n    created_at TIMESTAMP DEFAULT NOW(),\n    last_activity TIMESTAMP DEFAULT NOW(),\n    total_consultas INTEGER DEFAULT 0,\n    is_active BOOLEAN DEFAULT TRUE\n);\n\n-- Tabela de consultas\nCREATE TABLE IF NOT EXISTS consultas (\n    id SERIAL PRIMARY KEY,\n    usuario_telefone VARCHAR(20) REFERENCES usuarios(telefone),\n    tipo_consulta VARCHAR(50) NOT NULL,\n    nome_fruta VARCHAR(255),\n    nome_cientifico VARCHAR(255),\n    variedade VARCHAR(255),\n    estado VARCHAR(50),\n    categoria VARCHAR(50),\n    confianca VARCHAR(50),\n    observacoes TEXT,\n    cor_predominante VARCHAR(100),\n    resposta_enviada TEXT,\n    status VARCHAR(50) DEFAULT 'pendente',\n    resultado_json JSONB,\n    created_at TIMESTAMP DEFAULT NOW(),\n    updated_at TIMESTAMP DEFAULT NOW()\n);\n\n-- Índices para performance\nCREATE INDEX IF NOT EXISTS idx_usuarios_telefone ON usuarios(telefone);\nCREATE INDEX IF NOT EXISTS idx_consultas_usuario ON consultas(usuario_telefone);\nCREATE INDEX IF NOT EXISTS idx_consultas_created_at ON consultas(created_at);\nCREATE INDEX IF NOT EXISTS idx_consultas_nome_fruta ON consultas(nome_fruta);",
+        "options": {}
+      },
+      "id": "3dee544c-8c8d-4e21-84bf-2fd9f6ec830e",
+      "name": "Criar Schema DB",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        20,
+        600
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres Teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Find Fruit Agent v3 - Fixado 🍓",
+        "height": 100,
+        "width": 560,
+        "color": 5
+      },
+      "id": "a9a275b1-47c1-4d40-bbb9-972e316d1f2c",
+      "name": "Título",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Registro e Sessão",
+        "height": 200,
+        "width": 480,
+        "color": 3
+      },
+      "id": "48208fc1-52e6-47b3-b3f9-f91b69115c82",
+      "name": "Área Registro",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Processamento de Imagem + IA",
+        "height": 200,
+        "width": 1200,
+        "color": 4
+      },
+      "id": "3b7df3a0-1695-4d7c-b129-5362dec52e80",
+      "name": "Área Processamento",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Banco de Dados e Redis",
+        "height": 200,
+        "width": 880,
+        "color": 6
+      },
+      "id": "8951acc3-6091-4b52-94a8-73c3669c8a45",
+      "name": "Área Dados",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2100,
+        40
+      ]
+    }
+  ],
+  "pinData": {
+    "Webhook WhatsApp": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.aiagentautomate.com.br",
+            "user-agent": "axios/1.7.9",
+            "content-length": "896",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "n8n.aiagentautomate.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "2f8ed72a8286",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "find-fruit",
+            "data": {
+              "key": {
+                "remoteJid": "5511952313944@s.whatsapp.net",
+                "fromMe": false,
+                "id": "3A730CA49541F4368267"
+              },
+              "pushName": "Rafael de Souza",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "conversation": "Ola",
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyHash": "21P3yJ0SDqMNzg==",
+                    "senderTimestamp": "1751397788",
+                    "recipientKeyHash": "0YKPf5G0z3KNVw==",
+                    "recipientTimestamp": "1751459772"
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": "/QejzDNpsVhsM4tBPngl+BpxQ1SJJ+aZXqr9qQTY/wU="
+                }
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1751459965,
+              "instanceId": "1df7046d-8023-48cd-9ea7-464761018d89",
+              "source": "ios"
+            },
+            "destination": "https://n8n.aiagentautomate.com.br/webhook-test/find-fruit",
+            "date_time": "2025-07-02T09:39:27.200Z",
+            "sender": "5511945237617@s.whatsapp.net",
+            "apikey": "DC3D2990281D-4252-AD6B-F694262DA012"
+          },
+          "webhookUrl": "https://n8n.aiagentautomate.com.br/webhook-test/find-fruit",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-02T14:47:37.385Z",
+  "versionId": "9f3d30a2-1750-48af-8108-4146fd1ef5aa"
+}

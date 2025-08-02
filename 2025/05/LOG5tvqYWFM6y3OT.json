@@ -1,0 +1,147 @@
+{
+  "active": false,
+  "connections": {},
+  "createdAt": "2025-05-19T04:04:26.497Z",
+  "id": "LOG5tvqYWFM6y3OT",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 18",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "novo-lead",
+        "options": {}
+      },
+      "id": "4fd64d8e-e499-4b88-a1fe-0a995a194066",
+      "name": "Webhook Novo Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "66bb6bab-fa8b-4d5f-8e29-b979eefc886d"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Normaliza e prepara dados do lead\nconst nome = $json.nome || $json.fullname || '';\nconst email = $json.email || '';\nconst telefone = $json.telefone?.replace(/\\D/g, '') || $json.phone?.replace(/\\D/g, '') || '';\nconst servico = $json.servico || $json.service || '';\nconst status = 'Novo';\nconst criadoEm = new Date().toISOString();\n\nreturn [{\n  json: { nome, email, telefone, servico, status, criadoEm }\n}];"
+      },
+      "id": "6905a0d8-cc7b-4f13-b041-51ccf538d6f6",
+      "name": "Preparar Lead",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        200,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "925bb6de-c58f-4ee4-8ec1-bf18c108a9dc",
+      "name": "Salvar no Supabase",
+      "type": "n8n-nodes-supabase.supabase",
+      "typeVersion": 1,
+      "position": [
+        400,
+        0
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "url": "https://api.evolutionapi.com.br/v1/messages/send-text",
+        "options": {}
+      },
+      "id": "f7f94ae6-cfc8-4451-89cd-5a2f198e6cbb",
+      "name": "Enviar WhatsApp Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        600,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Espera resposta do lead (fluxo simplificado)\nreturn [{\n  json: {\n    sessionId: $json.telefone,\n    aguardando: true\n  }\n}];"
+      },
+      "id": "9c951807-04ef-4d43-8b1a-61ad86302a74",
+      "name": "Aguardar Resposta",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        800,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Após resposta do lead, coleta serviço/horário e agenda\n// (Aqui, o ideal é conectar outro Webhook para receber a resposta)\nreturn [{\n  json: {\n    telefone: $json.telefone,\n    servico: $json.servico || 'A confirmar',\n    horario: $json.horario || 'A combinar',\n    confirmado: true\n  }\n}];"
+      },
+      "id": "ca28db12-ad77-4c49-b697-89f01ec9b9c8",
+      "name": "Agendar",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "url": "https://api.evolutionapi.com.br/v1/messages/send-text",
+        "options": {}
+      },
+      "id": "d43c6483-af07-4a9c-8e96-386ed6f46219",
+      "name": "Confirmar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "62b31b53-4102-40e0-8da1-c05e9caba78a",
+      "name": "Esperar 12h p/ Follow-up",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        1400,
+        0
+      ],
+      "webhookId": "d3dde585-3fa2-40c5-80f4-5e149addb0d7"
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "url": "https://api.evolutionapi.com.br/v1/messages/send-text",
+        "options": {}
+      },
+      "id": "6bc53d03-cbe1-439f-a19b-667141f7208b",
+      "name": "Follow-up WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        0
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-19T04:04:26.497Z",
+  "versionId": "cfa7d830-008e-42ed-a61c-08c8772bcb54"
+}

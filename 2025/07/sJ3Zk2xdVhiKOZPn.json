@@ -1,0 +1,106 @@
+{
+  "active": false,
+  "connections": {},
+  "createdAt": "2025-07-26T06:22:45.984Z",
+  "id": "sJ3Zk2xdVhiKOZPn",
+  "isArchived": false,
+  "meta": null,
+  "name": "Workflow de Negócio com Logging",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        288
+      ],
+      "id": "fd546cc3-8e5c-4da7-96e8-6b68240f2b4d"
+    },
+    {
+      "parameters": {},
+      "name": "Sua Lógica de Negócio Aqui",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        160,
+        272
+      ],
+      "id": "9d428577-82eb-46a1-ae7c-2f6df547fc87"
+    },
+    {
+      "parameters": {},
+      "name": "Set Success Metrics",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2.1,
+      "position": [
+        608,
+        208
+      ],
+      "id": "0bd1f849-6ac7-4793-a22e-e0a47ac412f8"
+    },
+    {
+      "parameters": {
+        "workflowId": "ID_DO_SEU_WORKFLOW_DE_LOGGING",
+        "options": {}
+      },
+      "name": "Log Success",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        880,
+        208
+      ],
+      "id": "e6e0f7e5-ae2a-4d61-a582-56d276718020"
+    },
+    {
+      "parameters": {},
+      "name": "Set Error Metrics",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2.1,
+      "position": [
+        608,
+        416
+      ],
+      "id": "c22a5d51-e2ee-47c0-aa49-9e711ec45da3"
+    },
+    {
+      "parameters": {
+        "workflowId": "ID_DO_SEU_WORKFLOW_DE_LOGGING",
+        "options": {}
+      },
+      "name": "Log Error",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        880,
+        416
+      ],
+      "id": "7cf638b1-7494-4c3f-9232-bcb13639ce25"
+    },
+    {
+      "parameters": {},
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        400,
+        416
+      ],
+      "id": "317a76ef-5bd9-4260-9cf1-7f7da9e2efba"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-26T08:54:15.675Z",
+  "versionId": "5e5282a4-84fc-4479-bb65-1ec13bdab604"
+}

@@ -1,0 +1,276 @@
+{
+  "active": false,
+  "connections": {
+    "Buscar Último Lead": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Organizar Dados1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Organizar Dados1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Buscar Último Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-05-13T05:41:45.858Z",
+  "id": "bzFOEJ7DwR4s1IzK",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Fluxo Leads Inicial",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "leads",
+        "limit": 1
+      },
+      "name": "Buscar Último Lead",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        460,
+        140
+      ],
+      "id": "26b969d0-dded-4597-8593-a7190894904f",
+      "credentials": {
+        "supabaseApi": {
+          "id": "wKMmHUFNQJCXhQYj",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "leads",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        140
+      ],
+      "webhookId": "leads-webhook",
+      "id": "7ba98f2d-5425-43ff-bb67-86dc347cf83d"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "nome_completo",
+              "value": "={{ $json.body.name }}"
+            },
+            {
+              "name": "empresa",
+              "value": "={{ $json.body.company }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $json.body.email }}"
+            },
+            {
+              "name": "telefone_formatado",
+              "value": "={{ '55' + $json.body.phone.trim().replace(/\\D/g, '').slice(-11) }}"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "name": "Organizar Dados1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        20,
+        140
+      ],
+      "id": "f45c6c57-e550-4138-8c5a-7e6c4dfd87d0"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "aiagenteautomate@gmail.com",
+        "remoteJid": "={{ $('Organizar Dados1').item.json.telefone_formatado }}",
+        "messageText": "=Olá {{ $('Code').item.json.body.name }}, como vai? 👋 Sou a Aurora, especialista da AIAgent Automate. Vi que você se interessou por nossa solução de automação utilizando IA. Posso te ajudar com alguma dúvida?",
+        "options_message": {}
+      },
+      "name": "Enviar WhatsApp1",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        700,
+        140
+      ],
+      "id": "21a48b43-ffe5-4707-8415-a8dd5bdff757",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const lead = $input.first().json;\n// Verifica e formata telefone\nif (lead.telefone) {\n  lead.telefone_formatado = '55' + lead.telefone.replace(/\\D/g, '').slice(-11);\n} else {\n  lead.telefone_formatado = '';\n}\n// Nome curto para mensagens\nlead.nome_curto = lead.nome_completo?.split(' ')[0] || lead.nome || '';\n// Define sessionId com prioridade para:\n// 1. lead.data.instancedId\n// 2. sessionId vindo do JSON\n// 3. telefone formatado\n// 4. ID da execução\nlead.sessionId = lead.data?.instancedId || $json.sessionId || lead.telefone_formatado || $execution.id;\n\nreturn [{ json: lead }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        140
+      ],
+      "id": "931da050-c87d-4ba2-8c96-7f6e869a9bb9",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.aiagentautomate.com.br/webhook/responder-conversa",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "sessionId",
+              "value": "={{ $('Code').item.json.sessionId }}"
+            },
+            {
+              "name": "telefone",
+              "value": "={{ $('Code').item.json.telefone_formatado }}"
+            },
+            {
+              "name": "nome",
+              "value": "={{ $('Code').item.json.nome_curto }}"
+            },
+            {
+              "name": "mensagem",
+              "value": "\"continuar\""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        920,
+        140
+      ],
+      "id": "3b434e5e-0dd4-41b2-8aee-19a647272027",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        1000,
+        -120
+      ],
+      "id": "62a17245-6e46-43c5-9d71-7b19e38914ba",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "Y33V89nvfZonaojY",
+          "mode": "list",
+          "cachedResultName": "My workflow 20"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1420,
+        -120
+      ],
+      "id": "fecda10f-f5e3-471d-a927-dc038083a40e",
+      "name": "Execute Workflow"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-05-29T10:16:29.388Z",
+  "versionId": "56c4be70-e7c2-4884-ac0d-09468bdba5bf"
+}

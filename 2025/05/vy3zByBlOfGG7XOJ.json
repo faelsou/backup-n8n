@@ -1,0 +1,237 @@
+{
+  "active": false,
+  "connections": {
+    "Trigger Prospecção": {
+      "main": [
+        [
+          {
+            "node": "Buscar Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Leads": {
+      "main": [
+        [
+          {
+            "node": "IA Qualificação Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IA Qualificação Lead": {
+      "main": [
+        [
+          {
+            "node": "Lead Qualificado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Qualificado?": {
+      "main": [
+        [
+          {
+            "node": "Gerar Mensagem Outreach",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Marcar Como Não Qualificado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar Mensagem Outreach": {
+      "main": [
+        [
+          {
+            "node": "Enviar Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Email": {
+      "main": [
+        [
+          {
+            "node": "Atualizar CRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-26T14:09:54.585Z",
+  "id": "vy3zByBlOfGG7XOJ",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 21",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Trigger Prospecção",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        100
+      ],
+      "id": "85d45f53-5f3c-4bc1-a1cc-c6c411ebdff2"
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "url": "https://api.leadlists.com/v1/leads",
+        "options": {}
+      },
+      "name": "Buscar Leads",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        -280,
+        100
+      ],
+      "id": "996db4e8-6737-479c-aa42-b3bc50829bb1"
+    },
+    {
+      "parameters": {
+        "model": "chatgpt-4o-latest",
+        "options": {},
+        "requestOptions": {}
+      },
+      "name": "IA Qualificação Lead",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        100
+      ],
+      "id": "438e51ce-9186-48b9-8408-6b70cfee48ae",
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "{{$json.choices[0].message.content}}",
+              "operation": "contains",
+              "value2": "QUALIFICADO"
+            }
+          ]
+        }
+      },
+      "name": "Lead Qualificado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        160,
+        100
+      ],
+      "id": "650f837c-adb7-4ef8-8e30-7f8f3c2e52bc"
+    },
+    {
+      "parameters": {
+        "model": "chatgpt-4o-latest",
+        "options": {},
+        "requestOptions": {}
+      },
+      "name": "Gerar Mensagem Outreach",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        380,
+        0
+      ],
+      "id": "c1fbb571-8e97-4ab2-8983-62df4d85b72e",
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "subject": "Automação com IA para {{$('Buscar Leads').item.json.company_name}}",
+        "message": "{{$json.choices[0].message.content}}",
+        "additionalFields": {}
+      },
+      "name": "Enviar Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 1,
+      "position": [
+        600,
+        0
+      ],
+      "id": "350d62eb-20d0-4a87-ba5f-126cb5849681",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "dusp3v1eSE7MkKo2",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "{{$env.CRM_WEBHOOK_URL}}/leads",
+        "options": {}
+      },
+      "name": "Atualizar CRM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        820,
+        0
+      ],
+      "id": "4d46b3f7-c150-441f-ad31-81817f8ddb76"
+    },
+    {
+      "parameters": {
+        "url": "{{$env.CRM_WEBHOOK_URL}}/leads/{{$('Buscar Leads').item.json.id}}",
+        "options": {}
+      },
+      "name": "Marcar Como Não Qualificado",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        380,
+        200
+      ],
+      "id": "ce86c1c5-3aed-4abd-8322-c549322f9e6b"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-26T14:09:54.585Z",
+  "versionId": "aaaffed8-53d4-4a2e-8acf-ea14ce8a32bb"
+}

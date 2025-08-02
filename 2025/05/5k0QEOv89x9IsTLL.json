@@ -1,0 +1,314 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook Lead": {
+      "main": [
+        [
+          {
+            "node": "Formatar Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar Lead": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Conversa Respondida": {
+      "main": [
+        [
+          {
+            "node": "Formatar Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Setar Entrada IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Setar Entrada IA": {
+      "main": [
+        [
+          {
+            "node": "IA Aurora",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IA Aurora": {
+      "main": [
+        [
+          {
+            "node": "Responder WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Modelo OpenAI": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "IA Aurora",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memória IA": {
+      "ai_memory": [
+        [
+          {
+            "node": "IA Aurora",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-15T03:12:34.463Z",
+  "id": "5k0QEOv89x9IsTLL",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 11",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "novo-lead",
+        "options": {}
+      },
+      "name": "Webhook Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        520,
+        1680
+      ],
+      "id": "f7cc3852-40ca-46cd-96c9-4795177bee88",
+      "webhookId": "b47597ca-f230-4c76-b5f1-cfefbdb0fa1b"
+    },
+    {
+      "parameters": {
+        "functionCode": "\nconst lead = $json;\nlead.telefone_formatado = '55' + lead.telefone.replace(/\\D/g, '').slice(-11);\nlead.nome_curto = lead.nome_completo?.split(' ')[0] || lead.nome || '';\nlead.sessionId = lead.telefone_formatado;\nreturn [{ json: lead }];\n"
+      },
+      "name": "Formatar Lead",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        720,
+        1680
+      ],
+      "id": "edef8702-8b09-4fba-8177-fdfecc412b1a"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "teste",
+        "remoteJid": "={{ $json.sessionId }}",
+        "messageText": "Olá {{ $json.nome_curto }}, sou a Aurora da AIAgent Automate. Como posso te ajudar?",
+        "options_message": {}
+      },
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        920,
+        1680
+      ],
+      "id": "668c66e3-a8a2-4b29-962e-e8dcae4e7a9e"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "responder-conversa",
+        "options": {}
+      },
+      "name": "Webhook Conversa Respondida",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        1700
+      ],
+      "webhookId": "responder-conversa-id",
+      "id": "05f7b823-968a-4c98-b227-3795e060b1cb"
+    },
+    {
+      "parameters": {
+        "functionCode": "\nconst sessionId = $json.body?.sessionId || $execution.id;\nconst phone = sessionId.replace(/[^0-9]/g, '');\nconst message = $json.body?.mensagem || $json.message?.conversation || '';\nreturn [{ json: { sessionId, phone, message } }];\n"
+      },
+      "name": "Formatar Mensagem",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        1700
+      ],
+      "id": "1db54b05-c202-4445-bf06-e5d7a5cf2e60"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "name": "Setar Entrada IA",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        1580,
+        1700
+      ],
+      "id": "60d7d03c-4242-4b33-822d-69cdf5e0797d"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.message }}",
+        "options": {
+          "systemMessage": "Você é Aurora, assistente de automação da AIAgent Automate. Seja consultiva e clara com o cliente."
+        }
+      },
+      "name": "IA Aurora",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1,
+      "position": [
+        1780,
+        1700
+      ],
+      "id": "8f20b12a-9e30-482c-bb0f-eebe10b00d5e"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "teste",
+        "remoteJid": "={{ $json.sessionId }}",
+        "messageText": "={{ $('IA Aurora').item.json.output }}",
+        "options_message": {}
+      },
+      "name": "Responder WhatsApp",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        2160,
+        1700
+      ],
+      "id": "2a5cb4ca-0bbe-43cb-9d37-8024546d2b85"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "name": "Memória IA",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1,
+      "position": [
+        1860,
+        1940
+      ],
+      "id": "5d4581c2-a78e-42ab-ad42-752b0e784188"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "name": "Modelo OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1740,
+        1940
+      ],
+      "id": "46333725-03c7-4dd1-a717-cfde268b5594"
+    },
+    {
+      "parameters": {
+        "calendar": "faelsouz0211@gmail.com",
+        "additionalFields": {}
+      },
+      "name": "buscar_eventos",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        2440,
+        2180
+      ],
+      "id": "430f6cb5-3d5a-4a43-9818-a517f4149fb9",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "Y9J5WW0RlORXPVBM",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": "faelsouz0211@gmail.com",
+        "start": "= {{ $fromAI('start_time') }}",
+        "end": "= {{ $fromAI('end_time') }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ $fromAI('email_do_cliente') }}"
+          ],
+          "summary": "=Agendamento com {{ $fromAI('nome_cliente') }}"
+        }
+      },
+      "name": "criar_eventos",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        2640,
+        2180
+      ],
+      "id": "0d69d494-eccc-4172-b807-fff26869f17e"
+    },
+    {
+      "parameters": {
+        "calendar": "faelsouz0211@gmail.com",
+        "additionalFields": {}
+      },
+      "name": "deletar_eventos",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        2840,
+        2180
+      ],
+      "id": "f8a74e0e-b926-416b-a175-e33ac7b405f1"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-15T03:12:34.463Z",
+  "versionId": "57cfb30e-179a-45a8-92f5-b8aa70a5e4a1"
+}

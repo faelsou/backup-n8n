@@ -1,0 +1,831 @@
+{
+  "active": false,
+  "connections": {
+    "File": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audio": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input type": {
+      "main": [
+        [
+          {
+            "node": "Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Image": {
+      "main": [
+        [
+          {
+            "node": "Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Audio": {
+      "main": [
+        [
+          {
+            "node": "Transcribe Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Image": {
+      "main": [
+        [
+          {
+            "node": "Analyze Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe Audio": {
+      "main": [
+        [
+          {
+            "node": "Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-04T00:53:02.890Z",
+  "id": "PND6E1Nvyy6FqR4i",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 41",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "caa11770-b590-4084-ae39-2358f000ac4e",
+      "name": "Evolution API Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.2,
+      "position": [
+        -820,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Evolution API Webhook').item.json.data.message.imageMessage.url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "d4db3b73-7d3b-4424-810d-db5d6ff8f05f",
+      "name": "Download Image",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        600,
+        680
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "=You are an advanced image description AI assistant . Your primary function is to provide detailed, accurate descriptions of images submitted through WhatsApp.\n\nCORE FUNCTIONALITY:\n- When presented with an image, you will analyze it thoroughly and provide a comprehensive description in English.\n- Your descriptions should capture both the obvious and subtle elements within the image.\n\nIMAGE DESCRIPTION GUIDELINES:\n- Begin with a broad overview of what the image contains\n- Describe key subjects, people, objects, and their relationships\n- Note significant visual elements such as colors, lighting, composition, and perspective\n- Identify any text visible in the image\n- Describe the setting or environment\n- Mention any notable actions or events taking place\n- Comment on mood, tone, or atmosphere when relevant\n- If applicable, identify landmarks, famous people, or cultural references\n\nRESPONSE FORMAT:\n- Start with \"Image Description:\" followed by your analysis\n- Structure your description in a logical manner (general to specific)\n- Use clear, precise language appropriate for visual description\n- Format longer descriptions with paragraphs to enhance readability\n- End with any notable observations that might require special attention\n\nLIMITATIONS:\n- If the image is blurry, low resolution, or difficult to interpret, acknowledge these limitations\n- If an image contains potentially sensitive content, provide a factual description without judgment\n- Do not make assumptions about elements that cannot be clearly determined\n\nYour descriptions should be informative, objective, and thorough, enabling someone who cannot see the image to form an accurate mental picture of its contents.",
+        "inputType": "base64",
+        "options": {
+          "detail": "auto"
+        }
+      },
+      "id": "e74667ff-a8eb-4ca8-8d6b-6e1f627256f5",
+      "name": "Analyze Image",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "position": [
+        840,
+        680
+      ],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Evolution API Webhook').item.json.data.message.audioMessage.url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "552caccc-cafe-4fee-ac85-77b12d1bc41a",
+      "name": "Download Audio",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        600,
+        380
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "id": "8f7abb7c-640a-403b-b30d-f4035ef19462",
+      "name": "Transcribe Audio",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "position": [
+        840,
+        380
+      ],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "id": "71f6b0d0-3594-4e67-b7cb-3335972c1275",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        40,
+        2000
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "You are an intelligent assistant. Your purpose is to analyze various types of input and provide helpful, accurate responses.\n\nCAPABILITIES:\n- Process and respond to text messages\n- Analyze uploaded files\n- Interpret and describe images\n- Transcribe and understand voice messages\n\nINPUT HANDLING:\n1. For text messages: Analyze the content, understand the intent, and provide a relevant response.\n2. For file analysis: Examine the file content, extract key information, and summarize important points also based on the questions asked.\n3. For image analysis: Describe what you see in the image, identify key elements, and respond to any questions about the image.\n4. For voice messages: Transcribe the audio, understand the message, and respond appropriately.\n\nRESPONSE GUIDELINES:\n- Be concise but thorough\n- Prioritize accuracy over speculation\n- Maintain a professional and helpful tone\n- When uncertain, acknowledge limitations\n- Format responses for easy reading on mobile devices\n- Include actionable information when appropriate\n\nLIMITATIONS:\n- Mention if you're unable to process certain file formats\n- Indicate if an image is unclear or if details are difficult to discern\n- Note if audio quality impacts transcription accuracy\n\nSECURITY & PRIVACY:\n- Do not store or remember sensitive information shared in files, images, or voice notes\n- Do not share personal information across different user interactions\n- Inform users about data privacy limitations when relevant\n\nAnalyze all inputs carefully before responding. Your goal is to provide value through accurate information and helpful assistance."
+        }
+      },
+      "id": "81310c91-6ccc-43a0-bf69-1a905927afb8",
+      "name": "AI Agent1",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        40,
+        1780
+      ],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Evolution API Webhook').item.json.data.message.documentMessage.url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "085c7ae0-02a7-47f4-8489-cd98021cd09f",
+      "name": "Download File",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        600,
+        1020
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "id": "037d49a8-28a8-4c72-bffa-9694dfd2fbe2",
+      "name": "Extract from File",
+      "type": "n8n-nodes-base.extractFromFile",
+      "position": [
+        860,
+        1020
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=memory_{{ $('Evolution API Webhook').item.json.data.key.remoteJid }}",
+        "contextWindowLength": 10
+      },
+      "id": "97f6dd4e-8dfc-48ef-81bb-9374250075a1",
+      "name": "Simple Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "position": [
+        180,
+        2000
+      ],
+      "typeVersion": 1.3
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "f52d2aaa-e0b2-45e5-8c4b-ceef42182a0d",
+              "operator": {
+                "name": "filter.operator.equals",
+                "type": "string",
+                "operation": "equals"
+              },
+              "leftValue": "={{ $json.data.message.documentMessage.mimetype }}",
+              "rightValue": "application/pdf"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2cd5dd90-9120-4b5a-b0af-482fc90df1c5",
+      "name": "Only PDF File",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        100,
+        1040
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "jsCode": "for (const item of $input.all()) {\n  if (item.binary) {\n    const binaryPropertyNames = Object.keys(item.binary);\n    for (const propName of binaryPropertyNames) {\n      if (item.binary[propName].mimeType === 'audio/mp3') {\n        item.binary[propName].mimeType = 'audio/mpeg';\n      }\n    }\n  }\n}\n\nreturn $input.all();"
+      },
+      "id": "3cddaceb-4101-4ea2-9bef-47459a389d05",
+      "name": "Fix mimeType for Audio",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        920,
+        1640
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://YOUR_EVOLUTION_API_URL/message/sendText/YOUR_INSTANCE_NAME",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "a5f3618a-29c0-45bf-808c-802528da740c",
+      "name": "Send Text (Evolution)",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        720,
+        1920
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://YOUR_EVOLUTION_API_URL/message/sendMedia/YOUR_INSTANCE_NAME",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Evolution API Webhook').item.json.data.key.remoteJid }}"
+            },
+            {
+              "name": "mediaMessage",
+              "value": "={{ { \"mediaType\": \"audio\" } }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c91e39d7-eecf-4fde-a210-f7b38d906e6b",
+      "name": "Send Audio (Evolution)",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1140,
+        1640
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://YOUR_EVOLUTION_API_URL/message/sendText/YOUR_INSTANCE_NAME",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "05902687-aaf2-4aa1-bbd8-5d1129e94319",
+      "name": "Send Incorrect Format Msg",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        380,
+        1260
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c53cd9f9-77c1-4331-98ff-bfc9bdf95a3c",
+              "name": "text",
+              "type": "string",
+              "value": "={{ $('Evolution API Webhook').item.json.data.message.conversation || $('Evolution API Webhook').item.json.data.message.extendedTextMessage.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9a90f981-9d3d-4fa5-88a9-a1912b996ca5",
+      "name": "Text",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1120,
+        40
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "219577d5-b028-48fc-90be-980f4171ab68",
+              "name": "text",
+              "type": "string",
+              "value": "={{ $json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "791221b0-1a66-47a9-9e44-d82351d46762",
+      "name": "Audio",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1120,
+        380
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "67552183-de2e-494a-878e-c2948e8cb6bb",
+              "name": "text",
+              "type": "string",
+              "value": "=User request on the image:\n{{ $('Evolution API Webhook').item.json.data.message.imageMessage.caption || \"Describe the following image\" }}\n\nImage description:\n{{ $json.content }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9abf2bb8-921e-40b4-ab6b-45114e9450fc",
+      "name": "Image",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1100,
+        680
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "67552183-de2e-494a-878e-c2948e8cb6bb",
+              "name": "text",
+              "type": "string",
+              "value": "=User request on the file:\n{{ $('Only PDF File').item.json.data.message.documentMessage.caption || \"Describe this file\" }}\n\nFile content:\n{{ $json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ad3cfe6d-aec9-465e-b5ae-bff454f54edb",
+      "name": "File",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1120,
+        1020
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://YOUR_EVOLUTION_API_URL/message/sendText/YOUR_INSTANCE_NAME",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "4e5f3fe2-46d7-4d99-8d11-fe1af2312bf7",
+      "name": "Send Not Supported Msg",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -380,
+        920
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "input": "={{ $('AI Agent1').item.json.output }}",
+        "voice": "onyx",
+        "options": {}
+      },
+      "id": "3cf736a5-6bbf-4925-8411-c66a8b1cf274",
+      "name": "Generate Audio Response",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "position": [
+        720,
+        1640
+      ],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "content": "## Text",
+        "height": 240,
+        "width": 1340
+      },
+      "id": "dd12599e-7de1-4a57-95e5-47e88b7e6a63",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Voice",
+        "height": 240,
+        "width": 1340
+      },
+      "id": "f8e5e6b1-d200-4bb2-8bd5-8ec7bb36fe40",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        320
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Image",
+        "height": 240,
+        "width": 1340
+      },
+      "id": "99eb7bdb-7311-4c5a-b603-19b4c3926a6d",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        640
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Document",
+        "height": 240,
+        "width": 1340
+      },
+      "id": "5867eab5-40ad-468e-8857-413e64bbb9f1",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        980
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Response",
+        "height": 600,
+        "width": 1340,
+        "color": 5
+      },
+      "id": "f640d654-7d37-4fd9-8556-394e973f196e",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        1520
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "b9d1d759-f585-4791-a743-b9d72951e77c",
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              },
+              "leftValue": "={{ $('Evolution API Webhook').item.json.data.message.audioMessage }}",
+              "rightValue": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fb3d61db-dd4f-416e-9349-ac878e8bf13f",
+      "name": "From audio to audio?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        460,
+        1780
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "08fd0c80-307e-4f45-b1de-35192ee4ec5e",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "leftValue": "={{ $json.data.message.conversation || $json.data.message.extendedTextMessage.text }}",
+                    "rightValue": ""
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "Text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "b7b64446-f1ea-4622-990c-22f3999a8269",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "leftValue": "={{ $json.data.message.audioMessage }}",
+                    "rightValue": ""
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "Voice"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "202af928-a324-411a-bf15-68a349e7bf9e",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "leftValue": "={{ $json.data.message.imageMessage }}",
+                    "rightValue": ""
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "Image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "c63299e9-6069-4bc6-afb9-7beebf6e3d69",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "leftValue": "={{ $json.data.message.documentMessage }}",
+                    "rightValue": ""
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "Document"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "id": "8622d84e-2fe0-48ac-aea5-67f2f206d7ff",
+      "name": "Input type",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        -540,
+        600
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "content": "## ⚙️ Configuration for Evolution API\n\nThis workflow has been updated to use the Evolution API. Follow these steps to configure it:\n\n### 1. Set Up Evolution API Credentials\n1. Go to **Credentials > Add credential**.\n2. Search for and select **Header Auth**.\n3.  **Credential Name**: `Evolution API Credentials` (This name must match exactly).\n4.  **Name (Header)**: `apikey`\n5.  **Value**: Paste your Evolution API Key here.\n6.  Click **Save**.\n\n---\n\n### 2. Update HTTP Request URLs\nYou need to replace the placeholder URLs in the following nodes with your actual Evolution API address and instance name:\n- **Download Image**\n- **Download Audio**\n- **Download File**\n- **Send Text (Evolution)**\n- **Send Audio (Evolution)**\n- **Send Incorrect Format Msg**\n- **Send Not Supported Msg**\n\n- The media download URLs come directly from the webhook payload. They already require the `apikey` header for authentication, which is why the credential is used.\n\n- The sending URLs should look like this: \n`https://YOUR_EVOLUTION_API_URL/message/sendText/YOUR_INSTANCE_NAME`\n\n---\n\n### 3. Activate the Workflow\nOnce configured, save and activate the workflow. The webhook URL will be displayed at the top of the **Evolution API Webhook** node. You must configure this URL in your Evolution API instance settings to receive messages.",
+        "height": 620,
+        "width": 780,
+        "color": 3
+      },
+      "id": "c79a970c-86ab-4207-aed2-08b93e31c5cb",
+      "name": "INSTRUCTIONS",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1700,
+        440
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-04T00:53:02.890Z",
+  "versionId": "e4d0b0b5-4c51-4cd5-9ea5-34f7c9a3b1ef"
+}

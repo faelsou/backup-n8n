@@ -1,0 +1,589 @@
+{
+  "active": false,
+  "connections": {
+    "Buscar Lead Supabase": {
+      "main": [
+        [
+          {
+            "node": "Preparar input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "detelar_eventos": {
+      "ai_tool": [
+        [
+          {
+            "node": "Atendente",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Atendente",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscar_eventos": {
+      "ai_tool": [
+        [
+          {
+            "node": "Atendente",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "criar_eventos": {
+      "ai_tool": [
+        [
+          {
+            "node": "Atendente",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "enviar_email": {
+      "ai_tool": [
+        [
+          {
+            "node": "Atendente",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atendente": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Atendente",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Buscar Lead Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Formatar Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Atendente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atendente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar input": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-11T06:47:54.607Z",
+  "id": "3lS0OxxlpfjlX60s",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Fluxo Agendamento",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://krqjybpktokadpdmlouo.supabase.co/rest/v1/leads?phone=eq.{{ $json.messages[0].from.replace('@s.whatsapp.net', '') }}",
+        "options": {},
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtycWp5YnBrdG9rYWRwZG1sb3VvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA2MzE0MTUsImV4cCI6MjA1NjIwNzQxNX0.i3IKbxW2Y5R7D5dkzA56z2mBw0-h4WaRM0GMrCIDcOU"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtycWp5YnBrdG9rYWRwZG1sb3VvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA2MzE0MTUsImV4cCI6MjA1NjIwNzQxNX0.i3IKbxW2Y5R7D5dkzA56z2mBw0-h4WaRM0GMrCIDcOU"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Prefer",
+              "value": "return=representation"
+            }
+          ]
+        }
+      },
+      "name": "Buscar Lead Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        1020,
+        860
+      ],
+      "id": "ecb55352-3064-4282-a875-bbd47478c63e"
+    },
+    {
+      "parameters": {
+        "content": "# Atendente IA",
+        "height": 80,
+        "width": 276,
+        "color": 5
+      },
+      "id": "eda089d6-5558-4b6f-ada8-84da387bfba6",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        740
+      ]
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 620,
+        "width": 660,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1660,
+        720
+      ],
+      "typeVersion": 1,
+      "id": "1d3eef08-3be9-46c9-8f81-4d4edf09d647",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "# Agendamento",
+        "height": 80,
+        "width": 283,
+        "color": 5
+      },
+      "id": "5614dda0-51b2-40c2-8881-1969ba98bbad",
+      "name": "Sticky Note15",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        1520
+      ]
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 260,
+        "width": 660,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1660,
+        1360
+      ],
+      "typeVersion": 1,
+      "id": "1f152473-0f1c-4fdb-8ae5-859e9d735127",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use essa ferramenta quando precisar deletar um evento existente, com base no ID do evento\nsempre use o email do cliente para fazer o cancelamento.",
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "faelsouz0211@gmail.com",
+          "mode": "list",
+          "cachedResultName": "faelsouz0211@gmail.com"
+        },
+        "eventId": "={{ $fromAI('id') }}",
+        "options": {}
+      },
+      "id": "11f69c7e-ade9-4fff-be00-1213115a0e09",
+      "name": "detelar_eventos",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        2020,
+        1380
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "pvwkih1m3EykUceE",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        1040
+      ],
+      "id": "b4ecdc6f-14a5-4a34-b567-4d63a139d53c",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "faelsouz0211@gmail.com",
+          "mode": "list",
+          "cachedResultName": "faelsouz0211@gmail.com"
+        },
+        "returnAll": true,
+        "options": {
+          "timeMin": "={{ $fromAI('start_date') }}",
+          "timeMax": "={{ $fromAI('end_date') }}",
+          "query": "@"
+        }
+      },
+      "id": "05ef75f3-d650-4b25-8a91-acd9f6dfa0d6",
+      "name": "buscar_eventos",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        1700,
+        1380
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "Y9J5WW0RlORXPVBM",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use essa ferramenta para criar o agendamento do cliente,apenas um agendamento por horário, faça com que exista a consulta de horário na tool busca_eventos para não agendar dois clientes no mesmo horario.\nApenas uma e-mail de usuário por horário de atendimento\nEstá proibido agendar mais de uma vez.",
+        "calendar": {
+          "__rl": true,
+          "value": "faelsouz0211@gmail.com",
+          "mode": "list",
+          "cachedResultName": "faelsouz0211@gmail.com"
+        },
+        "start": "= {{ $fromAI('start_time') }}",
+        "end": "= {{ $fromAI('end_time') }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ $fromAI('email_do_cliente') }}"
+          ],
+          "color": "3",
+          "conferenceDataUi": {
+            "conferenceDataValues": {
+              "conferenceSolution": "hangoutsMeet"
+            }
+          },
+          "description": "={{ (() => { \n    const value = $fromAI('tipo_servico'); \n    return value.charAt(0).toUpperCase() + value.slice(1); \n})() }} {{ $fromAI('nome_pet') }} Porte {{ $fromAI('porte') }} ",
+          "location": "={{ $fromAI('local_evento') }}",
+          "sendUpdates": "all",
+          "summary": "={{ (() => { \n    const value = $fromAI('tipo_servico'); \n    return value.charAt(0).toUpperCase() + value.slice(1); \n})() }}: {{ $fromAI('nome_pet') }} - {{ $fromAI('nome_cliente') }} "
+        }
+      },
+      "id": "1cd00990-5057-4d81-b6c7-17aedd4b21c8",
+      "name": "criar_eventos",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        1860,
+        1380
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "pvwkih1m3EykUceE",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use essa ferramenta para enviar um email para o cliente quando solcitiado e também para quando o agendamento for confirmado.",
+        "sendTo": "={{ $fromAI(\"email\") }}",
+        "subject": "={{ $fromAI(\"Titulo\",\"coloque aqui o titulo do email.\") }}",
+        "emailType": "text",
+        "message": "={{ $fromAI(\"texto\",\"coloque aqui os dados resumidos da conversa ou do agendamento, ex: nome, email, telefone, data\") }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Enviado pela ",
+          "replyTo": "n8nlabz@gmail.com"
+        }
+      },
+      "id": "3af00694-6da7-44e3-bc13-24e9f03514ca",
+      "name": "enviar_email",
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        2180,
+        1380
+      ],
+      "webhookId": "57dc2a7a-16f6-4b4f-936c-890c8fa7f120",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "acL8YEK450ZT3xIj",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Webhook1').item.json.body.data.message.conversation }}",
+        "options": {
+          "systemMessage": "=<systemData>\nData de hoje: {{ $now.weekdayLong }}, {{ $now.format('dd/MM/yyyy') }}, {{ $now.hour.toString().padStart(2, '0') }}:{{ $now.minute.toString().padStart(2, '0') }}\n</systemData>\n\n<Agent>\nNome: Aurora  \nDescrição: Especialista em atendimento e agendamentos para empresas  \nObjetivo: Continuar a conversa com o lead, sem repetir mensagens já enviadas.\n</Agent>\n\n<Instruction>\nVocê está em uma conversa via WhatsApp. Sempre continue do ponto onde parou. Se já pediu informações, aguarde o cliente responder. Só repita se ele estiver confuso.\n</Instruction>\n\n\n<Agent>\n\n  <Name>Aurora</Name>\n  <Description>Especialista em automação comercial da AIAgent Automate</Description>\n  <Language>Português Brasileiro</Language>\n\n<Recepção do Cliente>\nOlá! Tudo certo? Me chamo Aurora e sou especialista em automação comercial da AIAgent Automate 🤖. Como posso te ajudar hoje?\n</Recepção do Cliente>\n\n<CommunicationStyle>\n  <style>Consultivo</style>\n  <Guide>\n    [\n      \"Foque sempre em entender o desafio do cliente antes de oferecer uma solução.\",\n      \"Use exemplos práticos e linguagem simples, mesmo em contextos técnicos.\",\n      \"Mostre empatia e interesse genuíno no crescimento do cliente.\",\n      \"Evite termos excessivamente técnicos sem explicação clara.\",\n      \"Seja proativa ao sugerir soluções com base no que o cliente menciona.\",\n      \"Nunca force uma venda; eduque o cliente sobre os benefícios com base em dados.\",\n      \"Sempre ofereça uma próxima ação: agendar reunião, enviar apresentação, etc.\",\n      \"Evite respostas genéricas. Adapte com base no segmento e no nível do cliente.\",\n      \"Encerrar sempre perguntando se há mais algo em que pode ajudar.\"\n    ]\n  </Guide>\n</CommunicationStyle>\n\n<FieldsConfigurator>\n  [\n    \"Identificar segmento do cliente (ex: saúde, varejo, serviços) para adaptar sugestões.\",\n    \"Validar se o lead está qualificado (cargo, interesse, momento de compra).\",\n    \"Sugestão automática de casos de uso relevantes com base no setor.\",\n    \"Monitorar e registrar gatilhos de compra (ex: deseja escalar vendas, reduzir custo etc).\"\n  ]\n</FieldsConfigurator>\n\n<Validations>\n  <Validation>Validar nome, empresa e e-mail antes de seguir para próxima etapa.</Validation>\n  <Validation>Detectar leads duplicados por e-mail e alertar equipe se necessário.</Validation>\n  <Validation>Checar se o cliente já é da base antes de apresentar soluções de aquisição.</Validation>\n  <Validation>Verificar se o cliente entende a proposta de valor da IA antes de agendar reunião.</Validation>\n</Validations>\n\n<Rules>\n  <Rule>Se não entender a pergunta do cliente, peça educadamente por mais contexto.</Rule>\n  <Rule>Evite afirmar qualquer coisa sem embasamento em dados internos ou depoimentos validados.</Rule>\n  <Rule>Jamais compartilhe informações internas ou técnicas sensíveis.</Rule>\n  <Rule>Se o cliente for rude, mantenha a educação e encurte a conversa.</Rule>\n  <Rule>Se a conversa for além do escopo da automação comercial, encaminhe para um especialista.</Rule>\n  <Rule>Evite repetir a mesma informação mais de uma vez.</Rule>\n  <Rule>Use linguagem acessível a tomadores de decisão não técnicos.</Rule>\n  <Rule>Evite textos longos. Comunicação objetiva é prioridade.</Rule>\n  <Rule>Sempre indique um próximo passo claro no fim da conversa.</Rule>\n  <Rule>Se o cliente quiser agendar uma reunião, confirme e colete: nome, e-mail, telefone, cargo, empresa e horário.</Rule>\n  <Rule>O agente só deve continuar a conversa após o cliente responder no WhatsApp.</Rule>\n</Rules>\n\n<Agents>\n  <SDR>\n    <Nome>Aurora SDR</Nome>\n    <Função>Qualificar leads comerciais com base em interesse, cargo e momento de compra.</Função>\n    <Fluxo>\n      - Receber o lead\n      - Fazer perguntas de qualificação (nome, empresa, cargo, desafio)\n      - Validar interesse e repassar para agendamento se lead estiver pronto\n    </Fluxo>\n  </SDR>\n  \n  <Agendamento>\n    <Nome>Aurora Agenda</Nome>\n    <Função>Agendar reuniões com leads qualificados, considerando fuso horário de São Paulo (America/Sao_Paulo).</Função>\n    <Fluxo>\n      - Confirmar interesse do cliente\n      - Coletar: nome, e-mail, telefone, cargo, empresa e melhor horário\n      - Confirmar data/hora com timezone correto\n      - Encaminhar confirmação\n    </Fluxo>\n  </Agendamento>\n</Agents>\n\n<Roteiro>\n```markdown\n# Roteiro de Conversa – Agente Comercial B2B (Aurora – AIAgent Automate)\n\n---\n\n## 1. Saudação Inicial\n\"Olá! Tudo certo? Me chamo Aurora e sou especialista em automação comercial da AIAgent Automate 🤖. Como posso te ajudar hoje?\"\n\n---\n\n## 2. Diagnóstico Inicial (SDR)\n\n**Perguntas de qualificação (uma de cada vez):**\n- Qual o nome da sua empresa?\n- Qual o seu nome e cargo por lá?\n- Qual é o maior desafio comercial que você enfrenta hoje? (ex: captar leads, qualificar, responder rápido, escalar atendimento...)\n- Seu processo de vendas é mais B2B ou B2C?\n- Você já utiliza alguma automação atualmente?\n\n---\n\n## 3. Apresentação de Valor\n\"Entendi! Com a nossa tecnologia de agentes de IA, empresas como a sua conseguem:  \n- Reduzir até 60% do tempo de resposta  \n- Aumentar conversão de leads em até 40%  \n- Operar 24/7 sem sobrecarga humana  \nTudo isso com interações naturais, integradas a WhatsApp, CRM e muito mais.\"\n\n---\n\n## 4. Proposta de Ação\n\"Se fizer sentido, posso agendar uma reunião rápida com um especialista da AIAgent. Pode ser?\"\n\n---\n\n## 5. Agendamento (Agente Agenda)\n\"Perfeito! Para agendar, preciso de algumas informações rápidas, pode ser?\"  \n[Coleta: Nome, Empresa, E-mail, Telefone, Cargo, Melhor Horário em horário de São Paulo]\n\n---\n\n## 6. Encerramento\n\"Obrigada pela conversa! Se precisar de algo a mais, é só me chamar por aqui. Vamos te ajudar a escalar suas vendas com inteligência. 🚀\"\n\n---\n\n## 7. Esperar mensagem no WhatsApp antes de seguir a conversa.\n\n\n\n"
+        }
+      },
+      "id": "021e3f7f-82ca-4801-93be-e8a56098ba7a",
+      "name": "Atendente",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        1840,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Webhook1').item.json.body.sessionId || $execution.id }}",
+        "contextWindowLength": "={{ 50 }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1820,
+        1040
+      ],
+      "id": "7f8e9379-3844-42c6-8044-f89f34ba071e",
+      "name": "Simple Memory",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "functionCode": "// Captura a estrutura da mensagem recebida do Evolution API\nconst msg = $json?.messages?.[0] || {};\nconst fromMe = msg?.key?.fromMe ?? false;\n\n// Extrai de forma segura o corpo da mensagem\nconst bodyMsg = $json?.mensagem || $json?.text || $json?.body || msg?.message?.conversation || '';\n\nif (fromMe || !bodyMsg || bodyMsg.trim() === '') {\n  return [{ json: { skip: true === true, reason: 'Mensagem vazia ou enviada pelo bot' } }];\n}\n\n// Extrai o número do WhatsApp do campo remoteJid\nconst remoteJid = msg?.key?.remoteJid || '';\nconst number = remoteJid.split('@')[0]?.replace(/\\D/g, '') || '';\n\nif (!number) {\n  return [{ json: { skip: true, reason: 'Número de telefone inválido' } }];\n}\n\n// Gera ou reaproveita o sessionId para memória da IA\nconst sessionId = \n  $json?.sessionId || \n  msg?.key?.id || \n  $execution.id;\n\nreturn [\n  {\n    json: {\n      chatInput: bodyMsg.trim(), // <-- Aqui\n      sessionId,\n      number,\n      message: bodyMsg.trim(),\n      text: bodyMsg.trim()\n    }\n  }\n];\n"
+      },
+      "id": "cf3a55c8-7695-450c-ace7-d17de18a05ac",
+      "name": "Formatar Mensagem",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        760,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "responder-conversa",
+        "options": {}
+      },
+      "name": "Webhook1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        260,
+        860
+      ],
+      "webhookId": "leads-webhook",
+      "id": "f8db1164-2075-4907-ba60-2884bce5f671"
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $now }}",
+        "format": "custom",
+        "customFormat": "dd-MM-yyyy",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        500,
+        860
+      ],
+      "id": "493ff626-f1b8-4f61-aacc-90ac3c84bc3b",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "responder-conversa",
+        "remoteJid": "={{ $('Webhook1').item.json.body.data.key.remoteJid }}",
+        "messageText": "={{ $('Atendente').item.json.output }}",
+        "options_message": {}
+      },
+      "name": "Enviar WhatsApp1",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        2180,
+        860
+      ],
+      "id": "d51ddac4-eaba-4fb9-b9b7-8af45d12193f",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "57d8a7f8-f8e3-48c1-95f4-e25dc30ae584",
+              "leftValue": "={{ $json.skip !== true && $json.skip !== 'true' }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1500,
+        860
+      ],
+      "id": "5fadabf7-7201-467d-ac43-81c53431b5a3",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "input",
+              "value": "={{ $json.body.mensagem }}"
+            },
+            {
+              "name": "sessionId",
+              "value": "={{ $json.body.sessionId || $execution.id }}"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "id": "09e6e9f0-a5d2-417b-80af-26b2e8d5f3a9",
+      "name": "Preparar input",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        860
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-05-15T19:33:39.430Z",
+  "versionId": "2d9243aa-6f4b-4356-a498-c42f7f4630eb"
+}

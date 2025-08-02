@@ -1,0 +1,629 @@
+{
+  "active": false,
+  "connections": {
+    "Redis - Busca Respostas": {
+      "main": [
+        [
+          {
+            "node": "Verifica Pergunta Respondida",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica Pergunta Respondida": {
+      "main": [
+        [
+          {
+            "node": "Pergunta Respondida?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Aurora",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente Aurora",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscar_eventos": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Aurora",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "enviar_email": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Aurora",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "detelar_eventos": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Aurora",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "criar_eventos": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Aurora",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Dados": {
+      "main": [
+        [
+          {
+            "node": "Dados Válidos?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados Válidos?": {
+      "main": [
+        [
+          {
+            "node": "Verifica Pergunta Respondida",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis - Busca Respostas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pergunta Respondida?": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Aurora": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Agente Aurora",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Validar Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Aurora Esperar Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aurora Esperar Resposta": {
+      "main": [
+        [
+          {
+            "node": "Agente Aurora",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-17T02:53:54.967Z",
+  "id": "MILY1puAqJ03AslU",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 15",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "responder-conversa",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -200,
+        0
+      ],
+      "webhookId": "responder-conversa",
+      "id": "5c4991e5-3f21-4c9e-8f04-8729806fe869"
+    },
+    {
+      "parameters": {
+        "jsCode": "const nome = $json.nome?.trim();\nconst email = $json.email?.trim();\nconst telefone = $json.telefone?.replace(/\\D/g, '');\n\n// Ajuste para puxar o sessionId do webhook\nconst sessionId = $json.sessionId || $json.body?.data?.key?.id || null;\n\nconst valido = nome && email.match(/\\S+@\\S+\\.\\S+/) && telefone.length >= 10;\n\nreturn [{\n  json: {\n    valido,\n    sessionId  // <-- Aqui você insere o sessionId no retorno\n  }\n}];\n"
+      },
+      "name": "Validar Dados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        0
+      ],
+      "id": "12e660dd-85b0-4ab4-aae1-6fe4b528fb36"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.valido }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "Dados Válidos?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        360,
+        0
+      ],
+      "id": "bb7cc09a-6b92-4751-8d11-75b1629119f7"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "={{ $json.sessionId }}",
+        "options": {}
+      },
+      "name": "Redis - Busca Respostas",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        600,
+        60
+      ],
+      "id": "7cbbfe66-425f-4bfa-a969-1da5670bd311",
+      "credentials": {
+        "redis": {
+          "id": "Q9fFQv1hEnIedFTx",
+          "name": "Redis account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst respostas = $json.respostasAnteriores || {};\nconst perguntaAtual = \"email\";\n\n// Se já respondeu, para o fluxo\nif (respostas[perguntaAtual]) {\n  return [{ json: { skip: true, motivo: \"Pergunta já respondida\", resposta: respostas[perguntaAtual] }}];\n}\n\n// Se a última mensagem foi enviada pelo bot, trava até o usuário responder\nconst msg = $json.body?.data?.key || $json.data?.key || {};\nconst fromMe = msg.fromMe || $json.body?.data?.key?.fromMe || false;\nif (fromMe) {\n  // Trava o fluxo, não deixa seguir enquanto o lead não responder\n  return [{ json: { skip: true, motivo: \"Aguardando resposta do lead\" }}];\n}\n\n// Só segue se não respondeu e se a mensagem é do usuário\nreturn [{ json: { skip: false }}];\n"
+      },
+      "name": "Verifica Pergunta Respondida",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        0
+      ],
+      "id": "9c2c8a46-14c0-49cc-8c7a-16433fc51c28"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.skip }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "Pergunta Respondida?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        0
+      ],
+      "id": "bd40dc50-24ea-4694-bba0-baee0c62c506"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Webhook').item.json.body.data.message.conversation }}",
+        "options": {
+          "systemMessage": "<systemData>\nData de hoje: {{ $now.weekdayLong }}, {{ $now.format('dd/MM/yyyy') }}, {{ $now.hour.toString().padStart(2, '0') }}:{{ $now.minute.toString().padStart(2, '0') }}\n</systemData>\n\n\n\n<Agent>\nNome: Aurora  \nDescrição: Especialista em atendimento e agendamentos para empresas  \nObjetivo: Continuar a conversa com o lead, sem repetir mensagens já enviadas.\n</Agent>\n\n<Instruction>\nVocê está em uma conversa via WhatsApp. Sempre continue do ponto onde parou. Se já pediu informações, aguarde o cliente responder.\n</Instruction>\n\n\n<Agent>\n\n  <Name>Aurora</Name>\n  <Description>Especialista em automação comercial da AIAgent Automate</Description>\n  <Language>Português Brasileiro</Language>\n\n<Recepção do Cliente>\nOlá! Tudo certo? Me chamo Aurora e sou especialista em automação comercial da AIAgent Automate 🤖. Como posso te ajudar hoje?\n</Recepção do Cliente>\n\n<CommunicationStyle>\n  <style>Consultivo</style>\n  <Guide>\n    [\n      \"Foque sempre em entender o desafio do cliente antes de oferecer uma solução.\",\n      \"Use exemplos práticos e linguagem simples, mesmo em contextos técnicos.\",\n      \"Mostre empatia e interesse genuíno no crescimento do cliente.\",\n      \"Evite termos excessivamente técnicos sem explicação clara.\",\n      \"Seja proativa ao sugerir soluções com base no que o cliente menciona.\",\n      \"Nunca force uma venda; eduque o cliente sobre os benefícios com base em dados.\",\n      \"Sempre ofereça uma próxima ação: agendar reunião, enviar apresentação, etc.\",\n      \"Evite respostas genéricas. Adapte com base no segmento e no nível do cliente.\",\n      \"Encerrar sempre perguntando se há mais algo em que pode ajudar.\"\n    ]\n  </Guide>\n</CommunicationStyle>\n\n<FieldsConfigurator>\n  [\n    \"Identificar segmento do cliente (ex: saúde, varejo, serviços) para adaptar sugestões.\",\n    \"Validar se o lead está qualificado (cargo, interesse, momento de compra).\",\n    \"Sugestão automática de casos de uso relevantes com base no setor.\",\n    \"Monitorar e registrar gatilhos de compra (ex: deseja escalar vendas, reduzir custo etc).\"\n  ]\n</FieldsConfigurator>\n\n<Validations>\n  <Validation>Validar nome, empresa e e-mail antes de seguir para próxima etapa.</Validation>\n  <Validation>Detectar leads duplicados por e-mail e alertar equipe se necessário.</Validation>\n  <Validation>Checar se o cliente já é da base antes de apresentar soluções de aquisição.</Validation>\n  <Validation>Verificar se o cliente entende a proposta de valor da IA antes de agendar reunião.</Validation>\n</Validations>\n\n<Rules>\n  <Rule>Se não entender a pergunta do cliente, peça educadamente por mais contexto.</Rule>\n  <Rule>Evite afirmar qualquer coisa sem embasamento em dados internos ou depoimentos validados.</Rule>\n  <Rule>Jamais compartilhe informações internas ou técnicas sensíveis.</Rule>\n  <Rule>Se o cliente for rude, mantenha a educação e encurte a conversa.</Rule>\n  <Rule>Se a conversa for além do escopo da automação comercial, encaminhe para um especialista.</Rule>\n  <Rule>Evite repetir a mesma informação mais de uma vez.</Rule>\n  <Rule>Use linguagem acessível a tomadores de decisão não técnicos.</Rule>\n  <Rule>Evite textos longos. Comunicação objetiva é prioridade.</Rule>\n  <Rule>Sempre indique um próximo passo claro no fim da conversa.</Rule>\n  <Rule>Se o cliente quiser agendar uma reunião, confirme e colete: nome, e-mail, telefone, cargo, empresa e horário.</Rule>\n  <Rule>O agente só deve continuar a conversa após o cliente responder no WhatsApp.</Rule>\n</Rules>\n\n<Agents>\n  <SDR>\n    <Nome>Aurora SDR</Nome>\n    <Função>Qualificar leads comerciais com base em interesse, cargo e momento de compra.</Função>\n    <Fluxo>\n      - Receber o lead\n      - Fazer perguntas de qualificação (nome, empresa, cargo, desafio)\n      - Validar interesse e repassar para agendamento se lead estiver pronto\n    </Fluxo>\n  </SDR>\n  \n  <Agendamento>\n    <Nome>Aurora Agenda</Nome>\n    <Função>Agendar reuniões com leads qualificados, considerando fuso horário de São Paulo (America/Sao_Paulo).</Função>\n    <Fluxo>\n      - Confirmar interesse do cliente\n      - Coletar: nome, e-mail, telefone, cargo, empresa e melhor horário\n      - Confirmar data/hora com timezone correto\n      - Encaminhar confirmação\n    </Fluxo>\n  </Agendamento>\n</Agents>\n\n<Roteiro>\n```markdown\n# Roteiro de Conversa – Agente Comercial B2B (Aurora – AIAgent Automate)\n\n---\n\n## 1. Saudação Inicial\n\"Olá! Tudo certo? Me chamo Aurora e sou especialista em automação comercial da AIAgent Automate 🤖. Como posso te ajudar hoje?\"\n\n---\n\n## 2. Diagnóstico Inicial (SDR)\n\n**Perguntas de qualificação (uma de cada vez):**\n- Qual o nome da sua empresa?\n- Qual o seu nome e cargo por lá?\n- Qual é o maior desafio comercial que você enfrenta hoje? (ex: captar leads, qualificar, responder rápido, escalar atendimento...)\n- Seu processo de vendas é mais B2B ou B2C?\n- Você já utiliza alguma automação atualmente?\n\n---\n\n## 3. Apresentação de Valor\n\"Entendi! Com a nossa tecnologia de agentes de IA, empresas como a sua conseguem:  \n- Reduzir até 60% do tempo de resposta  \n- Aumentar conversão de leads em até 40%  \n- Operar 24/7 sem sobrecarga humana  \nTudo isso com interações naturais, integradas a WhatsApp, CRM e muito mais.\"\n\n---\n\n## 4. Proposta de Ação\n\"Se fizer sentido, posso agendar uma reunião rápida com um especialista da AIAgent. Pode ser?\"\n\n---\n\n## 5. Agendamento (Agente Agenda)\n\"Perfeito! Para agendar, preciso de algumas informações rápidas, pode ser?\"  \n[Coleta: Nome, Empresa, E-mail, Telefone, Cargo, Melhor Horário em horário de São Paulo]\n\n---\n\n## 6. Encerramento\n\"Obrigada pela conversa! Se precisar de algo a mais, é só me chamar por aqui. Vamos te ajudar a escalar suas vendas com inteligência. 🚀\"\n\n---\n\n## 7. Esperar mensagem no WhatsApp antes de seguir a conversa.\n\n\n\nAurora: Continue a conversa sem repetir perguntas."
+        }
+      },
+      "name": "Agente Aurora",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        1420,
+        0
+      ],
+      "id": "2b203e53-f916-4e69-8180-5619883d7458"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "aiagenteautomate@gmail.com",
+        "remoteJid": "={{ $('Webhook').item.json.body.data.key.remoteJid }}",
+        "messageText": "={{ $json.output }}",
+        "options_message": {}
+      },
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1820,
+        0
+      ],
+      "id": "425a5730-daaf-4379-ab14-fdb384734dbd",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1300,
+        220
+      ],
+      "id": "e45a9d90-9a54-4957-b5fc-f45c91f51e2a",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        1420,
+        220
+      ],
+      "id": "10f2a324-e686-4b9c-a47a-141eab84b93e",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "Q9fFQv1hEnIedFTx",
+          "name": "Redis account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Agendamento",
+        "height": 80,
+        "width": 283,
+        "color": 5
+      },
+      "id": "a185641a-9731-42fc-92b1-171a875b1c61",
+      "name": "Sticky Note15",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        580
+      ]
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 260,
+        "width": 660,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1420,
+        400
+      ],
+      "typeVersion": 1,
+      "id": "ab2b3ecd-5f99-41f3-aa90-030046bad19b",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use essa ferramenta quando precisar deletar um evento existente, com base no ID do evento\nsempre use o email do cliente para fazer o cancelamento.",
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "faelsouz0211@gmail.com",
+          "mode": "list",
+          "cachedResultName": "faelsouz0211@gmail.com"
+        },
+        "eventId": "={{ $fromAI('id') }}",
+        "options": {}
+      },
+      "id": "a259281e-28ec-4f67-b4c2-dcac9246e12a",
+      "name": "detelar_eventos",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        1780,
+        440
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ZsUoUYIAhPZGGhyP",
+          "name": "Google Calendar account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "faelsouz0211@gmail.com",
+          "mode": "list",
+          "cachedResultName": "faelsouz0211@gmail.com"
+        },
+        "returnAll": true,
+        "options": {
+          "timeMin": "={{ $fromAI('start_date') }}",
+          "timeMax": "={{ $fromAI('end_date') }}",
+          "query": "@"
+        }
+      },
+      "id": "fe3b9296-e476-4f6f-8e4a-1e66342d44ac",
+      "name": "buscar_eventos",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        1460,
+        440
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ZsUoUYIAhPZGGhyP",
+          "name": "Google Calendar account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use essa ferramenta para criar o agendamento do cliente,apenas um agendamento por horário, faça com que exista a consulta de horário na tool busca_eventos para não agendar dois clientes no mesmo horario.\nApenas uma e-mail de usuário por horário de atendimento\nEstá proibido agendar mais de uma vez.",
+        "calendar": {
+          "__rl": true,
+          "value": "faelsouz0211@gmail.com",
+          "mode": "list",
+          "cachedResultName": "faelsouz0211@gmail.com"
+        },
+        "start": "= {{ $fromAI('start_time') }}",
+        "end": "= {{ $fromAI('end_time') }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ $fromAI('email_do_cliente') }}"
+          ],
+          "color": "3",
+          "conferenceDataUi": {
+            "conferenceDataValues": {
+              "conferenceSolution": "hangoutsMeet"
+            }
+          },
+          "description": "={{ (() => { \n    const value = $fromAI('tipo_servico'); \n    return value.charAt(0).toUpperCase() + value.slice(1); \n})() }} {{ $fromAI('nome_pet') }} Porte {{ $fromAI('porte') }} ",
+          "location": "={{ $fromAI('local_evento') }}",
+          "sendUpdates": "all",
+          "summary": "={{ (() => { \n    const value = $fromAI('tipo_servico'); \n    return value.charAt(0).toUpperCase() + value.slice(1); \n})() }}: {{ $fromAI('nome_pet') }} - {{ $fromAI('nome_cliente') }} "
+        }
+      },
+      "id": "952b7119-5105-43a9-8528-1b89297b54a1",
+      "name": "criar_eventos",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        1620,
+        440
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ZsUoUYIAhPZGGhyP",
+          "name": "Google Calendar account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use essa ferramenta para enviar um email para o cliente quando solcitiado e também para quando o agendamento for confirmado.",
+        "sendTo": "={{ $fromAI(\"email\") }}",
+        "subject": "={{ $fromAI(\"Titulo\",\"coloque aqui o titulo do email.\") }}",
+        "emailType": "text",
+        "message": "={{ $fromAI(\"texto\",\"coloque aqui os dados resumidos da conversa ou do agendamento, ex: nome, email, telefone, data\") }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Enviado pela ",
+          "replyTo": "n8nlabz@gmail.com"
+        }
+      },
+      "id": "285d2931-006b-4b82-84bd-f417c54bd417",
+      "name": "enviar_email",
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        1940,
+        440
+      ],
+      "webhookId": "b510e384-515f-4547-aa90-9a730a71a3b0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "dusp3v1eSE7MkKo2",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aa8ccc69-878c-499d-9666-f1c1535ad43c",
+              "name": "sessionId",
+              "value": "={{ $('Validar Dados').item.json.sessionId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1160,
+        0
+      ],
+      "id": "0bfe900e-e02f-4c41-a3ce-ff4b9cc4606a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "const msg = $json.body?.data?.key || $json.data?.key || {};\nconst fromMe = msg.fromMe || false;\n\n// Captura da mensagem de texto (primeiro contato do lead)\nconst conversation =\n  $json.body?.data?.message?.conversation ||\n  $json.body?.data?.message?.extendedTextMessage?.text ||\n  $json.message?.conversation ||\n  '';\n\n// Pega sessionId do caminho esperado (pode ser ajustado se necessário)\nconst sessionId = msg.id || $json.sessionId || $json.body?.data?.key?.id || '';\n\n// Só segue se NÃO for mensagem do bot E se existe texto enviado pelo lead\nif (fromMe || !conversation || conversation.trim() === '') {\n  return [];\n}\n\nreturn [{\n  json: {\n    ...$json,\n    sessionId,\n    conversation // opcional, mantém o texto para uso posterior\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "146ae3e5-e133-448d-8237-045540377281",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "amount": 1.2
+      },
+      "name": "Aurora Esperar Resposta",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        2040,
+        0
+      ],
+      "id": "213687d9-9a67-4b0d-94e0-659280ce814f",
+      "webhookId": "27089339-fb3d-4c05-aa9c-c37970f2658f"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-05-19T04:09:39.414Z",
+  "versionId": "d5364939-c0be-4cea-80c3-e825d5956f7c"
+}

@@ -1,0 +1,936 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Variáveis Iniciais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Variáveis Iniciais": {
+      "main": [
+        [
+          {
+            "node": "Busca Cliente e Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca Cliente e Status": {
+      "main": [
+        [
+          {
+            "node": "Cliente Existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cliente Existe?": {
+      "main": [
+        [
+          {
+            "node": "Seta Dados do Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gerar SessionID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Seta Dados do Cliente": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar SessionID": {
+      "main": [
+        [
+          {
+            "node": "Cria Novo Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cria Novo Cliente": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Adiciona Msg ao Histórico": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Pega Histórico Completo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pega Histórico Completo": {
+      "main": [
+        [
+          {
+            "node": "Mantém 1º Item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mantém 1º Item": {
+      "main": [
+        [
+          {
+            "node": "Ignora Mensagens Repetidas?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ignora Mensagens Repetidas?": {
+      "main": [
+        [
+          {
+            "node": "Prepara Dados para IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepara Dados para IA": {
+      "main": [
+        [
+          {
+            "node": "Limpa Histórico Temporário",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpa Histórico Temporário": {
+      "main": [
+        [
+          {
+            "node": "Atendente (SDR/Closer)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atendente (SDR/Closer)": {
+      "main": [
+        [
+          {
+            "node": "Segmenta Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "dados_IA": {
+      "ai_tool": [
+        [
+          {
+            "node": "Atendente (SDR/Closer)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "adicionar_ao_carrinho": {
+      "ai_tool": [
+        [
+          {
+            "node": "Atendente (SDR/Closer)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ver_carrinho": {
+      "ai_tool": [
+        [
+          {
+            "node": "Atendente (SDR/Closer)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "transferir_para_closer": {
+      "ai_tool": [
+        [
+          {
+            "node": "Atendente (SDR/Closer)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "limpar_carrinho": {
+      "ai_tool": [
+        [
+          {
+            "node": "Atendente (SDR/Closer)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "registrar_venda": {
+      "ai_tool": [
+        [
+          {
+            "node": "Atendente (SDR/Closer)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Adiciona Msg ao Histórico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Segmenta Mensagens": {
+      "main": [
+        [
+          {
+            "node": "Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Pausa Natural",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pausa Natural": {
+      "main": [
+        [
+          {
+            "node": "Envia Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envia Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-01T01:40:07.646Z",
+  "id": "mWLjs8drecmR8DpN",
+  "isArchived": false,
+  "meta": null,
+  "name": "Flow-Vendas-Suplementos-SDR-Closer",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "responde-cliente-suplementos-v2",
+        "options": {}
+      },
+      "id": "e9617fbf-d37a-4a8f-9673-99c741ecd49e",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -820,
+        180
+      ],
+      "webhookId": "f5e9a4f1-615c-48c8-89c0-c75c5188a9e4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8d88c137-383f-4307-b3cc-1f6a560ea67b",
+              "name": "mobile",
+              "value": "={{  $json.body.data.key.remoteJid.replace(/\\D/g, '').replace(/^55(\\d{2})(\\d{8})$/, '55$19$2') }}",
+              "type": "string"
+            },
+            {
+              "id": "7e2f520e-4952-425b-82ca-792cc46680d4",
+              "name": "mensagem",
+              "value": "={{ $item(\"0\").$node[\"Webhook\"].json[\"body\"][\"data\"][\"message\"][\"conversation\"] || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "367c03f1-fd4c-4fb5-8316-6184a669d90d",
+      "name": "Variáveis Iniciais",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -580,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "keyValue": "={{ $item(0).$node[\"Variáveis Iniciais\"].json[\"mobile\"] }}"
+            }
+          ]
+        }
+      },
+      "id": "35ef1473-c8c4-4aec-9237-716d2c7d0ed3",
+      "name": "Busca Cliente e Status",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -380,
+        180
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {},
+          "conditions": [
+            {
+              "leftValue": "={{ $item(0).$node[\"Busca Cliente e Status\"].json.length }}",
+              "operator": {
+                "type": "number",
+                "operation": "larger",
+                "rightValue": 0
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "963bffc5-1c95-46e5-a9eb-b7f1f4a679ed",
+      "name": "Cliente Existe?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -180,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "name": "id",
+              "value": "={{ $item(0).$node[\"Busca Cliente e Status\"].json.id }}",
+              "type": "string"
+            },
+            {
+              "name": "sessionid",
+              "value": "={{ $item(0).$node[\"Busca Cliente e Status\"].json.sessionid }}",
+              "type": "string"
+            },
+            {
+              "name": "status_lead",
+              "value": "={{ $item(0).$node[\"Busca Cliente e Status\"].json.status_lead }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "024005e5-7bb1-48ee-95c4-43109136fbca",
+      "name": "Seta Dados do Cliente",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        20,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "action": "generate"
+      },
+      "id": "2e4ec926-a2d7-4876-9192-28c0b4ad21a8",
+      "name": "Gerar SessionID",
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [
+        20,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "tableId": "dados_cliente",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "name",
+              "fieldValue": "={{ $item(\"0\").$node[\"Webhook\"].json[\"body\"][\"data\"][\"pushName\"] }}"
+            },
+            {
+              "fieldId": "telefone",
+              "fieldValue": "={{ $item(0).$node[\"Variáveis Iniciais\"].json[\"mobile\"] }}"
+            },
+            {
+              "fieldId": "sessionid",
+              "fieldValue": "={{ $item(0).$node[\"Gerar SessionID\"].json[\"data\"] }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "status_lead",
+              "fieldValue": "novo"
+            }
+          ]
+        }
+      },
+      "id": "ae9de2b2-563f-4348-8669-3c03e9d43011",
+      "name": "Cria Novo Cliente",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        220,
+        280
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $item(0).$node[\"Variáveis Iniciais\"].json[\"mobile\"] }}",
+        "messageData": "={{ $item(0).$node[\"Variáveis Iniciais\"].json[\"mensagem\"] }}",
+        "tail": true
+      },
+      "id": "c754c516-4802-4787-8b6f-acd186bb510f",
+      "name": "Adiciona Msg ao Histórico",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        180
+      ],
+      "credentials": {
+        "redis": {
+          "id": "3aF3lSIIig1BrDmo",
+          "name": "Redis account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "id": "2ed9e590-163c-4806-82e9-938782147746",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1700,
+        180
+      ],
+      "webhookId": "f15b0a6a-6c2c-465a-acce-2a2f7466d8f3"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "={{ $item(0).$node[\"Variáveis Iniciais\"].json[\"mobile\"] }}",
+        "options": {}
+      },
+      "id": "09f534de-85a9-4bba-b6a1-a21a344f0ffe",
+      "name": "Pega Histórico Completo",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1900,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [items[0]];"
+      },
+      "id": "0c24b23b-0efa-4c81-b805-5ff2923cd555",
+      "name": "Mantém 1º Item",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2100,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {},
+          "conditions": [
+            {
+              "leftValue": "={{ $json.propertyName.last() }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEqual",
+                "rightValue": "={{ $item(0).$node[\"Variáveis Iniciais\"].json.mensagem }}"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d34234d6-73bb-46ef-a9db-e49ba1c7c515",
+      "name": "Ignora Mensagens Repetidas?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2300,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "name": "listaMensagens",
+              "value": "={{ $json.propertyName.join('\\n') }}",
+              "type": "string"
+            },
+            {
+              "name": "sessionId",
+              "value": "={{ $item(0).$node[\"Merge\"].json.sessionid }}"
+            },
+            {
+              "name": "cliente_id",
+              "value": "={{ $item(0).$node[\"Merge\"].json.id }}"
+            },
+            {
+              "name": "status_lead",
+              "value": "={{ $item(0).$node[\"Merge\"].json.status_lead }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "08c55306-678a-4424-b2e7-e68625f34a50",
+      "name": "Prepara Dados para IA",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2700,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $item(0).$node[\"Variáveis Iniciais\"].json[\"mobile\"] }}"
+      },
+      "id": "95551bb6-e35c-4a33-bc76-eea8a56ca257",
+      "name": "Limpa Histórico Temporário",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2900,
+        80
+      ],
+      "credentials": {
+        "redis": {
+          "id": "3aF3lSIIig1BrDmo",
+          "name": "Redis account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.listaMensagens }}",
+        "options": {
+          "systemMessage": "=# Prompt de Vendas Dinâmico: SDR e Closer para Pump Suplementos\n\n## Data e Hora Atual: {{ $now.toFormat('DD/MM/YYYY HH:mm') }}\n\n---\n## CONTEXTO ATUAL\n- **ID do Cliente:** `{{ $item(0).$node[\"Prepara Dados para IA\"].json.cliente_id }}`\n- **Status do Lead:** `{{ $item(0).$node[\"Prepara Dados para IA\"].json.status_lead }}`\n- **Sua Função Atual:** Com base no Status do Lead, você deve assumir um dos papéis abaixo.\n\n---\n\n## 🧑‍💻 PAPEL 1: SDR (Sales Development Representative) - Persona \"Jess\"\n*Assuma este papel se o `status_lead` for 'novo'*\n\n- **Seu Nome:** Jess 💪\n- **Tom:** Empolgante, simpática, curiosa.\n- **Objetivo Principal:** Qualificar o lead. Entender o objetivo, experiência e necessidades do cliente para ver se ele tem perfil de compra. Se tiver, seu trabalho é aquecê-lo e transferi-lo para o Closer usando a ferramenta `transferir_para_closer`.\n\n### Roteiro da Jess (SDR):\n1.  **Saudação:** \"Olá! Eu sou a Jess, especialista em suplementação da Pump Suplementos! 🏋️‍♀️ Qual seu nome?\"\n2.  **Qualificação (uma pergunta por vez):**\n    - \"Prazer, {nome do cliente}! Me diz, qual é o seu principal objetivo? (Ex: ganhar massa, emagrecer, mais energia)\"\n    - \"Legal! E você já pratica alguma atividade física? Qual?\"\n    - \"Você já tomou algum suplemento antes?\"\n    - \"Tem alguma restrição alimentar que eu deva saber?\"\n3.  **Transição:** Se o cliente respondeu às perguntas e parece sério sobre o objetivo, é hora de transferir. \"Entendi tudo, {nome do cliente}! Você tem um objetivo claro e parece o momento perfeito pra começar. Para te dar uma recomendação personalizada e falar sobre os melhores combos e preços, vou te passar para o Alex, nosso especialista em fechamento. Ele já vai te chamar aqui. Só um instante!\"\n4.  **AÇÃO FINAL DO SDR:** Use a ferramenta `transferir_para_closer`.\n\n---\n\n## 🧑‍💼 PAPEL 2: Closer (Especialista em Fechamento) - Persona \"Alex\"\n*Assuma este papel se o `status_lead` for 'qualificado_sdr' ou 'em_atendimento_closer'*\n\n- **Seu Nome:** Alex 🚀\n- **Tom:** Confiante, direto, consultivo, focado em resolver o problema e fechar a venda.\n- **Objetivo Principal:** Pegar o lead aquecido pela Jess, fazer a recomendação final, montar o carrinho, negociar e fechar a venda usando as ferramentas.\n\n### Roteiro do Alex (Closer):\n1.  **Recepção:** \"Olá {nome do cliente}, aqui é o Alex! A Jess me passou seu caso e vi que você está buscando {objetivo do cliente}. Vamos montar o kit ideal pra você!\"\n2.  **Recomendação e Carrinho:**\n    - \"Com base no que você me disse, o combo perfeito é uma Whey Protein e uma Creatina. O que acha?\" (Use a ferramenta `dados_IA` para obter detalhes se necessário).\n    - Se o cliente concordar, use a ferramenta de carrinho: \"Excelente! Adicionando 1 Whey e 1 Creatina ao seu carrinho. Mais alguma coisa?\" -> use `adicionar_ao_carrinho`.\n    - Para mostrar o que já foi adicionado: \"No seu carrinho agora temos...\" -> use `ver_carrinho`.\n3.  **Fechamento:**\n    - Quando o cliente estiver satisfeito: \"Perfeito. Seu pedido ficou em R$XX,XX. Podemos fechar?\"\n    - Se o cliente confirmar, use `registrar_venda` e informe os dados de pagamento.\n\n---\n\n## 🧰 FERRAMENTAS DISPONÍVEIS PARA AMBOS OS PAPÉIS:\n\n- **`dados_IA`**: SUA FONTE DE VERDADE. Use para buscar informações sobre produtos (preços, ingredientes, benefícios) ANTES de responder ao cliente. **NÃO INVENTE INFORMAÇÕES.**\n\n- **`adicionar_ao_carrinho`**: Use quando o cliente disser \"quero\", \"pode adicionar\", \"vou levar\".\n  - *Parâmetros:* `nome_produto`, `quantidade`, `preco_unitario`.\n\n- **`ver_carrinho`**: Use para mostrar ao cliente o que ele já selecionou ou para calcular o total.\n  - *Retorna:* Lista de itens, quantidades e o valor total.\n\n- **`limpar_carrinho`**: Use se o cliente desistir da compra ou quiser recomeçar o pedido.\n\n- **`registrar_venda`**: Use APENAS quando o cliente confirmar o pagamento ou o fechamento do pedido.\n  - *Parâmetros:* `valor_total`, `itens_vendidos` (string com a lista de produtos).\n\n- **`transferir_para_closer`**: FERRAMENTA EXCLUSIVA DO SDR (Jess). Use para mudar o status do lead para 'qualificado_sdr'. Isso acionará o Closer (Alex) na próxima interação.\n  - *Parâmetros:* Nenhum.\n\n## 📜 REGRAS GERAIS E OBRIGATÓRIAS:\n- **Assuma o Papel Correto:** Verifique o `status_lead` e aja como SDR ou Closer.\n- **Siga o Roteiro:** Não pule etapas. A qualificação do SDR é crucial.\n- **Use as Ferramentas:** Toda ação (ver produto, adicionar ao carrinho, vender) DEVE usar uma ferramenta. É como seu cérebro se conecta ao sistema.\n- **Seja Proativo:** Mantenha a conversa fluindo. Sempre termine com uma pergunta ou uma chamada para a ação."
+        }
+      },
+      "id": "a61adc26-5ee8-4cba-b1c5-b6c4bb533035",
+      "name": "Atendente (SDR/Closer)",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        3100,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "name": "dados_IA",
+        "description": "SUA FONTE DE VERDADE. Use para buscar informações sobre produtos (preços, ingredientes, benefícios) ANTES de responder ao cliente."
+      },
+      "id": "5c820d52-64aa-4c40-b81d-93099a77386d",
+      "name": "dados_IA",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        3580,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use para adicionar um item ao carrinho de compras do cliente.",
+        "tableId": "carrinho",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "cliente_id",
+              "fieldValue": "={{ $item(0).$node[\"Prepara Dados para IA\"].json.cliente_id }}"
+            },
+            {
+              "fieldId": "produto_nome",
+              "fieldValue": "={{ $fromAI('nome_produto') }}"
+            },
+            {
+              "fieldId": "quantidade",
+              "fieldValue": "={{ $fromAI('quantidade', '', 'number') }}"
+            },
+            {
+              "fieldId": "preco_unitario",
+              "fieldValue": "={{ $fromAI('preco_unitario', '', 'number') }}"
+            }
+          ]
+        }
+      },
+      "id": "93e69d8c-bbb0-48c0-8090-bbb861f415ce",
+      "name": "adicionar_ao_carrinho",
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        2700,
+        480
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use para ver os itens e o valor total do carrinho do cliente atual.",
+        "operation": "get",
+        "tableId": "carrinho",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "cliente_id",
+              "keyValue": "={{ $item(0).$node[\"Prepara Dados para IA\"].json.cliente_id }}"
+            }
+          ]
+        }
+      },
+      "id": "8e5ab80f-b617-4f9f-a771-7c7b52f6fd5f",
+      "name": "ver_carrinho",
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        2880,
+        480
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "FERRAMENTA EXCLUSIVA DO SDR (Jess). Use para mudar o status do lead para 'qualificado_sdr' e transferi-lo para o Closer.",
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "={{ $item(0).$node[\"Prepara Dados para IA\"].json.cliente_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status_lead",
+              "fieldValue": "qualificado_sdr"
+            }
+          ]
+        }
+      },
+      "id": "527c2fc2-d4d3-4c01-8547-80c211a4d1a5",
+      "name": "transferir_para_closer",
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        3340,
+        500
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use para esvaziar completamente o carrinho do cliente.",
+        "operation": "delete",
+        "tableId": "carrinho",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "cliente_id",
+              "keyValue": "={{ $item(0).$node[\"Prepara Dados para IA\"].json.cliente_id }}"
+            }
+          ]
+        }
+      },
+      "id": "79214ca9-5c6d-46d5-af6e-917a8da86e98",
+      "name": "limpar_carrinho",
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        3040,
+        480
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use APENAS quando o cliente confirmar o fechamento do pedido. Isso registra a venda permanentemente.",
+        "tableId": "vendas",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "cliente_id",
+              "fieldValue": "={{ $item(0).$node[\"Prepara Dados para IA\"].json.cliente_id }}"
+            },
+            {
+              "fieldId": "produto_nome",
+              "fieldValue": "={{ $fromAI('itens_vendidos', 'Uma lista dos produtos no carrinho') }}"
+            },
+            {
+              "fieldId": "valor",
+              "fieldValue": "={{ $fromAI('valor_total', '', 'number') }}"
+            }
+          ]
+        }
+      },
+      "id": "3eb794cf-9989-43b7-ab65-ea28c905efd4",
+      "name": "registrar_venda",
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        3180,
+        500
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "mergeByIndex",
+        "options": {}
+      },
+      "id": "5249c1ec-46db-48bc-a900-0c1533a26402",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        500,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.messages",
+        "options": {
+          "destinationFieldName": "output"
+        }
+      },
+      "id": "2adefd9a-6709-4168-be2e-eaba5fb03490",
+      "name": "Segmenta Mensagens",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        3500,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "8122e258-f75c-4fef-be0d-b67fd7e74cf9",
+      "name": "Loop",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        3700,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 1.5
+      },
+      "id": "f12885d6-3df5-4783-a1d6-3433eda5f8cf",
+      "name": "Pausa Natural",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3900,
+        80
+      ],
+      "webhookId": "2f7a6e55-50a1-4d93-a822-008a712778c1"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "suplementos",
+        "remoteJid": "={{ $item(0).$node[\"Variáveis Iniciais\"].json[\"mobile\"] }}",
+        "messageText": "={{ $json.output }}",
+        "options_message": {}
+      },
+      "id": "602a2067-f7c7-4f59-befc-d1425a8f452d",
+      "name": "Envia Mensagem",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        4100,
+        80
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-01T01:40:27.838Z",
+  "versionId": "72745651-7317-4bd6-82e7-21dd9914b7c5"
+}

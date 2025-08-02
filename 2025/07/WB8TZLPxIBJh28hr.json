@@ -1,0 +1,528 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Extrair Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Dados": {
+      "main": [
+        [
+          {
+            "node": "Switch Tipo Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Tipo Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Baixar Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mensagem de Boas-vindas",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mensagem de Boas-vindas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baixar Imagem": {
+      "main": [
+        [
+          {
+            "node": "Converter para Binário",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Converter para Binário": {
+      "main": [
+        [
+          {
+            "node": "Análise Visual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Análise Visual": {
+      "main": [
+        [
+          {
+            "node": "Preparar Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Prompt": {
+      "main": [
+        [
+          {
+            "node": "Análise da Fruta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Fruit Agent": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Análise da Fruta",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Análise da Fruta": {
+      "main": [
+        [
+          {
+            "node": "Enviar Resposta WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-02T12:56:52.394Z",
+  "id": "WB8TZLPxIBJh28hr",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "find-fruit-inicial",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "find-fruit",
+        "options": {}
+      },
+      "id": "43c53b53-a536-440d-9c6a-b3f004407806",
+      "name": "Webhook WhatsApp",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -740,
+        80
+      ],
+      "webhookId": "find-fruit-webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "mobile-number",
+              "name": "mobile",
+              "value": "={{ $json.body.data.key.remoteJid.replace(/\\D/g, '').replace(/^55(\\d{2})(\\d{8})$/, '55$19$2') }}",
+              "type": "string"
+            },
+            {
+              "id": "message-type",
+              "name": "messageType",
+              "value": "={{ $json.body.data.messageType }}",
+              "type": "string"
+            },
+            {
+              "id": "image-url",
+              "name": "imageUrl",
+              "value": "={{ $json.body.data.message.imageMessage?.url || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "text-message",
+              "name": "textMessage",
+              "value": "={{ $json.body.data.message.conversation || $json.body.data.message.extendedTextMessage?.text || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "push-name",
+              "name": "pushName",
+              "value": "={{ $json.body.data.pushName }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b3bda5aa-8f8c-47aa-b636-2dbbcf3a4a76",
+      "name": "Extrair Dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -520,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "image-condition",
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "imageMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "text-condition",
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "extended-text-condition",
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "extendedTextMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": 2
+        }
+      },
+      "id": "3fb70d9a-80cb-49fd-bc84-d49226e72c19",
+      "name": "Switch Tipo Mensagem",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -300,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.imageUrl }}",
+        "options": {}
+      },
+      "id": "6e915ab5-c4bf-487f-b2ea-079d6be086b9",
+      "name": "Baixar Imagem",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -80,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {
+          "fileName": "fruit-image.jpg",
+          "mimeType": "image/jpeg"
+        }
+      },
+      "id": "8600dfb9-2e99-46a9-92c8-ceb1c3ea76f9",
+      "name": "Converter para Binário",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        140,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "text": "Analise esta imagem de fruta/legume e retorne APENAS um JSON com as seguintes informações:\n{\n  \"nome\": \"nome da fruta ou legume\",\n  \"variedade\": \"variedade específica se identificável\",\n  \"estado\": \"verde\", \"maduro\" ou \"passado\",\n  \"observacoes\": \"descrição visual resumida\",\n  \"confianca\": \"alta\", \"media\" ou \"baixa\"\n}\n\nSe não conseguir identificar claramente, use confianca: \"baixa\".",
+        "inputType": "base64",
+        "options": {}
+      },
+      "id": "e5dac1f4-991d-44da-97a8-2fd0c460e35b",
+      "name": "Análise Visual",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.6,
+      "position": [
+        360,
+        -20
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse do JSON retornado pela análise visual\nlet analysisResult;\ntry {\n  analysisResult = JSON.parse($json.content);\n} catch (e) {\n  // Se não conseguir fazer parse, criar estrutura padrão\n  analysisResult = {\n    nome: \"Não identificado\",\n    variedade: \"\",\n    estado: \"indefinido\",\n    observacoes: \"Análise inconclusiva\",\n    confianca: \"baixa\"\n  };\n}\n\n// Preparar dados para o prompt\nconst fruitData = {\n  nome: analysisResult.nome || \"Não identificado\",\n  variedade: analysisResult.variedade || \"\",\n  estado: analysisResult.estado || \"indefinido\",\n  observacoes: analysisResult.observacoes || \"\",\n  confianca: analysisResult.confianca || \"baixa\",\n  mobile: $item(\"0\").$node[\"Extrair Dados\"].json.mobile,\n  pushName: $item(\"0\").$node[\"Extrair Dados\"].json.pushName\n};\n\n// Montar prompt dinâmico\nlet promptInput;\nif (fruitData.confianca === \"baixa\") {\n  promptInput = \"Não foi possível identificar claramente a fruta/legume na imagem. Responda com mensagem de não identificação.\";\n} else {\n  promptInput = `Você recebeu uma ${fruitData.nome}${fruitData.variedade ? ` (${fruitData.variedade})` : \"\"}. Estado: ${fruitData.estado}. Observações: ${fruitData.observacoes}.`;\n}\n\nreturn {\n  ...fruitData,\n  promptInput: promptInput\n};"
+      },
+      "id": "befbfdc4-5788-4bc2-811c-a00cb763bfea",
+      "name": "Preparar Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        580,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "id": "edbbc47c-0f37-4b40-96c1-fbe364077643",
+      "name": "Find Fruit Agent",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        800,
+        -20
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.promptInput }}"
+      },
+      "id": "2c5ce309-c73e-46b7-bd56-b7181aab2b1f",
+      "name": "Análise da Fruta",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        720,
+        -280
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://evolution-api-url.com/message/sendText/instance",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "apikey",
+              "value": "YOUR_EVOLUTION_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $item(\"0\").$node[\"Preparar Prompt\"].json.mobile }}\",\n  \"text\": \"{{ $json.text.replace(/\\n/g, '\\\\n').replace(/\"/g, '\\\\\"') }}\"\n}",
+        "options": {}
+      },
+      "id": "d9b9ec30-5c3d-4936-95d0-a817c2487167",
+      "name": "Enviar Resposta WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1020,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://evolution-api-url.com/message/sendText/instance",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "apikey",
+              "value": "YOUR_EVOLUTION_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json.mobile }}\",\n  \"text\": \"Olá! 👋 Sou o Find Fruit Agent 🍓🍌\\n\\nEnvie uma foto de qualquer fruta ou legume e eu te digo:\\n• Se está no ponto ideal 📈\\n• Informações nutricionais ✅\\n• Melhor época do ano 📆\\n• Sugestões de preparo 🍽️\\n\\nExperimente agora! 📸\"\n}",
+        "options": {}
+      },
+      "id": "8ed79ee0-648f-4b07-a1fb-170551d59506",
+      "name": "Mensagem de Boas-vindas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -80,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Find Fruit Agent 🍓",
+        "height": 80,
+        "width": 300,
+        "color": 5
+      },
+      "id": "f9c0cbef-d659-4651-8911-ad205b1bc964",
+      "name": "Título",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Processamento de Imagem",
+        "height": 200,
+        "width": 800,
+        "color": 3
+      },
+      "id": "ea9600e2-7997-473b-80fc-996feeb5a0e4",
+      "name": "Área Imagem",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -140,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Análise e Resposta",
+        "height": 200,
+        "width": 600,
+        "color": 4
+      },
+      "id": "049db772-a327-4b73-bef6-8c1c3f308330",
+      "name": "Área Análise",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        540,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Mensagens de Texto",
+        "height": 120,
+        "width": 400,
+        "color": 6
+      },
+      "id": "c8aee407-0f8a-45d0-8b36-c9c0f5adac04",
+      "name": "Área Texto",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        40,
+        320
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-02T12:56:52.394Z",
+  "versionId": "5407cf72-c283-42ea-bb3e-373913525709"
+}

@@ -1,0 +1,466 @@
+{
+  "active": false,
+  "connections": {
+    "Preparar Lead": {
+      "main": [
+        [
+          {
+            "node": "RegistrarLeads",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HisroricoLeads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RegistrarLeads": {
+      "main": [
+        [
+          {
+            "node": "Gerar Prompt IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HisroricoLeads": {
+      "main": [
+        [
+          {
+            "node": "Gerar Prompt IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Novo Lead": {
+      "main": [
+        [
+          {
+            "node": "Preparar Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar Prompt IA": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Extrair Mensagem IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-19T04:38:36.931Z",
+  "id": "1jZwvKz8ET74V6CY",
+  "isArchived": false,
+  "meta": null,
+  "name": "Estetica",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "responder-conversa",
+        "options": {}
+      },
+      "id": "683c0112-0984-4eda-a097-d6fdc50b7bee",
+      "name": "Webhook Novo Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        500,
+        -260
+      ],
+      "webhookId": "b987014f-b882-43d1-80c6-4b5d0ac37391"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Normaliza dados\nconst nome = $json.nome || $json.fullname || '';\nconst email = $json.email || '';\nconst telefone = $json.telefone?.replace(/\\D/g, '') || $json.phone?.replace(/\\D/g, '') || '';\nconst servico = $json.servico || $json.service || '';\nconst sessionId = telefone || $json.sessionId || $execution.id;\nconst status = 'Novo';\nconst criadoEm = new Date().toISOString();\nreturn [{json: {nome, email, telefone, servico, sessionId, status, criadoEm}}];"
+      },
+      "id": "3264ebd4-ec62-40ad-9310-216486ea65b6",
+      "name": "Preparar Lead",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        700,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Gera prompt IA considerando contexto\nconst ultimas = $json.data.map(i => `${i.origem}: ${i.mensagem}`).join('\\n');\nconst prompt = `Você é Aurora, especialista em automação. Aqui está o histórico da conversa:\\n${ultimas}\\n\\nAção: continue a conversa, peça o serviço se não coletou, pergunte horário, confirme agendamento, se sumiu envie follow-up, nunca repita perguntas.`;\nreturn [{json: {...$json, prompt}}];"
+      },
+      "id": "ae5e6c0c-99a0-4cc6-9321-de2d203af77c",
+      "name": "Gerar Prompt IA",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "options": {}
+      },
+      "id": "536751bf-12ec-42d2-bc1b-9a239ba84ddb",
+      "name": "Agent Aurora (OpenAI HTTP)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        2520,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Extrai resposta do OpenAI\nconst msg = $json.choices?.[0]?.message?.content || $json.choices?.[0]?.text || $json.message || $json.content || '';\nreturn [{json: {...$json, respostaIA: msg}}];"
+      },
+      "id": "43fd7e05-aac8-4a68-8d6d-32eb809099cd",
+      "name": "Extrair Mensagem IA",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "url": "https://apiwp.aiagentautomate.com.br/v1/messages/send-text",
+        "options": {}
+      },
+      "id": "002b54b4-7660-4a68-aaaf-077d093dd944",
+      "name": "EnviarMensagemTool",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        2440,
+        -260
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Vg1sLZdXLdtpj9vh",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "a6943c8b-db27-4c2f-b430-a032bc363cc4",
+      "name": "LogTool",
+      "type": "n8n-nodes-supabase.supabase",
+      "typeVersion": 1,
+      "position": [
+        2640,
+        -260
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "id": "8f2bd62d-1ace-4dcb-98cf-d1c87a39a704",
+      "name": "Wait p/ Follow-up",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        2840,
+        -260
+      ],
+      "webhookId": "aa67dfc1-3167-4d06-9bcf-335865439b8a"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Decide se envia follow-up (exemplo simples)\nreturn [{json: {...$json, acao: 'follow-up'}}];"
+      },
+      "id": "16e8e5ab-c870-448f-a913-7f63ac697e17",
+      "name": "FollowUpTool",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        3040,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "tableId": "leads"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        900,
+        -420
+      ],
+      "id": "680413e7-61b8-4357-a8bc-3d3109cd3dd2",
+      "name": "RegistrarLeads",
+      "credentials": {
+        "supabaseApi": {
+          "id": "wKMmHUFNQJCXhQYj",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "leads"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        900,
+        -100
+      ],
+      "id": "9a1d52dc-4f64-46f5-b66d-21c7e38fcb9e",
+      "name": "HisroricoLeads",
+      "credentials": {
+        "supabaseApi": {
+          "id": "wKMmHUFNQJCXhQYj",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1640,
+        -260
+      ],
+      "id": "72eac88b-8597-4834-b3fa-e3ea512ee8c7",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1420,
+        -40
+      ],
+      "id": "014c4f1b-2af3-49fc-bbba-0e044af49704",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        1600,
+        -60
+      ],
+      "id": "ba7c7d9f-2696-46f8-95d9-84dcc05efef2",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "Q9fFQv1hEnIedFTx",
+          "name": "Redis account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1600,
+        220
+      ],
+      "id": "ea05c1d7-3787-469d-857f-9d2d4ca2b6a2",
+      "name": "Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "Y9J5WW0RlORXPVBM",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1780,
+        220
+      ],
+      "id": "fff5b6ca-8ec5-433b-9191-56877e291e81",
+      "name": "Google Calendar1",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "Y9J5WW0RlORXPVBM",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1920,
+        220
+      ],
+      "id": "b8043726-32e4-4e1c-95f4-d30875e9f853",
+      "name": "Google Calendar2",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "Y9J5WW0RlORXPVBM",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "3ae60968-df7a-44b3-a62d-3d4e9e0079a5",
+      "name": "HistoricoTool",
+      "type": "n8n-nodes-supabase.supabase",
+      "typeVersion": 1,
+      "position": [
+        1700,
+        -740
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "id": "4dfc82d9-1468-4b35-b965-cd0f9c23b9c6",
+      "name": "RegistrarLeadTool",
+      "type": "n8n-nodes-supabase.supabase",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        -740
+      ],
+      "credentials": {}
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-19T05:39:30.341Z",
+  "versionId": "b35fd8dd-22f2-4e68-a9b5-b81d53b5dd8d"
+}

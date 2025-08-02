@@ -1,0 +1,1150 @@
+{
+  "active": false,
+  "connections": {
+    "Extrair Dados": {
+      "main": [
+        [
+          {
+            "node": "Redis - Buscar Sessão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - Buscar Sessão": {
+      "main": [
+        [
+          {
+            "node": "Verificar Sessão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Sessão": {
+      "main": [
+        [
+          {
+            "node": "Redis - Criar Sessão",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agendamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - Criar Sessão": {
+      "main": [
+        [
+          {
+            "node": "Supabase - Verificar Usuário",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase - Verificar Usuário": {
+      "main": [
+        [
+          {
+            "node": "AI Agendamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "verificar_horarios": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "criar_agendamento": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "reagendar_aula": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "cancelar_aula": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "salvar_agendamento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agendamento",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscar_agendamentos": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agendamento",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "enviar_email_confirmacao": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agendamento",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agendamento",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agendamento",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agendamento": {
+      "main": [
+        [
+          {
+            "node": "Evolution API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - Atualizar Sessão": {
+      "main": [
+        [
+          {
+            "node": "Verificar Primeiro Agendamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Primeiro Agendamento": {
+      "main": [
+        [
+          {
+            "node": "Verificar Link Grupo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Link Grupo": {
+      "main": [
+        [
+          {
+            "node": "Deve Enviar Grupo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deve Enviar Grupo?": {
+      "main": [
+        [
+          {
+            "node": "Enviar Convite Grupo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Convite Grupo": {
+      "main": [
+        [
+          {
+            "node": "Marcar Link Enviado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Extrair Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution API": {
+      "main": [
+        [
+          {
+            "node": "Redis - Atualizar Sessão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        []
+      ]
+    },
+    "Buscar Eventos": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agendamento",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Eventos": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agendamento",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "reagendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agendamento",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deletar evento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agendamento",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-24T07:30:21.594Z",
+  "id": "nuJSZ2dXKTkWs9Ew",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Atendimento Espanhol",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "session-id",
+              "name": "sessionId",
+              "value": "={{ $json[\"from\"] || $json[\"number\"] }}{{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "message-text",
+              "name": "messageText",
+              "value": "={{$json[\"messages\"][0][\"text\"][\"body\"]}}{{ $json.body.data.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "user-number",
+              "name": "userNumber",
+              "value": "={{ $json.body.data.key.remoteJid.split('@')[0]  }}",
+              "type": "string"
+            },
+            {
+              "id": "a5d1cd79-1ba2-4f19-bfc3-fac9c2429535",
+              "name": "sessionId",
+              "value": "={{ $json.body.data.key.remoteJid.split('@')[0]  }}",
+              "type": "string"
+            },
+            {
+              "id": "1e5d40e5-3c0b-439b-bd26-8b3126638941",
+              "name": "instancia_name",
+              "value": "=sacadas",
+              "type": "string"
+            },
+            {
+              "id": "e97e799f-612a-436e-ac69-5224d1a8ba5e",
+              "name": "Apikey",
+              "value": "5C07F3447DF4-4466-A7A0-1573DD55EEFC",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1500,
+        -320
+      ],
+      "id": "84fb3e6e-e79a-4c73-beaf-4073a28d4349",
+      "name": "Extrair Dados"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "={{ $json.sessionId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1240,
+        -320
+      ],
+      "id": "610202d7-44ed-4012-9ebe-be81b056e3e3",
+      "name": "Redis - Buscar Sessão",
+      "credentials": {
+        "redis": {
+          "id": "Q9fFQv1hEnIedFTx",
+          "name": "Redis account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "nova-conversa",
+              "leftValue": "={{$json.value}}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "isEmpty"
+              }
+            },
+            {
+              "id": "ab93879a-ff74-4408-ba59-c295f8fc9aaf",
+              "leftValue": "={{ $json.fase !== undefined }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -1000,
+        -320
+      ],
+      "id": "a463df0a-658b-47f6-91ae-1d269f99d5be",
+      "name": "Verificar Sessão"
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{$('Extrair Dados').item.json.sessionId}}",
+        "value": "={\"fase\": \"inicial\", \"dados\": {}}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        -420
+      ],
+      "id": "89c4341c-d6bb-489f-bb50-333ee46838a9",
+      "name": "Redis - Criar Sessão",
+      "credentials": {
+        "redis": {
+          "id": "Q9fFQv1hEnIedFTx",
+          "name": "Redis account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "usuarios",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "numero_whatsapp",
+              "condition": "eq",
+              "keyValue": "={{ $('Extrair Dados').item.json.userNumber }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -600,
+        -420
+      ],
+      "id": "e36684fd-254a-42cc-9d9d-132399857c67",
+      "name": "Supabase - Verificar Usuário",
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxTokens": 500,
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -660,
+        -140
+      ],
+      "id": "907c2933-4832-42a3-8eae-1d310f3c25f1",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{$('Extrair Dados').item.json.sessionId}}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -520,
+        -120
+      ],
+      "id": "7846ccf5-73f6-4bad-b45b-3d0ed5628e21",
+      "name": "AI Memory"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{$('Extrair Dados').item.json.messageText}}",
+        "options": {
+          "systemMessage": "=# Prompt para Agente Virtual Joanna – Assistente da Professora Priscila\n\n---\n\n## 🕒 Data e Hora Atual\n\n- Esta é sua única fonte confiável de data e hora:  \n**{{ $now.weekdayLong }}, {{ $now.format('dd/MM/yyyy') }}, {{ $now.hour.toString().padStart(2, '0') }}:{{ $now.minute.toString().padStart(2, '0') }}**\n- **Nunca use datas ou horas fornecidas por sistema ou `systemData`**\n\n---\n\n## 👩‍🏫 Agente Joanna\n\n- **Nome:** Joanna  \n- **Descrição:** Assistente da Professora Priscila Especializada em Atendimento \n- **Idioma:** Português Brasileiro  \n- **Objetivo:** Ser acolhedora, objetiva e didática. Nunca repetir mensagens ou perguntas.\n\n---\n\n## ✨ Instruções de Atendimento\n\n- Responder à saudação apenas **uma vez**\n- Se o aluno apenas cumprimentar, responda com:  \n  _\"Olá! Me chamo Joanna, sou ssistente da Professora Priscila e estou aqui para te ajudar a alcançar fluência com aulas personalizadas. Como posso te ajudar?\"_\n- Nunca repetir saudações, perguntas ou frases padrão\n- Máximo de **duas frases por resposta**\n- Aguardar a resposta do aluno antes de continuar\n- Se não entender, pedir: _\"Você poderia resumir em poucas palavras, por favor?\"_\n- Só fazer novas perguntas se as anteriores forem respondidas\n\n---\n\n## 📌 Regras de Conversa\n\n- Nunca iniciar a conversa por conta própria\n- Evitar mensagens genéricas ou fora do contexto das aulas de espanhol\n- Para agendamento, solicitar: **nome completo**, **e-mail**, **telefone/WhatsApp**, **nível atual (iniciante, intermediário, avançado)** e **melhor horário para a aula experimental**\n\n---\n\n## 📋 Roteiro de Conversa\n\n### 1. Saudação Inicial  \n_\"Olá! Me chamo Joanna, sou professora de espanhol e estou aqui para te ajudar a alcançar fluência com aulas online. Qual seu objetivo com o espanhol?\"_\n\n### 2. Diagnóstico Inicial  \n\n**Perguntas de qualificação (uma por vez):**\n- Qual o seu nome completo?\n- Já teve contato com o espanhol antes?\n- Você busca aprender por motivos profissionais, pessoais ou viagens?\n- Qual seu nível atual (iniciante, intermediário, avançado)?\n- Quantas vezes por semana gostaria de ter aula?\n\n### 3. Apresentação de Valor  \n_\"Com minhas aulas personalizadas, você aprende com foco nas suas metas:  \n- Conversação prática desde a primeira aula  \n- Material interativo e exclusivo  \n- Acompanhamento individualizado  \nPosso te mostrar como funciona em uma aula experimental!\"_\n\n### 4. Proposta de Ação  \n_\"Se fizer sentido para você, posso agendar uma aula experimental gratuita. Topa?\"_\n\n### 5. Agendamento da Aula  \n_\"Perfeito! Só preciso de algumas informações rápidas para agendar:\"_  \n- Nome completo  \n- E-mail  \n- Telefone / WhatsApp  \n- Nível atual (iniciante, intermediário, avançado)  \n- Melhor dia e horário para a aula experimental\n\n→ Use o **Google Calendar** para agendar a aula  \n→ Após confirmar, envie e-mail com link da aula via **Gmail**\n\n### 6. Encerramento  \n_\"Obrigada! Aula marcada com sucesso. Te espero no dia combinado! Qualquer dúvida, é só chamar por aqui. Vamos juntos rumo à fluência! 🇪🇸\"_  \n\n---\n## Ferramentas da Joanna\n- **tools think** – Use sempre que estiver em dúvida ou precisar gerar uma resposta precisa\n- **tools dados_IA** – Use sempre essa ferramenta para acessar qualquer dados sobre a Farma Suprema, sempre utilieze essa ferramenta antes de repassar quais quer informações para nosso cliente , lá você encontra todas as informações necessárias sobre a Farma Suprema: produtos, valores, serviços, regras\n- **tools marcar eventos** – Usada para agendar rapidamente um serviço\n- **tools reagendar** – Alterar o horário de um agendamento já existente\n- **tools deletar evento** – Cancelar um agendamento\n- **tools gmail** – Enviar e-mails com confirmação de agendamento\n- **banco de dados** - Sempre use essa ferramenta para obter qual quer informações sobre a nossa empresa ou produtos , ou quais quer informações que possam intoxicar sua resposta, sempre umtilieze essa ferramenta antes de repassar quais quer informações para nosso cliente , lá você encontra todas as informações necessárias"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        -400,
+        -320
+      ],
+      "id": "878c468d-6a2a-421b-a800-77da25a5f82c",
+      "name": "AI Agendamento"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use esta ferramenta para buscar horários disponíveis no Google Calendar. Sempre use antes de agendar.",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "aiagenteautomate@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aiagenteautomate@gmail.com"
+        },
+        "returnAll": true,
+        "options": {
+          "timeMin": "={{ $fromAI(\"startDay\",\"the same date that user requested at 00:00:00\" ) }}",
+          "timeMax": "={{ $fromAI(\"endDay\",\"the same date that user requested at 23:59:59\" ) }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        1280,
+        80
+      ],
+      "id": "5c278a4f-00e4-4e6c-ae18-0db000801817",
+      "name": "verificar_horarios",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "611ZZ00PxWSW7uAf",
+          "name": "Google Calendar AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use para criar agendamento após verificar disponibilidade. Inclui automaticamente Google Meet.",
+        "calendar": {
+          "__rl": true,
+          "value": "aiagenteautomate@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aiagenteautomate@gmail.com"
+        },
+        "start": "={{$fromAI('data_hora_inicio')}}",
+        "end": "={{$fromAI('data_hora_fim')}}",
+        "additionalFields": {
+          "attendees": [
+            "={{$fromAI('email_aluno')}}"
+          ],
+          "conferenceDataUi": {
+            "conferenceDataValues": {
+              "conferenceSolution": "hangoutsMeet"
+            }
+          },
+          "description": "Aula de {{$fromAI('idioma')}} - Nível: {{$fromAI('nivel')}}\nAluno: {{$fromAI('nome_aluno')}}\nContato: {{$fromAI('telefone')}}",
+          "sendUpdates": "all",
+          "summary": "Aula de {{$fromAI('idioma')}} - {{$fromAI('nome_aluno')}}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        1020,
+        60
+      ],
+      "id": "dba9c6fc-d48e-4249-806e-286beab9c35a",
+      "name": "criar_agendamento",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "611ZZ00PxWSW7uAf",
+          "name": "Google Calendar AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use para atualizar horário de aula existente.",
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "aiagenteautomate@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aiagenteautomate@gmail.com"
+        },
+        "eventId": "={{$fromAI('event_id')}}",
+        "updateFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        1420,
+        80
+      ],
+      "id": "7b75ac68-cd41-4b31-9051-e9409c39c4ba",
+      "name": "reagendar_aula",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "611ZZ00PxWSW7uAf",
+          "name": "Google Calendar AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use para cancelar aula existente.",
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "aiagenteautomate@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aiagenteautomate@gmail.com"
+        },
+        "eventId": "={{$fromAI('event_id')}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        1440,
+        300
+      ],
+      "id": "933a0cd7-7c8b-4ac4-adeb-fa786404d256",
+      "name": "cancelar_aula",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "611ZZ00PxWSW7uAf",
+          "name": "Google Calendar AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use para salvar dados do agendamento no banco de dados.",
+        "operation": "get",
+        "tableId": "agendamentos"
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        220
+      ],
+      "id": "cd2123ba-ab86-46ef-bfc4-10f939118431",
+      "name": "salvar_agendamento",
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use para buscar agendamentos existentes do usuário.",
+        "operation": "getAll",
+        "tableId": "agendamentos",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "numero_whatsapp",
+              "condition": "eq",
+              "keyValue": "={{$fromAI('telefone')}}"
+            },
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "agendado"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        240
+      ],
+      "id": "b767d758-860e-444c-a1f6-fbd72f3b36f1",
+      "name": "buscar_agendamentos",
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use para enviar email de confirmação após agendamento.",
+        "sendTo": "={{$fromAI('email')}}",
+        "subject": "Confirmação de Aula - {{$fromAI('data_formatada')}}",
+        "message": "=<h2>Aula Confirmada! 📚</h2>\n<p>Olá <strong>{{$fromAI('nome')}}</strong>,</p>\n<p>Sua aula está confirmada para:</p>\n<ul>\n<li><strong>Data:</strong> {{$fromAI('data_formatada')}}</li>\n<li><strong>Horário:</strong> {{$fromAI('horario')}}</li>\n<li><strong>Nível:</strong> {{$fromAI('nivel')}}</li>\n</ul>\n<p>O link da aula será enviado automaticamente antes do horário.</p>\n<p>Em caso de dúvidas, responda este e-mail.</p>\n<p>Até breve! 🎓</p>",
+        "options": {
+          "senderName": "Escola de Idiomas"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        140,
+        220
+      ],
+      "id": "d37a02e1-6bd4-4081-846b-2272f11fc4ad",
+      "name": "enviar_email_confirmacao",
+      "webhookId": "9026a06b-c926-4f48-b8a8-46c760de5d0f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bMTj7PQt4FxoCvuP",
+          "name": "Gmail account AiAgentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=session:{{$('Extrair Dados').item.json.sessionId}}",
+        "value": "={{JSON.stringify({\"fase\": \"processado\", \"dados\": $json, \"timestamp\": $now})}}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        200,
+        -320
+      ],
+      "id": "6585f1cd-e8d0-443e-9764-b45487785f18",
+      "name": "Redis - Atualizar Sessão",
+      "credentials": {
+        "redis": {
+          "id": "Q9fFQv1hEnIedFTx",
+          "name": "Redis account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false
+          },
+          "conditions": [
+            {
+              "id": "primeiro-agendamento",
+              "leftValue": "={{$json.output}}",
+              "rightValue": "agendamento confirmado",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        400,
+        -320
+      ],
+      "id": "f4116390-67b8-4f52-b85c-27f58075daff",
+      "name": "Verificar Primeiro Agendamento"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "usuarios",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "numero_whatsapp",
+              "condition": "eq",
+              "keyValue": "={{$('Extrair Dados').item.json.userNumber}}"
+            },
+            {
+              "keyName": "recebeu_link_grupo",
+              "condition": "eq",
+              "keyValue": "true"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        600,
+        -420
+      ],
+      "id": "38469c29-1c25-4956-8801-dce168d0130c",
+      "name": "Verificar Link Grupo",
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "nao-recebeu-link",
+              "leftValue": "={{$json.length}}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equal"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        800,
+        -420
+      ],
+      "id": "2972039a-52e1-49db-9886-27e1bac9e002",
+      "name": "Deve Enviar Grupo?"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "120363418260249154@g.us",
+        "remoteJid": "={{$('Extrair Dados').item.json.userNumber}}",
+        "messageText": "🎉 *Parabéns pelo seu primeiro agendamento!*|Você já conhece nosso grupo exclusivo *Sacadas de Espanhol*? 🇪🇸Lá você encontra:✅ Dicas diárias✅ Exercícios extras✅ Interação com outros alunos✅ Conteúdo exclusivo👉 *Clique aqui para participar:*https://chat.whatsapp.com/EvAHiGQQgJb5NrJj59BtSd*Nos vemos lá!* 📚✨",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        -520
+      ],
+      "id": "f087f741-bad9-4e9d-9117-eb646679f512",
+      "name": "Enviar Convite Grupo",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "usuarios",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "numero_whatsapp",
+              "condition": "eq",
+              "keyValue": "={{$('Extrair Dados').item.json.userNumber}}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "recebeu_link_grupo",
+              "fieldValue": "true"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        -520
+      ],
+      "id": "4e9c0448-a36d-4a8c-811f-776da6ee3cfa",
+      "name": "Marcar Link Enviado",
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# 🎯 Fluxo Principal\n## WhatsApp → Redis → IA → Resposta",
+        "height": 80,
+        "width": 400,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1600,
+        -520
+      ],
+      "id": "806c76de-dd2a-4734-99a4-4181475aebaf",
+      "name": "Nota - Fluxo Principal"
+    },
+    {
+      "parameters": {
+        "content": "# 🤖 IA + Ferramentas\n## Calendar | Supabase | Email",
+        "height": 80,
+        "width": 400,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        -660
+      ],
+      "id": "84fd8f56-52a0-49b3-b583-4b3201d6cddf",
+      "name": "Nota - IA e Ferramentas"
+    },
+    {
+      "parameters": {
+        "content": "# 🎁 Grupo Exclusivo\n## Convite automático após 1º agendamento",
+        "height": 80,
+        "width": 400,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        20,
+        -940
+      ],
+      "id": "0e148760-2bbb-427e-acb4-80e774ff4871",
+      "name": "Nota - Convite Grupo"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "teacher",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1740,
+        -320
+      ],
+      "id": "e8da4751-5aca-4f32-91fb-d5a2efcb1c70",
+      "name": "Webhook",
+      "webhookId": "b4809f13-9886-4866-990f-9511ad42536d"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "=sacadas",
+        "remoteJid": "={{ $('Extrair Dados').item.json.userNumber }}",
+        "messageText": "={{ $json.output }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        -320
+      ],
+      "id": "d2b4486b-f0b5-4f09-bbcd-c418de8184df",
+      "name": "Evolution API",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{$('Extrair Dados').item.json.sessionId}}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -1360,
+        -20
+      ],
+      "id": "ab64bf7c-baa4-46ae-bd8e-fe1952400529",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres Teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "aiagenteautomate@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aiagenteautomate@gmail.com"
+        },
+        "returnAll": true,
+        "timeMin": "={{ $fromAI(\"startDay\",\"the same date that user requested at 00:00:00\" ) }}",
+        "timeMax": "={{ $fromAI(\"endDay\",\"the same date that user requested at 23:59:59\" ) }}",
+        "options": {
+          "orderBy": "startTime",
+          "recurringEventHandling": "expand"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        220
+      ],
+      "id": "524daf94-9cf7-4e31-9fd4-e9f08cb5a213",
+      "name": "Buscar Eventos",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "611ZZ00PxWSW7uAf",
+          "name": "Google Calendar AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "aiagenteautomate@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aiagenteautomate@gmail.com"
+        },
+        "start": "={{ $fromAI(\"statTime\") }}",
+        "end": "={{ $fromAI(\"endTime\") }}",
+        "additionalFields": {
+          "color": "2",
+          "conferenceDataUi": {
+            "conferenceDataValues": {
+              "conferenceSolution": "hangoutsMeet"
+            }
+          },
+          "description": "={{ $fromAI(\"preenchimento\",\"Você não irá solicitar isso ao lead, você irá preencher com a sua opinião em relação ao lead após a finalização da conversa. Você deverá preencher cada ponto seguindo as orientações entre *. Análise do lead: 1. Situação Atual e Necessidades Situação atual: Descrição resumida dos desafios, problemas ou dores que o lead enfrenta atualmente, conforme mencionado na conversa. Exemplo: dificuldades de escalabilidade, ineficiência operacional, etc. Necessidades: Identificar as necessidades claras mencionadas pelo lead e aquelas implícitas. Necessidades explícitas são aquelas que o lead mencionou diretamente. Necessidades implícitas são percebidas através de comportamentos ou informações adicionais, mas não mencionadas diretamente. 2. Objeções e Resistências Objeções: Listar as principais objeções que o lead levantou durante a conversa. Exemplo: preocupação com o preço, funcionalidades do produto, adequação ao momento da empresa, etc. Nível de resistência: Avaliar o quão resistente o lead se mostrou em relação à proposta. Pode ser classificado como alta, média ou baixa resistência, com base na quantidade e na intensidade das objeções levantadas. Motivos por trás das objeções: Analisar os motivos que podem estar por trás das objeções. Exemplo: insegurança financeira, falta de entendimento sobre o valor da solução, indecisão sobre o momento certo para implementar a solução. 3. Potencial de Conversão Fit com o produto/serviço: Avaliar se o lead está alinhado com o que a empresa oferece, considerando as necessidades que ele mencionou, o orçamento disponível e o timing para tomar a decisão de compra. Probabilidade de conversão: Estimar, com base na análise, a chance de o lead converter em cliente. Usar alta, média ou baixa probabilidade, dependendo da adequação do lead ao produto e do nível de resistência apresentado.\") }}",
+          "sendUpdates": "all",
+          "summary": "={{ $fromAI(\"eventTitle\") }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -760,
+        200
+      ],
+      "id": "a203c769-0047-4d20-b125-3f8a8b91606c",
+      "name": "Marcar Eventos",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "611ZZ00PxWSW7uAf",
+          "name": "Google Calendar AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "aiagenteautomate@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aiagenteautomate@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "updateFields": {
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+          "sendUpdates": "all",
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -600,
+        200
+      ],
+      "id": "e6470742-a849-4511-b2e9-44c5bcb1b038",
+      "name": "reagendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "611ZZ00PxWSW7uAf",
+          "name": "Google Calendar AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "aiagenteautomate@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aiagenteautomate@gmail.com"
+        },
+        "eventId": "={{ $fromAI(\"deleteEvent\") }} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -460,
+        220
+      ],
+      "id": "443e39c2-a2af-42cc-8ede-57bb53214114",
+      "name": "Deletar evento",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "611ZZ00PxWSW7uAf",
+          "name": "Google Calendar AiagentAutomate"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-06-24T10:10:48.972Z",
+  "versionId": "08bfb6e2-59ad-40d8-bd42-e0df563c8c4d"
+}

@@ -1,0 +1,897 @@
+{
+  "active": false,
+  "connections": {
+    "MCP Client Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "MCP Knowledge Tool",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Bot Pause Status": {
+      "main": [
+        [
+          {
+            "node": "If Bot Paused",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Bot Paused": {
+      "main": [
+        [
+          {
+            "node": "Notify Bot Paused",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook: Pause Bot": {
+      "main": [
+        [
+          {
+            "node": "Pause Bot (Redis)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook: Resume Bot": {
+      "main": [
+        [
+          {
+            "node": "Resume Bot (Redis)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify Bot Paused": {
+      "main": [
+        [
+          {
+            "node": "Stop: Bot Pausado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Wait Response": {
+      "main": [
+        [
+          {
+            "node": "Get MCP Redis History",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Add MCP Message": {
+      "main": [
+        [
+          {
+            "node": "MCP Wait Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set MCP History and Session": {
+      "main": [
+        [
+          {
+            "node": "Clear MCP Redis History",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client Webhook": {
+      "main": [
+        [
+          {
+            "node": "MCP Variáveis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Knowledge Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Agent Principal",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Variáveis": {
+      "main": [
+        [
+          {
+            "node": "Check Bot Pause Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Postgres Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "MCP Agent Principal",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP OpenAI Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "MCP Agent Principal",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Server Request": {
+      "main": [
+        [
+          {
+            "node": "MCP Agent Principal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-30T14:11:30.741Z",
+  "id": "Q1wrGY8dVR8cfnN2",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 33",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "324ba6d3-a9d2-48eb-ae3c-44a03fc74e6b",
+      "name": "MCP Client Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        3360,
+        1280
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.data || $json.text || $json.concatenated_data }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "=file_id",
+                "value": "={{ $('Set File ID').first().json.file_id }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "0082587a-c99e-44ac-8d5a-d3df7d0dc230",
+      "name": "MCP Document Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        2220,
+        2120
+      ]
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "cf73fedd-9533-4cff-89f5-e18da8db7977",
+      "name": "MCP Embeddings",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        2080,
+        2160
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# MCP Server - Busca Info no RAG",
+        "height": 80,
+        "width": 350,
+        "color": 5
+      },
+      "id": "16b3cee9-2b0a-4650-9dbc-1aeca28c092c",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2840,
+        1520
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "bot_paused_{{ $item(\"0\").$node[\"Variáveis\"].json[\"mobile\"] }}",
+        "options": {}
+      },
+      "id": "f35d6fda-32ab-4cc2-8e59-ed57461fc241",
+      "name": "Check Bot Pause Status",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1660,
+        1160
+      ],
+      "credentials": {
+        "redis": {
+          "id": "25nYh9vN5nDeicvy",
+          "name": "Redis AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bot-pause-check",
+              "leftValue": "={{ $json.propertyName }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "12f26483-47cb-461b-92cb-505da7efa73f",
+      "name": "If Bot Paused",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1460,
+        1160
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "bot_paused_{{ $item(\"0\").$node[\"Variáveis\"].json[\"mobile\"] }}",
+        "value": "true"
+      },
+      "id": "9a5e0498-bf5e-456b-b117-399acd6f30cc",
+      "name": "Pause Bot (Redis)",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        300,
+        120
+      ],
+      "credentials": {
+        "redis": {
+          "id": "25nYh9vN5nDeicvy",
+          "name": "Redis AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "bot_paused_{{ $item(\"0\").$node[\"Variáveis\"].json[\"mobile\"] }}"
+      },
+      "id": "f24310ee-7f34-4eed-8f4d-55f03bdc84d9",
+      "name": "Resume Bot (Redis)",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        500,
+        120
+      ],
+      "credentials": {
+        "redis": {
+          "id": "25nYh9vN5nDeicvy",
+          "name": "Redis AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "mcp-pause-bot",
+        "options": {}
+      },
+      "id": "b1e35608-e8f4-4ce7-8c30-77649bead772",
+      "name": "Webhook: Pause Bot",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        100,
+        120
+      ],
+      "webhookId": "pause-bot-webhook-id"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "mcp-resume-bot",
+        "options": {}
+      },
+      "id": "8e760ff8-e121-4b98-bf2b-43b222e73730",
+      "name": "Webhook: Resume Bot",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        160,
+        440
+      ],
+      "webhookId": "resume-bot-webhook-id"
+    },
+    {
+      "parameters": {},
+      "id": "345e6966-3cf0-4ff4-ab10-b0e567ccbd11",
+      "name": "Stop: Bot Pausado",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1180,
+        980
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "aiagentautomate",
+        "remoteJid": "={{ $item(\"0\").$node[\"Variáveis\"].json[\"mobile\"] }}",
+        "messageText": "🔴 *Bot pausado para intervenção humana*\n\nSeu atendimento foi transferido para nossa equipe. Em breve um de nossos especialistas entrará em contato.",
+        "options_message": {}
+      },
+      "id": "956fdee4-41de-4b3f-b130-bb43d4cba727",
+      "name": "Notify Bot Paused",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -1440,
+        980
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.file_id }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain"
+            }
+          }
+        }
+      },
+      "id": "f39b6ac3-6124-4b37-a111-0bc7d8041475",
+      "name": "MCP File Download",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1180,
+        1900
+      ],
+      "executeOnce": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "AMnU78157s5pFXnN",
+          "name": "Google AiAgent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 1,
+              "unit": "minutes"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1g6P4HJW9Y0CgTUGFXN6_-Vs5Usuc-X6_",
+          "mode": "list",
+          "cachedResultName": "mcp_knowledge_base",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1g6P4HJW9Y0CgTUGFXN6_-Vs5Usuc-X6_"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "id": "c8d58560-2194-4db7-ae10-48b07a95d305",
+      "name": "MCP File Created Trigger",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        280,
+        1840
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "AMnU78157s5pFXnN",
+          "name": "Google AiAgent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": "={{ $item(\"0\").$node[\"Variáveis\"].json[\"Tempo de resposta picada\"] }}"
+      },
+      "id": "f8c3bbce-a0b1-4bb3-978d-70bafb6e5c2d",
+      "name": "MCP Wait Response",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        880
+      ],
+      "webhookId": "d13d900d-1aae-4fae-8ee0-941fddb03cce"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "mcp_history_{{ $item(\"0\").$node[\"Variáveis\"].json[\"mobile\"] }}",
+        "options": {}
+      },
+      "id": "d455cdf9-ae42-4ee3-a2ab-92f41aaea3f9",
+      "name": "Get MCP Redis History",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        580,
+        880
+      ],
+      "credentials": {
+        "redis": {
+          "id": "25nYh9vN5nDeicvy",
+          "name": "Redis AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "mcp_history_{{ $item(\"0\").$node[\"Variáveis\"].json[\"mobile\"] }}",
+        "messageData": "={{ $json.mensagem || \"\" }}",
+        "tail": true
+      },
+      "id": "9c4195cc-580b-4df5-a43f-2ededc4fc00b",
+      "name": "Redis Add MCP Message",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        880
+      ],
+      "credentials": {
+        "redis": {
+          "id": "25nYh9vN5nDeicvy",
+          "name": "Redis AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "mcp_history_{{ $item(\"0\").$node[\"Variáveis\"].json[\"mobile\"] }}"
+      },
+      "id": "8cf40f15-720c-49cc-b53c-4cf26005bb09",
+      "name": "Clear MCP Redis History",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1420,
+        880
+      ],
+      "credentials": {
+        "redis": {
+          "id": "25nYh9vN5nDeicvy",
+          "name": "Redis AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "mcp-client-responde",
+        "options": {}
+      },
+      "id": "50334a00-e131-45eb-ae93-aaabd67c6a7f",
+      "name": "MCP Client Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -2140,
+        1160
+      ],
+      "webhookId": "mcp-client-webhook-id"
+    },
+    {
+      "parameters": {
+        "name": "mcp_knowledge_base",
+        "description": "MCP Server tool that contains all the information about prices, services, and company data that you can check to answer user questions through the MCP protocol."
+      },
+      "id": "4afd4cab-a320-4192-97aa-e4efdb2d4140",
+      "name": "MCP Knowledge Tool",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        2920,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8d88c137-383f-4307-b3cc-1f6a560ea67b",
+              "name": "mobile",
+              "value": "={{  $json.body.data.key.remoteJid.replace(/\\D/g, '').replace(/^55(\\d{2})(\\d{8})$/, '55$19$2') }}",
+              "type": "string"
+            },
+            {
+              "id": "7e2f520e-4952-425b-82ca-792cc46680d4",
+              "name": "mensagem",
+              "value": "={{ $item(\"0\").$node[\"MCP Client Webhook\"].json[\"body\"][\"data\"][\"message\"][\"conversation\"] || $item(\"0\").$node[\"MCP Client Webhook\"].json[\"body\"][\"data\"][\"message\"][\"extendedTextMessage\"][\"text\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "104b3cd0-d988-4c58-a175-2ca5465bf8c1",
+              "name": "API_Elevenlabs",
+              "value": "sk_f8b0546f2d0dbcbd3fa6510a3ec468d249dfdb7823311901",
+              "type": "string"
+            },
+            {
+              "id": "6065b018-8dc0-49db-8da9-f692f96e9c92",
+              "name": "ID_Voz_Elevenlabs",
+              "value": "=9BWtsMINqrJLrRacOk9x",
+              "type": "string"
+            },
+            {
+              "id": "4e2bdc18-93a5-4117-b94e-bcfd228a7379",
+              "name": "Tempo de resposta picada",
+              "value": "2",
+              "type": "string"
+            },
+            {
+              "id": "0d4a900f-af55-4472-824f-1d06a25de052",
+              "name": "Instancia_Evolution",
+              "value": "aiagentautomate",
+              "type": "string"
+            },
+            {
+              "id": "9f80f8f6-a917-4af3-b77e-fa1f93d38cca",
+              "name": "URL_Evolution",
+              "value": "apiwp.aiagentautomate.com.br/",
+              "type": "string"
+            },
+            {
+              "id": "c6b307cf-ac0d-4273-8895-3c601b9b909b",
+              "name": "KEY_Evo",
+              "value": "B8493D438D72-4C34-97CC-4C9A4A257C0A",
+              "type": "string"
+            },
+            {
+              "id": "mcp-server-url",
+              "name": "MCP_Server_URL",
+              "value": "http://localhost:3000/mcp",
+              "type": "string"
+            },
+            {
+              "id": "mcp-server-token",
+              "name": "MCP_Server_Token",
+              "value": "mcp-server-secret-token",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "af71512b-54b5-451b-8264-3ae2a4f66b3b",
+      "name": "MCP Variáveis",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1900,
+        1160
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Set History and Session').item.json.listaMensagens }}",
+        "options": {
+          "systemMessage": "Você é 'Aurora', uma IA assistente que utiliza o protocolo MCP (Model Context Protocol) para se comunicar com sistemas externos. Você funciona como um MCP Client conectado a um MCP Server que fornece acesso a dados e ferramentas.\n\nARQUITETURA MCP:\n- Você é o MCP CLIENT que processa as mensagens do usuário\n- O MCP SERVER fornece tools e recursos através do protocolo MCP\n- Redis é usado para controle de estado e pausas do bot\n- Todas as ferramentas são acessadas via MCP tools\n\nREGRAS MCP:\n1. Use sempre as MCP tools disponíveis para buscar informações\n2. Respeite o estado de pausa do bot no Redis\n3. Mantenha histórico de conversação no Redis com prefixo mcp_history_\n4. Comunique-se com o MCP Server através das tools configuradas\n5. Se o bot estiver pausado (Redis key bot_paused_{{phone}}), não responda\n\nCOMPORTAMENTO:\n- Seja helpful, harmless, e honest\n- Use as ferramentas MCP para obter informações precisas\n- Mantenha conversas naturais e contextuais\n- Respeite intervenções humanas quando o bot estiver pausado"
+        }
+      },
+      "id": "1418ade5-fb2a-4835-a6ea-d1925f750206",
+      "name": "MCP Agent Principal",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        2140,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "mcp_session_={{ $('Set History and Session').item.json.sessionId }}",
+        "contextWindowLength": 1000
+      },
+      "id": "974ba05e-f363-4f17-a4b3-b60ee0ae27bb",
+      "name": "MCP Postgres Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        2240,
+        960
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres Teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "c0f685e3-ec37-4e2a-a84a-01db3c9c8fb4",
+      "name": "MCP OpenAI Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        2020,
+        980
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# MCP Server/Client Architecture",
+        "height": 80,
+        "width": 400,
+        "color": 6
+      },
+      "id": "f8161b3d-98d4-44e4-a66b-651e7be61961",
+      "name": "MCP Architecture Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1720,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Redis Bot Control",
+        "height": 80,
+        "width": 300,
+        "color": 7
+      },
+      "id": "843a7ed2-c3bb-4c6c-8fcf-fe2afe88f69b",
+      "name": "Redis Control Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $item(\"0\").$node[\"MCP Variáveis\"].json[\"MCP_Server_URL\"] }}/tools/execute",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $item(\"0\").$node[\"MCP Variáveis\"].json[\"MCP_Server_Token\"] }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"tool\": \"knowledge_search\",\n  \"arguments\": {\n    \"query\": \"{{ $json.query }}\",\n    \"context\": \"{{ $json.context || '' }}\"\n  }\n}",
+        "options": {}
+      },
+      "id": "5044ec6b-eb96-468d-9fa0-9a33f7836f1b",
+      "name": "MCP Server Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1920,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "session-data",
+              "name": "listaMensagens",
+              "value": "={{ $json.propertyName.join('\\n') }}",
+              "type": "string"
+            },
+            {
+              "id": "session-id",
+              "name": "sessionId",
+              "value": "mcp_session_{{ $item(\"0\").$node[\"Verificar Status Cliente\"].json[\"sessionid\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "909c31e2-bb97-48da-977e-e69b0c0c4d90",
+      "name": "Set MCP History and Session",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1240,
+        880
+      ]
+    }
+  ],
+  "pinData": {
+    "MCP Client Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.aiagentautomate.com.br",
+            "user-agent": "mcp-client/1.0",
+            "content-length": "932",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-mcp-version": "1.0",
+            "x-mcp-client-id": "n8n-mcp-client"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "aiagentautomate",
+            "data": {
+              "key": {
+                "remoteJid": "5511952313944@s.whatsapp.net",
+                "fromMe": false,
+                "id": "MCP_MESSAGE_ID"
+              },
+              "pushName": "Rafael de Souza",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "conversation": "Preciso de informações sobre os serviços MCP",
+                "messageContextInfo": {
+                  "mcpContext": {
+                    "protocol": "MCP/1.0",
+                    "serverEndpoint": "http://localhost:3000/mcp",
+                    "clientCapabilities": [
+                      "tools",
+                      "resources"
+                    ]
+                  }
+                }
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1751186148,
+              "instanceId": "mcp-client-instance",
+              "source": "mcp"
+            },
+            "destination": "https://n8n.aiagentautomate.com.br/webhook/mcp-client-responde",
+            "date_time": "2025-06-29T05:35:50.967Z",
+            "sender": "5511945237617@s.whatsapp.net",
+            "server_url": "https://apiwp.aiagentautomate.com.br",
+            "apikey": "MCP_API_KEY",
+            "mcp": {
+              "protocol": "MCP/1.0",
+              "serverCapabilities": [
+                "tools",
+                "resources",
+                "prompts"
+              ],
+              "connectionStatus": "connected"
+            }
+          },
+          "webhookUrl": "https://n8n.aiagentautomate.com.br/webhook/mcp-client-responde",
+          "executionMode": "mcp-production"
+        }
+      }
+    ]
+  },
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-30T14:11:30.741Z",
+  "versionId": "e95c9221-f87b-472b-bcf4-9964dcaefd3f"
+}

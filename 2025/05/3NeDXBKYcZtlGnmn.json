@@ -1,0 +1,402 @@
+{
+  "active": false,
+  "connections": {
+    "Organizar Dados": {
+      "main": [
+        [
+          {
+            "node": "Salvar no Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar no Supabase": {
+      "main": [
+        [
+          {
+            "node": "Verificar Contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time1": {
+      "main": [
+        [
+          {
+            "node": "Organizar Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call n8n Workflow Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Date & Time1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Contato": {
+      "main": [
+        [
+          {
+            "node": "Lead Existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Existe?": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Solicitar WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-13T00:28:26.142Z",
+  "id": "3NeDXBKYcZtlGnmn",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Formulario bem-vindo",
+  "nodes": [
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "nome_completo",
+              "value": "={{ $json.body.name }}"
+            },
+            {
+              "name": "empresa",
+              "value": "={{ $json.body.company }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $json.body.email }}"
+            },
+            {
+              "name": "telefone",
+              "value": "={{ $json.body.phone.trim().replace(/\\D/g, '').slice(-11) }}"
+            },
+            {
+              "name": "telefone_formatado",
+              "value": "={{ $('Webhook1').item.json.body.phone.replace(/\\D/g, '').slice(-11) }}"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "id": "de372dc6-ddab-4e54-a22d-a3c76ab77821",
+      "name": "Organizar Dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "leads",
+        "options": {}
+      },
+      "name": "Webhook1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -1540,
+        -240
+      ],
+      "webhookId": "leads-webhook",
+      "id": "00d92337-a650-458c-bc9c-f7e8de5717bf"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "leads",
+        "limit": 1
+      },
+      "id": "9c74366c-3061-4560-91e2-f52a9e26ba70",
+      "name": "Salvar no Supabase",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -860,
+        -240
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "wKMmHUFNQJCXhQYj",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $now }}",
+        "format": "custom",
+        "customFormat": "dd-MM-yyyy",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        -1340,
+        -240
+      ],
+      "id": "240742ef-0b46-42d0-88e4-e0cc49a5a44e",
+      "name": "Date & Time1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        240,
+        -260
+      ],
+      "id": "f53e8bd3-99a3-45d2-a45b-e550945eb691",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        160,
+        -20
+      ],
+      "id": "1fc7e0de-851a-4e82-b903-56ebb08771de",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        340,
+        -40
+      ],
+      "id": "fdd0b875-e1b4-4579-b78d-970787652c17",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "description": "Apos o rebebimento da mensagem de boas vindas conectar com fluxo agendamento",
+        "workflowId": {
+          "__rl": true,
+          "value": "3lS0OxxlpfjlX60s",
+          "mode": "list",
+          "cachedResultName": "Fluxo Agendamento"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        500,
+        -40
+      ],
+      "id": "e3dc9136-aa98-41e7-971f-6951805b7ac6",
+      "name": "Call n8n Workflow Tool"
+    },
+    {
+      "parameters": {
+        "instanceName": "aiagenteautomate@gmail.com",
+        "token": "061603F@tim@",
+        "options_Create_instance": {}
+      },
+      "id": "6362bfec-aa2a-431a-a05e-2fd9ddee0ef1",
+      "name": "Verificar Contato",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -240
+      ],
+      "resource": "contacts-api",
+      "operation": "check-contact",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.exists }}",
+              "operation": "notEqual"
+            }
+          ]
+        }
+      },
+      "id": "38b14293-1865-4763-8a7b-a9ee90fcddbe",
+      "name": "Lead Existe?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "teste",
+        "remoteJid": "={{ $('Organizar Dados').item.json.telefone_formatado }}",
+        "messageText": "=Olá ! {{ $json.name }}, como vai? 👋 Sou a Aurora, especialista da AIAgent Automate. Vi que você se interessou por nossa solução de automação utilizando IA. Posso te ajudar com alguma dúvida?",
+        "options_message": {}
+      },
+      "id": "8310c8d0-be64-4f75-a4b5-00388b4959be",
+      "name": "Solicitar WhatsApp",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        -140
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "teste",
+        "remoteJid": "={{ $('Organizar Dados').item.json.telefone_formatado }}",
+        "messageText": "=Olá ! {{ $json.name }}, como vai? 👋 Sou a Aurora, especialista da AIAgent Automate. Vi que você se interessou por nossa solução de automação utilizando IA. Posso te ajudar com alguma dúvida?",
+        "options_message": {}
+      },
+      "id": "8672b8be-dcb9-4f08-bd4b-30ce6c1b0377",
+      "name": "Enviar WhatsApp1",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        -340
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-13T03:22:00.591Z",
+  "versionId": "31095f20-8326-4da6-a417-12e6cb696685"
+}

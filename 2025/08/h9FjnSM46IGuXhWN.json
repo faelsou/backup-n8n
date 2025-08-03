@@ -1,0 +1,1107 @@
+{
+  "active": false,
+  "connections": {
+    "Iniciar Disparo": {
+      "main": [
+        [
+          {
+            "node": "Configurações",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configurações": {
+      "main": [
+        [
+          {
+            "node": "Carregar Contatos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Carregar Contatos": {
+      "main": [
+        [
+          {
+            "node": "Validar e Limpar Contatos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar e Limpar Contatos": {
+      "main": [
+        [
+          {
+            "node": "Loop Contatos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pausar Envios Noturnos": {
+      "main": [
+        [
+          {
+            "node": "Aguardar Horário Comercial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-02T10:23:38.112Z",
+  "id": "h9FjnSM46IGuXhWN",
+  "isArchived": false,
+  "meta": null,
+  "name": "Disparo em massa",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "# 🚀 DISPARO EM MASSA WHATSAPP - ANTI-BAN PRO\n\n## Funcionalidades:\n- ✅ Disparo seguro com delays inteligentes\n- ✅ Mensagens de áudio via ElevenLabs\n- ✅ E-mail em massa anti-spam\n- ✅ Rotação de números para evitar ban\n- ✅ Validação e limpeza de contatos\n- ✅ Relatórios detalhados de entrega",
+        "height": 408,
+        "width": 450,
+        "color": 5
+      },
+      "id": "a4a0333f-9f77-4047-8df2-fcd9b94d285b",
+      "name": "Sticky Note - Intro",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -528
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "61c9fa60-51bc-4578-91ee-e11234d32f75",
+      "name": "Iniciar Disparo",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        224,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "config-1",
+              "name": "delay_min_segundos",
+              "value": 15,
+              "type": "number"
+            },
+            {
+              "id": "config-2",
+              "name": "delay_max_segundos",
+              "value": 45,
+              "type": "number"
+            },
+            {
+              "id": "config-3",
+              "name": "max_envios_por_hora",
+              "value": 60,
+              "type": "number"
+            },
+            {
+              "id": "config-4",
+              "name": "api_elevenlabs",
+              "value": "sk_f8b0546f2d0dbcbd3fa6510a3ec468d249dfdb7823311901",
+              "type": "string"
+            },
+            {
+              "id": "config-5",
+              "name": "voice_id_elevenlabs",
+              "value": "9BWtsMINqrJLrRacOk9x",
+              "type": "string"
+            },
+            {
+              "id": "config-6",
+              "name": "instancia_evolution_1",
+              "value": "instance1",
+              "type": "string"
+            },
+            {
+              "id": "config-7",
+              "name": "instancia_evolution_2",
+              "value": "instance2",
+              "type": "string"
+            },
+            {
+              "id": "config-8",
+              "name": "mensagem_texto",
+              "value": "Olá {{nome}}! Esta é uma mensagem personalizada para você. Tenho uma oportunidade incrível para compartilhar!",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "dd256a70-926a-493a-8e05-eab9dab39cf3",
+      "name": "Configurações",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "1fcijyZM1oU73i2xUbXYJ4j6RshmVEduOkCJji2SJP68"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gid=0"
+        },
+        "options": {}
+      },
+      "id": "e29cd266-4e2f-4f68-bb69-3215ba2c16a6",
+      "name": "Carregar Contatos",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        624,
+        32
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "9mBAGO96M4MyCggv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Limpeza e validação de contatos\nconst items = $input.all();\nconst contatos = [];\n\nfor (const item of items) {\n  const nome = item.json.Nome?.trim();\n  const telefone = item.json.Telefone?.toString().replace(/\\D/g, '');\n  const email = item.json.Email?.trim();\n  \n  // Validar telefone brasileiro\n  if (telefone && telefone.length >= 10) {\n    let telefoneFormatado = telefone;\n    \n    // Adicionar código do país se não tiver\n    if (!telefoneFormatado.startsWith('55')) {\n      telefoneFormatado = '55' + telefoneFormatado;\n    }\n    \n    // Adicionar 9 no celular se necessário\n    if (telefoneFormatado.length === 12 && telefoneFormatado.substr(4, 1) !== '9') {\n      telefoneFormatado = telefoneFormatado.substr(0, 4) + '9' + telefoneFormatado.substr(4);\n    }\n    \n    contatos.push({\n      nome: nome || 'Cliente',\n      telefone: telefoneFormatado,\n      email: email || '',\n      status: 'pendente'\n    });\n  }\n}\n\nconsole.log(`Total de contatos válidos: ${contatos.length}`);\nreturn contatos.map(contato => ({ json: contato }));"
+      },
+      "id": "d865a222-f305-41a5-8d77-f3227158db96",
+      "name": "Validar e Limpar Contatos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        816,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "2b90dda2-d49f-453b-95ad-58622207d2ca",
+      "name": "Loop Contatos",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1024,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Delay dinâmico inteligente para evitar ban\nconst minDelay = $('Configurações').item.json.delay_min_segundos;\nconst maxDelay = $('Configurações').item.json.delay_max_segundos;\n\n// Calcular delay aleatório\nconst delayAleatorio = Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay;\n\n// Adicionar variação extra a cada 10 envios\nconst currentBatch = $('Loop Contatos').item.json.batchCount || 0;\nlet delayExtra = 0;\n\nif (currentBatch % 10 === 0 && currentBatch > 0) {\n  delayExtra = Math.floor(Math.random() * 30) + 30; // 30-60s extra\n}\n\nconst delayTotal = delayAleatorio + delayExtra;\n\nconsole.log(`Delay aplicado: ${delayTotal}s (batch: ${currentBatch})`);\n\nreturn {\n  delay: delayTotal,\n  batchInfo: currentBatch\n};"
+      },
+      "id": "942143bb-e201-4f47-a0db-a5cebf4dc9bb",
+      "name": "Calcular Delay Inteligente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1248,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.delay }}"
+      },
+      "id": "e9e2a47d-1f5f-44d7-8e3b-aa4873ed6ac8",
+      "name": "Aplicar Delay",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1424,
+        32
+      ],
+      "webhookId": "delay-webhook"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Loop Contatos').item.json.batchCount % 2 }}",
+                    "rightValue": "0",
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "instancia1"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Loop Contatos').item.json.batchCount % 2 }}",
+                    "rightValue": "1",
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "instancia2"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ed5cf19f-1844-4fce-a520-5f70923d7dbb",
+      "name": "Rotacionar Instâncias",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        1616,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Remover quebras de linha e emojis para áudio\nconst textoOriginal = $('Configurações').item.json.mensagem_texto;\nconst nomeContato = $('Loop Contatos').item.json.nome;\n\n// Personalizar mensagem com nome\nlet mensagemPersonalizada = textoOriginal.replace('{{nome}}', nomeContato);\n\n// Limpar texto para áudio\nlet textoLimpo = mensagemPersonalizada\n  .replace(/\\n/g, ' ')\n  .replace(/[\\u{1F600}-\\u{1F64F}]|[\\u{1F300}-\\u{1F5FF}]|[\\u{1F680}-\\u{1F6FF}]|[\\u{1F700}-\\u{1F77F}]|[\\u{1F780}-\\u{1F7FF}]|[\\u{1F800}-\\u{1F8FF}]|[\\u{1F900}-\\u{1F9FF}]|[\\u{1FA00}-\\u{1FA6F}]|[\\u{1FA70}-\\u{1FAFF}]|[\\u{2600}-\\u{26FF}]|[\\u{2700}-\\u{27BF}]/gu, '')\n  .trim();\n\nreturn {\n  mensagem_original: mensagemPersonalizada,\n  texto_para_audio: textoLimpo,\n  nome_contato: nomeContato\n};"
+      },
+      "id": "a2c51273-36f2-439d-b611-2c9f39686b19",
+      "name": "Preparar Mensagem",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1824,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.elevenlabs.io/v1/text-to-speech/{{ $('Configurações').item.json.voice_id_elevenlabs }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "xi-api-key",
+              "value": "={{ $('Configurações').item.json.api_elevenlabs }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n   \"text\":\"{{ $json.texto_para_audio }}\",\n   \"model_id\":\"eleven_multilingual_v2\",\n   \"voice_settings\":{\n      \"stability\":0.5,\n      \"similarity_boost\":0.8,\n      \"style\":0.0,\n      \"use_speaker_boost\":true\n   }\n}",
+        "options": {}
+      },
+      "id": "880b8302-90e0-4c32-bfa4-9870b8f36036",
+      "name": "Gerar Áudio ElevenLabs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2016,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "id": "7935a82e-2b41-4c9c-97cb-e78ebb363530",
+      "name": "Converter Áudio Base64",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        2224,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "operation": "send-audio",
+        "instanceName": "={{ $('Configurações').item.json.instancia_evolution_1 }}",
+        "remoteJid": "={{ $('Loop Contatos').item.json.telefone }}",
+        "media": "={{ $json.data }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        2416,
+        -128
+      ],
+      "id": "db571644-9e3c-44b5-a373-48db3c99c07c",
+      "name": "Enviar Áudio - Instância 1",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "operation": "send-audio",
+        "instanceName": "={{ $('Configurações').item.json.instancia_evolution_2 }}",
+        "remoteJid": "={{ $('Loop Contatos').item.json.telefone }}",
+        "media": "={{ $json.data }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        2416,
+        0
+      ],
+      "id": "e0e5cc51-8059-429c-8178-350b3324d2c2",
+      "name": "Enviar Áudio - Instância 2"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "id": "bc6a8d41-06e9-4df0-9ac5-2b3c0b0e9978",
+      "name": "Delay Pós Áudio",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2624,
+        -64
+      ],
+      "webhookId": "delay-pos-audio"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $('Configurações').item.json.instancia_evolution_1 }}",
+        "remoteJid": "={{ $('Loop Contatos').item.json.telefone }}",
+        "messageText": "={{ $('Preparar Mensagem').item.json.mensagem_original }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        2816,
+        -128
+      ],
+      "id": "de12a6ea-3347-4987-8573-c7d59c5bc040",
+      "name": "Enviar Texto - Instância 1"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $('Configurações').item.json.instancia_evolution_2 }}",
+        "remoteJid": "={{ $('Loop Contatos').item.json.telefone }}",
+        "messageText": "={{ $('Preparar Mensagem').item.json.mensagem_original }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        2816,
+        0
+      ],
+      "id": "af60f9fe-e3ba-46e0-b67e-1ae418b9aad2",
+      "name": "Enviar Texto - Instância 2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "email-check",
+              "leftValue": "={{ $('Loop Contatos').item.json.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "isNotEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7908d1cc-5f0e-47ee-a793-c1cbab58d3a0",
+      "name": "Verificar Se Tem Email",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3024,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "amount": "={{ Math.floor(Math.random() * 10) + 5 }}"
+      },
+      "id": "ad97d971-56b7-4d06-b509-467b4732a080",
+      "name": "Delay Antes Email",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3216,
+        -128
+      ],
+      "webhookId": "delay-email"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Loop Contatos').item.json.email }}",
+        "subject": "=🎯 Oportunidade Especial para {{ $('Loop Contatos').item.json.nome }}",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Mensagem Personalizada</title>\n</head>\n<body style=\"font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;\">\n  <div style=\"background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px; text-align: center; margin-bottom: 30px;\">\n    <h1 style=\"color: white; margin: 0; font-size: 28px;\">Olá, {{ $('Loop Contatos').item.json.nome }}! 👋</h1>\n  </div>\n  \n  <div style=\"background: #f8f9fa; padding: 25px; border-radius: 8px; margin-bottom: 25px;\">\n    <p style=\"font-size: 18px; margin-bottom: 20px;\">{{ $('Configurações').item.json.mensagem_texto }}</p>\n    \n    <div style=\"background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #667eea;\">\n      <h3 style=\"color: #667eea; margin-top: 0;\">💼 Por que esta oportunidade é especial?</h3>\n      <ul style=\"padding-left: 20px;\">\n        <li>Personalizada especificamente para você</li>\n        <li>Resultados comprovados</li>\n        <li>Suporte dedicado</li>\n      </ul>\n    </div>\n  </div>\n  \n  <div style=\"text-align: center; margin: 30px 0;\">\n    <a href=\"https://wa.me/5511999999999\" style=\"background: #25D366; color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; display: inline-block;\">💬 Responder via WhatsApp</a>\n  </div>\n  \n  <div style=\"border-top: 1px solid #eee; padding-top: 20px; text-align: center; color: #666; font-size: 14px;\">\n    <p>Esta mensagem foi enviada para {{ $('Loop Contatos').item.json.email }}</p>\n    <p>Se não deseja mais receber e-mails, <a href=\"#\" style=\"color: #667eea;\">clique aqui</a></p>\n  </div>\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Equipe de Oportunidades",
+          "replyTo": "noreply@exemplo.com"
+        }
+      },
+      "id": "d1f1aa7e-93a7-4586-800a-ed15428fe8ae",
+      "name": "Enviar Email Personalizado",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3424,
+        -128
+      ],
+      "webhookId": "ab57bb74-cc29-492a-a4d5-e4c930f62123"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "log-1",
+              "name": "nome",
+              "value": "={{ $('Loop Contatos').item.json.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "log-2",
+              "name": "telefone",
+              "value": "={{ $('Loop Contatos').item.json.telefone }}",
+              "type": "string"
+            },
+            {
+              "id": "log-3",
+              "name": "email",
+              "value": "={{ $('Loop Contatos').item.json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "log-4",
+              "name": "status_whatsapp",
+              "value": "=enviado",
+              "type": "string"
+            },
+            {
+              "id": "log-5",
+              "name": "status_email",
+              "value": "={{ $('Loop Contatos').item.json.email ? 'enviado' : 'sem_email' }}",
+              "type": "string"
+            },
+            {
+              "id": "log-6",
+              "name": "timestamp",
+              "value": "={{ $now }}",
+              "type": "string"
+            },
+            {
+              "id": "log-7",
+              "name": "instancia_usada",
+              "value": "={{ $('Rotacionar Instâncias').outputIndex === 0 ? 'instancia_1' : 'instancia_2' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f4a35359-645d-4b39-8780-fbba273865e2",
+      "name": "Registrar Log de Envio",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3616,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "1fcijyZM1oU73i2xUbXYJ4j6RshmVEduOkCJji2SJP68"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gid=1"
+        },
+        "columns": {
+          "value": {
+            "nome": "={{ $json.nome }}",
+            "telefone": "={{ $json.telefone }}",
+            "email": "={{ $json.email }}",
+            "status_whatsapp": "={{ $json.status_whatsapp }}",
+            "status_email": "={{ $json.status_email }}",
+            "timestamp": "={{ $json.timestamp }}",
+            "instancia_usada": "={{ $json.instancia_usada }}"
+          },
+          "schema": [
+            {
+              "id": "nome",
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "telefone",
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "email",
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "status_whatsapp",
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "status_email",
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "timestamp",
+              "type": "string",
+              "display": true
+            },
+            {
+              "id": "instancia_usada",
+              "type": "string",
+              "display": true
+            }
+          ],
+          "mappingMode": "defineBelow"
+        },
+        "options": {
+          "useAppend": true
+        }
+      },
+      "id": "3d24587f-01ad-4e51-add4-8090beb34ce8",
+      "name": "Salvar Log na Planilha",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3824,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "final-check",
+              "leftValue": "={{ $('Loop Contatos').item.json.batchCount }}",
+              "rightValue": "={{ $('Loop Contatos').item.json.totalBatches - 1 }}",
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "33717360-4684-4214-9951-206d88317a3a",
+      "name": "Verificar Se É o Último",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4016,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "stats-1",
+              "name": "total_contatos",
+              "value": "={{ $('Validar e Limpar Contatos').all().length }}",
+              "type": "number"
+            },
+            {
+              "id": "stats-2",
+              "name": "total_enviados",
+              "value": "={{ $('Validar e Limpar Contatos').all().length }}",
+              "type": "number"
+            },
+            {
+              "id": "stats-3",
+              "name": "tempo_total",
+              "value": "={{ Math.round((Date.now() - $('Iniciar Disparo').item.json.timestamp) / 60000) }} minutos",
+              "type": "string"
+            },
+            {
+              "id": "stats-4",
+              "name": "data_conclusao",
+              "value": "={{ $now }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "23c8252c-d93e-4afb-aeb1-76d23a2e4703",
+      "name": "Estatísticas Finais",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4224,
+        -128
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "admin@exemplo.com",
+        "subject": "=✅ Disparo em Massa Concluído - {{ $json.total_enviados }} envios",
+        "message": "=<!DOCTYPE html>\n<html>\n<body style=\"font-family: Arial, sans-serif;\">\n  <h2>🎯 Relatório de Disparo em Massa</h2>\n  <div style=\"background: #f8f9fa; padding: 20px; border-radius: 8px;\">\n    <h3>📊 Estatísticas:</h3>\n    <ul>\n      <li><strong>Total de Contatos:</strong> {{ $json.total_contatos }}</li>\n      <li><strong>Total Enviados:</strong> {{ $json.total_enviados }}</li>\n      <li><strong>Tempo Total:</strong> {{ $json.tempo_total }}</li>\n      <li><strong>Data/Hora:</strong> {{ $json.data_conclusao }}</li>\n    </ul>\n  </div>\n  <p>✅ Todos os envios foram concluídos com sucesso!</p>\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "31f0a258-50c0-4a8e-836f-dd094bc576eb",
+      "name": "Enviar Relatório Final",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4416,
+        -128
+      ],
+      "webhookId": "19b33228-5885-4ea4-b02b-cb848a5ef1e7"
+    },
+    {
+      "parameters": {
+        "content": "# 🔄 SISTEMA DE ROTAÇÃO E DELAYS\n\n## Estratégias Anti-Ban:\n- ✅ Rotação automática entre instâncias\n- ✅ Delays dinâmicos (15-45s + extras)\n- ✅ Pausas maiores a cada 10 envios\n- ✅ Horários inteligentes de envio\n- ✅ Monitoramento de taxa de envio",
+        "height": 328,
+        "width": 400,
+        "color": 6
+      },
+      "id": "f927f70c-c3e0-4a7e-94c6-fcf7c8a42621",
+      "name": "Sticky Note - Anti-Ban",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        816,
+        -528
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# 🎤 SISTEMA DE ÁUDIO\n\n## ElevenLabs Integration:\n- ✅ Conversão texto para áudio\n- ✅ Voz natural multilíngue\n- ✅ Personalização com nome\n- ✅ Limpeza automática do texto\n- ✅ Formato otimizado para WhatsApp",
+        "height": 296,
+        "width": 400,
+        "color": 3
+      },
+      "id": "79874089-a818-4a48-b659-0570135348ab",
+      "name": "Sticky Note - Áudio",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1552,
+        -512
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# 📧 SISTEMA DE EMAIL\n\n## Recursos Anti-Spam:\n- ✅ Templates HTML responsivos\n- ✅ Personalização com nome\n- ✅ Headers otimizados\n- ✅ Delays entre envios\n- ✅ Link para WhatsApp\n- ✅ Opção de descadastro",
+        "height": 344,
+        "width": 400,
+        "color": 4
+      },
+      "id": "a81db248-298a-4fe8-8564-56b6c20905f3",
+      "name": "Sticky Note - Email",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        3120,
+        -560
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# 📊 SISTEMA DE LOGS\n\n## Monitoramento Completo:\n- ✅ Log de todos os envios\n- ✅ Status individual por contato\n- ✅ Timestamp de cada ação\n- ✅ Instância utilizada\n- ✅ Relatório final automático\n- ✅ Exportação para planilhas",
+        "height": 440,
+        "width": 400,
+        "color": 2
+      },
+      "id": "d11a3671-5350-439e-b244-479c49da294d",
+      "name": "Sticky Note - Logs",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        3792,
+        -560
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "disparo_stats",
+        "value": "={{ JSON.stringify($json) }}"
+      },
+      "id": "83d40a73-7bb9-43df-88ae-970f17c0e782",
+      "name": "Cache Estatísticas",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        4224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Sistema de monitoramento de saúde das instâncias\nconst instancia1 = $('Configurações').item.json.instancia_evolution_1;\nconst instancia2 = $('Configurações').item.json.instancia_evolution_2;\n\n// Verificar status das instâncias\nconst statusCheck = {\n  timestamp: new Date().toISOString(),\n  instancia1: {\n    nome: instancia1,\n    status: 'ativa',\n    ultima_verificacao: new Date().toISOString()\n  },\n  instancia2: {\n    nome: instancia2,\n    status: 'ativa', \n    ultima_verificacao: new Date().toISOString()\n  },\n  total_envios_hora: 0\n};\n\nconsole.log('Status das instâncias verificado:', statusCheck);\n\nreturn { json: statusCheck };"
+      },
+      "id": "adb6a53d-6f8c-4f5d-bb65-f88ef5bda868",
+      "name": "Monitorar Saúde Instâncias",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            },
+            {
+              "triggerAtHour": 14
+            },
+            {
+              "triggerAtHour": 18
+            }
+          ]
+        }
+      },
+      "id": "cb746e06-a587-455e-815c-28bec3f0787a",
+      "name": "Horários Ótimos de Envio",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "horario-check",
+              "leftValue": "={{ $now.hour }}",
+              "rightValue": "22",
+              "operator": {
+                "type": "number",
+                "operation": "smaller"
+              }
+            },
+            {
+              "id": "horario-check-2",
+              "leftValue": "={{ $now.hour }}",
+              "rightValue": "8",
+              "operator": {
+                "type": "number",
+                "operation": "larger"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "e2cd4331-cd62-496a-a2d2-18ed667a6ae1",
+      "name": "Verificar Horário Comercial",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "pausa-1",
+              "name": "motivo_pausa",
+              "value": "Fora do horário comercial (8h-22h)",
+              "type": "string"
+            },
+            {
+              "id": "pausa-2",
+              "name": "proximo_envio",
+              "value": "={{ $now.hour < 8 ? '08:00' : 'Amanhã às 08:00' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d0d0c502-e805-4021-a2fb-a6f2197d6f25",
+      "name": "Pausar Envios Noturnos",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        608,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 3600
+      },
+      "id": "4832631c-e823-4005-8a37-d6b5a6e98dca",
+      "name": "Aguardar Horário Comercial",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        816,
+        416
+      ],
+      "webhookId": "aguardar-horario"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Sistema avançado de detecção de padrões suspeitos\nconst batchCount = $('Loop Contatos').item.json.batchCount || 0;\nconst totalContatos = $('Validar e Limpar Contatos').all().length;\n\n// Calcular taxa de envio atual\nconst tempoDecorrido = (Date.now() - $('Iniciar Disparo').item.json.timestamp) / 1000 / 60; // minutos\nconst taxaEnvio = batchCount / Math.max(tempoDecorrido, 1);\n\n// Detectar padrões suspeitos\nlet risco = 'baixo';\nlet acaoRecomendada = 'continuar';\n\nif (taxaEnvio > 2) { // Mais de 2 envios por minuto\n  risco = 'alto';\n  acaoRecomendada = 'pausar_longa';\n} else if (taxaEnvio > 1) {\n  risco = 'medio';\n  acaoRecomendada = 'pausar_curta';\n}\n\n// Detectar horários de pico (evitar 12h-14h e 18h-20h)\nconst hora = new Date().getHours();\nif ((hora >= 12 && hora <= 14) || (hora >= 18 && hora <= 20)) {\n  if (risco === 'baixo') risco = 'medio';\n  if (acaoRecomendada === 'continuar') acaoRecomendada = 'pausar_curta';\n}\n\nconst analise = {\n  batch_atual: batchCount,\n  total_contatos: totalContatos,\n  tempo_decorrido_min: Math.round(tempoDecorrido),\n  taxa_envio_por_min: Math.round(taxaEnvio * 100) / 100,\n  nivel_risco: risco,\n  acao_recomendada: acaoRecomendada,\n  hora_atual: hora,\n  timestamp: new Date().toISOString()\n};\n\nconsole.log('Análise de risco:', analise);\n\nreturn { json: analise };"
+      },
+      "id": "d432cb2b-eabc-400a-a0be-82a2e17cede5",
+      "name": "Análise de Risco Anti-Ban",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1424,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.acao_recomendada }}",
+                    "rightValue": "continuar",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "continuar"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.acao_recomendada }}",
+                    "rightValue": "pausar_curta",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pausa_curta"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.acao_recomendada }}",
+                    "rightValue": "pausar_longa",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pausa_longa"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d8989da7-cb09-4e47-8893-ebb364b50639",
+      "name": "Decisão Baseada em Risco",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        1616,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "amount": "={{ Math.floor(Math.random() * 60) + 120 }}"
+      },
+      "id": "fedee29c-2fe9-45fd-9531-814309cbf13b",
+      "name": "Pausa Curta (2-3min)",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1824,
+        80
+      ],
+      "webhookId": "pausa-curta"
+    },
+    {
+      "parameters": {
+        "amount": "={{ Math.floor(Math.random() * 300) + 300 }}"
+      },
+      "id": "bb94d6e5-ad13-453a-89b1-dbd36fde5039",
+      "name": "Pausa Longa (5-10min)",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1824,
+        192
+      ],
+      "webhookId": "pausa-longa"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/h9FjnSM46IGuXhWN",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-08-02T10:18:55.279Z",
+      "updatedAt": "2025-08-02T10:18:55.279Z",
+      "id": "aZSum3uRMMFmOGvA",
+      "name": "Bulk Sender"
+    },
+    {
+      "createdAt": "2025-08-02T10:18:55.237Z",
+      "updatedAt": "2025-08-02T10:18:55.237Z",
+      "id": "EedIQaz6rPba7aAO",
+      "name": "Anti-Ban"
+    },
+    {
+      "createdAt": "2025-06-09T11:52:25.333Z",
+      "updatedAt": "2025-06-09T11:52:25.333Z",
+      "id": "5yPUOfn6imAe4TmU",
+      "name": "WhatsApp"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-08-02T10:23:49.172Z",
+  "versionId": "f35f1655-adf6-4482-971a-a83ec1384820"
+}

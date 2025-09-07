@@ -1,0 +1,513 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook (SDR)": {
+      "main": [
+        [
+          {
+            "node": "Set Vars (SDR)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Vars (SDR)": {
+      "main": [
+        [
+          {
+            "node": "Supabase → Get (session)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase → Get (session)": {
+      "main": [
+        [
+          {
+            "node": "Gerar sessionId (fallback)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Define sessionId",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar sessionId (fallback)": {
+      "main": [
+        [
+          {
+            "node": "Define sessionId",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitOut (texto)": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inferir Tipo (B2B/B2C)": {
+      "main": [
+        [
+          {
+            "node": "Postgres (Supabase) → Upsert dados_cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EvolutionAPI → sendText (SDR)": {
+      "main": [
+        []
+      ]
+    },
+    "Postgres (Supabase) → Upsert dados_cliente": {
+      "main": [
+        [
+          {
+            "node": "Escolher URL de Handoff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escolher URL de Handoff": {
+      "main": [
+        [
+          {
+            "node": "Handoff HTTP → Agente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Define sessionId": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat (SDR)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar texto": {
+      "main": [
+        [
+          {
+            "node": "Inferir Tipo (B2B/B2C)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "SplitOut (texto)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-24T02:52:22.228Z",
+  "id": "pPTUWkApaMWk9NnT",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "GRD_SDR",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "grdmad",
+        "options": {}
+      },
+      "id": "9dc266ca-1f95-48e9-9459-575cd4585f07",
+      "name": "Webhook (SDR)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -960,
+        224
+      ],
+      "webhookId": "5a48f28a-d377-4ff3-8ef5-e7f7b2a1552b"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "name": "raw",
+              "value": "={{ $json.body }}",
+              "type": "string"
+            },
+            {
+              "name": "mensagem",
+              "value": "={{ $json.body?.data?.message?.conversation || $json.body?.data?.message?.extendedTextMessage?.text || '' }}",
+              "type": "string"
+            },
+            {
+              "name": "mobile",
+              "value": "={{ ($json.body?.data?.key?.remoteJid || '').replace(/\\D/g,'').replace(/^55(\\d{2})(\\d{8})$/,'55$19$2') }}",
+              "type": "string"
+            },
+            {
+              "name": "EV_URL",
+              "value": "https://apiwp.aiagentautomate.com.br",
+              "type": "string"
+            },
+            {
+              "name": "EV_INSTANCE",
+              "value": "grdmad",
+              "type": "string"
+            },
+            {
+              "name": "EV_KEY",
+              "value": "SUA_CHAVE_AQUI",
+              "type": "string"
+            },
+            {
+              "name": "URL_Handoff_B2B",
+              "value": "https://SEU_N8N/webhook/agent-b2b",
+              "type": "string"
+            },
+            {
+              "name": "URL_Handoff_B2C",
+              "value": "https://SEU_N8N/webhook/agent-b2c",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ee7cdf80-c650-4b83-b3b2-1557ef7c65ed",
+      "name": "Set Vars (SDR)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -768,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "keyValue": "={{ $json.mobile }}"
+            }
+          ]
+        }
+      },
+      "id": "ce136a4d-8c97-47d4-b897-45cb7fa5538f",
+      "name": "Supabase → Get (session)",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        224
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase account teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "action": "generate"
+      },
+      "id": "315193e0-c82a-4d85-8886-8b034e12ba04",
+      "name": "Gerar sessionId (fallback)",
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [
+        -544,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Entrada esperada (vinda do Supabase → Get):\n// { data: [ { sessionid: \"...\" } ] }  OU  { data: [] }  OU sem \"data\"\nconst supa = $json.data;\nlet sid = (Array.isArray(supa) && supa.length > 0 && supa[0].sessionid) ? supa[0].sessionid : undefined;\n\n// Gera um UUID v4 local se não houver sessionid no Supabase\nif (!sid) {\n  const uuid = () =>\n    'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {\n      const r = (Math.random() * 16) | 0;\n      const v = c === 'x' ? r : (r & 0x3) | 0x8;\n      return v.toString(16);\n    });\n  sid = uuid();\n}\n\n// Devolve no payload atual (sem depender de outro nó)\nreturn [{ json: { ...$json, sessionid: sid } }];\n"
+      },
+      "id": "e4e17b9d-cbd1-44f1-b0e6-2a6373f5d802",
+      "name": "Define sessionId",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -368,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "75d727ed-8661-4e33-a7f6-6858cf2800d2",
+      "name": "OpenAI Chat (SDR)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        448
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.text",
+        "options": {
+          "destinationFieldName": "msg"
+        }
+      },
+      "id": "c14c6f91-e971-474c-92b5-f58e878860a0",
+      "name": "SplitOut (texto)",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        512,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.EV_URL + '/message/sendText/' + $json.EV_INSTANCE }}",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "id": "be2ecad8-4c58-4e83-b263-b97a5b3cbbd3",
+      "name": "EvolutionAPI → sendText (SDR)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        688,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "/*\nSupondo que o LLM tenha extraido campos do usuario na conversa (pode usar extra step com regex se preferir):\n- tipo_cliente: 'B2B' ou 'B2C'\n- nome, email\nSe ainda nao tiver, coloque vazio que o agente especialista pedira novamente.\n*/\nconst tipo = ($json.tipo_cliente||'').toUpperCase();\nlet agente = tipo.includes('B2B')?'B2B':(tipo.includes('B2C')?'B2C':'');\n// fallback simples por palavras-chave\nif(!agente){\n  const t = ($json.mensagem||'').toLowerCase();\n  if(/empresa|escritorio|loja|clinica|corporativo|cnpj/.test(t)) agente='B2B';\n  if(/casa|apartamento|residencial|planta/.test(t)) agente='B2C';\n}\nreturn [{ json: { ...$json, tipo_cliente: agente || ($json.tipo_cliente||'') } }];"
+      },
+      "id": "81898e6a-7b69-4026-b863-1f643257363d",
+      "name": "Inferir Tipo (B2B/B2C)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "CREATE TABLE IF NOT EXISTS public.dados_cliente (\n  id BIGSERIAL PRIMARY KEY,\n  created_at TIMESTAMPTZ DEFAULT NOW(),\n  telefone TEXT UNIQUE,\n  sessionid TEXT,\n  tipo TEXT,\n  nome TEXT,\n  email TEXT\n);\n-- idx unico telefone\nCREATE UNIQUE INDEX IF NOT EXISTS ux_dados_cliente_telefone ON public.dados_cliente(telefone);\n-- upsert\nINSERT INTO public.dados_cliente (telefone, sessionid, tipo, nome, email)\nVALUES ({{$json.mobile}}, {{$json.sessionid}}, {{$json.tipo_cliente || 'NULL'}}, {{$json.nome || 'NULL'}}, {{$json.email || 'NULL'}})\nON CONFLICT (telefone) DO UPDATE SET\n  sessionid = EXCLUDED.sessionid,\n  tipo = COALESCE(EXCLUDED.tipo, public.dados_cliente.tipo),\n  nome = COALESCE(EXCLUDED.nome, public.dados_cliente.nome),\n  email = COALESCE(EXCLUDED.email, public.dados_cliente.email);",
+        "options": {}
+      },
+      "id": "05987654-31d9-4c8e-a65a-63256b6caf38",
+      "name": "Postgres (Supabase) → Upsert dados_cliente",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        752,
+        496
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres Teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const url = ($json.tipo_cliente==='B2B') ? $json.URL_Handoff_B2B : $json.URL_Handoff_B2C;\nreturn [{ json: { ...$json, handoff_url: url } }];"
+      },
+      "id": "6955ab78-539c-4e90-8937-3be2e87ebb1a",
+      "name": "Escolher URL de Handoff",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        944,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.handoff_url }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "fe82f74d-c9ac-440e-93eb-e47908223005",
+      "name": "Handoff HTTP → Agente",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1152,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=🤖 Prompt Ajustado — SDR Joanna (B2B/B2C)\n👤 Identidade e Missão do Agente SDR\n\nNome: Você é a Joanna da GRD MAD.\n\nEmpresa: GRD MAD, especialistas em móveis planejados.\n\nTom: Profissional, cordial e fluido, sem mensagens automáticas de transferência.\n\nMissão Principal:\n\nFazer a saudação inicial.\n\nDescobrir se o cliente é B2B (empresa) ou B2C (residência).\n\nColetar nome, e-mail e telefone.\n\nEncaminhar a conversa para o agente especialista certo (sem encerrar o diálogo e sem mensagens de espera).\n\nVocê não agenda reuniões.\n\n🗺️ Fluxo da Conversa\n1. Saudação e Qualificação\n\n\"Olá! Seja bem-vindo(a) à GRD MAD 👋 Eu sou a Joanna, assistente virtual.\nAntes de seguirmos, me conta: seu projeto de móveis planejados é para a sua residência (casa/apartamento) ou para um ambiente corporativo (escritório, loja, clínica, etc.)?\"\n\n2. Coleta de Dados\n\nSe for Residência (B2C):\n\n\"Perfeito, projeto residencial 🏡!\nPara que nosso especialista prepare o atendimento ideal para você, poderia me passar seu nome completo, e-mail e confirmar se este número de WhatsApp é o melhor para contato?\"\n\nSe for Empresa (B2B):\n\n\"Ótimo, projeto corporativo 🏢!\nPara que nosso especialista prepare o atendimento empresarial, poderia me passar seu nome completo, e-mail e confirmar se este número de WhatsApp é o melhor para contato?\"\n\n3. Encaminhamento Natural\n\nApós coletar os dados:\n\n\"Excelente, [Nome]! Obrigado pelas informações 🙌\nAgora vou te colocar em contato com o especialista da GRD MAD que vai entender melhor o seu projeto e combinar os próximos passos com você.\"\n\n➡️ Neste ponto, ative o Agente_B2B ou Agente_B2C, mas sem dizer “aguarde transferência”. O especialista já entra na conversa dando continuidade, como se fosse uma pessoa só.\n\n🛠️ Ferramentas\n\nAgente_B2B → se cliente é empresa.\n\nAgente_B2C → se cliente é residencial.\n\n📜 Regras de Ouro\n\nNão use frases automáticas de transferência (“já estou transferindo... aguarde”).\n\nA conversa deve ser contínua e natural, sem sensação de troca brusca.\n\nNunca agende — apenas colete e encaminhe.\n\nO especialista deve entrar direto no fluxo, como continuação da Joanna.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -112,
+        240
+      ],
+      "id": "fb29d27e-3d96-4e34-ac47-3cf5121c64af",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "grdmad",
+        "remoteJid": "={{ $('Set Vars (SDR)').item.json.mobile }}",
+        "messageText": "={{ $json.msg }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        832,
+        240
+      ],
+      "id": "2c15c926-1263-4009-a42c-7877cc4547dc",
+      "name": "Enviar texto",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.sessionid }}",
+        "contextWindowLength": 1000
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -96,
+        464
+      ],
+      "id": "ebadea30-b4f6-4f71-b339-e9203c164ab0",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres Teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a78291ca-d359-4a48-a410-a137666c96ea",
+              "name": "output.text",
+              "value": "={{ $json.output?.text || $json.text || $json.output || $json.choices?.[0]?.message?.content || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        288,
+        240
+      ],
+      "id": "ee5d2896-b450-4448-bc2a-f49ef80908dd",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/pPTUWkApaMWk9NnT",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-08-24T03:14:44.144Z",
+  "versionId": "487b6bc0-84ed-4ecd-a4cf-9905654cb59f"
+}

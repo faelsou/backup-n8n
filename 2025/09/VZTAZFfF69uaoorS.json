@@ -1,0 +1,401 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook Start": {
+      "main": [
+        [
+          {
+            "node": "Prepare Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Data": {
+      "main": [
+        [
+          {
+            "node": "LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI LLM": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Calculate Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Metrics": {
+      "main": [
+        [
+          {
+            "node": "Insert Usage Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Usage Data": {
+      "main": [
+        [
+          {
+            "node": "Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Handler": {
+      "main": [
+        [
+          {
+            "node": "Log Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-13T22:03:46.278Z",
+  "id": "VZTAZFfF69uaoorS",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 65",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "llm-monitor",
+        "options": {}
+      },
+      "id": "9ceba38a-d1ba-4334-a6a5-2c50d6f57184",
+      "name": "Webhook Start",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        96
+      ],
+      "webhookId": "llm-monitor-webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "user-message",
+              "name": "user_message",
+              "value": "={{ $json.body.message || 'Teste de monitoramento LLM' }}",
+              "type": "string"
+            },
+            {
+              "id": "user-id",
+              "name": "user_id",
+              "value": "={{ $json.body.user_id || 'unknown' }}",
+              "type": "string"
+            },
+            {
+              "id": "start-time",
+              "name": "start_time",
+              "value": "={{ $now }}",
+              "type": "dateTime"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8d5faa03-6d81-462f-be79-c7c9bc4da0e2",
+      "name": "Prepare Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxTokens": 512,
+          "temperature": 0.7
+        }
+      },
+      "id": "1f51c688-9234-4deb-a195-1cb2c957df75",
+      "name": "OpenAI LLM",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        624,
+        304
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.user_message }}"
+      },
+      "id": "4b30c0d0-fcfd-456a-8512-0a1b4c4dd840",
+      "name": "LLM Chain",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        688,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "end-time",
+              "name": "end_time",
+              "value": "={{ $now }}",
+              "type": "dateTime"
+            },
+            {
+              "id": "latency",
+              "name": "latency_ms",
+              "value": "={{ $now.diff($item('Prepare Data').json.start_time, 'milliseconds') }}",
+              "type": "number"
+            },
+            {
+              "id": "response",
+              "name": "response_text",
+              "value": "={{ $json.text || $json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "input-tokens",
+              "name": "input_tokens",
+              "value": "={{ $json.usage?.prompt_tokens || 0 }}",
+              "type": "number"
+            },
+            {
+              "id": "output-tokens",
+              "name": "output_tokens",
+              "value": "={{ $json.usage?.completion_tokens || 0 }}",
+              "type": "number"
+            },
+            {
+              "id": "total-tokens",
+              "name": "total_tokens",
+              "value": "={{ $json.usage?.total_tokens || ($json.usage?.prompt_tokens || 0) + ($json.usage?.completion_tokens || 0) }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7b6bf796-f879-4e02-a2e6-0be88db36fe9",
+      "name": "Calculate Metrics",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1088,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO llm_usage (\n  ts, workflow_id, workflow_name, run_id, node_name,\n  provider, model, input_tokens, output_tokens, total_tokens,\n  latency_ms, status, region, user_id\n) VALUES (\n  '{{ $now.toISO() }}',\n  '{{ $workflow.id }}',\n  '{{ $workflow.name }}',\n  '{{ $runId }}',\n  '{{ $json.node_name || \"OpenAI LLM\" }}',\n  '{{ $json.provider || \"openai\" }}',\n  '{{ $json.model || \"gpt-4o-mini\" }}',\n  {{ $json.input_tokens || 0 }},\n  {{ $json.output_tokens || 0 }},\n  {{ $json.total_tokens || 0 }},\n  {{ $json.latency_ms || 0 }},\n  '{{ $json.status || \"success\" }}',\n  '{{ $json.region || \"BR-SP\" }}',\n  '{{ $item(\"Prepare Data\").json.user_id }}'\n);",
+        "options": {}
+      },
+      "id": "c01e44b6-913d-44e3-a6c0-a2d7fe1d5689",
+      "name": "Insert Usage Data",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1280,
+        96
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LAJU8e1BewlbISMn",
+          "name": "Postgres_n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "success-response",
+              "name": "success",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "message",
+              "name": "message",
+              "value": "LLM usage data recorded successfully",
+              "type": "string"
+            },
+            {
+              "id": "usage-stats",
+              "name": "usage_stats",
+              "value": "={{ { tokens: $item('Calculate Metrics').json.total_tokens, latency: $item('Calculate Metrics').json.latency_ms, cost_estimate: ($item('Calculate Metrics').json.total_tokens / 1000) * 0.002 } }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "577cd2d8-54cd-4e28-89f0-059f8ee0129d",
+      "name": "Success Response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1504,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "error-status",
+              "name": "error",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "error-message",
+              "name": "message",
+              "value": "={{ $json.message || 'Unknown error occurred' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ef2c60f1-e399-4a93-9ee6-96c9da497de4",
+      "name": "Error Handler",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1280,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO llm_usage (\n  ts, workflow_id, workflow_name, run_id, node_name,\n  provider, model, input_tokens, output_tokens, total_tokens,\n  latency_ms, status, region, user_id\n) VALUES (\n  '{{ $now.toISO() }}',\n  '{{ $workflow.id }}',\n  '{{ $workflow.name }}',\n  '{{ $runId }}',\n  'Error Handler',\n  'openai',\n  'gpt-4o-mini',\n  0,\n  0,\n  0,\n  {{ $item('Calculate Metrics').json.latency_ms || 0 }},\n  'error',\n  'BR-SP',\n  '{{ $item(\"Prepare Data\").json.user_id }}'\n);",
+        "options": {}
+      },
+      "id": "156628b1-6150-47bc-adb3-3d2b68c0738e",
+      "name": "Log Error",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1504,
+        304
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LAJU8e1BewlbISMn",
+          "name": "Postgres_n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# LLM Usage Monitoring Workflow\n\nEste workflow captura e monitora o uso de modelos LLM:\n- Recebe requisições via webhook\n- Processa com OpenAI GPT-4o-mini\n- Calcula métricas (tokens, latência, custo)\n- Armazena dados no PostgreSQL\n- Trata erros adequadamente\n\n## Como usar:\nPOST /webhook/llm-monitor\n{\n  \"message\": \"Sua pergunta aqui\",\n  \"user_id\": \"usuario123\"\n}",
+        "height": 544,
+        "width": 300,
+        "color": 4
+      },
+      "id": "c93b60ac-776c-4e47-a61d-64634cfddb55",
+      "name": "Workflow Documentation",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        0
+      ]
+    }
+  ],
+  "pinData": {
+    "Webhook Start": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.aiagentautomate.com.br",
+            "user-agent": "curl/7.81.0",
+            "content-length": "60",
+            "accept": "*/*",
+            "content-type": "application/json",
+            "x-forwarded-for": "200.39.37.99",
+            "x-forwarded-host": "n8n.aiagentautomate.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "181847215a3a",
+            "x-real-ip": "200.39.37.99",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "message": "Olá, como você está?",
+            "user_id": "user123"
+          },
+          "webhookUrl": "https://n8n.aiagentautomate.com.br/webhook/llm-monitor",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/VZTAZFfF69uaoorS",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-09-13T22:01:11.123Z",
+      "updatedAt": "2025-09-13T22:01:11.123Z",
+      "id": "KzwCRfoYcSAoR7aE",
+      "name": "LLM Monitoring"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-13T22:21:15.822Z",
+  "versionId": "7924165b-fd1b-465b-b9c3-6feb9a31a905"
+}

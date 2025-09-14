@@ -1,0 +1,313 @@
+{
+  "active": false,
+  "connections": {
+    "Cron": {
+      "main": [
+        [
+          {
+            "node": "PG Get Cursor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG Get Cursor": {
+      "main": [
+        [
+          {
+            "node": "Set Cursor Default",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Cursor Default": {
+      "main": [
+        [
+          {
+            "node": "Fetch Executions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Executions": {
+      "main": [
+        [
+          {
+            "node": "Expand Executions",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Compute Max ExecutionId",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Expand Executions": {
+      "main": [
+        [
+          {
+            "node": "Process Execution Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Execution Data": {
+      "main": [
+        [
+          {
+            "node": "Filter LLM Usage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter LLM Usage": {
+      "main": [
+        [
+          {
+            "node": "PG Insert Usage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compute Max ExecutionId": {
+      "main": [
+        [
+          {
+            "node": "PG Update Cursor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-14T02:09:13.111Z",
+  "id": "pndfdhPpwPq0uJF3",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 70",
+  "nodes": [
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "unit": "minutes"
+            }
+          ]
+        }
+      },
+      "id": "3344b2e5-8976-47aa-8150-c05c4a652171",
+      "name": "Cron",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        -912,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COALESCE(last_execution_id, 0) AS last_execution_id\nFROM llm_usage_cursor\nWHERE id = 1;\n",
+        "options": {}
+      },
+      "id": "b74d3eaf-584b-471c-aaca-1e9c317f44dc",
+      "name": "PG Get Cursor",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        -688,
+        304
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LAJU8e1BewlbISMn",
+          "name": "Postgres_n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "number": [
+            {
+              "name": "last_execution_id",
+              "value": "={{ $json.last_execution_id || 0 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b234ea0b-eb05-48f4-b928-5343ed26e010",
+      "name": "Set Cursor Default",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -496,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ 'http://n8n_n8n:5678/rest/executions?status=success&limit=100&lastId=' + ($json.last_execution_id || 0) }}\n",
+        "options": {
+          "timeout": 90000
+        }
+      },
+      "id": "544c5ab0-9972-4c72-8ce4-6c7af790acac",
+      "name": "Fetch Executions",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -304,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "language": "JavaScript"
+      },
+      "id": "80729914-2bdb-49b5-b5a5-62fc2fcec02f",
+      "name": "Expand Executions",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -48,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "language": "JavaScript"
+      },
+      "id": "77fe6998-cba5-4ff9-9b99-0987db5934fc",
+      "name": "Compute Max ExecutionId",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -48,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "language": "JavaScript"
+      },
+      "id": "7deecb94-abc9-4017-b1dc-3132143c8431",
+      "name": "Process Execution Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        176,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.no_llm_usage }}",
+              "operation": "isFalse"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "409f8914-2328-4193-8d41-8fa19367ad5d",
+      "name": "Filter LLM Usage",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        400,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO llm_usage (ts,workflow_id,workflow_name,run_id,node_name,provider,model,input_tokens,output_tokens,total_tokens,latency_ms,status,user_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13);",
+        "options": {}
+      },
+      "id": "9dbee4fa-c5a4-4dda-90f3-a5947859e274",
+      "name": "PG Insert Usage",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        592,
+        112
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LAJU8e1BewlbISMn",
+          "name": "Postgres_n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE llm_usage_cursor\nSET last_execution_id = $1\nWHERE id = 1;\n",
+        "options": {}
+      },
+      "id": "e7a375a6-4eb4-4425-989f-07b7fee802aa",
+      "name": "PG Update Cursor",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        176,
+        384
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LAJU8e1BewlbISMn",
+          "name": "Postgres_n8n"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/pndfdhPpwPq0uJF3",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-09-14T02:01:30.889Z",
+      "updatedAt": "2025-09-14T02:01:30.889Z",
+      "id": "mpLQ3g2W4akmQpGR",
+      "name": "observability"
+    },
+    {
+      "createdAt": "2025-09-14T02:01:30.888Z",
+      "updatedAt": "2025-09-14T02:01:30.888Z",
+      "id": "mJZvBU9pEcIfrpAy",
+      "name": "llm-usage"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-14T02:53:19.965Z",
+  "versionId": "c23713f2-6ed7-4a00-8234-c9b78e0b7aee"
+}

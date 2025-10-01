@@ -1,0 +1,148 @@
+{
+  "active": false,
+  "connections": {
+    "Schedule Lembretes": {
+      "main": [
+        [
+          {
+            "node": "Get many events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Ativos": {
+      "main": [
+        []
+      ]
+    },
+    "Calcular Valores": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-09-18T04:26:19.032Z",
+  "id": "k7HsyiPhcWrE8R1N",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 72",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "id": "d64e0e29-94cb-4314-b588-f7d0e18a8ac1",
+      "name": "Schedule Lembretes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -544,
+        -32
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM estacionamento WHERE status = 'ATIVO' AND entrada < NOW() - INTERVAL '5 minute';",
+        "options": {}
+      },
+      "id": "b2487d82-b947-43e2-9cd4-b0c518a97a5e",
+      "name": "Buscar Ativos",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -400,
+        -304
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LcPSd7FLQY8Hpijr",
+          "name": "Postgres flowpark"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Calcular tempo e valor atual\nconst items = [];\n\nfor (const item of $input.all()) {\n  const entrada = new Date(item.json.entrada);\n  const agora = new Date();\n  const horasEstacionado = Math.ceil((agora - entrada) / (1000 * 60 * 60));\n  const valorTotal = (horasEstacionado * parseFloat(item.json.valor_hora)).toFixed(2);\n  \n  items.push({\n    json: {\n      ...item.json,\n      horas_estacionado: horasEstacionado,\n      valor_total: valorTotal,\n      tempo_formatado: `${horasEstacionado}h`\n    }\n  });\n}\n\nreturn items;"
+      },
+      "id": "bc743f8e-5374-4aad-81de-a1638b74dfe1",
+      "name": "Calcular Valores",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -112,
+        -288
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "flowpark",
+        "remoteJid": "={{ $json.telefone }}",
+        "messageText": "=⏰ *LEMBRETE DE ESTACIONAMENTO*\n\n🚗 Placa: {{ $json.placa }}\n⏱️ Tempo: {{ $json.tempo_formatado }}\n💰 Valor atual: R$ {{ $json.valor_total }}\n\n💳 Para pagar e sair:\n• Responda *PIX* para pagamento via PIX\n• Responda *CARTAO* para cartão\n• Ou acesse nosso app\n\n📱 ID do veículo: {{ $json.id }}",
+        "options_message": {}
+      },
+      "id": "2df94ca9-ecb1-487b-8ced-e2190675446d",
+      "name": "Enviar Lembrete",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        64,
+        -32
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -336,
+        -32
+      ],
+      "id": "8a9ae3e8-f69a-46f5-a3ef-f4e1d1033bc9",
+      "name": "Get many events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ziCJIbhQxh6MsGo0",
+          "name": "Google Calendar GrdMad"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/k7HsyiPhcWrE8R1N",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-18T04:26:19.032Z",
+  "versionId": "b3bacfc3-1a72-415c-8b13-788b57e26572"
+}

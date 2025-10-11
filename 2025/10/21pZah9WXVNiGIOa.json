@@ -1,0 +1,137 @@
+{
+  "active": false,
+  "connections": {
+    "Executar todo dia às 4h": {
+      "main": [
+        [
+          {
+            "node": "1. Executar Health Check via SSH",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "2. Executar Limpeza Docker via SSH",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1. Executar Health Check via SSH": {
+      "main": [
+        [
+          {
+            "node": "3. Analisar e Gerar Insights",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-11T03:06:20.981Z",
+  "id": "21pZah9WXVNiGIOa",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Monitoramento e Limpeza de VPS",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Executar todo dia às 4h",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7c7b698c-02ef-40b2-9244-3f071203d2bd"
+    },
+    {
+      "parameters": {
+        "command": "/root/scripts/vps_health_check.sh"
+      },
+      "name": "1. Executar Health Check via SSH",
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        240,
+        0
+      ],
+      "id": "f5883438-50d5-48c2-bb0d-3356726b5bd6",
+      "credentials": {
+        "sshPassword": {
+          "id": "yakdt9GNOgUeRKwC",
+          "name": "SSH Password account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "/root/scripts/purge_containers.sh"
+      },
+      "name": "2. Executar Limpeza Docker via SSH",
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        240,
+        224
+      ],
+      "id": "6904d738-546c-4def-9a9e-dd3d8e2021d7",
+      "credentials": {
+        "sshPassword": {
+          "id": "yakdt9GNOgUeRKwC",
+          "name": "SSH Password account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = $json.stdout;\nconst lines = output.split('\\n');\n\nconst metrics = {};\nlines.forEach(line => {\n  const parts = line.split(': ');\n  if (parts.length === 2) {\n    metrics[parts[0]] = parts[1].trim();\n  }\n});\n\nlet insights = `## 🚀 Relatório de Saúde da VPS\\n\\n`;\nlet recommendations = `### 💡 Recomendações\\n\\n`;\nlet hasRecommendations = false;\n\n// Adiciona métricas ao relatório\ninsights += `*   **Carga do Sistema:** ${metrics.LOAD_AVERAGE}\\n`;\ninsights += `*   **Uso de CPU:** ${metrics.CPU_USAGE_PERCENT}%\\n`;\ninsights += `*   **Uso de Memória:** ${metrics.MEMORY_USAGE_PERCENT}%\\n`;\ninsights += `*   **Uso de Disco:** ${metrics.DISK_USAGE_PERCENT}%\\n`;\ninsights += `*   **Contêineres Ativos:** ${metrics.RUNNING_CONTAINERS}\\n\\n`;\n\n// Gera recomendações com base nos status\nif (metrics.DISK_STATUS === 'CRITICAL') {\n  recommendations += `*   ⚠️ **Atenção:** O uso de disco está em **${metrics.DISK_USAGE_PERCENT}%**. Considere executar uma limpeza de logs ou imagens Docker não utilizadas.\\n`;\n  hasRecommendations = true;\n}\n\nif (metrics.MEMORY_STATUS === 'CRITICAL') {\n  recommendations += `*   🚨 **Crítico:** O uso de memória está em **${metrics.MEMORY_USAGE_PERCENT}%**. Verifique os contêineres que mais consomem memória com o comando \\`docker stats\\`.\\n`;\n  hasRecommendations = true;\n}\n\nif (!hasRecommendations) {\n  recommendations += `*   ✅ Tudo parece estar operando normalmente.\\n`;\n}\n\n// Monta a mensagem final\nconst finalMessage = insights + recommendations;\n\n// Retorna o objeto formatado\nreturn { \n  message: finalMessage,\n  metrics: metrics\n};\n"
+      },
+      "name": "3. Analisar e Gerar Insights",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        480,
+        0
+      ],
+      "id": "b8097e8a-44e2-4f4c-8a9d-4c39391e1106"
+    },
+    {
+      "parameters": {
+        "content": "={{$node[\"3. Analisar e Gerar Insights\"].json[\"message\"]}}"
+      },
+      "name": "Insights para Ação",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        752,
+        0
+      ],
+      "id": "926fe890-58ff-46cd-811f-090a2eb48b18"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/21pZah9WXVNiGIOa",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-11T03:06:20.981Z",
+      "updatedAt": "2025-10-11T03:06:20.981Z",
+      "role": "workflow:owner",
+      "workflowId": "21pZah9WXVNiGIOa",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-11T03:06:20.981Z",
+  "versionId": "12a81a93-d7de-478e-ae97-b351f168b421"
+}

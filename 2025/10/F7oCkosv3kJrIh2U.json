@@ -1,0 +1,413 @@
+{
+  "active": false,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Webmotors - Scraping",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "OLX - Scraping",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "iCarros - Scraping",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webmotors - Scraping": {
+      "main": [
+        [
+          {
+            "node": "Extrair Dados - Webmotors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OLX - Scraping": {
+      "main": [
+        [
+          {
+            "node": "Extrair Dados - OLX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "iCarros - Scraping": {
+      "main": [
+        [
+          {
+            "node": "Extrair Dados - iCarros",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Dados - Webmotors": {
+      "main": [
+        [
+          {
+            "node": "Merge - Todos os Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Dados - OLX": {
+      "main": [
+        [
+          {
+            "node": "Merge - Todos os Dados",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge - Todos os Dados": {
+      "main": [
+        [
+          {
+            "node": "Limpar e Organizar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpar e Organizar": {
+      "main": [
+        [
+          {
+            "node": "Gerar HTML Newsletter",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Preparar para Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar HTML Newsletter": {
+      "main": [
+        [
+          {
+            "node": "Enviar Email (Gmail)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar para Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets - Backup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-29T10:46:34.380Z",
+  "id": "F7oCkosv3kJrIh2U",
+  "isArchived": false,
+  "meta": null,
+  "name": "Newsletter Carros Elétricos - Scraping",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "id": "be68cc86-eb7c-4182-829d-683d04ce6311",
+      "name": "Início (Schedule)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -208,
+        112
+      ],
+      "webhookId": "",
+      "notes": "Executa automaticamente a cada dia às 8h"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      },
+      "id": "6a1649a7-f895-46fd-aac3-a248e5ee9ee9",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -192,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.webmotors.com.br/carros/estoque?tipoveiculo=carros&combustivel=eletrico",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "93fbd68b-d4f0-445c-8ce8-d337a7f1189a",
+      "name": "Webmotors - Scraping",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/estado-sp?f=p&pe=100000",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "c2e27baf-806b-47c3-a563-ff9bb63eec3c",
+      "name": "OLX - Scraping",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.icarros.com.br/principal/index.jsp",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "f6c1df06-6d90-49db-b6a3-409ee346cb3a",
+      "name": "iCarros - Scraping",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrai informações de carros elétricos do HTML\nconst items = [];\nconst html = $input.first().json.body;\n\n// Regex para extrair dados básicos\nconst titleRegex = /<h[1-3][^>]*>([^<]*(?:elétric|electric|EV|Tesla|BYD|Chevrolet Bolt)[^<]*)<\\/h[1-3]>/gi;\nconst priceRegex = /R\\$\\s*([\\d.,]+)/g;\nconst linkRegex = /href=\"([^\"]*(?:carro|veiculo|anuncio)[^\"]*)\"/gi;\n\nlet matches;\nlet titleMatches = [];\nlet priceMatches = [];\nlet linkMatches = [];\n\n// Extrai títulos\nwhile ((matches = titleRegex.exec(html)) !== null) {\n  titleMatches.push(matches[1].trim());\n}\n\n// Extrai preços\nwhile ((matches = priceRegex.exec(html)) !== null) {\n  priceMatches.push(matches[1]);\n}\n\n// Extrai links\nwhile ((matches = linkRegex.exec(html)) !== null) {\n  linkMatches.push(matches[1]);\n}\n\n// Combina dados\nfor (let i = 0; i < Math.min(titleMatches.length, 10); i++) {\n  items.push({\n    json: {\n      titulo: titleMatches[i] || 'Título não disponível',\n      preco: priceMatches[i] || 'Consulte',\n      link: linkMatches[i] || '#',\n      fonte: $input.first().json.url || 'Fonte não identificada',\n      data_coleta: new Date().toISOString()\n    }\n  });\n}\n\nreturn items.length > 0 ? items : [{ json: { erro: 'Nenhum carro encontrado' } }];"
+      },
+      "id": "f41e510d-b4ff-4e76-acaf-f5f7dbd02d4d",
+      "name": "Extrair Dados - Webmotors",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrai informações de carros elétricos do HTML\nconst items = [];\nconst html = $input.first().json.body;\n\n// Regex para extrair dados básicos\nconst titleRegex = /<h[1-3][^>]*>([^<]*(?:elétric|electric|EV|Tesla|BYD|Chevrolet Bolt)[^<]*)<\\/h[1-3]>/gi;\nconst priceRegex = /R\\$\\s*([\\d.,]+)/g;\nconst linkRegex = /href=\"([^\"]*(?:carro|veiculo|anuncio)[^\"]*)\"/gi;\n\nlet matches;\nlet titleMatches = [];\nlet priceMatches = [];\nlet linkMatches = [];\n\n// Extrai títulos\nwhile ((matches = titleRegex.exec(html)) !== null) {\n  titleMatches.push(matches[1].trim());\n}\n\n// Extrai preços\nwhile ((matches = priceRegex.exec(html)) !== null) {\n  priceMatches.push(matches[1]);\n}\n\n// Extrai links\nwhile ((matches = linkRegex.exec(html)) !== null) {\n  linkMatches.push(matches[1]);\n}\n\n// Combina dados\nfor (let i = 0; i < Math.min(titleMatches.length, 10); i++) {\n  items.push({\n    json: {\n      titulo: titleMatches[i] || 'Título não disponível',\n      preco: priceMatches[i] || 'Consulte',\n      link: linkMatches[i] || '#',\n      fonte: 'OLX',\n      data_coleta: new Date().toISOString()\n    }\n  });\n}\n\nreturn items.length > 0 ? items : [{ json: { erro: 'Nenhum carro encontrado' } }];"
+      },
+      "id": "05c34d05-1f1c-41e4-b7fe-5fded48cad0b",
+      "name": "Extrair Dados - OLX",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrai informações de carros elétricos do HTML\nconst items = [];\nconst html = $input.first().json.body;\n\n// Regex para extrair dados básicos\nconst titleRegex = /<h[1-3][^>]*>([^<]*(?:elétric|electric|EV|Tesla|BYD|Chevrolet Bolt)[^<]*)<\\/h[1-3]>/gi;\nconst priceRegex = /R\\$\\s*([\\d.,]+)/g;\nconst linkRegex = /href=\"([^\"]*(?:carro|veiculo|anuncio)[^\"]*)\"/gi;\n\nlet matches;\nlet titleMatches = [];\nlet priceMatches = [];\nlet linkMatches = [];\n\n// Extrai títulos\nwhile ((matches = titleRegex.exec(html)) !== null) {\n  titleMatches.push(matches[1].trim());\n}\n\n// Extrai preços\nwhile ((matches = priceRegex.exec(html)) !== null) {\n  priceMatches.push(matches[1]);\n}\n\n// Extrai links\nwhile ((matches = linkRegex.exec(html)) !== null) {\n  linkMatches.push(matches[1]);\n}\n\n// Combina dados\nfor (let i = 0; i < Math.min(titleMatches.length, 10); i++) {\n  items.push({\n    json: {\n      titulo: titleMatches[i] || 'Título não disponível',\n      preco: priceMatches[i] || 'Consulte',\n      link: linkMatches[i] || '#',\n      fonte: 'iCarros',\n      data_coleta: new Date().toISOString()\n    }\n  });\n}\n\nreturn items.length > 0 ? items : [{ json: { erro: 'Nenhum carro encontrado' } }];"
+      },
+      "id": "b9ddb2d3-503c-4e65-9c9f-1ef7d3e9212e",
+      "name": "Extrair Dados - iCarros",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "options": {}
+      },
+      "id": "b01b78b8-1afb-4cf5-8cf8-7b8c36bda53f",
+      "name": "Merge - Todos os Dados",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        400,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Remove duplicatas e organiza dados\nconst items = $input.all();\nconst uniqueItems = new Map();\n\nitems.forEach(item => {\n  const key = item.json.titulo + item.json.preco;\n  if (!uniqueItems.has(key) && !item.json.erro) {\n    uniqueItems.set(key, item.json);\n  }\n});\n\nconst sortedItems = Array.from(uniqueItems.values())\n  .sort((a, b) => {\n    const priceA = parseFloat(a.preco.replace(/[^0-9,]/g, '').replace(',', '.'));\n    const priceB = parseFloat(b.preco.replace(/[^0-9,]/g, '').replace(',', '.'));\n    return priceA - priceB;\n  });\n\nreturn sortedItems.map(item => ({ json: item }));"
+      },
+      "id": "174b5a5d-47f3-4320-8cfb-24ef7663ca15",
+      "name": "Limpar e Organizar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        608,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gera HTML da newsletter\nconst items = $input.all();\nconst hoje = new Date().toLocaleDateString('pt-BR', { \n  weekday: 'long', \n  year: 'numeric', \n  month: 'long', \n  day: 'numeric' \n});\n\nlet htmlContent = `\n<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Newsletter - Carros Elétricos</title>\n    <style>\n        body {\n            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n            background-color: #f4f4f4;\n            margin: 0;\n            padding: 20px;\n        }\n        .container {\n            max-width: 800px;\n            margin: 0 auto;\n            background-color: white;\n            border-radius: 10px;\n            box-shadow: 0 0 20px rgba(0,0,0,0.1);\n            overflow: hidden;\n        }\n        .header {\n            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n            color: white;\n            padding: 40px 20px;\n            text-align: center;\n        }\n        .header h1 {\n            margin: 0;\n            font-size: 32px;\n        }\n        .header p {\n            margin: 10px 0 0 0;\n            opacity: 0.9;\n        }\n        .content {\n            padding: 30px;\n        }\n        .car-item {\n            border: 1px solid #e0e0e0;\n            border-radius: 8px;\n            padding: 20px;\n            margin-bottom: 20px;\n            transition: all 0.3s ease;\n            background-color: #fafafa;\n        }\n        .car-item:hover {\n            box-shadow: 0 5px 15px rgba(0,0,0,0.1);\n            transform: translateY(-2px);\n        }\n        .car-title {\n            font-size: 20px;\n            font-weight: bold;\n            color: #333;\n            margin-bottom: 10px;\n        }\n        .car-price {\n            font-size: 24px;\n            color: #667eea;\n            font-weight: bold;\n            margin: 10px 0;\n        }\n        .car-source {\n            color: #666;\n            font-size: 14px;\n            margin-top: 5px;\n        }\n        .car-link {\n            display: inline-block;\n            margin-top: 10px;\n            padding: 10px 20px;\n            background-color: #667eea;\n            color: white;\n            text-decoration: none;\n            border-radius: 5px;\n            transition: background-color 0.3s ease;\n        }\n        .car-link:hover {\n            background-color: #764ba2;\n        }\n        .footer {\n            background-color: #333;\n            color: white;\n            text-align: center;\n            padding: 20px;\n            font-size: 14px;\n        }\n        .stats {\n            background-color: #f0f0f0;\n            padding: 15px;\n            border-radius: 5px;\n            margin-bottom: 30px;\n            text-align: center;\n        }\n        .stats strong {\n            color: #667eea;\n            font-size: 24px;\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <div class=\"header\">\n            <h1>⚡ Newsletter Carros Elétricos</h1>\n            <p>${hoje}</p>\n        </div>\n        <div class=\"content\">\n            <div class=\"stats\">\n                <p>Encontramos <strong>${items.length}</strong> carros elétricos disponíveis hoje!</p>\n            </div>\n`;\n\nitems.forEach((item, index) => {\n  htmlContent += `\n            <div class=\"car-item\">\n                <div class=\"car-title\">${index + 1}. ${item.json.titulo}</div>\n                <div class=\"car-price\">R$ ${item.json.preco}</div>\n                <div class=\"car-source\">📍 Fonte: ${item.json.fonte}</div>\n                <a href=\"${item.json.link}\" class=\"car-link\" target=\"_blank\">Ver Detalhes</a>\n            </div>\n`;\n});\n\nhtmlContent += `\n        </div>\n        <div class=\"footer\">\n            <p>Newsletter gerada automaticamente via n8n</p>\n            <p>© 2025 - Todos os direitos reservados</p>\n        </div>\n    </div>\n</body>\n</html>\n`;\n\nreturn [{ json: { html: htmlContent, total_carros: items.length } }];"
+      },
+      "id": "9aaead21-f1bf-402c-b307-dc4d74b1119e",
+      "name": "Gerar HTML Newsletter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "aiagenteautomate@gmail.com",
+        "subject": "⚡ Newsletter Carros Elétricos - {{ $now.toFormat('dd/MM/yyyy') }}",
+        "message": "={{ $json.html }}",
+        "options": {}
+      },
+      "id": "6a7472a9-839c-4d76-b2c3-583d31fc73cc",
+      "name": "Enviar Email (Gmail)",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1008,
+        64
+      ],
+      "webhookId": "81ff203d-728a-41f5-9a6c-2d1a230bb07a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bMTj7PQt4FxoCvuP",
+          "name": "Gmail account AiAgentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "subscriber"
+      },
+      "id": "6a11e859-635f-41f7-9b1d-68a8a7675c23",
+      "name": "Mailchimp (Alternativa)",
+      "type": "n8n-nodes-base.mailchimp",
+      "typeVersion": 1,
+      "position": [
+        1008,
+        256
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Salva dados em Google Sheets para backup\nreturn $input.all().map(item => ({\n  json: {\n    data: new Date().toISOString().split('T')[0],\n    titulo: item.json.titulo,\n    preco: item.json.preco,\n    fonte: item.json.fonte,\n    link: item.json.link\n  }\n}));"
+      },
+      "id": "703f26be-92af-49dd-97f3-ef5927164357",
+      "name": "Preparar para Google Sheets",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        608,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1SanGW3ogGYsfDG4nqiGY12MeDSmm-QZU8p-8a_yTouo/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Carros",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "7ea5de49-ca72-4d5a-9d88-85af79a30c85",
+      "name": "Google Sheets - Backup",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        800,
+        352
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CrTErpiGn7MJ9o9m",
+          "name": "Google Sheets GrdMAd"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/F7oCkosv3kJrIh2U",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-29T10:46:34.380Z",
+      "updatedAt": "2025-10-29T10:46:34.380Z",
+      "role": "workflow:owner",
+      "workflowId": "F7oCkosv3kJrIh2U",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-29T10:46:34.380Z",
+  "versionId": "4606104e-b3ec-4588-a879-78e4dede0590"
+}

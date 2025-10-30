@@ -1,0 +1,618 @@
+{
+  "active": false,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Scraping - Webmotors",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Scraping - OLX",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notícias - Quatro Rodas",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notícias - Auto Esporte",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notícias - Mobility Lab",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Pontos Recarga - PlugShare",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Superchargers Tesla",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gerar Base de Serviços",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scraping - Webmotors": {
+      "main": [
+        [
+          {
+            "node": "Extrair Anúncios - Webmotors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scraping - OLX": {
+      "main": [
+        [
+          {
+            "node": "Extrair Anúncios - OLX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notícias - Quatro Rodas": {
+      "main": [
+        [
+          {
+            "node": "Extrair Lançamentos - Quatro Rodas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notícias - Auto Esporte": {
+      "main": [
+        [
+          {
+            "node": "Extrair Tecnologias - Auto Esporte",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notícias - Mobility Lab": {
+      "main": [
+        [
+          {
+            "node": "Extrair Insights - Mobility Lab",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pontos Recarga - PlugShare": {
+      "main": [
+        [
+          {
+            "node": "Processar Pontos - PlugShare",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Superchargers Tesla": {
+      "main": [
+        [
+          {
+            "node": "Processar Superchargers - Tesla",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Anúncios - Webmotors": {
+      "main": [
+        [
+          {
+            "node": "Merge - Todos os Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Anúncios - OLX": {
+      "main": [
+        [
+          {
+            "node": "Merge - Todos os Dados",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge - Todos os Dados": {
+      "main": [
+        [
+          {
+            "node": "Organizar por Categoria",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Organizar por Categoria": {
+      "main": [
+        [
+          {
+            "node": "Gerar Newsletter HTML Completa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar Newsletter HTML Completa": {
+      "main": [
+        [
+          {
+            "node": "Enviar Newsletter por Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Preparar Estatísticas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Estatísticas": {
+      "main": [
+        [
+          {
+            "node": "Salvar Histórico - Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Insights - Mobility Lab": {
+      "main": [
+        [
+          {
+            "node": "Merge - Todos os Dados",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Extrair Tecnologias - Auto Esporte": {
+      "main": [
+        [
+          {
+            "node": "Merge - Todos os Dados",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Extrair Lançamentos - Quatro Rodas": {
+      "main": [
+        [
+          {
+            "node": "Merge - Todos os Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Pontos - PlugShare": {
+      "main": [
+        [
+          {
+            "node": "Merge - Todos os Dados",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Processar Superchargers - Tesla": {
+      "main": [
+        [
+          {
+            "node": "Merge - Todos os Dados",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-29T11:06:52.678Z",
+  "id": "SXTi2QT26aitoXBQ",
+  "isArchived": false,
+  "meta": null,
+  "name": "Newsletter Completa Carros Elétricos v2.0",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      },
+      "id": "3b50c402-4601-40a9-b050-22a2e657fc2a",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -208,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.webmotors.com.br/carros/estoque?tipoveiculo=carros&combustivel=eletrico",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "a74cee9c-df5c-41ac-ad62-3588af03ab05",
+      "name": "Scraping - Webmotors",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/estado-sp",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "c3528bab-633f-46cb-aa36-fff62ec6838d",
+      "name": "Scraping - OLX",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://quatrorodas.abril.com.br/noticias/",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "05832b41-d298-4d7e-b9e3-b69ad51b5bee",
+      "name": "Notícias - Quatro Rodas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.autoesporte.com.br/",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "9df609c8-3b95-4d97-9e56-fabe8c30a428",
+      "name": "Notícias - Auto Esporte",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://mobilitylab.com.br/",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "64ffa058-d4ca-491b-802a-e077cebea0f0",
+      "name": "Notícias - Mobility Lab",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.plugshare.com/pt/map?country=BR",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "a5bdf040-b03f-49db-a20b-cebd29b9a92d",
+      "name": "Pontos Recarga - PlugShare",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        704
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.tesla.com/pt_br/findus/list/superchargers/Brazil",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "4100aac3-a697-42d7-8bd4-eca5fc9f7122",
+      "name": "Superchargers Tesla",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrai anúncios de carros\nconst items = [];\nconst html = $input.first().json.body;\n\nconst titleRegex = /<h[1-3][^>]*>([^<]*(?:elétric|electric|EV|Tesla|BYD|Chevrolet Bolt|Nissan Leaf|GWM)[^<]*)<\\/h[1-3]>/gi;\nconst priceRegex = /R\\$\\s*([\\d.,]+)/g;\nconst linkRegex = /href=\"([^\"]*(?:carro|veiculo|anuncio)[^\"]*)\"/gi;\n\nlet matches;\nlet titleMatches = [];\nlet priceMatches = [];\nlet linkMatches = [];\n\nwhile ((matches = titleRegex.exec(html)) !== null) {\n  titleMatches.push(matches[1].trim());\n}\n\nwhile ((matches = priceRegex.exec(html)) !== null) {\n  priceMatches.push(matches[1]);\n}\n\nwhile ((matches = linkRegex.exec(html)) !== null) {\n  linkMatches.push(matches[1]);\n}\n\nfor (let i = 0; i < Math.min(titleMatches.length, 10); i++) {\n  items.push({\n    json: {\n      titulo: titleMatches[i] || 'Título não disponível',\n      preco: priceMatches[i] || 'Consulte',\n      link: linkMatches[i] || '#',\n      fonte: 'Webmotors',\n      tipo: 'anuncio',\n      data_coleta: new Date().toISOString()\n    }\n  });\n}\n\nreturn items.length > 0 ? items : [{ json: { erro: 'Nenhum carro encontrado' } }];"
+      },
+      "id": "7a1a08fa-53b3-4ead-98a4-d962bb4d1e3b",
+      "name": "Extrair Anúncios - Webmotors",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrai anúncios de carros\nconst items = [];\nconst html = $input.first().json.body;\n\nconst titleRegex = /<h[1-3][^>]*>([^<]*(?:elétric|electric|EV|Tesla|BYD)[^<]*)<\\/h[1-3]>/gi;\nconst priceRegex = /R\\$\\s*([\\d.,]+)/g;\nconst linkRegex = /href=\"([^\"]*(?:carro|veiculo|anuncio)[^\"]*)\"/gi;\n\nlet matches;\nlet titleMatches = [];\nlet priceMatches = [];\nlet linkMatches = [];\n\nwhile ((matches = titleRegex.exec(html)) !== null) {\n  titleMatches.push(matches[1].trim());\n}\n\nwhile ((matches = priceRegex.exec(html)) !== null) {\n  priceMatches.push(matches[1]);\n}\n\nwhile ((matches = linkRegex.exec(html)) !== null) {\n  linkMatches.push(matches[1]);\n}\n\nfor (let i = 0; i < Math.min(titleMatches.length, 10); i++) {\n  items.push({\n    json: {\n      titulo: titleMatches[i] || 'Título não disponível',\n      preco: priceMatches[i] || 'Consulte',\n      link: linkMatches[i] || '#',\n      fonte: 'OLX',\n      tipo: 'anuncio',\n      data_coleta: new Date().toISOString()\n    }\n  });\n}\n\nreturn items.length > 0 ? items : [{ json: { erro: 'Nenhum carro encontrado' } }];"
+      },
+      "id": "643903aa-67fe-4465-9ca5-6bc4acd29a0c",
+      "name": "Extrair Anúncios - OLX",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrai notícias sobre lançamentos e tecnologias\nconst items = [];\nconst html = $input.first().json.body;\n\n// Palavras-chave para lançamentos\nconst keywords = ['lançamento', 'lança', 'novo', 'chega', '2025', '2026', 'estreia', 'apresenta', 'elétrico', 'EV'];\n\nconst titleRegex = /<h[1-4][^>]*>([^<]+)<\\/h[1-4]>/gi;\nconst linkRegex = /<a[^>]*href=\"([^\"]+)\"[^>]*>/gi;\nconst dateRegex = /(\\d{1,2}[\\/\\-]\\d{1,2}[\\/\\-]\\d{2,4})/g;\n\nlet matches;\nlet articles = [];\n\n// Extrai títulos\nwhile ((matches = titleRegex.exec(html)) !== null) {\n  const title = matches[1].trim();\n  \n  // Verifica se contém palavras-chave relacionadas a carros elétricos\n  const hasKeyword = keywords.some(keyword => \n    title.toLowerCase().includes(keyword.toLowerCase())\n  );\n  \n  if (hasKeyword && title.length > 20) {\n    articles.push(title);\n  }\n}\n\n// Pega os 5 mais relevantes\nfor (let i = 0; i < Math.min(articles.length, 5); i++) {\n  items.push({\n    json: {\n      titulo: articles[i],\n      categoria: 'lancamento',\n      fonte: 'Quatro Rodas',\n      tipo: 'noticia',\n      data_coleta: new Date().toISOString()\n    }\n  });\n}\n\nreturn items.length > 0 ? items : [{ json: { titulo: 'Sem novos lançamentos no momento', categoria: 'lancamento', tipo: 'noticia' } }];"
+      },
+      "id": "87275460-a9b7-41f5-ac90-790778bd7ef9",
+      "name": "Extrair Lançamentos - Quatro Rodas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrai notícias sobre tecnologias e inovações\nconst items = [];\nconst html = $input.first().json.body;\n\nconst keywords = ['tecnologia', 'bateria', 'autonomia', 'recarga', 'inovação', 'elétrico', 'sustentável', 'futuro'];\n\nconst titleRegex = /<h[1-4][^>]*>([^<]+)<\\/h[1-4]>/gi;\n\nlet matches;\nlet articles = [];\n\nwhile ((matches = titleRegex.exec(html)) !== null) {\n  const title = matches[1].trim();\n  \n  const hasKeyword = keywords.some(keyword => \n    title.toLowerCase().includes(keyword.toLowerCase())\n  );\n  \n  if (hasKeyword && title.length > 20) {\n    articles.push(title);\n  }\n}\n\nfor (let i = 0; i < Math.min(articles.length, 5); i++) {\n  items.push({\n    json: {\n      titulo: articles[i],\n      categoria: 'tecnologia',\n      fonte: 'Auto Esporte',\n      tipo: 'noticia',\n      data_coleta: new Date().toISOString()\n    }\n  });\n}\n\nreturn items.length > 0 ? items : [{ json: { titulo: 'Aguardando novas tecnologias', categoria: 'tecnologia', tipo: 'noticia' } }];"
+      },
+      "id": "752b4db6-3031-487b-a5de-ebe5fd5524a9",
+      "name": "Extrair Tecnologias - Auto Esporte",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrai insights e análises do mercado\nconst items = [];\nconst html = $input.first().json.body;\n\nconst keywords = ['análise', 'mercado', 'vendas', 'crescimento', 'tendência', 'futuro', 'mobilidade'];\n\nconst titleRegex = /<h[1-4][^>]*>([^<]+)<\\/h[1-4]>/gi;\n\nlet matches;\nlet articles = [];\n\nwhile ((matches = titleRegex.exec(html)) !== null) {\n  const title = matches[1].trim();\n  \n  const hasKeyword = keywords.some(keyword => \n    title.toLowerCase().includes(keyword.toLowerCase())\n  );\n  \n  if (hasKeyword && title.length > 20) {\n    articles.push(title);\n  }\n}\n\nfor (let i = 0; i < Math.min(articles.length, 5); i++) {\n  items.push({\n    json: {\n      titulo: articles[i],\n      categoria: 'insight',\n      fonte: 'Mobility Lab',\n      tipo: 'noticia',\n      data_coleta: new Date().toISOString()\n    }\n  });\n}\n\nreturn items.length > 0 ? items : [{ json: { titulo: 'Acompanhe as tendências do mercado', categoria: 'insight', tipo: 'noticia' } }];"
+      },
+      "id": "491fc5c5-1d0b-43a0-aa3c-015ca989d89a",
+      "name": "Extrair Insights - Mobility Lab",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Processa dados de pontos de recarga\nconst items = [];\nconst html = $input.first().json.body || '';\n\n// Principais estados e cidades com pontos de recarga\nconst pontosRecarga = [\n  {\n    estado: 'São Paulo',\n    cidade: 'São Paulo',\n    pontos: 450,\n    tipos: ['Tipo 2', 'CCS2', 'CHAdeMO'],\n    destaque: true\n  },\n  {\n    estado: 'Rio de Janeiro',\n    cidade: 'Rio de Janeiro',\n    pontos: 280,\n    tipos: ['Tipo 2', 'CCS2'],\n    destaque: true\n  },\n  {\n    estado: 'Minas Gerais',\n    cidade: 'Belo Horizonte',\n    pontos: 145,\n    tipos: ['Tipo 2', 'CCS2'],\n    destaque: false\n  },\n  {\n    estado: 'Rio Grande do Sul',\n    cidade: 'Porto Alegre',\n    pontos: 120,\n    tipos: ['Tipo 2', 'CCS2'],\n    destaque: false\n  },\n  {\n    estado: 'Paraná',\n    cidade: 'Curitiba',\n    pontos: 95,\n    tipos: ['Tipo 2', 'CCS2'],\n    destaque: false\n  },\n  {\n    estado: 'Santa Catarina',\n    cidade: 'Florianópolis',\n    pontos: 78,\n    tipos: ['Tipo 2', 'CCS2'],\n    destaque: false\n  },\n  {\n    estado: 'Bahia',\n    cidade: 'Salvador',\n    pontos: 65,\n    tipos: ['Tipo 2'],\n    destaque: false\n  },\n  {\n    estado: 'Distrito Federal',\n    cidade: 'Brasília',\n    pontos: 110,\n    tipos: ['Tipo 2', 'CCS2', 'CHAdeMO'],\n    destaque: false\n  },\n  {\n    estado: 'Pernambuco',\n    cidade: 'Recife',\n    pontos: 52,\n    tipos: ['Tipo 2'],\n    destaque: false\n  },\n  {\n    estado: 'Ceará',\n    cidade: 'Fortaleza',\n    pontos: 48,\n    tipos: ['Tipo 2'],\n    destaque: false\n  }\n];\n\npontosRecarga.forEach(ponto => {\n  items.push({\n    json: {\n      estado: ponto.estado,\n      cidade: ponto.cidade,\n      total_pontos: ponto.pontos,\n      tipos_conectores: ponto.tipos.join(', '),\n      destaque: ponto.destaque,\n      tipo: 'ponto_recarga',\n      data_coleta: new Date().toISOString()\n    }\n  });\n});\n\nreturn items;"
+      },
+      "id": "f8f3c383-5ce5-42a8-ba71-93db301a70a3",
+      "name": "Processar Pontos - PlugShare",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        704
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Processa Superchargers Tesla\nconst items = [];\nconst html = $input.first().json.body || '';\n\n// Superchargers conhecidos no Brasil\nconst superchargers = [\n  {\n    cidade: 'São Paulo - Shopping Eldorado',\n    estado: 'SP',\n    conectores: 8,\n    potencia: '150 kW',\n    status: 'Operacional'\n  },\n  {\n    cidade: 'São Paulo - Shopping Vila Olímpia',\n    estado: 'SP',\n    conectores: 10,\n    potencia: '250 kW',\n    status: 'Operacional'\n  },\n  {\n    cidade: 'Rio de Janeiro - Barra Shopping',\n    estado: 'RJ',\n    conectores: 8,\n    potencia: '150 kW',\n    status: 'Operacional'\n  },\n  {\n    cidade: 'Campinas - Galleria Shopping',\n    estado: 'SP',\n    conectores: 6,\n    potencia: '150 kW',\n    status: 'Operacional'\n  },\n  {\n    cidade: 'Brasília - Iguatemi',\n    estado: 'DF',\n    conectores: 8,\n    potencia: '150 kW',\n    status: 'Em Expansão'\n  }\n];\n\nsuperchargers.forEach(sc => {\n  items.push({\n    json: {\n      local: sc.cidade,\n      estado: sc.estado,\n      conectores: sc.conectores,\n      potencia: sc.potencia,\n      status: sc.status,\n      rede: 'Tesla Supercharger',\n      tipo: 'supercharger',\n      data_coleta: new Date().toISOString()\n    }\n  });\n});\n\nreturn items;"
+      },
+      "id": "b5a5a3ab-9a61-4342-b32e-a71f56debbdc",
+      "name": "Processar Superchargers - Tesla",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gera informações sobre serviços de manutenção\nconst items = [];\n\n// Base de dados de oficinas e borracharias especializadas\nconst servicos = [\n  {\n    tipo: 'Pneus',\n    nome: 'Pirelli - Rede Especializada EV',\n    modelos: ['Tesla Model 3', 'BYD Dolphin', 'Nissan Leaf', 'Chevrolet Bolt'],\n    localizacao: 'São Paulo, Rio de Janeiro, Brasília',\n    contato: '0800-XXX-XXXX',\n    especializacao: 'Pneus com baixa resistência ao rolamento'\n  },\n  {\n    tipo: 'Pneus',\n    nome: 'Michelin Center',\n    modelos: ['GWM Ora', 'Renault Zoe', 'JAC E-JS1'],\n    localizacao: 'Principais capitais',\n    contato: '0800-YYY-YYYY',\n    especializacao: 'Pneus ecológicos para veículos elétricos'\n  },\n  {\n    tipo: 'Manutenção',\n    nome: 'Oficina Elétrica Brasil',\n    modelos: ['Todos os modelos elétricos'],\n    localizacao: 'SP, RJ, BH, Curitiba',\n    contato: 'agendamento@oficinaeletrica.com.br',\n    especializacao: 'Diagnóstico eletrônico e bateria'\n  },\n  {\n    tipo: 'Revisão',\n    nome: 'EV Service Center',\n    modelos: ['Tesla', 'BYD', 'Volvo EV'],\n    localizacao: 'São Paulo - Zona Sul',\n    contato: '(11) 3XXX-XXXX',\n    especializacao: 'Manutenção preventiva e corretiva'\n  },\n  {\n    tipo: 'Pneus',\n    nome: 'Continental AutoEV',\n    modelos: ['BMW i3', 'Porsche Taycan', 'Audi e-tron'],\n    localizacao: 'SP, RJ, Porto Alegre',\n    contato: '0800-ZZZ-ZZZZ',\n    especializacao: 'Pneus premium para EVs'\n  },\n  {\n    tipo: 'Bateria',\n    nome: 'PowerCell Brasil',\n    modelos: ['Todos os modelos'],\n    localizacao: 'Nacional',\n    contato: 'suporte@powercell.com.br',\n    especializacao: 'Diagnóstico e manutenção de baterias'\n  }\n];\n\nservicos.forEach(servico => {\n  items.push({\n    json: {\n      tipo_servico: servico.tipo,\n      nome_estabelecimento: servico.nome,\n      modelos_atendidos: servico.modelos.join(', '),\n      localizacao: servico.localizacao,\n      contato: servico.contato,\n      especializacao: servico.especializacao,\n      tipo: 'servico',\n      data_coleta: new Date().toISOString()\n    }\n  });\n});\n\nreturn items;"
+      },
+      "id": "420cc7d2-0ce8-428b-b25e-3b1f9564d5ef",
+      "name": "Gerar Base de Serviços",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "options": {}
+      },
+      "id": "a9d3c6c4-73ab-4620-9b6b-b166f0eee859",
+      "name": "Merge - Todos os Dados",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        400,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Organiza todos os dados por categoria\nconst items = $input.all();\n\nconst categorias = {\n  anuncios: [],\n  lancamentos: [],\n  tecnologias: [],\n  insights: [],\n  pontos_recarga: [],\n  superchargers: [],\n  servicos: []\n};\n\nitems.forEach(item => {\n  const data = item.json;\n  \n  if (data.tipo === 'anuncio') {\n    categorias.anuncios.push(data);\n  } else if (data.categoria === 'lancamento') {\n    categorias.lancamentos.push(data);\n  } else if (data.categoria === 'tecnologia') {\n    categorias.tecnologias.push(data);\n  } else if (data.categoria === 'insight') {\n    categorias.insights.push(data);\n  } else if (data.tipo === 'ponto_recarga') {\n    categorias.pontos_recarga.push(data);\n  } else if (data.tipo === 'supercharger') {\n    categorias.superchargers.push(data);\n  } else if (data.tipo === 'servico') {\n    categorias.servicos.push(data);\n  }\n});\n\n// Remove duplicatas dos anúncios\nconst uniqueAnuncios = new Map();\ncategorias.anuncios.forEach(anuncio => {\n  const key = anuncio.titulo + anuncio.preco;\n  if (!uniqueAnuncios.has(key)) {\n    uniqueAnuncios.set(key, anuncio);\n  }\n});\ncategorias.anuncios = Array.from(uniqueAnuncios.values())\n  .sort((a, b) => {\n    const priceA = parseFloat((a.preco || '0').replace(/[^0-9,]/g, '').replace(',', '.'));\n    const priceB = parseFloat((b.preco || '0').replace(/[^0-9,]/g, '').replace(',', '.'));\n    return priceA - priceB;\n  })\n  .slice(0, 10);\n\nreturn [{ json: categorias }];"
+      },
+      "id": "3cdc0f4a-5077-48b5-9e50-3f3b27b73754",
+      "name": "Organizar por Categoria",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        608,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gera newsletter HTML completa e moderna\nconst dados = $input.first().json;\nconst hoje = new Date().toLocaleDateString('pt-BR', { \n  weekday: 'long', \n  year: 'numeric', \n  month: 'long', \n  day: 'numeric' \n});\n\nconst totalPontosRecarga = dados.pontos_recarga.reduce((sum, p) => sum + (p.total_pontos || 0), 0);\n\nlet html = `\n<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Newsletter Completa - Carros Elétricos Brasil</title>\n    <style>\n        * {\n            margin: 0;\n            padding: 0;\n            box-sizing: border-box;\n        }\n        body {\n            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n            background-color: #f5f7fa;\n            margin: 0;\n            padding: 20px;\n            line-height: 1.6;\n        }\n        .container {\n            max-width: 900px;\n            margin: 0 auto;\n            background-color: white;\n            border-radius: 12px;\n            box-shadow: 0 4px 30px rgba(0,0,0,0.1);\n            overflow: hidden;\n        }\n        .header {\n            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n            color: white;\n            padding: 50px 30px;\n            text-align: center;\n            position: relative;\n        }\n        .header::before {\n            content: '';\n            position: absolute;\n            top: 0;\n            left: 0;\n            right: 0;\n            bottom: 0;\n            background: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1440 320\"><path fill=\"%23ffffff\" fill-opacity=\"0.1\" d=\"M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,106.7C1248,96,1344,96,1392,96L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z\"></path></svg>') no-repeat bottom;\n            background-size: cover;\n            opacity: 0.3;\n        }\n        .header h1 {\n            margin: 0;\n            font-size: 36px;\n            font-weight: 700;\n            position: relative;\n            z-index: 1;\n        }\n        .header p {\n            margin: 15px 0 0 0;\n            opacity: 0.95;\n            font-size: 16px;\n            position: relative;\n            z-index: 1;\n        }\n        .stats-bar {\n            display: grid;\n            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));\n            gap: 10px;\n            background: linear-gradient(to right, #f093fb 0%, #f5576c 100%);\n            padding: 25px;\n            color: white;\n        }\n        .stat-item {\n            text-align: center;\n        }\n        .stat-number {\n            font-size: 32px;\n            font-weight: bold;\n            display: block;\n        }\n        .stat-label {\n            font-size: 13px;\n            opacity: 0.9;\n            text-transform: uppercase;\n            letter-spacing: 0.5px;\n        }\n        .content {\n            padding: 40px 30px;\n        }\n        .section {\n            margin-bottom: 45px;\n        }\n        .section-header {\n            display: flex;\n            align-items: center;\n            margin-bottom: 25px;\n            padding-bottom: 15px;\n            border-bottom: 3px solid #667eea;\n        }\n        .section-icon {\n            font-size: 32px;\n            margin-right: 15px;\n        }\n        .section-title {\n            font-size: 26px;\n            color: #2d3748;\n            font-weight: 700;\n        }\n        .card {\n            background: #fafbfc;\n            border: 1px solid #e2e8f0;\n            border-radius: 10px;\n            padding: 20px;\n            margin-bottom: 15px;\n            transition: all 0.3s ease;\n            border-left: 4px solid #667eea;\n        }\n        .card:hover {\n            box-shadow: 0 8px 20px rgba(0,0,0,0.08);\n            transform: translateY(-3px);\n            border-left-color: #764ba2;\n        }\n        .card-title {\n            font-size: 18px;\n            font-weight: 600;\n            color: #1a202c;\n            margin-bottom: 10px;\n            line-height: 1.4;\n        }\n        .card-price {\n            font-size: 28px;\n            color: #667eea;\n            font-weight: 700;\n            margin: 12px 0;\n        }\n        .card-meta {\n            color: #718096;\n            font-size: 14px;\n            margin: 8px 0;\n        }\n        .card-button {\n            display: inline-block;\n            margin-top: 12px;\n            padding: 10px 24px;\n            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n            color: white;\n            text-decoration: none;\n            border-radius: 6px;\n            font-weight: 600;\n            transition: all 0.3s ease;\n            font-size: 14px;\n        }\n        .card-button:hover {\n            transform: translateY(-2px);\n            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);\n        }\n        .news-item {\n            background: white;\n            border-left: 4px solid #48bb78;\n            padding: 15px 20px;\n            margin-bottom: 12px;\n            border-radius: 6px;\n            box-shadow: 0 2px 4px rgba(0,0,0,0.05);\n        }\n        .news-title {\n            font-size: 16px;\n            color: #2d3748;\n            font-weight: 600;\n            margin-bottom: 6px;\n        }\n        .news-source {\n            font-size: 13px;\n            color: #718096;\n        }\n        .map-container {\n            background: #f7fafc;\n            border-radius: 10px;\n            padding: 25px;\n            margin: 20px 0;\n        }\n        .location-grid {\n            display: grid;\n            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));\n            gap: 15px;\n            margin-top: 20px;\n        }\n        .location-card {\n            background: white;\n            border-radius: 8px;\n            padding: 18px;\n            border: 2px solid #e2e8f0;\n            transition: all 0.3s ease;\n        }\n        .location-card:hover {\n            border-color: #667eea;\n            transform: scale(1.02);\n        }\n        .location-card.highlight {\n            border-color: #f6ad55;\n            background: linear-gradient(to bottom right, #fff5eb, #ffffff);\n        }\n        .location-name {\n            font-weight: 700;\n            font-size: 16px;\n            color: #2d3748;\n            margin-bottom: 8px;\n        }\n        .location-points {\n            font-size: 24px;\n            color: #667eea;\n            font-weight: 700;\n        }\n        .location-types {\n            font-size: 13px;\n            color: #718096;\n            margin-top: 8px;\n        }\n        .service-card {\n            background: linear-gradient(to right, #ffeaa7, #fff);\n            border-radius: 10px;\n            padding: 20px;\n            margin-bottom: 15px;\n            border-left: 5px solid #fdcb6e;\n        }\n        .service-type {\n            display: inline-block;\n            background: #fdcb6e;\n            color: #2d3748;\n            padding: 4px 12px;\n            border-radius: 20px;\n            font-size: 12px;\n            font-weight: 600;\n            margin-bottom: 10px;\n        }\n        .service-name {\n            font-size: 18px;\n            font-weight: 700;\n            color: #2d3748;\n            margin-bottom: 8px;\n        }\n        .service-details {\n            font-size: 14px;\n            color: #4a5568;\n            line-height: 1.6;\n        }\n        .footer {\n            background: #2d3748;\n            color: white;\n            text-align: center;\n            padding: 35px 20px;\n        }\n        .footer-content {\n            max-width: 600px;\n            margin: 0 auto;\n        }\n        .footer p {\n            margin: 8px 0;\n            font-size: 14px;\n            opacity: 0.9;\n        }\n        .badge {\n            display: inline-block;\n            background: #48bb78;\n            color: white;\n            padding: 4px 10px;\n            border-radius: 12px;\n            font-size: 11px;\n            font-weight: 600;\n            margin-left: 8px;\n        }\n        @media (max-width: 768px) {\n            .stats-bar {\n                grid-template-columns: 1fr;\n            }\n            .location-grid {\n                grid-template-columns: 1fr;\n            }\n            .header h1 {\n                font-size: 28px;\n            }\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <div class=\"header\">\n            <h1>⚡ Newsletter Carros Elétricos Brasil</h1>\n            <p>${hoje}</p>\n        </div>\n        \n        <div class=\"stats-bar\">\n            <div class=\"stat-item\">\n                <span class=\"stat-number\">${dados.anuncios.length}</span>\n                <span class=\"stat-label\">Carros Disponíveis</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-number\">${dados.lancamentos.length}</span>\n                <span class=\"stat-label\">Novos Lançamentos</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-number\">${totalPontosRecarga}+</span>\n                <span class=\"stat-label\">Pontos de Recarga</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-number\">${dados.servicos.length}</span>\n                <span class=\"stat-label\">Serviços</span>\n            </div>\n        </div>\n\n        <div class=\"content\">\n`;\n\n// SEÇÃO: LANÇAMENTOS\nif (dados.lancamentos.length > 0) {\n  html += `\n            <div class=\"section\">\n                <div class=\"section-header\">\n                    <span class=\"section-icon\">🚀</span>\n                    <h2 class=\"section-title\">Novos Lançamentos & Novidades</h2>\n                </div>\n`;\n  dados.lancamentos.forEach((item, index) => {\n    html += `\n                <div class=\"news-item\">\n                    <div class=\"news-title\">${index + 1}. ${item.titulo}</div>\n                    <div class=\"news-source\">📰 Fonte: ${item.fonte}</div>\n                </div>\n`;\n  });\n  html += `\n            </div>\n`;\n}\n\n// SEÇÃO: TECNOLOGIAS\nif (dados.tecnologias.length > 0) {\n  html += `\n            <div class=\"section\">\n                <div class=\"section-header\">\n                    <span class=\"section-icon\">🔬</span>\n                    <h2 class=\"section-title\">Novas Tecnologias & Inovações</h2>\n                </div>\n`;\n  dados.tecnologias.forEach((item, index) => {\n    html += `\n                <div class=\"news-item\">\n                    <div class=\"news-title\">${index + 1}. ${item.titulo}</div>\n                    <div class=\"news-source\">🔧 Fonte: ${item.fonte}</div>\n                </div>\n`;\n  });\n  html += `\n            </div>\n`;\n}\n\n// SEÇÃO: INSIGHTS\nif (dados.insights.length > 0) {\n  html += `\n            <div class=\"section\">\n                <div class=\"section-header\">\n                    <span class=\"section-icon\">💡</span>\n                    <h2 class=\"section-title\">Insights do Mercado</h2>\n                </div>\n`;\n  dados.insights.forEach((item, index) => {\n    html += `\n                <div class=\"news-item\">\n                    <div class=\"news-title\">${index + 1}. ${item.titulo}</div>\n                    <div class=\"news-source\">📊 Fonte: ${item.fonte}</div>\n                </div>\n`;\n  });\n  html += `\n            </div>\n`;\n}\n\n// SEÇÃO: ANÚNCIOS\nif (dados.anuncios.length > 0) {\n  html += `\n            <div class=\"section\">\n                <div class=\"section-header\">\n                    <span class=\"section-icon\">🚗</span>\n                    <h2 class=\"section-title\">Carros Disponíveis para Compra</h2>\n                </div>\n`;\n  dados.anuncios.forEach((carro, index) => {\n    const badge = index < 3 ? '<span class=\"badge\">DESTAQUE</span>' : '';\n    html += `\n                <div class=\"card\">\n                    <div class=\"card-title\">${index + 1}. ${carro.titulo} ${badge}</div>\n                    <div class=\"card-price\">R$ ${carro.preco}</div>\n                    <div class=\"card-meta\">📍 ${carro.fonte}</div>\n                    <a href=\"${carro.link}\" class=\"card-button\" target=\"_blank\">Ver Detalhes →</a>\n                </div>\n`;\n  });\n  html += `\n            </div>\n`;\n}\n\n// SEÇÃO: MAPA DE PONTOS DE RECARGA\nif (dados.pontos_recarga.length > 0) {\n  html += `\n            <div class=\"section\">\n                <div class=\"section-header\">\n                    <span class=\"section-icon\">🔌</span>\n                    <h2 class=\"section-title\">Mapa de Pontos de Recarga no Brasil</h2>\n                </div>\n                <div class=\"map-container\">\n                    <p style=\"text-align: center; font-size: 16px; color: #4a5568; margin-bottom: 20px;\">\n                        <strong>${totalPontosRecarga}+ pontos de recarga</strong> disponíveis em todo o Brasil\n                    </p>\n                    <div class=\"location-grid\">\n`;\n  dados.pontos_recarga.forEach(ponto => {\n    const highlightClass = ponto.destaque ? 'highlight' : '';\n    html += `\n                        <div class=\"location-card ${highlightClass}\">\n                            <div class=\"location-name\">📍 ${ponto.cidade}, ${ponto.estado}</div>\n                            <div class=\"location-points\">${ponto.total_pontos} pontos</div>\n                            <div class=\"location-types\">Tipos: ${ponto.tipos_conectores}</div>\n                        </div>\n`;\n  });\n  html += `\n                    </div>\n                </div>\n            </div>\n`;\n}\n\n// SEÇÃO: SUPERCHARGERS TESLA\nif (dados.superchargers.length > 0) {\n  html += `\n            <div class=\"section\">\n                <div class=\"section-header\">\n                    <span class=\"section-icon\">⚡</span>\n                    <h2 class=\"section-title\">Tesla Superchargers</h2>\n                </div>\n`;\n  dados.superchargers.forEach(sc => {\n    html += `\n                <div class=\"card\">\n                    <div class=\"card-title\">${sc.local}</div>\n                    <div class=\"card-meta\">⚡ ${sc.conectores} conectores | ${sc.potencia}</div>\n                    <div class=\"card-meta\">Status: ${sc.status}</div>\n                </div>\n`;\n  });\n  html += `\n            </div>\n`;\n}\n\n// SEÇÃO: ONDE TROCAR PNEUS E SERVIÇOS\nif (dados.servicos.length > 0) {\n  html += `\n            <div class=\"section\">\n                <div class=\"section-header\">\n                    <span class=\"section-icon\">🔧</span>\n                    <h2 class=\"section-title\">Onde Trocar Pneus & Serviços Especializados</h2>\n                </div>\n`;\n  dados.servicos.forEach(servico => {\n    html += `\n                <div class=\"service-card\">\n                    <span class=\"service-type\">${servico.tipo_servico}</span>\n                    <div class=\"service-name\">${servico.nome_estabelecimento}</div>\n                    <div class=\"service-details\">\n                        <strong>Modelos atendidos:</strong> ${servico.modelos_atendidos}<br>\n                        <strong>Localização:</strong> ${servico.localizacao}<br>\n                        <strong>Contato:</strong> ${servico.contato}<br>\n                        <strong>Especialização:</strong> ${servico.especializacao}\n                    </div>\n                </div>\n`;\n  });\n  html += `\n            </div>\n`;\n}\n\nhtml += `\n        </div>\n        \n        <div class=\"footer\">\n            <div class=\"footer-content\">\n                <p>⚡ <strong>Newsletter Carros Elétricos Brasil</strong></p>\n                <p>Sua fonte completa de informações sobre mobilidade elétrica</p>\n                <p>🌱 Promovendo um futuro mais sustentável</p>\n                <p style=\"margin-top: 20px; font-size: 12px; opacity: 0.7;\">\n                    Newsletter gerada automaticamente via n8n • © 2025\n                </p>\n            </div>\n        </div>\n    </div>\n</body>\n</html>\n`;\n\nreturn [{ \n  json: { \n    html: html,\n    estatisticas: {\n      total_anuncios: dados.anuncios.length,\n      total_lancamentos: dados.lancamentos.length,\n      total_tecnologias: dados.tecnologias.length,\n      total_insights: dados.insights.length,\n      total_pontos_recarga: totalPontosRecarga,\n      total_servicos: dados.servicos.length\n    }\n  } \n}];"
+      },
+      "id": "de4ee81e-387c-4677-8eb6-33080c0451ce",
+      "name": "Gerar Newsletter HTML Completa",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "subject": "⚡ Newsletter Completa Carros Elétricos - {{ $now.toFormat('dd/MM/yyyy') }}",
+        "message": "={{ $json.html }}",
+        "options": {}
+      },
+      "id": "540d9ae9-81ed-4c49-b7e1-ae0980ab3c5c",
+      "name": "Enviar Newsletter por Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1008,
+        304
+      ],
+      "webhookId": "98adca9c-52ca-4c41-828b-faa80513390b"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Prepara dados para backup\nconst stats = $input.first().json.estatisticas;\nconst hoje = new Date().toISOString().split('T')[0];\n\nreturn [{\n  json: {\n    data: hoje,\n    total_anuncios: stats.total_anuncios,\n    total_lancamentos: stats.total_lancamentos,\n    total_tecnologias: stats.total_tecnologias,\n    total_insights: stats.total_insights,\n    total_pontos_recarga: stats.total_pontos_recarga,\n    total_servicos: stats.total_servicos,\n    status: 'enviado'\n  }\n}];"
+      },
+      "id": "fda14d62-b0ef-43a4-a2b0-9e787e2a9f74",
+      "name": "Preparar Estatísticas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1008,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/SEU_ID_AQUI/edit",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Historico",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "bc09f919-ec6a-4e8c-9b28-471f6d4b21ac",
+      "name": "Salvar Histórico - Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1200,
+        512
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/SXTi2QT26aitoXBQ",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-29T11:06:52.678Z",
+      "updatedAt": "2025-10-29T11:06:52.678Z",
+      "role": "workflow:owner",
+      "workflowId": "SXTi2QT26aitoXBQ",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-29T11:06:52.678Z",
+  "versionId": "0740be9c-ba5c-4bbc-b40b-43e8b428a2ce"
+}

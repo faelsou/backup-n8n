@@ -1,0 +1,1376 @@
+{
+  "active": true,
+  "connections": {
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "dados_IA",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Created": {
+      "main": [
+        [
+          {
+            "node": "Set File ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Updated": {
+      "main": [
+        [
+          {
+            "node": "Set File ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Document Text": {
+      "main": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Old Doc Rows": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set File ID": {
+      "main": [
+        [
+          {
+            "node": "Delete Old Doc Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Text": {
+      "main": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Extract PDF Text",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from Excel",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract Document Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert into Supabase Vectorstore": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "dados_IA",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from Excel": {
+      "main": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Download File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "dados_IA": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Comercial",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Comercial",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Comercial": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente Comercial",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Agente Comercial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader1",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader1": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-11-10T15:31:26.955Z",
+  "id": "z7jvsDQhkmg9M1lo",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Base de Conhecimento comercial GRD-homo",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "7af608ba-e334-4942-a409-7e9ea47db24c",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        960,
+        592
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "879d3378-b0bf-4d77-a675-194f110ac9cc",
+      "name": "Embeddings OpenAI1",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        784,
+        1328
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.file_id }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain"
+            }
+          }
+        }
+      },
+      "id": "6a50a7b8-8138-467c-8000-78a98fa90308",
+      "name": "Download File",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -320,
+        1072
+      ],
+      "executeOnce": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "lEIDsWEIbsEr4Vq9",
+          "name": "Google Drive GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 1,
+              "unit": "minutes"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "15eKJLjA3-TnYck8cfOKQXVP-JHvO15Qk",
+          "mode": "list",
+          "cachedResultName": "Teste - Rafael",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/15eKJLjA3-TnYck8cfOKQXVP-JHvO15Qk"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "id": "5f4ab372-01e6-4f67-9e85-61767c555f1a",
+      "name": "File Created",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1216,
+        1008
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "lEIDsWEIbsEr4Vq9",
+          "name": "Google Drive GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "15eKJLjA3-TnYck8cfOKQXVP-JHvO15Qk",
+          "mode": "list",
+          "cachedResultName": "Teste - Rafael",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/15eKJLjA3-TnYck8cfOKQXVP-JHvO15Qk"
+        },
+        "event": "fileUpdated",
+        "options": {}
+      },
+      "id": "22e9ce2c-63c1-4823-bdba-49abff423bdb",
+      "name": "File Updated",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1216,
+        1200
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "lEIDsWEIbsEr4Vq9",
+          "name": "Google Drive GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "id": "885f248e-6660-4b93-bd15-98bae7355b3b",
+      "name": "Extract Document Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        464,
+        1296
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "62c16249-50eb-4995-a6c2-d668085207af",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        416,
+        640
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "documentos_comercial",
+        "filterType": "string",
+        "filterString": "=metadata->>file_id=like.*{{ $json.file_id }}*"
+      },
+      "id": "395ee869-63d2-4060-9306-a742e2a3bc5a",
+      "name": "Delete Old Doc Rows",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -864,
+        1056
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "10646eae-ae46-4327-a4dc-9987c2d76173",
+              "name": "file_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f4536df5-d0b1-4392-bf17-b8137fb31a44",
+              "name": "file_type",
+              "value": "={{ $json.mimeType }}",
+              "type": "string"
+            },
+            {
+              "id": "c774ed34-0d67-44b7-a537-83810f357b7c",
+              "name": "originalFilename",
+              "value": "={{ $json.originalFilename }}",
+              "type": "string"
+            },
+            {
+              "id": "dff39c85-b4a2-45ba-a5ff-f4b311999efc",
+              "name": "sha1Checksum",
+              "value": "={{ $json.sha1Checksum }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a2974e0b-6a54-425c-93ba-8d49bd8dea80",
+      "name": "Set File ID",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1024,
+        1056
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "id": "89ee41a1-dd73-4d28-8b9b-21cf7d5b8fac",
+      "name": "Extract PDF Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        464,
+        896
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.file_type }}",
+                    "rightValue": "application/pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "2ae7faa7-a936-4621-a680-60c512163034",
+                    "leftValue": "={{ $json.file_type }}",
+                    "rightValue": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "fc193b06-363b-4699-a97d-e5a850138b0e",
+                    "leftValue": "={{ $json.file_type }}",
+                    "rightValue": "application/vnd.google-apps.document",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": 2
+        }
+      },
+      "id": "d536b0e9-7c36-4467-8667-446dede97e00",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        96,
+        1056
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documentos_comercial",
+          "mode": "list",
+          "cachedResultName": "documentos_comercial"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "id": "2ae621f8-a9dc-4a7a-bc99-18ff9437bc84",
+      "name": "Insert into Supabase Vectorstore",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        752,
+        1008
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "value": "documentos_comercial",
+          "mode": "list",
+          "cachedResultName": "documentos_comercial"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "id": "d544cec2-bb6c-4d4d-9300-9230617ab3f3",
+      "name": "Supabase Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        432,
+        480
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase GrdMad"
+        }
+      },
+      "notes": "\n"
+    },
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "options": {}
+      },
+      "id": "84d01489-4792-4245-8f37-36f8219432a3",
+      "name": "Extract from Excel",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        464,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 800,
+        "width": 2300,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1280,
+        768
+      ],
+      "typeVersion": 1,
+      "id": "6d8d13e8-2252-4339-a780-fe839e0ba31e",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Arquivos criados em uma pasta específica > Verificar o tipo de arquivo e realizar conversão > Extrair o texto > Adicionar ao Vector Store",
+        "height": 80,
+        "width": 1600,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1280,
+        1472
+      ],
+      "typeVersion": 1,
+      "id": "c937cc66-a121-4443-a9e7-ef2ba57ce089",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "## Gatilho de Monitoramento",
+        "height": 440,
+        "width": 213,
+        "color": 5
+      },
+      "id": "506c8b31-bec3-43b9-9f73-d5cba3acbebc",
+      "name": "Sticky Note10",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1264,
+        912
+      ]
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 280,
+        "width": 260,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1632,
+        1168
+      ],
+      "typeVersion": 1,
+      "id": "47335fc9-5d27-4186-865a-eb818969fb71",
+      "name": "Sticky Note31"
+    },
+    {
+      "parameters": {
+        "content": "## Cria tabela documentos",
+        "height": 80,
+        "width": 180,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1584,
+        1184
+      ],
+      "typeVersion": 1,
+      "id": "f6ef50e3-2f2e-457f-8279-b1e47b767abe",
+      "name": "Sticky Note32"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "create table dados_cliente (\n  id bigserial primary key,\n  created_at TIMESTAMPTZ, \n  telefone text, \n  sessionid text\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -1856,
+        1296
+      ],
+      "id": "06bd67df-b318-4378-b19f-a0a493e99f15",
+      "name": "Postgres1",
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 280,
+        "width": 260,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1920,
+        1168
+      ],
+      "typeVersion": 1,
+      "id": "344ba5c4-29b1-49ed-983d-4e1426993fec",
+      "name": "Sticky Note33"
+    },
+    {
+      "parameters": {
+        "content": "## Cria tabela dados_cliente",
+        "height": 80,
+        "width": 180,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1872,
+        1184
+      ],
+      "typeVersion": 1,
+      "id": "be76d579-d07b-4ebf-8468-2e11d930cba1",
+      "name": "Sticky Note34"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from dados_cliente",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -1840,
+        1664
+      ],
+      "id": "3ba2ed13-20dc-4817-af8f-7cb97f951e71",
+      "name": "Postgres2",
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 340,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1920,
+        1488
+      ],
+      "typeVersion": 1,
+      "id": "5d9c2733-2165-4f6a-a9f4-9e0b8904d46b",
+      "name": "Sticky Note35"
+    },
+    {
+      "parameters": {
+        "content": "## Deleta dados tabela dados_cliente",
+        "height": 120,
+        "width": 200,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1872,
+        1504
+      ],
+      "typeVersion": 1,
+      "id": "15587654-7a41-4ab4-b6c4-73176fde35b2",
+      "name": "Sticky Note36"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $items(\"Set File ID\").map(item => {\n  return {\n    json: {\n      file_id: item.json.file_id,\n      file_type: item.json.file_type\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -704,
+        1056
+      ],
+      "id": "4598d043-85a9-4804-b10b-bca21f18bdc4",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -544,
+        1056
+      ],
+      "id": "8d1d3a1f-38e4-499a-abe8-137800ba83fd",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 340,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1632,
+        1488
+      ],
+      "typeVersion": 1,
+      "id": "6a77601a-83a8-41ce-94b2-60c116c6c1c7",
+      "name": "Sticky Note37"
+    },
+    {
+      "parameters": {
+        "content": "## Deleta dados tabela documentos",
+        "height": 120,
+        "width": 200,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1584,
+        1504
+      ],
+      "typeVersion": 1,
+      "id": "1c7797f4-dc20-4a59-8ac3-ec1a57f4a00d",
+      "name": "Sticky Note38"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from n8n_chat_histories",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -1552,
+        944
+      ],
+      "id": "72a39b1c-da32-432b-a9ce-f4002d195164",
+      "name": "Postgres4",
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 340,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1632,
+        784
+      ],
+      "typeVersion": 1,
+      "id": "287473cc-b24c-4f82-aa1a-f2f65606f9fb",
+      "name": "Sticky Note39"
+    },
+    {
+      "parameters": {
+        "name": "=dados_IA",
+        "description": "Use esta ferramenta para buscar informações sobre comercial, materiais, e detalhes da GRD MAD para responder às perguntas do time de vendas.",
+        "topK": 8
+      },
+      "id": "f10d4543-e48d-4129-ac27-69b1e0d0e0e0",
+      "name": "dados_IA",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        592,
+        336
+      ],
+      "notes": "\n"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from documentos_comercial",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -1552,
+        1664
+      ],
+      "id": "8881f84d-bb30-421c-a18c-d86f1a566553",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1-mini",
+        "options": {
+          "topP": 0.3
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        64,
+        400
+      ],
+      "id": "831143c8-3d83-472a-9a11-d748bde2196c",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Merge').item.json.chatInput }}{{ $('Edit Fields').item.json.mesageText }}",
+        "tableName": "n8n_chat_histories_vendas",
+        "contextWindowLength": 1000
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        528
+      ],
+      "id": "38393082-a03f-4c4b-83a2-bc78eb081e86",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Create a table to store your documents\ncreate table documentos_comercial (\n  id bigserial primary key,\n  content text, -- corresponds to Document.pageContent\n  metadata jsonb, -- corresponds to Document.metadata\n  embedding vector(1536) -- 1536 works for OpenAI embeddings, change if needed\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -1568,
+        1296
+      ],
+      "id": "fdd7d560-96d8-4e81-b8db-4719f7a9810a",
+      "name": "Postgres_GRD",
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a7c14c1f-879d-456c-831f-86b91f6bbc92",
+              "name": "mesageText2",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            },
+            {
+              "id": "8f25364d-ec36-4798-92dc-9d8f9b75a4d0",
+              "name": "sessionId2",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "a1d3a71b-2f87-459d-983a-e261bd3581a8",
+              "name": "mesageText",
+              "value": "={{ $json.body.message }}",
+              "type": "string"
+            },
+            {
+              "id": "0e46d0ac-ea6f-4479-bc0d-31c9d612f3ba",
+              "name": "sessionId",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -592,
+        128
+      ],
+      "id": "21f38d0e-1d61-4deb-a0b4-50d2d342eed3",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Edit Fields').item.json.mesageText }}",
+        "options": {
+          "systemMessage": "=Você é **Joanna**, Assistente Comercial da **GRD MAD**. Sua única função é responder a perguntas consultando a ferramenta `dados_IA`.\n\n\nAntes de responder, **obrigatoriamente consulte a ferramenta `dados_IA`** com a pergunta literal do usuário, para buscar informações da base de conhecimento (produtos, acabamentos, medidas, prazos, políticas comerciais, montagem, orçamentos e dúvidas técnicas).\n\n\n**Regras Obrigatórias:**\n1.  **SEMPRE, sem exceção, utilize a ferramenta `dados_IA` para buscar a resposta.** Use a pergunta exata do usuário como entrada para a ferramenta.\n2.  **NUNCA responda com conhecimento prévio.** Sua resposta deve ser baseada exclusivamente na informação retornada pela ferramenta `dados_IA`.\n3.  Se a ferramenta `dados_IA` não retornar nenhuma informação relevante, responda exatamente: \"Essa informação ainda não está na nossa base, mas posso pedir para o time atualizar o conhecimento interno.\"\n4.  Mantenha as respostas curtas e diretas, com no máximo duas frases. Use negrito para destacar informações importantes como produtos, prazos ou políticas.\n5.  Não cumprimente o usuário. Vá direto para a resposta.\n\n\n**Ferramentas disponíveis:**\n- `dados_IA`: consulta à base Supabase (RAG da GRD MAD).\n"
+        }
+      },
+      "id": "b26b5826-2529-47d7-98d6-603f803a89de",
+      "name": "Agente Comercial",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        208,
+        128
+      ],
+      "alwaysOutputData": true,
+      "notes": "\n{\n  \"toolChoice\": \"required\",\n  \"returnToolsOutput\": true\n}\n"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "comercial",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1216,
+        112
+      ],
+      "id": "b09acbe7-cd9c-40c2-b533-dc85ee75bf03",
+      "name": "Webhook",
+      "webhookId": "661365d6-4125-433b-a2af-7f521cd73c3a"
+    },
+    {
+      "parameters": {
+        "content": "## Deleta dados tabela chat_history",
+        "height": 120,
+        "width": 200,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1616,
+        800
+      ],
+      "typeVersion": 1,
+      "id": "d654d45f-7e82-410c-a0b7-d280d009c05b",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = ($json.messageText || '').toLowerCase().trim();\nconst isGreeting = /^(oi|ol[aá]|e?a[ií]|hey|hi|hello|bom dia|boa tarde|boa noite)\\b/.test(text);\nreturn [{ json: { ...$json, isGreeting } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -320,
+        128
+      ],
+      "id": "77387f51-965e-49b4-af63-9d83ca2c1629",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -864,
+        128
+      ],
+      "id": "2095c4cd-98de-4b94-90f8-32f258f03618",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        560,
+        128
+      ],
+      "id": "31d9bbb4-87ca-4ef1-9e42-347609768e0d",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5b9eacf6-b382-41b3-b159-921692c8ddca",
+              "name": "mesageText",
+              "value": "={{ $json.mesageText }}",
+              "type": "string"
+            },
+            {
+              "id": "4667292e-d574-43fe-9f29-f5ca6ae2975d",
+              "name": "sessionKey",
+              "value": "={{ $json.sessionKey }}",
+              "type": "string"
+            },
+            {
+              "id": "0c6b8f07-5ba2-4e92-bc71-0971f85911fb",
+              "name": "mesageText2",
+              "value": "={{ $json.messageText }}",
+              "type": "string"
+            },
+            {
+              "id": "59a7cb22-f2bf-4c50-90ee-3166ae097dc9",
+              "name": "sessionKey2",
+              "value": "={{ $json.sessionKey }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -112,
+        128
+      ],
+      "id": "919ba3b9-47f9-47df-807d-008edcb84720",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "=file_id",
+                "value": "={{ $('Set File ID').first().json.file_id }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "ecb12b3f-481d-47c1-86be-45a1e00bff9b",
+      "name": "Default Data Loader1",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        944,
+        1312
+      ]
+    },
+    {
+      "parameters": {
+        "chunkSize": 800,
+        "chunkOverlap": 150
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        1520
+      ],
+      "id": "77c6d2f4-926b-4b4c-bb27-48bc20664af1",
+      "name": "Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"metadata\": {\n    \"file_id\": \"={{ $json.file_id }}\",\n    \"file_name\": \"={{ $json.fileName || '' }}\",\n    \"mimeType\": \"={{ $json.mimeType || '' }}\",\n    \"sha1\": \"={{ $json.sha1 || '' }}\"\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        2064
+      ],
+      "id": "ee6eb982-c9f3-46f1-8189-17d4d9b3cb26",
+      "name": "Edit Fields2"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/z7jvsDQhkmg9M1lo",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-11-10T15:31:26.955Z",
+      "updatedAt": "2025-11-10T15:31:26.955Z",
+      "role": "workflow:owner",
+      "workflowId": "z7jvsDQhkmg9M1lo",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": {
+    "node:File Created": {
+      "lastTimeChecked": "2025-11-10T22:50:12Z"
+    },
+    "node:File Updated": {
+      "lastTimeChecked": "2025-11-10T22:50:34Z"
+    }
+  },
+  "tags": [],
+  "triggerCount": 3,
+  "updatedAt": "2025-11-10T22:18:28.522Z",
+  "versionId": "5195a0fa-063d-4726-b28a-010d5ba93a6a"
+}

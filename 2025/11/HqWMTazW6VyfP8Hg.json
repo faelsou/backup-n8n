@@ -1,0 +1,794 @@
+{
+  "active": false,
+  "connections": {
+    "Embeddings OpenAI (Ingest)": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Insert",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File": {
+      "main": [
+        [
+          {
+            "node": "Switch Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Created": {
+      "main": [
+        [
+          {
+            "node": "Set File Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Updated": {
+      "main": [
+        [
+          {
+            "node": "Set File Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Document Text": {
+      "main": [
+        [
+          {
+            "node": "Supabase Insert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Old Doc Rows": {
+      "main": [
+        [
+          {
+            "node": "Download File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set File Metadata": {
+      "main": [
+        [
+          {
+            "node": "Delete Old Doc Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Text": {
+      "main": [
+        [
+          {
+            "node": "Supabase Insert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Type": {
+      "main": [
+        [
+          {
+            "node": "Extract PDF Text",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from Excel",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract Document Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from Excel": {
+      "main": [
+        [
+          {
+            "node": "Supabase Insert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Files": {
+      "main": [
+        []
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Comercial (RAG)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente Comercial (RAG)",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Comercial (RAG)": {
+      "main": [
+        []
+      ]
+    },
+    "Webhook Chat": {
+      "main": [
+        []
+      ]
+    },
+    "Embeddings OpenAI (Search)": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Base_conhecimento",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Insert",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Base_conhecimento": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Comercial (RAG)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Agente Comercial (RAG)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-27T07:42:31.522Z",
+  "id": "HqWMTazW6VyfP8Hg",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "RAG - File Search (Drive para Supabase)",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "4a4d9ca9-6043-4eee-8646-9afd6c4bb78a",
+      "name": "Embeddings OpenAI (Ingest)",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1808,
+        1232
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.file_id }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain"
+            }
+          }
+        }
+      },
+      "id": "326f3623-f0b1-4418-8bcc-84661a7f8c02",
+      "name": "Download File",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        688,
+        944
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "lEIDsWEIbsEr4Vq9",
+          "name": "Google Drive GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 1,
+              "unit": "minutes"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "15eKJLjA3-TnYck8cfOKQXVP-JHvO15Qk",
+          "mode": "list",
+          "cachedResultName": "Teste - Rafael",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/15eKJLjA3-TnYck8cfOKQXVP-JHvO15Qk"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "id": "17448151-725f-4c59-a456-08a28ca72f81",
+      "name": "File Created",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        832
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "lEIDsWEIbsEr4Vq9",
+          "name": "Google Drive GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "15eKJLjA3-TnYck8cfOKQXVP-JHvO15Qk",
+          "mode": "list",
+          "cachedResultName": "Teste - Rafael",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/15eKJLjA3-TnYck8cfOKQXVP-JHvO15Qk"
+        },
+        "event": "fileUpdated",
+        "options": {}
+      },
+      "id": "5a1578a1-1ef2-4e0e-b05a-0e55b1bd6968",
+      "name": "File Updated",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        1024
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "lEIDsWEIbsEr4Vq9",
+          "name": "Google Drive GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "id": "6e5a1000-37c4-4f46-9ea0-30265dd66ded",
+      "name": "Extract Document Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        1088
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "documentos_comercial",
+        "filterType": "string",
+        "filterString": "=metadata->>file_id=like.*{{ $json.file_id }}*"
+      },
+      "id": "81c64b18-1e06-4e19-86b2-98e3c99fe5db",
+      "name": "Delete Old Doc Rows",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        288,
+        944
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "id-assign",
+              "name": "file_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "type-assign",
+              "name": "file_type",
+              "value": "={{ $json.mimeType }}",
+              "type": "string"
+            },
+            {
+              "id": "name-assign",
+              "name": "originalFilename",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6b191a1c-d385-48f4-b5de-df6d7be5270f",
+      "name": "Set File Metadata",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        944
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "id": "f2ea9c39-6f4b-4aa8-b696-075e78b2f241",
+      "name": "Extract PDF Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        720
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.file_type }}",
+                    "rightValue": "application/pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "excel-condition",
+                    "leftValue": "={{ $json.file_type }}",
+                    "rightValue": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "doc-condition",
+                    "leftValue": "={{ $json.file_type }}",
+                    "rightValue": "application/vnd.google-apps.document",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": 2
+        }
+      },
+      "id": "4437e8ef-3191-4966-bb5a-b075c007ee35",
+      "name": "Switch Type",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        1040,
+        944
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "options": {}
+      },
+      "id": "6a6e9c66-2397-44fb-90d7-6e68742acb3e",
+      "name": "Extract from Excel",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        912
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 1. Monitoramento de Arquivos (Ingestão)\nArquivos novos ou atualizados são baixados, têm seu texto extraído e são salvos no Supabase como vetores.",
+        "height": 453,
+        "width": 1056,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -224,
+        672
+      ],
+      "typeVersion": 1,
+      "id": "b9fc24c0-c067-46aa-b536-4d5dd409a18a",
+      "name": "Sticky Note Ingest"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        496,
+        800
+      ],
+      "id": "74da6bd8-e7c5-4a97-aa2c-480ff3fbc2a4",
+      "name": "Loop Files"
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0.3
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        592,
+        288
+      ],
+      "id": "40246d95-6b23-4565-9bea-a1c472d7396a",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.sessionId }}",
+        "tableName": "n8n_chat_histories_vendas",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        752,
+        336
+      ],
+      "id": "e5f221cb-a046-4f52-ba82-ea5eca7dfb1a",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message }}",
+        "options": {
+          "systemMessage": "=Você é um Assistente Comercial especializado. \n\nSua função é responder perguntas EXCLUSIVAMENTE consultando a base de conhecimento através da ferramenta `Base_conhecimento`.\n\nRegras:\n1. SEMPRE use a ferramenta `Base_conhecimento` antes de responder.\n2. Se a informação não estiver na ferramenta, diga: \"Não encontrei essa informação na base de documentos comerciais.\"\n3. Cite detalhes técnicos quando disponíveis.\n4. Não invente informações."
+        }
+      },
+      "id": "e0442d50-05ea-400d-a02f-290c260f1adc",
+      "name": "Agente Comercial (RAG)",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        752,
+        112
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "comercial",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        48,
+        112
+      ],
+      "id": "8856c576-6f28-4c8c-a39d-e69895f907bf",
+      "name": "Webhook Chat",
+      "webhookId": "ef9a3221-985a-40c9-90f0-768b42ebc38f"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1232,
+        112
+      ],
+      "id": "4fd945c4-e5f5-4b52-b1a8-c05004a8970a",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        848,
+        480
+      ],
+      "id": "13c5026f-c424-491d-8d6b-2f9af8c10372",
+      "name": "Embeddings OpenAI (Search)",
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        2032,
+        1232
+      ],
+      "id": "0a417fb4-f2d4-4f46-b05b-e2b483f9e425",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documentos_comercial",
+          "mode": "list",
+          "cachedResultName": "documentos_comercial"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        1808,
+        944
+      ],
+      "id": "8da536f6-bf8e-4619-96ad-247aa25c3e73",
+      "name": "Supabase Insert",
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 2. Chat com File Search\nO Webhook recebe a mensagem, o Agente usa o Supabase para buscar contexto e responde.",
+        "height": 453,
+        "width": 1056,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "91b01487-03d0-4ef9-bf54-3ebcd048033b",
+      "name": "Sticky Note Chat"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Busca informações em arquivos comerciais (PDF, Excel, Docs) sobre produtos e processos.",
+        "tableName": {
+          "__rl": true,
+          "value": "documentos_comercial",
+          "mode": "list",
+          "cachedResultName": "documentos_comercial"
+        },
+        "topK": 15,
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        880,
+        304
+      ],
+      "id": "7f3f3bd5-c7b0-4478-880f-412333a1f815",
+      "name": "Base_conhecimento",
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        112,
+        336
+      ],
+      "id": "ec631d05-9f52-4cb8-bb3f-efe74887895a",
+      "name": "When chat message received",
+      "webhookId": "1a9e577d-ea3a-4e21-8532-fa1ea5938a34"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups/HqWMTazW6VyfP8Hg",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-11-27T07:42:31.522Z",
+      "updatedAt": "2025-11-27T07:42:31.522Z",
+      "role": "workflow:owner",
+      "workflowId": "HqWMTazW6VyfP8Hg",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": {
+    "node:File Created": {
+      "lastTimeChecked": "2025-11-27T07:42:53Z"
+    },
+    "node:File Updated": {
+      "lastTimeChecked": "2025-11-27T07:42:53Z"
+    }
+  },
+  "tags": [],
+  "triggerCount": 3,
+  "updatedAt": "2025-11-27T17:46:09.920Z",
+  "versionId": "df938956-111f-435e-9ab6-f6b37a207186"
+}

@@ -1,0 +1,270 @@
+{
+  "active": false,
+  "connections": {
+    "Switch Fase": {
+      "main": [
+        [],
+        [
+          {
+            "node": "É Agendamento?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "É Agendamento?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "É Follow-up?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "É Follow-up?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Enviar Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar Fase → Agendamento": {
+      "main": [
+        [
+          {
+            "node": "Enviar Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar Fase → Follow-up": {
+      "main": [
+        [
+          {
+            "node": "Enviar Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-19T06:29:52.889Z",
+  "id": "CF9REjW92tZfIL3w",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 29",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "multipleConditions": ""
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.fase || 'sdr' }}",
+              "rightValue": "sdr",
+              "operator": "equal"
+            }
+          ],
+          "combineOperation": "any"
+        },
+        "options": {}
+      },
+      "id": "9ea66f58-d5b3-4211-ae44-8fbe53e50540",
+      "name": "Switch Fase",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -120,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-3.5-turbo",
+        "options": {
+          "maxTokens": 200,
+          "temperature": 0.7
+        }
+      },
+      "id": "632b6eda-177f-409f-ba77-01778fa9fa82",
+      "name": "Agente SDR (Bella)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.fase }}",
+              "rightValue": "agendamento",
+              "operator": "equal"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9bfac6e5-2264-4dd6-b5e1-fc31debcae03",
+      "name": "É Agendamento?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        120,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-3.5-turbo",
+        "options": {
+          "maxTokens": 300,
+          "temperature": 0.3
+        }
+      },
+      "id": "45ff815b-c7ac-46d0-b4df-2cae227d57f0",
+      "name": "Agente Agendador (Luna)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        -100
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.fase }}",
+              "rightValue": "followup",
+              "operator": "equal"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "81a02bca-af00-49bd-96eb-01b2e968e4d1",
+      "name": "É Follow-up?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        380,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-3.5-turbo",
+        "options": {
+          "maxTokens": 200,
+          "temperature": 0.5
+        }
+      },
+      "id": "621feaa0-a254-44dd-8b81-b55ae282258c",
+      "name": "Agente Follow-up (Clara)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        -120
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "6ca3bacd-4055-4397-80c8-760ed2715408",
+      "name": "Atualizar Fase → Agendamento",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        200,
+        -140
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "e8e9b8d7-6da3-4573-a6e4-3bb4da113e4d",
+      "name": "Atualizar Fase → Follow-up",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        240,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chat_id }}",
+        "text": "={{ $json.resposta_agente }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "043c85e7-87f1-4c43-a8cd-b5058b49d41b",
+      "name": "Enviar Resposta",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        720,
+        200
+      ],
+      "webhookId": "e37edc5f-3bd4-47af-9db2-0723c434eee1"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-06-19T06:29:52.889Z",
+      "updatedAt": "2025-06-19T06:29:52.889Z",
+      "role": "workflow:owner",
+      "workflowId": "CF9REjW92tZfIL3w",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-19T06:29:52.889Z",
+  "versionId": "76ad8ce6-40fc-43dc-8e10-9e896961c4c0"
+}

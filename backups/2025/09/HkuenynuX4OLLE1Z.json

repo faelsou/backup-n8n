@@ -1,0 +1,402 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook - Receber Imagem": {
+      "main": [
+        [
+          {
+            "node": "Organizar Dados Recebidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Organizar Dados Recebidos": {
+      "main": [
+        [
+          {
+            "node": "Verificar Tipo de Mídia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Tipo de Mídia": {
+      "main": [
+        [
+          {
+            "node": "Baixar Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erro - Tipo Não Suportado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baixar Imagem": {
+      "main": [
+        [
+          {
+            "node": "Preparar Arquivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Arquivo": {
+      "main": [
+        [
+          {
+            "node": "Configurar Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configurar Email": {
+      "main": [
+        [
+          {
+            "node": "Enviar Email Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Email Gmail": {
+      "main": [
+        [
+          {
+            "node": "Confirmação WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confirmação WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Registrar Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-04T16:55:30.331Z",
+  "id": "HkuenynuX4OLLE1Z",
+  "isArchived": false,
+  "meta": null,
+  "name": "envio de e-mail gmail",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "receive-image",
+        "options": {}
+      },
+      "name": "Webhook - Receber Imagem",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "receive-image-webhook",
+      "id": "44016b68-f4db-441b-a5a6-b1c650d597ed"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "remetente_nome",
+              "value": "={{ $json.body.data.pushName || 'Usuário' }}"
+            },
+            {
+              "name": "remetente_telefone",
+              "value": "={{ $json.body.data.key.remoteJid }}"
+            },
+            {
+              "name": "tipo_mensagem",
+              "value": "={{ $json.body.data.messageType }}"
+            },
+            {
+              "name": "imagem_url",
+              "value": "={{ $json.body.data.message.imageMessage?.url || $json.body.data.message.documentMessage?.url || $json.body.data.message.videoMessage?.url }}"
+            },
+            {
+              "name": "imagem_mimetype",
+              "value": "={{ $json.body.data.message.imageMessage?.mimetype || $json.body.data.message.documentMessage?.mimetype || $json.body.data.message.videoMessage?.mimetype }}"
+            },
+            {
+              "name": "nome_arquivo",
+              "value": "={{ $json.body.data.message.imageMessage?.caption || $json.body.data.message.documentMessage?.fileName || 'imagem_recebida' }}"
+            },
+            {
+              "name": "timestamp",
+              "value": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "id": "cca173df-ffcc-42b9-b118-13e3aebfe9b9",
+      "name": "Organizar Dados Recebidos",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        256,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{ $json.tipo_mensagem }}",
+              "rightValue": "imageMessage",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "2",
+              "leftValue": "={{ $json.tipo_mensagem }}",
+              "rightValue": "documentMessage",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "3",
+              "leftValue": "={{ $json.tipo_mensagem }}",
+              "rightValue": "videoMessage",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "82248cdf-be6a-439d-b2dd-40f4bcb9a2a9",
+      "name": "Verificar Tipo de Mídia",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        512,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.imagem_url }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "1bb75ed8-01c9-4fe2-a8e8-a313f92ea779",
+      "name": "Baixar Imagem",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        768,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1b2c3d4-a1b2-4567-8901-234567890123",
+              "name": "arquivo_nome",
+              "value": "={{ $('Organizar Dados Recebidos').item.json.nome_arquivo }}.{{ $('Organizar Dados Recebidos').item.json.imagem_mimetype.split('/')[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "b2c3d4e5-b2c3-5678-9012-345678901234",
+              "name": "extensao_arquivo",
+              "value": "={{ $('Organizar Dados Recebidos').item.json.imagem_mimetype.split('/')[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "c3d4e5f6-c3d4-6789-0123-456789012345",
+              "name": "tamanho_arquivo",
+              "value": "={{ $json.data.length }}",
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1024,
+        0
+      ],
+      "id": "1586c8c3-a75c-4203-8219-1dd838290bdc",
+      "name": "Preparar Arquivo"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "destinatario_email",
+              "value": "destinatario@exemplo.com"
+            },
+            {
+              "name": "assunto_email",
+              "value": "Imagem recebida de {{ $('Organizar Dados Recebidos').item.json.remetente_nome }}"
+            },
+            {
+              "name": "corpo_email",
+              "value": "Olá!\n\nVocê recebeu uma nova imagem através do WhatsApp:\n\n📱 **Remetente:** {{ $('Organizar Dados Recebidos').item.json.remetente_nome }}\n📞 **Telefone:** {{ $('Organizar Dados Recebidos').item.json.remetente_telefone }}\n📅 **Data/Hora:** {{ $('Organizar Dados Recebidos').item.json.timestamp }}\n📄 **Tipo de arquivo:** {{ $('Preparar Arquivo').item.json.extensao_arquivo.toUpperCase() }}\n📏 **Tamanho:** {{ Math.round($('Preparar Arquivo').item.json.tamanho_arquivo / 1024) }} KB\n\nA imagem está anexada a este email.\n\nAtenciosamente,\nSistema de Automação"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "id": "a20faccd-4949-43ff-8e24-0ef4940e31e4",
+      "name": "Configurar Email",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.destinatario_email }}",
+        "subject": "={{ $json.assunto_email }}",
+        "message": "={{ $json.corpo_email }}",
+        "options": {}
+      },
+      "id": "6ef50b97-9276-4a9f-b34d-ef4828d743b2",
+      "name": "Enviar Email Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1536,
+        0
+      ],
+      "webhookId": "2fb4f827-72fa-454d-9d02-ec09586d9823",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Ad3lKliEV0osSxNm",
+          "name": "Gmail GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "instance-name",
+        "remoteJid": "={{ $('Organizar Dados Recebidos').item.json.remetente_telefone }}",
+        "messageText": "✅ **Imagem recebida e encaminhada!**\n\nSua imagem foi enviada por email com sucesso.\n📧 Destinatário: {{ $('Configurar Email').item.json.destinatario_email }}\n⏰ Enviado em: {{ $now.format('dd/MM/yyyy HH:mm') }}",
+        "options_message": {}
+      },
+      "id": "64844814-57c6-4a8f-aeb2-29ea18d872c5",
+      "name": "Confirmação WhatsApp",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "instance-name",
+        "remoteJid": "={{ $('Organizar Dados Recebidos').item.json.remetente_telefone }}",
+        "messageText": "❌ **Erro no processamento**\n\nDesculpe, ocorreu um erro ao processar sua imagem. Por favor, tente novamente ou entre em contato com o suporte.\n\n🔍 **Tipos aceitos:** Imagem, Documento ou Vídeo",
+        "options_message": {}
+      },
+      "id": "257d8fef-a124-4f3b-8cf0-9329b28f4eba",
+      "name": "Erro - Tipo Não Suportado",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        768,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO email_logs (remetente_nome, remetente_telefone, tipo_arquivo, nome_arquivo, tamanho_arquivo, destinatario_email, status, data_envio)\nVALUES ('{{ $('Organizar Dados Recebidos').item.json.remetente_nome }}', '{{ $('Organizar Dados Recebidos').item.json.remetente_telefone }}', '{{ $('Preparar Arquivo').item.json.extensao_arquivo }}', '{{ $('Preparar Arquivo').item.json.arquivo_nome }}', {{ $('Preparar Arquivo').item.json.tamanho_arquivo }}, '{{ $('Configurar Email').item.json.destinatario_email }}', 'enviado', NOW());",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2048,
+        0
+      ],
+      "id": "a6bb55d6-9723-4922-86a8-cc32d31e48a3",
+      "name": "Registrar Log"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-04T16:55:30.331Z",
+      "updatedAt": "2025-09-04T16:55:30.331Z",
+      "role": "workflow:owner",
+      "workflowId": "HkuenynuX4OLLE1Z",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-04T16:55:30.331Z",
+  "versionId": "90319dd7-8fac-471e-8594-d6a82a7fd711"
+}

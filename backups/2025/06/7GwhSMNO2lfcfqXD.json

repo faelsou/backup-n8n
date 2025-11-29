@@ -1,0 +1,531 @@
+{
+  "active": false,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Buscar Últimos Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Últimos Posts": {
+      "main": [
+        [
+          {
+            "node": "Analisar Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar Imagem": {
+      "main": [
+        [
+          {
+            "node": "Baixar Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baixar Imagem": {
+      "main": [
+        [
+          {
+            "node": "Preparar Dados do Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Dados do Post": {
+      "main": [
+        [
+          {
+            "node": "Validar Conteúdo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Conteúdo": {
+      "main": [
+        [
+          {
+            "node": "Criar Media Instagram",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar Email Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Media Instagram": {
+      "main": [
+        [
+          {
+            "node": "Publicar Post Instagram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publicar Post Instagram": {
+      "main": [
+        [
+          {
+            "node": "Salvar Log do Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar Log do Post": {
+      "main": [
+        [
+          {
+            "node": "Enviar Email Sucesso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Email Erro": {
+      "main": [
+        [
+          {
+            "node": "Salvar Log Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Buscar Últimos Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-26T06:21:07.312Z",
+  "id": "7GwhSMNO2lfcfqXD",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 31",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -780,
+        -160
+      ],
+      "id": "272f8ca1-bc0c-4916-b7c0-b266d29c767d",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://graph.instagram.com/me/media",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "instagramBasicDisplayApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "id,caption,media_type,media_url,timestamp,like_count,comments_count"
+            },
+            {
+              "name": "limit",
+              "value": "3"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -520,
+        20
+      ],
+      "id": "66383f27-97f4-4c0f-9996-80121a6ad9ca",
+      "name": "Buscar Últimos Posts"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "post-analysis",
+              "name": "postsAnalysis",
+              "value": "={{ $json.data.map(post => ({\n  caption: post.caption || '',\n  media_type: post.media_type,\n  timestamp: post.timestamp,\n  engagement: (post.like_count + post.comments_count),\n  hashtags: (post.caption || '').match(/#\\w+/g) || []\n})) }}",
+              "type": "array"
+            },
+            {
+              "id": "current-date",
+              "name": "currentDate",
+              "value": "={{ $now.format('YYYY-MM-DD') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -320,
+        20
+      ],
+      "id": "16c07e07-9cf2-48c2-9250-966ba80201ea",
+      "name": "Analisar Posts"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.3,
+      "position": [
+        -420,
+        -280
+      ],
+      "id": "1f37cb43-d065-4258-9850-5b18ec9ed085",
+      "name": "Gerar Conteúdo",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/images/generations",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "Crie uma imagem moderna e atrativa para Instagram baseada no seguinte conteúdo: {{ $('Gerar Conteúdo').item.json.message.content }}"
+            },
+            {
+              "name": "n",
+              "value": "1"
+            },
+            {
+              "name": "size",
+              "value": "1024x1024"
+            },
+            {
+              "name": "quality",
+              "value": "standard"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "67b0f9d8-6f0c-45fe-acd5-b239b4b86371",
+      "name": "Gerar Imagem",
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.data[0].url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        200,
+        0
+      ],
+      "id": "f000d244-5128-46d3-868a-b8de89b55749",
+      "name": "Baixar Imagem"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "post-content",
+              "name": "postContent",
+              "value": "={{ $('Gerar Conteúdo').item.json.message.content }}",
+              "type": "string"
+            },
+            {
+              "id": "image-binary",
+              "name": "imageBinary",
+              "value": "={{ $('Baixar Imagem').item.binary }}",
+              "type": "object"
+            },
+            {
+              "id": "scheduled-time",
+              "name": "scheduledTime",
+              "value": "={{ $now.plus({hours: 2}).toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        100
+      ],
+      "id": "b3aa048e-747d-4211-a0cc-03e894d99f81",
+      "name": "Preparar Dados do Post"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false
+          },
+          "conditions": [
+            {
+              "id": "content-ready",
+              "leftValue": "={{ $json.postContent }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "isNotEmpty"
+              }
+            },
+            {
+              "id": "image-ready",
+              "leftValue": "={{ Object.keys($json.imageBinary || {}).length }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        600,
+        100
+      ],
+      "id": "3c392855-afc7-4063-8c10-790aa1ac4819",
+      "name": "Validar Conteúdo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v18.0/{{ $vars.instagram_account_id }}/media",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "image_url",
+              "value": "{{ $('Gerar Imagem').item.json.data[0].url }}"
+            },
+            {
+              "name": "caption",
+              "value": "={{ $('Preparar Dados do Post').item.json.postContent }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        800,
+        0
+      ],
+      "id": "a5ac45c5-bc13-4d53-b046-4306737ce89b",
+      "name": "Criar Media Instagram"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v18.0/{{ $vars.instagram_account_id }}/media_publish",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "creation_id",
+              "value": "={{ $json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        0
+      ],
+      "id": "27ae34b3-05d2-4996-b05f-a602bcc20070",
+      "name": "Publicar Post Instagram"
+    },
+    {
+      "parameters": {
+        "operation": "insert"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        0
+      ],
+      "id": "6d6e0d56-50d5-4af6-a7fe-4a9ead47d9ab",
+      "name": "Salvar Log do Post"
+    },
+    {
+      "parameters": {
+        "sendTo": "{{ $vars.admin_email }}",
+        "subject": "✅ Post Instagram Publicado com Sucesso",
+        "message": "=<h2>Post publicado com sucesso! 🎉</h2>\n<p><strong>Conteúdo:</strong></p>\n<blockquote>{{ $('Preparar Dados do Post').item.json.postContent }}</blockquote>\n<p><strong>Post ID:</strong> {{ $('Publicar Post Instagram').item.json.id }}</p>\n<p><strong>Data:</strong> {{ $now.format('DD/MM/YYYY HH:mm') }}</p>\n<p>Acesse o Instagram para ver o post publicado.</p>",
+        "options": {
+          "senderName": "Automação Instagram"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1400,
+        0
+      ],
+      "id": "3b3c370b-7efb-4387-9452-2b0f648fdef8",
+      "name": "Enviar Email Sucesso",
+      "webhookId": "d963f25c-ee64-40fb-a71b-3bd0676899f2"
+    },
+    {
+      "parameters": {
+        "sendTo": "{{ $vars.admin_email }}",
+        "subject": "❌ Erro na Publicação Instagram",
+        "message": "=<h2>Erro ao publicar post no Instagram ⚠️</h2>\n<p><strong>Conteúdo gerado:</strong></p>\n<blockquote>{{ $('Preparar Dados do Post').item.json.postContent || 'Conteúdo não gerado' }}</blockquote>\n<p><strong>Erro:</strong> Falha na validação do conteúdo</p>\n<p><strong>Data:</strong> {{ $now.format('DD/MM/YYYY HH:mm') }}</p>\n<p>Verifique as configurações da automação.</p>",
+        "options": {
+          "senderName": "Automação Instagram"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1000,
+        200
+      ],
+      "id": "4f76bf74-9b32-4c3a-bf84-cca9b9006dc7",
+      "name": "Enviar Email Erro",
+      "webhookId": "1a23241e-b6a0-4cf9-bc9f-902675833755"
+    },
+    {
+      "parameters": {
+        "operation": "insert"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        200
+      ],
+      "id": "7bdee6c3-7487-4ab8-8546-ad896a3a40df",
+      "name": "Salvar Log Erro"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -760,
+        20
+      ],
+      "id": "73a68ca4-e252-423f-9714-3cde0930ecae",
+      "name": "When chat message received",
+      "webhookId": "57cd598c-cd62-4295-a247-1d249b3cd355"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-06-26T06:21:07.312Z",
+      "updatedAt": "2025-06-26T06:21:07.312Z",
+      "role": "workflow:owner",
+      "workflowId": "7GwhSMNO2lfcfqXD",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-28T06:25:33.045Z",
+  "versionId": "1a375818-4cc3-4cf7-b3c3-f073a2a4bb0c"
+}

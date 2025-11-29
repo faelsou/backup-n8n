@@ -1,0 +1,226 @@
+{
+  "active": true,
+  "connections": {
+    "1. Executar Health Check via SSH": {
+      "main": [
+        [
+          {
+            "node": "3. Analisar e Gerar HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Analisar e Gerar HTML": {
+      "main": [
+        [
+          {
+            "node": "4. Enviar Alerta por Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tratamento de Erro": {
+      "main": [
+        [
+          {
+            "node": "Enviar Email de Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Executar Limpeza Docker via SSH": {
+      "main": [
+        [
+          {
+            "node": "Tratamento de Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Executar todo dia as 00h": {
+      "main": [
+        [
+          {
+            "node": "1. Executar Health Check via SSH",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "2. Executar Limpeza Docker via SSH",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-11T03:18:33.644Z",
+  "id": "12cYVrzrVS6EbDMX",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Monitoramento e Limpeza de VPS com Alerta de Email",
+  "nodes": [
+    {
+      "parameters": {
+        "command": "/root/scripts/vps_health_check.sh"
+      },
+      "id": "c26eb52f-51eb-4186-aeb4-dacb27ceb3a0",
+      "name": "1. Executar Health Check via SSH",
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        384,
+        32
+      ],
+      "credentials": {
+        "sshPassword": {
+          "id": "yakdt9GNOgUeRKwC",
+          "name": "SSH Password account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "/root/scripts/purge_containers.sh"
+      },
+      "id": "e211d44c-16cf-493a-984b-4bc9581a63e2",
+      "name": "2. Executar Limpeza Docker via SSH",
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        384,
+        256
+      ],
+      "credentials": {
+        "sshPassword": {
+          "id": "yakdt9GNOgUeRKwC",
+          "name": "SSH Password account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = $input.item.json.stdout || '';\nconst lines = output.split('\\n');\n\nconst metrics = {};\nlines.forEach(line => {\n  const parts = line.split(': ');\n  if (parts.length === 2) {\n    metrics[parts[0]] = parts[1].trim();\n  }\n});\n\n// Valores padrão caso não existam\nmetrics.LOAD_AVERAGE = metrics.LOAD_AVERAGE || 'N/A';\nmetrics.CPU_USAGE_PERCENT = metrics.CPU_USAGE_PERCENT || '0';\nmetrics.MEMORY_USAGE_PERCENT = metrics.MEMORY_USAGE_PERCENT || '0';\nmetrics.DISK_USAGE_PERCENT = metrics.DISK_USAGE_PERCENT || '0';\nmetrics.RUNNING_CONTAINERS = metrics.RUNNING_CONTAINERS || '0';\nmetrics.DISK_STATUS = metrics.DISK_STATUS || 'OK';\nmetrics.MEMORY_STATUS = metrics.MEMORY_STATUS || 'OK';\n\nlet insights = `<h2>🚀 Relatório de Saúde da VPS</h2>`;\ninsights += `<ul>`;\ninsights += `<li><strong>Carga do Sistema:</strong> ${metrics.LOAD_AVERAGE}</li>`;\ninsights += `<li><strong>Uso de CPU:</strong> ${metrics.CPU_USAGE_PERCENT}%</li>`;\ninsights += `<li><strong>Uso de Memória:</strong> ${metrics.MEMORY_USAGE_PERCENT}%</li>`;\ninsights += `<li><strong>Uso de Disco:</strong> ${metrics.DISK_USAGE_PERCENT}%</li>`;\ninsights += `<li><strong>Contêineres Ativos:</strong> ${metrics.RUNNING_CONTAINERS}</li>`;\ninsights += `</ul>`;\n\nlet recommendations = `<h3>💡 Recomendações</h3>`;\nrecommendations += `<ul>`;\nlet hasRecommendations = false;\nlet isCritical = false;\n\nif (metrics.DISK_STATUS === 'CRITICAL') {\n  recommendations += `<li><strong style=\"color: #ff8c00;\">⚠️ ATENÇÃO:</strong> O uso de disco está em <strong>${metrics.DISK_USAGE_PERCENT}%</strong>. Considere executar uma limpeza de logs ou imagens Docker não utilizadas.</li>`;\n  hasRecommendations = true;\n  isCritical = true;\n}\n\nif (metrics.MEMORY_STATUS === 'CRITICAL') {\n  recommendations += `<li><strong style=\"color: #dc143c;\">🚨 CRÍTICO:</strong> O uso de memória está em <strong>${metrics.MEMORY_USAGE_PERCENT}%</strong>. Verifique os contêineres que mais consomem memória com o comando <code>docker stats</code>.</li>`;\n  hasRecommendations = true;\n  isCritical = true;\n}\n\nif (!hasRecommendations) {\n  recommendations += `<li><strong style=\"color: #32cd32;\">✅ TUDO OK:</strong> Nenhum problema detectado. O sistema está operando normalmente.</li>`;\n}\nrecommendations += `</ul>`;\n\nconst timestamp = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });\n\nconst finalHtmlMessage = `\n<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n</head>\n<body style=\"font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; margin: 0; padding: 20px;\">\n  <div style=\"max-width: 650px; margin: auto; padding: 20px; background: white; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);\">\n    ${insights}\n    <hr style=\"border: 0; border-top: 1px solid #eee; margin: 20px 0;\">\n    ${recommendations}\n    <hr style=\"border: 0; border-top: 1px solid #eee; margin: 20px 0;\">\n    <p style=\"font-size: 12px; color: #999; text-align: center;\">Relatório gerado em: ${timestamp}</p>\n  </div>\n</body>\n</html>\n`;\n\nreturn {\n  htmlMessage: finalHtmlMessage,\n  subject: `Relatório de Saúde VPS: ${isCritical ? '⚠️ AÇÃO NECESSÁRIA' : '✅ Tudo OK'}`,\n  metrics: metrics,\n  isCritical: isCritical\n};"
+      },
+      "id": "99384183-0542-423a-ae4f-ba41df7493db",
+      "name": "3. Analisar e Gerar HTML",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "aiagenteautomate@gmail.com",
+        "subject": "={{ $json.subject }}",
+        "message": "={{ $json.htmlMessage }}",
+        "options": {}
+      },
+      "id": "419e3197-a7aa-4244-919a-23f44727c38a",
+      "name": "4. Enviar Alerta por Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        880,
+        32
+      ],
+      "webhookId": "1d8787dd-acd1-4bad-8992-801005a8bbe6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bMTj7PQt4FxoCvuP",
+          "name": "Gmail account AiAgentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Log do erro para debug\nconst errorData = $input.item.json;\nconsole.log('Erro capturado:', errorData);\n\nconst errorMessage = errorData.message || 'Erro desconhecido';\nconst errorNode = errorData.node || 'Desconhecido';\n\nconst htmlError = `\n<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n</head>\n<body style=\"font-family: Arial, sans-serif; line-height: 1.6; color: #333;\">\n  <div style=\"max-width: 650px; margin: auto; padding: 20px; border: 2px solid #dc143c; border-radius: 10px; background-color: #fff5f5;\">\n    <h2 style=\"color: #dc143c;\">🚨 Erro no Monitoramento da VPS</h2>\n    <p><strong>Nó com erro:</strong> ${errorNode}</p>\n    <p><strong>Mensagem:</strong> ${errorMessage}</p>\n    <hr style=\"border: 0; border-top: 1px solid #eee; margin: 20px 0;\">\n    <p style=\"font-size: 14px; color: #666;\">Verifique a conexão SSH e os scripts no servidor.</p>\n    <p style=\"font-size: 12px; color: #999;\">Data: ${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}</p>\n  </div>\n</body>\n</html>\n`;\n\nreturn {\n  subject: '🚨 ERRO - Monitoramento VPS Falhou',\n  htmlMessage: htmlError\n};"
+      },
+      "id": "459a3b9b-1ddd-4cdb-8be0-b0cc5cf5f50b",
+      "name": "Tratamento de Erro",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "aiagenteautomate@gmail.com",
+        "subject": "={{ $json.subject }}",
+        "message": "={{ $json.htmlMessage }}",
+        "options": {}
+      },
+      "id": "8864d77e-7bc4-48ad-8e4a-e3cf23855a96",
+      "name": "Enviar Email de Erro",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        880,
+        256
+      ],
+      "webhookId": "733ed0fd-0a42-4ad6-be9a-4f172628bacb",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bMTj7PQt4FxoCvuP",
+          "name": "Gmail account AiAgentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "id": "74887882-7341-4468-86c4-9db107a0ab57",
+      "name": "Executar todo dia as 00h",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        144,
+        32
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-11T03:18:33.644Z",
+      "updatedAt": "2025-10-11T03:18:33.644Z",
+      "role": "workflow:owner",
+      "workflowId": "12cYVrzrVS6EbDMX",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": {
+    "node:Executar todo dia as 00h": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-28T06:09:09.693Z",
+  "versionId": "5373a1f2-7a5c-49f7-a6d1-73cbe607b01e"
+}

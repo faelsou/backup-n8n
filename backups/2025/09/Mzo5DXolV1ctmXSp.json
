@@ -1,0 +1,454 @@
+{
+  "active": false,
+  "connections": {
+    "Capture Execution Start": {
+      "main": [
+        [
+          {
+            "node": "Prepare Monitoring Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Monitoring Data": {
+      "main": [
+        [
+          {
+            "node": "Log Execution Start",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Running Executions": {
+      "main": [
+        [
+          {
+            "node": "Has Long Running?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Long Running?": {
+      "main": [
+        [
+          {
+            "node": "Update Timeout Executions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execution Complete Webhook": {
+      "main": [
+        [
+          {
+            "node": "Prepare Completion Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Completion Data": {
+      "main": [
+        [
+          {
+            "node": "Log Execution Complete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Stats API Endpoint": {
+      "main": [
+        [
+          {
+            "node": "Get Workflow Stats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Workflow Stats": {
+      "main": [
+        [
+          {
+            "node": "Format Stats Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-13T22:49:45.929Z",
+  "id": "Mzo5DXolV1ctmXSp",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 66",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Tabela principal de execuções de workflow\nCREATE TABLE IF NOT EXISTS workflow_executions (\n  id BIGSERIAL PRIMARY KEY,\n  execution_id TEXT UNIQUE NOT NULL,\n  workflow_id TEXT NOT NULL,\n  workflow_name TEXT NOT NULL,\n  started_at TIMESTAMPTZ NOT NULL,\n  finished_at TIMESTAMPTZ,\n  duration_ms INTEGER,\n  status TEXT NOT NULL, -- 'running', 'success', 'error', 'canceled'\n  mode TEXT NOT NULL, -- 'manual', 'trigger', 'webhook', 'schedule'\n  nodes_executed INTEGER DEFAULT 0,\n  nodes_total INTEGER DEFAULT 0,\n  error_message TEXT,\n  user_id TEXT,\n  trigger_type TEXT,\n  input_data_size INTEGER DEFAULT 0,\n  output_data_size INTEGER DEFAULT 0,\n  memory_usage_mb NUMERIC(10,2),\n  cpu_time_ms INTEGER,\n  environment TEXT DEFAULT 'production'\n);\n\n-- Tabela de métricas por nó\nCREATE TABLE IF NOT EXISTS node_executions (\n  id BIGSERIAL PRIMARY KEY,\n  execution_id TEXT NOT NULL,\n  workflow_id TEXT NOT NULL,\n  node_name TEXT NOT NULL,\n  node_type TEXT NOT NULL,\n  started_at TIMESTAMPTZ NOT NULL,\n  finished_at TIMESTAMPTZ,\n  duration_ms INTEGER,\n  status TEXT NOT NULL,\n  error_message TEXT,\n  input_items INTEGER DEFAULT 0,\n  output_items INTEGER DEFAULT 0,\n  data_size_kb NUMERIC(10,2) DEFAULT 0\n);\n\n-- Tabela de métricas de recursos\nCREATE TABLE IF NOT EXISTS workflow_resources (\n  id BIGSERIAL PRIMARY KEY,\n  execution_id TEXT NOT NULL,\n  timestamp TIMESTAMPTZ NOT NULL,\n  cpu_percent NUMERIC(5,2),\n  memory_mb NUMERIC(10,2),\n  disk_io_mb NUMERIC(10,2),\n  network_io_mb NUMERIC(10,2)\n);\n\n-- Tabela de configuração de workflows\nCREATE TABLE IF NOT EXISTS workflow_config (\n  workflow_id TEXT PRIMARY KEY,\n  workflow_name TEXT NOT NULL,\n  is_active BOOLEAN DEFAULT true,\n  environment TEXT DEFAULT 'production',\n  cost_per_execution NUMERIC(10,4) DEFAULT 0,\n  sla_duration_ms INTEGER,\n  alert_threshold_errors INTEGER DEFAULT 5,\n  created_at TIMESTAMPTZ DEFAULT NOW(),\n  updated_at TIMESTAMPTZ DEFAULT NOW()\n);\n\n-- Views para dashboard\nCREATE OR REPLACE VIEW v_workflow_performance AS\nSELECT \n  w.workflow_name,\n  w.environment,\n  COUNT(*) as total_executions,\n  COUNT(*) FILTER (WHERE w.status = 'success') as successful_executions,\n  COUNT(*) FILTER (WHERE w.status = 'error') as failed_executions,\n  ROUND(AVG(w.duration_ms), 2) as avg_duration_ms,\n  ROUND(PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY w.duration_ms), 2) as p95_duration_ms,\n  ROUND(AVG(w.nodes_executed::numeric / NULLIF(w.nodes_total, 0) * 100), 2) as avg_completion_rate,\n  SUM(wc.cost_per_execution) as total_cost,\n  MAX(w.finished_at) as last_execution\nFROM workflow_executions w\nLEFT JOIN workflow_config wc ON w.workflow_id = wc.workflow_id\nWHERE w.started_at >= NOW() - INTERVAL '30 days'\nGROUP BY w.workflow_name, w.environment;\n\n-- Índices para performance\nCREATE INDEX IF NOT EXISTS idx_workflow_executions_started_at ON workflow_executions(started_at);\nCREATE INDEX IF NOT EXISTS idx_workflow_executions_workflow_id ON workflow_executions(workflow_id);\nCREATE INDEX IF NOT EXISTS idx_workflow_executions_status ON workflow_executions(status);\nCREATE INDEX IF NOT EXISTS idx_node_executions_execution_id ON node_executions(execution_id);\nCREATE INDEX IF NOT EXISTS idx_workflow_resources_execution_id ON workflow_resources(execution_id);",
+        "options": {}
+      },
+      "id": "54ee5ce0-c724-4450-8896-26cdf0e62655",
+      "name": "Create Monitoring Schema",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        192,
+        128
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LAJU8e1BewlbISMn",
+          "name": "Postgres_n8n"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "8e466c6d-3b64-4077-bb59-198d2a9302ca",
+      "name": "Execution Monitor",
+      "type": "n8n-nodes-base.cronTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Busca execuções recentes que ainda não foram registradas\nSELECT \n  '{{ $runId }}' as current_execution_id,\n  '{{ $workflow.id }}' as current_workflow_id,\n  '{{ $workflow.name }}' as current_workflow_name,\n  '{{ $now.toISO() }}' as current_timestamp,\n  'running' as current_status",
+        "options": {}
+      },
+      "id": "ea052916-ec9b-4e70-bce0-95daf578dc78",
+      "name": "Capture Execution Start",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        400,
+        352
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LAJU8e1BewlbISMn",
+          "name": "Postgres_n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "execution-start-time",
+              "name": "execution_start_time",
+              "value": "={{ $now }}",
+              "type": "dateTime"
+            },
+            {
+              "id": "workflow-metadata",
+              "name": "workflow_metadata",
+              "value": "={{ {\n  execution_id: $runId,\n  workflow_id: $workflow.id,\n  workflow_name: $workflow.name,\n  environment: 'production',\n  trigger_type: $json.trigger_type || 'unknown'\n} }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d0eeb9f6-f4e1-411d-a714-037bd935e46d",
+      "name": "Prepare Monitoring Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO workflow_executions (\n  execution_id, workflow_id, workflow_name, started_at,\n  status, mode, environment, user_id\n) VALUES (\n  '{{ $json.workflow_metadata.execution_id }}',\n  '{{ $json.workflow_metadata.workflow_id }}',\n  '{{ $json.workflow_metadata.workflow_name }}',\n  '{{ $json.execution_start_time }}',\n  'running',\n  '{{ $json.workflow_metadata.trigger_type }}',\n  '{{ $json.workflow_metadata.environment }}',\n  '{{ $json.user_id || \"system\" }}'\n)\nON CONFLICT (execution_id) DO UPDATE SET\n  status = EXCLUDED.status,\n  started_at = EXCLUDED.started_at;",
+        "options": {}
+      },
+      "id": "060ad9e0-8bd7-45e9-ae35-f296fd9326c7",
+      "name": "Log Execution Start",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        848,
+        352
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LAJU8e1BewlbISMn",
+          "name": "Postgres_n8n"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "bac2e9d2-1ce3-4243-85ad-a0b7d65cfad3",
+      "name": "Monitor Active Executions",
+      "type": "n8n-nodes-base.cronTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Busca execuções em andamento há mais de 5 minutos\nSELECT \n  execution_id,\n  workflow_id,\n  workflow_name,\n  started_at,\n  EXTRACT(EPOCH FROM (NOW() - started_at)) * 1000 as duration_ms\nFROM workflow_executions \nWHERE status = 'running' \n  AND started_at < NOW() - INTERVAL '5 minutes'\nORDER BY started_at DESC",
+        "options": {}
+      },
+      "id": "65f7a336-9025-4246-9743-de8f661a1239",
+      "name": "Check Running Executions",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        400,
+        544
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LAJU8e1BewlbISMn",
+          "name": "Postgres_n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "has-long-running",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "bb1e7703-5bf8-4df9-8951-e309fbb8be69",
+      "name": "Has Long Running?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Atualiza execuções órfãs como timeout\nUPDATE workflow_executions \nSET \n  status = 'timeout',\n  finished_at = NOW(),\n  duration_ms = EXTRACT(EPOCH FROM (NOW() - started_at)) * 1000,\n  error_message = 'Execution timeout - exceeded 30 minutes'\nWHERE status = 'running' \n  AND started_at < NOW() - INTERVAL '30 minutes'",
+        "options": {}
+      },
+      "id": "f558d74a-cf2b-44fa-b041-03de3a095570",
+      "name": "Update Timeout Executions",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        848,
+        544
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LAJU8e1BewlbISMn",
+          "name": "Postgres_n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "workflow-complete",
+        "options": {}
+      },
+      "id": "b5f73f6c-5000-49a1-a745-e90035a971a7",
+      "name": "Execution Complete Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        192,
+        752
+      ],
+      "webhookId": "workflow-complete-webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "completion-data",
+              "name": "completion_data",
+              "value": "={{ {\n  execution_id: $json.body.execution_id || $runId,\n  status: $json.body.status || 'success',\n  duration_ms: $json.body.duration_ms || 0,\n  nodes_executed: $json.body.nodes_executed || 0,\n  nodes_total: $json.body.nodes_total || 0,\n  error_message: $json.body.error_message || null,\n  memory_usage_mb: $json.body.memory_usage_mb || 0\n} }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d753155d-8644-4768-943b-31cd3d73068b",
+      "name": "Prepare Completion Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        752
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE workflow_executions \nSET \n  finished_at = NOW(),\n  duration_ms = {{ $json.completion_data.duration_ms }},\n  status = '{{ $json.completion_data.status }}',\n  nodes_executed = {{ $json.completion_data.nodes_executed }},\n  nodes_total = {{ $json.completion_data.nodes_total }},\n  error_message = {{ $json.completion_data.error_message ? \"'\" + $json.completion_data.error_message + \"'\" : 'NULL' }},\n  memory_usage_mb = {{ $json.completion_data.memory_usage_mb }}\nWHERE execution_id = '{{ $json.completion_data.execution_id }}'",
+        "options": {}
+      },
+      "id": "8d51e38a-23d0-4c85-a896-209771889e2c",
+      "name": "Log Execution Complete",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        624,
+        752
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LAJU8e1BewlbISMn",
+          "name": "Postgres_n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "workflow-stats",
+        "options": {}
+      },
+      "id": "98163220-8493-4074-b4dd-b41942c6579e",
+      "name": "Stats API Endpoint",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        192,
+        944
+      ],
+      "webhookId": "workflow-stats-webhook"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n  workflow_name,\n  environment,\n  total_executions,\n  successful_executions,\n  failed_executions,\n  ROUND((successful_executions::numeric / NULLIF(total_executions, 0)) * 100, 2) as success_rate,\n  avg_duration_ms,\n  p95_duration_ms,\n  total_cost,\n  last_execution\nFROM v_workflow_performance\nORDER BY total_executions DESC",
+        "options": {}
+      },
+      "id": "6c5b45e8-ddc3-41b6-a886-eebcf9a90fcc",
+      "name": "Get Workflow Stats",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        400,
+        944
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LAJU8e1BewlbISMn",
+          "name": "Postgres_n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "api-response",
+              "name": "response",
+              "value": "={{ {\n  success: true,\n  timestamp: $now.toISO(),\n  data: $json,\n  total_workflows: $json.length\n} }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7bdcc94e-78ac-4f63-be0c-0dd6d8b828e9",
+      "name": "Format Stats Response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        944
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Global Workflow Monitoring System\n\n## Funcionalidades:\n1. **Schema Completo**: Tabelas para execuções, nós, recursos e configurações\n2. **Monitoramento em Tempo Real**: Captura início/fim de execuções\n3. **Detecção de Timeout**: Identifica execuções órfãs\n4. **API de Estatísticas**: Endpoint para dados em tempo real\n5. **Views Otimizadas**: Consultas pré-calculadas para dashboard\n\n## Como Integrar nos Workflows:\n1. **Início**: Adicione nó HTTP Request para /webhook/workflow-start\n2. **Fim**: Adicione nó HTTP Request para /webhook/workflow-complete\n3. **Dashboard**: Use as views para métricas\n\n## Endpoints:\n- POST /webhook/workflow-complete - Registra fim de execução\n- GET /webhook/workflow-stats - Estatísticas em tempo real",
+        "height": 600,
+        "width": 400,
+        "color": 4
+      },
+      "id": "5c5eb327-3df3-4dea-951b-808404955195",
+      "name": "System Documentation",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -432,
+        32
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-13T22:49:45.929Z",
+      "updatedAt": "2025-09-13T22:49:45.929Z",
+      "role": "workflow:owner",
+      "workflowId": "Mzo5DXolV1ctmXSp",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-09-13T22:48:47.461Z",
+      "updatedAt": "2025-09-13T22:48:47.461Z",
+      "id": "Trdk0WyrVXhCW6aY",
+      "name": "Workflow Monitoring"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-13T22:52:52.305Z",
+  "versionId": "a5a5febc-2ea3-4690-9886-3f2125229556"
+}

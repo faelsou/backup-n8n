@@ -1,0 +1,128 @@
+{
+  "active": false,
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Sua Lógica de Negócio Aqui",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-27T05:29:35.140Z",
+  "id": "wqr4AzgS97eeHvCJ",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 49",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        560
+      ],
+      "id": "47d00100-4fff-460f-97b3-ab32b1fee3bc"
+    },
+    {
+      "parameters": {},
+      "name": "Sua Lógica de Negócio Aqui",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        32,
+        560
+      ],
+      "id": "fa4d4e73-4393-446e-8e21-267cb0c73172",
+      "notes": "Substitua este nó pelos seus nós de negócio.\n\nA saída de SUCESSO do seu último nó deve ser conectada ao 'Set Success Metrics'."
+    },
+    {
+      "parameters": {},
+      "name": "Set Success Metrics",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2.1,
+      "position": [
+        544,
+        480
+      ],
+      "id": "52fdbb70-fb8b-4d31-ad9a-259bf3607fd7"
+    },
+    {
+      "parameters": {
+        "workflowId": "ID_DO_SEU_WORKFLOW_DE_LOGGING_METRICS",
+        "options": {}
+      },
+      "name": "Log Success",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        816,
+        480
+      ],
+      "id": "a9821b3f-1679-40df-9a4e-f768848378da"
+    },
+    {
+      "parameters": {},
+      "name": "Set Error Metrics",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2.1,
+      "position": [
+        544,
+        688
+      ],
+      "id": "2b70c62b-62c7-4a94-9217-29f46700ec95"
+    },
+    {
+      "parameters": {
+        "workflowId": "ID_DO_SEU_WORKFLOW_DE_LOGGING_METRICS",
+        "options": {}
+      },
+      "name": "Log Error",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        816,
+        688
+      ],
+      "id": "4eb10583-f89a-4496-bbfc-22dbc9ae72f7"
+    },
+    {
+      "parameters": {},
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        768
+      ],
+      "id": "2560a626-f3eb-4786-a34e-7b5ed2797e9a"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-07-27T05:29:35.140Z",
+      "updatedAt": "2025-07-27T05:29:35.140Z",
+      "role": "workflow:owner",
+      "workflowId": "wqr4AzgS97eeHvCJ",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-27T05:29:35.140Z",
+  "versionId": "e9b7704a-ad5c-4fdb-b40f-0c592da0b0a2"
+}

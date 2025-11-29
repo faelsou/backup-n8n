@@ -1,0 +1,469 @@
+{
+  "active": false,
+  "connections": {
+    "Configurações": {
+      "main": [
+        [
+          {
+            "node": "Buscar Contador Atual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Contador Atual": {
+      "main": [
+        [
+          {
+            "node": "Calcular Dia Atual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular Dia Atual": {
+      "main": [
+        [
+          {
+            "node": "É Primeira Execução?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "É Primeira Execução?": {
+      "main": [
+        [
+          {
+            "node": "Criar Contador Inicial",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualizar Contador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Contador Inicial": {
+      "main": [
+        [
+          {
+            "node": "Buscar Mensagens Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar Contador": {
+      "main": [
+        [
+          {
+            "node": "Buscar Mensagens Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Mensagens Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Processar Mensagem do Dia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Mensagem do Dia": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Log Detalhado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Detalhado": {
+      "main": [
+        [
+          {
+            "node": "Notificação Detalhada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRON Trigger": {
+      "main": [
+        [
+          {
+            "node": "Configurações",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-24T00:51:55.532Z",
+  "id": "iKE3RLkAQj7JgWnq",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Sacadas Espanhol new",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "file-id",
+              "name": "file_id",
+              "value": "1X5OdVwfmCJxSXiabf30HHMGZadOrol9leMEKAQuVqHM",
+              "type": "string"
+            },
+            {
+              "id": "group-id",
+              "name": "group_jid",
+              "value": "120363418260249154@g.us",
+              "type": "string"
+            },
+            {
+              "id": "instance",
+              "name": "instance_name",
+              "value": "Rafael",
+              "type": "string"
+            },
+            {
+              "id": "start-date",
+              "name": "start_date",
+              "value": "2025-06-16",
+              "type": "string"
+            },
+            {
+              "id": "supabase-table",
+              "name": "counter_table",
+              "value": "daily_message_counter",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0a901e06-2cfc-47d5-8fda-d74b474a9936",
+      "name": "Configurações",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "daily_message_counter"
+      },
+      "id": "094d50cf-630a-4394-b3f2-b12b1999d3d1",
+      "name": "Buscar Contador Atual",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        480,
+        -260
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const counterData = $input.all().find(item => item.json.current_day);\nlet currentDay = 1;\nlet isFirstRun = false;\n\nif (counterData && counterData.json.current_day) {\n  currentDay = counterData.json.current_day + 1;\n} else {\n  isFirstRun = true;\n  currentDay = 1;\n}\n\n// Pega data de início com segurança\nconst config = $input.all().find(item => item.json.start_date);\nconst startDate = config ? new Date(config.json.start_date) : new Date(\"2025-06-17\");\n\nconst hoje = new Date();\nconst diasDecorridos = Math.floor((hoje - startDate) / (1000 * 60 * 60 * 24)) + 1;\n\nreturn [{\n  json: {\n    id: counterData?.json?.id || 1,\n    current_day: currentDay,\n    dias_decorridos: diasDecorridos,\n    is_first_run: isFirstRun,\n    execution_date: hoje.toISOString(),\n    whatsapp_id: \"whatsapp_daily_schedule\"\n  }\n}];\n"
+      },
+      "id": "79fefe04-5c19-4cc1-84be-bbf94f188914",
+      "name": "Calcular Dia Atual",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "first-run-condition",
+              "leftValue": "={{ $json.is_first_run }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ded66ed2-21b6-4063-bfc7-735b2c68cfab",
+      "name": "É Primeira Execução?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        900,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "daily_message_counter"
+      },
+      "id": "78552b38-5ac4-44ef-acfd-618335d817dd",
+      "name": "Criar Contador Inicial",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        -360
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "daily_message_counter",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json[\"id\"] || 1 }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "current_day",
+              "fieldValue": "={{ $json[\"current_day\"] }}"
+            },
+            {
+              "fieldId": "last_execution",
+              "fieldValue": "={{ new Date().toISOString() }}"
+            }
+          ]
+        }
+      },
+      "id": "dbc012e5-460b-4966-840c-b55d788f0dd9",
+      "name": "Atualizar Contador",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        -160
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Configurações').item.json.file_id }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain"
+            }
+          }
+        }
+      },
+      "id": "cbd1f6df-3bd5-48ce-9b01-522ea770ccee",
+      "name": "Buscar Mensagens Google Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1360,
+        -260
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "AMnU78157s5pFXnN",
+          "name": "Google AiAgent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "try {\n  const dayData = $input.all().find(i => i.json.current_day);\n  const currentDay = dayData?.json?.current_day ?? 1;\n\n  const binaryData = $input.all().find(i => i.binary?.data)?.binary.data.data;\n\n  if (!binaryData) {\n    throw new Error(\"Arquivo binário não encontrado\");\n  }\n\n  const fileContent = Buffer.from(binaryData, 'base64').toString('utf-8');\n\n  const dayPattern = /Dia\\s*(\\d{1,2})\\s*(?:—|-|–)\\s*([\\s\\S]*?)(?=\\nDia\\s*\\d{1,2}\\s*(?:—|-|–)|$)/gi;\n  const messages = {};\n  let match;\n\n  while ((match = dayPattern.exec(fileContent)) !== null) {\n    const dayNumber = parseInt(match[1]);\n    const messageContent = match[2].trim();\n    messages[dayNumber] = messageContent;\n  }\n\n  const totalMessages = Object.keys(messages).length;\n\n  if (totalMessages === 0) {\n    throw new Error(\"Nenhuma mensagem encontrada\");\n  }\n\n  let targetDay = currentDay;\n  if (!messages[targetDay]) {\n    targetDay = ((currentDay - 1) % totalMessages) + 1;\n  }\n\n  const selectedMessage = messages[targetDay];\n\n  return [{\n    json: {\n      success: true,\n      current_day: currentDay,\n      target_day: targetDay,\n      formatted_message: `📘 *Mensagem do Dia ${targetDay}*\\n\\n${selectedMessage}\\n\\n_Enviado automaticamente às 9h_ ⏰`,\n      execution_timestamp: new Date().toISOString()\n    }\n  }];\n} catch (error) {\n  return [{\n    json: {\n      success: false,\n      error: error.message,\n      formatted_message: `⚠️ Erro ao processar mensagem: ${error.message}`,\n      execution_timestamp: new Date().toISOString()\n    }\n  }];\n}\n"
+      },
+      "id": "6fe4f890-7cf6-4a78-8f7b-6e7c8d08042b",
+      "name": "Processar Mensagem do Dia",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $('Configurações').item.json.instance_name }}",
+        "remoteJid": "={{ $('Configurações').first().json.group_jid }}",
+        "messageText": "={{ $json.formatted_message }}",
+        "options_message": {}
+      },
+      "id": "f096e572-fb29-4610-ae13-51d82487248b",
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        -260
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "daily_message_counter"
+      },
+      "id": "a50f8511-c9e1-4676-8147-1bd8a21c99ea",
+      "name": "Log Detalhado",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1960,
+        -260
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "rafadsouz@gmail.com",
+        "subject": "✅ WhatsApp Enviado - Dia ",
+        "message": "=<h2>📱 Relatório de Envio Automático</h2>\n\n<table border=\"1\" cellpadding=\"8\" cellspacing=\"0\" style=\"border-collapse: collapse; font-family: Arial, sans-serif;\">\n  <tr style=\"background-color: #f0f0f0;\">\n    <td><strong>🕘 Data/Hora</strong></td>\n    <td>{{ $now.format('dd/MM/yyyy HH:mm:ss') }}</td>\n  </tr>\n  <tr>\n    <td><strong>📋 Instância</strong></td>\n    <td>{{ $('Configurações').item.json.instance_name }}</td>\n  </tr>\n  <tr style=\"background-color: #f9f9f9;\">\n    <td><strong>👥 Grupo</strong></td>\n    <td>{{ $('Configurações').item.json.group_jid }}</td>\n  </tr>\n  <tr>\n    <td><strong>📅 Dia Atual</strong></td>\n    <td>{{ $('Processar Mensagem do Dia').item.json.current_day }}</td>\n  </tr>\n  <tr style=\"background-color: #f9f9f9;\">\n    <td><strong>📊 Total Mensagens</strong></td>\n    <td>{{ $('Processar Mensagem do Dia').item.json.total_messages_available }}</td>\n  </tr>\n  <tr>\n    <td><strong>✅ Status</strong></td>\n    <td style=\"color: green;\">Enviado com Sucesso</td>\n  </tr>\n</table>\n\n<h3>📄 Mensagem Enviada:</h3>\n<div style=\"background-color: #e8f5e8; padding: 15px; border-left: 4px solid #4caf50; margin: 10px 0;\">\n  <pre>{{ $('Processar Mensagem do Dia').item.json.original_message }}</pre>\n</div>\n\n<hr>\n<p style=\"font-size: 12px; color: #666;\"><em>Enviado automaticamente pelo sistema N8N</em></p>",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Sistema N8N - WhatsApp Scheduler"
+        }
+      },
+      "id": "8223ae4d-9927-43d3-b6a8-429f64609201",
+      "name": "Notificação Detalhada",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2160,
+        -260
+      ],
+      "webhookId": "2dd70fc7-dff0-49aa-8589-66e2c31cd344",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bMTj7PQt4FxoCvuP",
+          "name": "Gmail account AiAgentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        }
+      },
+      "id": "82e7445e-8abf-440c-81a8-cc32262579dc",
+      "name": "CRON Trigger",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        60,
+        -260
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-06-24T00:51:55.532Z",
+      "updatedAt": "2025-06-24T00:51:55.532Z",
+      "role": "workflow:owner",
+      "workflowId": "iKE3RLkAQj7JgWnq",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-06-25T10:04:15.895Z",
+  "versionId": "81005c52-bbdd-4e85-b675-e4125c77c952"
+}

@@ -1,0 +1,183 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Set Dados Entrada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Dados Entrada": {
+      "main": [
+        [
+          {
+            "node": "Enviar Confirmação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-11T18:18:33.957Z",
+  "id": "0mC88CeS3YcKFyDx",
+  "isArchived": false,
+  "meta": null,
+  "name": "FlowPark",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "flowpark",
+        "options": {}
+      },
+      "id": "76e3e01e-f44c-4d81-ae99-651dc95b7b94",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        0
+      ],
+      "webhookId": "adba3aa9-53f0-4c68-ab26-2ce132ee5b90"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "placa-veiculo",
+              "name": "placa",
+              "value": "={{ $json.body.plate }}",
+              "type": "string"
+            },
+            {
+              "id": "telefone-cliente",
+              "name": "telefone",
+              "value": "={{ $json.body.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "horario-entrada",
+              "name": "entrada",
+              "value": "={{ $now }}",
+              "type": "string"
+            },
+            {
+              "id": "valor-hora",
+              "name": "valor_hora",
+              "value": "25.00",
+              "type": "string"
+            },
+            {
+              "id": "status",
+              "name": "status",
+              "value": "ATIVO",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "700f1b04-6727-46f0-95c6-4f627daddcde",
+      "name": "Set Dados Entrada",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        128,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "flowpark",
+        "remoteJid": "={{ $json.telefone }}",
+        "messageText": "=🚗 *ESTACIONAMENTO CONFIRMADO FlowPark*📋 *Dados do veículo:*Placa: {{ $json.placa }} Entrada: {{ $json.entrada }} Valor por hora: R$ {{ $json.valor_hora }} ⏰ Você receberá lembretes a cada hora.💳 *Formas de pagamento:*• PIX• Cartão de Crédito/Débito",
+        "options_message": {}
+      },
+      "id": "016158b8-f8c6-4a5e-b7d1-945d01acd8d5",
+      "name": "Enviar Confirmação",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        496,
+        0
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.aiagentautomate.com.br",
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+            "content-length": "144",
+            "accept": "application/json",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9,pt;q=0.8",
+            "content-type": "application/json",
+            "origin": "https://5a20fc70-b41b-43f1-b97c-758ff779360f.sandbox.lovable.dev",
+            "priority": "u=1, i",
+            "referer": "https://5a20fc70-b41b-43f1-b97c-758ff779360f.sandbox.lovable.dev/",
+            "sec-ch-ua": "\"Chromium\";v=\"140\", \"Not=A?Brand\";v=\"24\", \"Google Chrome\";v=\"140\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Linux\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "200.39.37.99",
+            "x-forwarded-host": "n8n.aiagentautomate.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "181847215a3a",
+            "x-real-ip": "200.39.37.99"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "plate": "EDG-8978",
+            "phone": "+55 11 95231-3944",
+            "entryTime": "2025-09-11T19:51:55.988Z",
+            "company": "FlowPark",
+            "message_type": "entry_notification"
+          },
+          "webhookUrl": "https://n8n.aiagentautomate.com.br/webhook/flowpark",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-11T18:18:33.957Z",
+      "updatedAt": "2025-09-11T18:18:33.957Z",
+      "role": "workflow:owner",
+      "workflowId": "0mC88CeS3YcKFyDx",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-12T03:46:14.669Z",
+  "versionId": "c4aeac0d-6f86-46d2-a09e-05a6317b870f"
+}

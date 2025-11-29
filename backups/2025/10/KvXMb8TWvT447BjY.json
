@@ -1,0 +1,413 @@
+{
+  "active": false,
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Criar Label Backup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Label Backup": {
+      "main": [
+        [
+          {
+            "node": "Guardar Label ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar Label ID": {
+      "main": [
+        [
+          {
+            "node": "INBOX",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SENT",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SPAM",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "TRASH",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "INBOX": {
+      "main": [
+        [
+          {
+            "node": "Buscar E-mails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SENT": {
+      "main": [
+        [
+          {
+            "node": "Buscar E-mails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SPAM": {
+      "main": [
+        [
+          {
+            "node": "Buscar E-mails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TRASH": {
+      "main": [
+        [
+          {
+            "node": "Buscar E-mails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar E-mails": {
+      "main": [
+        [
+          {
+            "node": "Adicionar Label Backup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Adicionar Label Backup": {
+      "main": [
+        [
+          {
+            "node": "Aguardar 1s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aguardar 1s": {
+      "main": [
+        [
+          {
+            "node": "Apagar E-mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-01T09:13:24.401Z",
+  "id": "KvXMb8TWvT447BjY",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Apagar e-mails Gmail",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "cf6191ef-9f0a-4879-94a5-3f9292ca0c0c",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        112,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "label",
+        "operation": "create",
+        "name": "BACKUP_EMAILS",
+        "options": {}
+      },
+      "id": "16aba258-ab2a-433e-b48e-724131a2b82c",
+      "name": "Criar Label Backup",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        336,
+        160
+      ],
+      "webhookId": "bc4a6a8c-9d38-4116-aa15-51a95d0762ba",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bMTj7PQt4FxoCvuP",
+          "name": "Gmail account AiAgentAutomate"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "label-id",
+              "name": "backupLabelId",
+              "value": "={{ $json.id || 'BACKUP_EMAILS' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0b0dfbe4-b39f-45a1-8cb8-3ec431ff850c",
+      "name": "Guardar Label ID",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "folder1",
+              "name": "folder",
+              "value": "INBOX",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "183129a3-b868-470c-8fb3-af4ce2c3455a",
+      "name": "INBOX",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        768,
+        -48
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "folder2",
+              "name": "folder",
+              "value": "SENT",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "918a2c3d-ea8f-4dae-b4e2-e937e396b4ac",
+      "name": "SENT",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        768,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "folder3",
+              "name": "folder",
+              "value": "SPAM",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "54d4273f-ce20-4d6b-b8eb-2150ead53e95",
+      "name": "SPAM",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        768,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "folder4",
+              "name": "folder",
+              "value": "TRASH",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3446b8d7-db35-4197-85f1-d54cefb8a430",
+      "name": "TRASH",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        768,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": true,
+        "simple": false,
+        "filters": {
+          "labelIds": [
+            "={{ $json.folder }}"
+          ]
+        },
+        "options": {}
+      },
+      "id": "59776f57-a5a9-41e6-970f-92e4526912a6",
+      "name": "Buscar E-mails",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        992,
+        112
+      ],
+      "webhookId": "57e72821-1838-4288-9f07-5f647bd4f5c7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bMTj7PQt4FxoCvuP",
+          "name": "Gmail account AiAgentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "={{ $('Guardar Label ID').first().json.backupLabelId }}"
+        ]
+      },
+      "id": "a43d256e-c630-4181-b094-07a417b57291",
+      "name": "Adicionar Label Backup",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1216,
+        112
+      ],
+      "webhookId": "9bea8461-e55e-4f3e-b397-6454620d0f71",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bMTj7PQt4FxoCvuP",
+          "name": "Gmail account AiAgentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "id": "6b7e9d0a-3528-4c69-9afe-d7d2e023bc9b",
+      "name": "Aguardar 1s",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1440,
+        112
+      ],
+      "webhookId": "wait-webhook-id"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "messageId": "={{ $json.id }}"
+      },
+      "id": "95da65a1-0681-47e0-a4c6-e39d4ca21be3",
+      "name": "Apagar E-mail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1648,
+        112
+      ],
+      "webhookId": "69af72d4-73ed-457a-a4fe-9660a78400bb",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bMTj7PQt4FxoCvuP",
+          "name": "Gmail account AiAgentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Fluxo: Backup e Apagar E-mails\n\n## Etapas:\n1. Criar label BACKUP_EMAILS\n2. Buscar emails de todas as pastas\n3. Adicionar label de backup\n4. Aguardar 1 segundo\n5. Apagar emails\n\n## Pastas incluídas:\n- INBOX\n- SENT\n- SPAM\n- TRASH\n\n## Importante:\nOs emails ficam com a label antes de serem apagados, permitindo recuperação se necessário.",
+        "height": 380,
+        "width": 420,
+        "color": 5
+      },
+      "id": "0cd886ac-bbd5-4225-8464-3a2b27803b3d",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        208,
+        352
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-01T09:13:24.401Z",
+      "updatedAt": "2025-10-01T09:13:24.401Z",
+      "role": "workflow:owner",
+      "workflowId": "KvXMb8TWvT447BjY",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-01T10:03:25.384Z",
+  "versionId": "69dce86a-d659-4b40-b984-739cd5a43c67"
+}

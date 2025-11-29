@@ -1,0 +1,629 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Variáveis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Variáveis": {
+      "main": [
+        [
+          {
+            "node": "Get a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row": {
+      "main": [
+        [
+          {
+            "node": "If User Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If User Exists": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gerar sessionID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar sessionID": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Set Agent Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Agent Input": {
+      "main": [
+        [
+          {
+            "node": "Professor de Espanhol Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Professor de Espanhol Agent": {
+      "main": [
+        [
+          {
+            "node": "Parser  Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Professor de Espanhol Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Professor de Espanhol Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser  Chain": {
+      "main": [
+        [
+          {
+            "node": "Split Out Messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI LLM for Parser": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Parser  Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OutputParser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Parser  Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out Messages": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-07T06:27:50.716Z",
+  "id": "HCvr98skOBVQl1fd",
+  "isArchived": true,
+  "meta": null,
+  "name": "IA Professor de Espanhol de Tecnologia",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "profesor-espanol",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "6b7355f0-6e28-41e1-9241-0688587079fb",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1648,
+        176
+      ],
+      "webhookId": "a1b2c3d4-e5f6-7890-gh12-i3j4k5l6m7n8"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8d88c137-383f-4307-b3cc-1f6a560ea67b",
+              "name": "mobile",
+              "value": "={{  $json.body.data.key.remoteJid.replace(/\\D/g, '').replace(/^55(\\d{2})(\\d{8})$/, '55$19$2') }}",
+              "type": "string"
+            },
+            {
+              "id": "7e2f520e-4952-425b-82ca-792cc46680d4",
+              "name": "mensagem",
+              "value": "={{ $item(\"0\").$node[\"Webhook\"].json[\"body\"][\"data\"][\"message\"][\"conversation\"] || $item(\"0\").$node[\"Webhook\"].json[\"body\"][\"data\"][\"message\"][\"extendedTextMessage\"][\"text\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "227ca8fc-62e2-4faf-908b-fa4ff9521a91",
+      "name": "Variáveis",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1456,
+        176
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "keyValue": "={{ $item(\"0\").$node[\"Variáveis\"].json[\"mobile\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1248,
+        176
+      ],
+      "id": "bc1211d0-f3d0-436e-b41f-504cf00254a9",
+      "name": "Get a row",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4a6d9aac-8565-4c58-abe3-8741393a5535",
+              "leftValue": "={{ $json.sessionid }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1056,
+        176
+      ],
+      "id": "63450170-7b0e-47f7-8bb8-abdf136334b0",
+      "name": "If User Exists"
+    },
+    {
+      "parameters": {
+        "action": "generate"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [
+        -848,
+        288
+      ],
+      "id": "a29c2018-a430-4996-b814-fbf38155ea4b",
+      "name": "Gerar sessionID"
+    },
+    {
+      "parameters": {
+        "tableId": "profiles",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "id",
+              "fieldValue": "={{ $json.data }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -656,
+        288
+      ],
+      "id": "5e7cc5fe-062a-4657-8d12-871a6964867d",
+      "name": "Create a row",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "credentials": {
+        "supabaseApi": {
+          "id": "4VasV1hYVXWuYPjJ",
+          "name": "Supabase Aiagent Automate"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "5db5ec7c-d1ce-4cf8-b550-3f8adff6310d",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 1,
+      "position": [
+        -448,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "08b2e8c0-bc00-43ef-80bd-7a86bda2ee47",
+              "name": "sessionId",
+              "value": "={{ $json.sessionid || $json.data }}",
+              "type": "string"
+            },
+            {
+              "id": "37f63b88-4a52-4421-aa95-db9114e521bc",
+              "name": "listaMensagens",
+              "value": "={{ $('Variáveis').item.json.body.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6300fad8-e263-4c41-acd6-9940082869e3",
+      "name": "Set Agent Input",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -256,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.listaMensagens }}",
+        "options": {
+          "systemMessage": "## Visão Geral\nVocê é um professor de espanhol amigável e experiente, especializado em ensinar espanhol para profissionais de tecnologia. Seu nome é \"Profesor Sabelotodo\". Sua missão é ajudar os alunos a dominar o vocabulário e as frases comuns no mundo da TI, programação, hardware, software e inovação digital.\n\n## Diretrizes de Ensino\n1.  **Saudação Inicial:** Sempre se apresente na primeira interação com um novo aluno. Exemplo: \"¡Hola! Soy el Profesor Sabelotodo, tu tutor de español para el mundo de la tecnología. ¿En qué podemos trabajar hoy?\".\n2.  **Correção Construtiva:** Corrija os erros de gramática e vocabulário do aluno de forma gentil. Explique o porquê da correção. Exemplo: \"Casi perfecto. En español, diríamos 'El *código fuente* es muy limpio' en lugar de 'El *código de fuente*'. La preposición 'de' no es necesaria aquí. ¡Buen intento!\".\n3.  **Ensino Proativo:** Introduza novos termos técnicos em espanhol de forma contextual. Peça ao aluno para criar uma frase com a nova palavra. Exemplo: \"¿Conoces la palabra 'depurar'? Significa 'to debug'. ¿Podrías intentar usar 'depurar' en una frase sobre programación?\".\n4.  **Exercícios Práticos:** Proponha pequenos desafios, como:\n    *   Traduzir uma frase técnica do português/inglês para o espanhol.\n    *   Descrever um conceito de tecnologia (ex: \"la nube\" - cloud) em espanhol.\n    *   Perguntar sobre as ferramentas que o aluno usa no dia a dia e ensiná-lo os nomes em espanhol (ex: \"repositorio\", \"entorno de desarrollo\", \"base de datos\").\n5.  **Tom e Personalidade:** Seja paciente, encorajador e um pouco \"nerd\" sobre tecnologia. Use emojis para tornar a conversa mais leve. 🤓💡💻\n6.  **Manter o Foco:** Mantenha a conversa centrada em tópicos de tecnologia. Se o aluno desviar muito do assunto, traga-o de volta gentilmente. Exemplo: \"¡Qué interesante! Y hablando de organización, ¿sabes cómo se dice 'project management' en español? Se dice 'gestión de proyectos'\".\n7.  **Memória:** Lembre-se das conversas anteriores para criar uma experiência de aprendizado contínua. Faça referência a termos ou erros que o aluno cometeu no passado.\n\n## Regras\n- Responda sempre em espanhol, a menos que o aluno peça explicitamente uma tradução ou explicação em português.\n- Mantenha as respostas relativamente curtas e focadas, ideais para um formato de chat.\n- Nunca use ferramentas externas como agendamento ou envio de e-mails. Sua única função é ensinar espanhol."
+        }
+      },
+      "id": "8cc05b86-e66c-4fb7-b7b0-3a00bd1def96",
+      "name": "Professor de Espanhol Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        -80,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        432
+      ],
+      "id": "808ffeaa-36ee-4c0e-9e41-c180fe999777",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.sessionId }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -48,
+        384
+      ],
+      "id": "cb9818de-df57-4d23-8a9a-9228ee23e87e",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Whatsapp message to be splitted and formated: {{ $json.output }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Por favor, gere a saída no seguinte formato JSON:\n{\n  \"messages\": [\n    \"splitedMessage\",\n    \"splitedMessage\",\n    \"splitedMessage\"\n  ]\n}\n\nAs mensagens devem ser divididas de forma natural, afinal estamos conversando com um humano, não é mesmo?\n\nCertifique-se de que a resposta siga exatamente essa estrutura, incluindo os colchetes e as aspas.\n\n### Jamais separe uma mensagem vazia.\n\n### Certifique-se de que a resposta siga exatamente essa estrutura abaixo, deixando somente entre '*' para negrito e nunca fugindo das demais regras de markdown do whatsapp:\n\t\t\t- *negrito* (substitua '**' por '*')\n\t\t\t- ~tachado~ (caso seja algo que foi excluído ou alterado)\n\t\t\t- _itálico_.(extremamente raro)\n            - `link` (usar sempre em todos os links)\n\nTudo o que for link, pode colocar entre \"`\", ou seja, na seguinte formatação: `www.link.com.br`\n"
+            }
+          ]
+        }
+      },
+      "id": "9caeab3e-4b16-4f44-914a-57c0f1ded3e1",
+      "name": "Parser  Chain",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        176,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "8f35ee39-da68-4d66-8685-ba92232cac58",
+      "name": "OpenAI LLM for Parser",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        160,
+        256
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"messages\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    }\n  },\n  \"required\": [\"messages\"]\n}"
+      },
+      "id": "8229b351-e1b2-41da-a0ca-303ea584b2e5",
+      "name": "OutputParser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.messages",
+        "options": {
+          "destinationFieldName": "output"
+        }
+      },
+      "id": "8c43c5b2-4732-44a5-bb4f-d5746b58fac3",
+      "name": "Split Out Messages",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        464,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "95727e3f-2fee-438c-97ce-bdf2556cf46b",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        656,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 1.5
+      },
+      "id": "f48b62b2-579c-441e-922b-cba5dc31c941",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        912,
+        48
+      ],
+      "webhookId": "cbc948f9-4540-42de-9b0d-fe8194ff3981"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1120,
+        48
+      ],
+      "id": "67e32598-faea-4087-bf6f-b915c0f91d3c",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.aiagentautomate.com.br",
+            "user-agent": "Deno/2.1.4 (variant; SupabaseEdgeRuntime/1.69.22)",
+            "content-length": "17",
+            "accept": "*/*",
+            "accept-encoding": "gzip,br",
+            "accept-language": "*",
+            "content-type": "application/json",
+            "x-forwarded-for": "56.125.9.180",
+            "x-forwarded-host": "n8n.aiagentautomate.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "39017bc971e2",
+            "x-real-ip": "56.125.9.180"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "message": "ola"
+          },
+          "webhookUrl": "https://n8n.aiagentautomate.com.br/webhook/profesor-espanol",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-11-07T06:27:50.716Z",
+      "updatedAt": "2025-11-07T06:27:50.716Z",
+      "role": "workflow:owner",
+      "workflowId": "HCvr98skOBVQl1fd",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-18T04:03:05.036Z",
+  "versionId": "6367af3f-ff27-4c62-b668-dfe7a578cc5e"
+}

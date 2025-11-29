@@ -1,0 +1,207 @@
+{
+  "active": false,
+  "connections": {
+    "Daily Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Messages Doc",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read Day Tracker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Messages Doc": {
+      "main": [
+        [
+          {
+            "node": "Extract Message & Increment Day",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Day Tracker": {
+      "main": [
+        [
+          {
+            "node": "Extract Message & Increment Day",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Message & Increment Day": {
+      "main": [
+        [
+          {
+            "node": "Update Day Tracker",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Evolution API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-11T10:48:14.716Z",
+  "id": "xvxsuaq6ZlJuFavF",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 24",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "d471b22e-ea35-4f79-8acd-508e493063e7",
+      "name": "Daily Trigger",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        -200,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "https://docs.google.com/document/d/1X5OdVwfmCJxSXiabf30HHMGZadOrol9leMEKAQuVqHM/edit?tab=t.0",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "id": "b460d3a5-842d-4d41-aa28-253693c506d5",
+      "name": "Read Messages Doc",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "AMnU78157s5pFXnN",
+          "name": "Google AiAgent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "https://docs.google.com/document/d/1X5OdVwfmCJxSXiabf30HHMGZadOrol9leMEKAQuVqHM/edit?tab=t.0",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "id": "6a24413f-397d-454e-b84c-999f2497ef81",
+      "name": "Read Day Tracker",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "AMnU78157s5pFXnN",
+          "name": "Google AiAgent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "const messagesDoc = $node[\"Read Messages Doc\"].json.data;\nconst currentDay = parseInt($node[\"Read Day Tracker\"].json.data.trim());\n\nconst lines = messagesDoc.split('\\n');\nlet message = '';\nlet foundDay = false;\n\nfor (let line of lines) {\n  if (line.startsWith(`Dia ${currentDay} —`)) {\n    foundDay = true;\n    message += line + '\\n';\n  } else if (foundDay && line.startsWith('Dia ')) {\n    break;\n  } else if (foundDay) {\n    message += line + '\\n';\n  }\n}\nconst nextDay = currentDay + 1;\n\nreturn [{ json: { message: message.trim(), nextDay: nextDay } }];"
+      },
+      "id": "2d905ed6-7732-488b-b307-d4d77e91d148",
+      "name": "Extract Message & Increment Day",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        200,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "fileContent": "={{$node[\"Extract Message & Increment Day\"].json.nextDay}}",
+        "options": {}
+      },
+      "id": "723421e3-6ef7-4864-8666-1812d00b9117",
+      "name": "Update Day Tracker",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 1,
+      "position": [
+        400,
+        0
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "AMnU78157s5pFXnN",
+          "name": "Google AiAgent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "aiagenteautomate@gmail.com",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        400,
+        220
+      ],
+      "id": "84be6092-e19d-46aa-9a8d-4a1fb1679cf2",
+      "name": "Evolution API",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-06-11T10:48:14.716Z",
+      "updatedAt": "2025-06-11T10:48:14.716Z",
+      "role": "workflow:owner",
+      "workflowId": "xvxsuaq6ZlJuFavF",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-11T11:00:35.532Z",
+  "versionId": "33f87cb1-967a-49cb-b18c-3d9dbe11c776"
+}

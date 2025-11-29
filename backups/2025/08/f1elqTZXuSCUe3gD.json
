@@ -1,0 +1,568 @@
+{
+  "active": false,
+  "connections": {
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Extract Emails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Filter Out Empties",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates (2)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Site": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract URLs": {
+      "main": [
+        [
+          {
+            "node": "Filter Google URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Emails": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Scrape Site",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Duplicates": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Google URLs": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Out Empties": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Google Maps": {
+      "main": [
+        [
+          {
+            "node": "Extract URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Duplicates (2)": {
+      "main": [
+        [
+          {
+            "node": "Add to Sheet (or whatever you want!)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Scrape Google Maps",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-02T02:08:31.747Z",
+  "id": "f1elqTZXuSCUe3gD",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Gerador Leads Google Maps",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "🗺️ ETAPA 1: Extração de Dados do Google Maps\nEste workflow começa extraindo listas de empresas do Google Maps:\n\nProcesso: Usa requisições HTTP para pesquisar no Google Maps com consultas como \"dentistas em Calgary\"\nSaída: HTML bruto contendo as listas de empresas e URLs dos sites\nDestaque: Não precisa de APIs — faz scraping direto do HTML\n\nObservação: Substitua a URL de pesquisa pela localização e tipo de negócio que você deseja",
+        "height": 388,
+        "width": 350
+      },
+      "id": "9d71b8cb-f87a-438c-b03e-2a415359b47f",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -592,
+        -176
+      ],
+      "typeVersion": 1,
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "🔗 ETAPA 2: Processamento das URLs dos Sites\nExtrai e limpa as URLs dos sites das empresas:\n\nExtrair URLs: Regex em JavaScript encontra todas as URLs dos sites nos dados do Google Maps\n\nFiltrar URLs do Google: Remove domínios irrelevantes (google.com, gstatic, etc.)\n\nRemover Duplicados: Elimina sites repetidos\n\nLimitar: Controla o tamanho dos lotes para testes (ajuste para produção)\n\nResultado: Lista limpa dos sites reais das empresas, pronta para extração de e-mails",
+        "height": 392,
+        "width": 380,
+        "color": 5
+      },
+      "id": "c1001180-598a-4cd8-b123-21d8f4772e06",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -208,
+        -176
+      ],
+      "typeVersion": 1,
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "🔄 ETAPA 3: Scraping Inteligente dos Sites\nProcessa cada site individualmente para evitar bloqueios de IP:\n\nLoop sobre Itens: Processa os sites um por um, com atrasos embutidos\nRaspar Site: Baixa o conteúdo HTML de cada site da empresa\nNós de Espera: Previne limitação de taxa e bloqueio de IP\nTratamento de Erros: Continua o processamento mesmo que alguns sites falhem\n\nImportante: O uso de lotes e atrasos é essencial para operação confiável em larga escala",
+        "height": 392,
+        "width": 380,
+        "color": 3
+      },
+      "id": "31882e33-689f-4382-8e7e-7dfc6cc99070",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        192,
+        -176
+      ],
+      "typeVersion": 1,
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "📧 ETAPA 4: Extração de E-mails & Exportação\nPipeline final de processamento:\n\nExtrair E-mails: Regex em JavaScript encontra todos os e-mails no HTML dos sites\n\nFiltrar Vazios: Remove sites onde não foram encontrados e-mails\n\nDividir: Converte arrays de e-mails em itens individuais\n\nRemover Duplicados: Deduplicação final em todas as fontes\n\nAdicionar à Planilha: Exporta a lista limpa de e-mails para o Google Sheets\n\nResultado: Banco de dados organizado de e-mails comerciais, pronto para prospecção",
+        "height": 396,
+        "width": 400,
+        "color": 7
+      },
+      "id": "88a67cef-d1ea-4b24-8f13-e05dda023460",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        592,
+        -176
+      ],
+      "typeVersion": 1,
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {},
+      "id": "142b154f-36e6-4b63-8910-b7fc627be132",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        -960,
+        352
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "0907bac6-cc5b-4d14-a226-c568c979957e",
+      "name": "Remove Duplicates",
+      "type": "n8n-nodes-base.removeDuplicates",
+      "position": [
+        -160,
+        352
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "64cc2609-7067-4e39-800d-bd7e6ad34a6f",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [
+        240,
+        352
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "id": "102acb6a-8417-4bbc-b623-f890f7f7b731",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        608,
+        448
+      ],
+      "webhookId": "19cc6ed4-4fe7-485b-b879-c679e4b3374d",
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "maxItems": 10
+      },
+      "id": "3d76a634-1655-4499-b657-a319c8aeb687",
+      "name": "Limit",
+      "type": "n8n-nodes-base.limit",
+      "position": [
+        32,
+        352
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "8a5d0d50-6e3a-46e4-815e-d5d82a335ef6",
+      "name": "Wait1",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        432,
+        288
+      ],
+      "webhookId": "0fe34756-6e43-4603-8891-5747a9a6500a",
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "emails",
+        "options": {}
+      },
+      "id": "091c1387-3a3d-49a3-b6cd-219c6677c268",
+      "name": "Split Out",
+      "type": "n8n-nodes-base.splitOut",
+      "position": [
+        784,
+        288
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json.data\nconst regex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.(?!jpeg|jpg|png|gif|webp|svg)[a-zA-Z]{2,}/g\nconst emails = input.match(regex)\nreturn {json: {emails:emails}}"
+      },
+      "id": "68a44c94-89ad-46b2-be98-ebd54361fe12",
+      "name": "Extract Emails",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        784,
+        448
+      ],
+      "typeVersion": 2,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json.data\nconst regex = /https?:\\/\\/[^\\/\\s\"'>]+/g\nconst websites = input.match(regex)\nreturn websites.map(website => ({json:{website}}))"
+      },
+      "id": "23fa22d3-2a84-4679-9595-aea1ea1ea7c0",
+      "name": "Extract URLs",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -560,
+        352
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "url": "https://www.google.com/maps/search/Dentista/@-23.5991968,-46.7964193,14z/data=!3m1!4b1?entry=ttu&g_ep=EgoyMDI1MDczMC4wIKXMDSoASAFQAw%3D%3D",
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "id": "1f5dbc4d-fe8f-48eb-a7fb-efecdbb9ad74",
+      "name": "Scrape Google Maps",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -768,
+        352
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.website }}",
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        }
+      },
+      "id": "16605fd1-07ff-427a-a7bb-2c23b43c3a12",
+      "name": "Scrape Site",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        432,
+        448
+      ],
+      "typeVersion": 4.2,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "a6786c58-424a-409a-b87f-8a7592cb7944",
+              "operator": {
+                "type": "array",
+                "operation": "exists",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.emails }}",
+              "rightValue": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "810896e4-99da-4361-b3e8-27e0a313d037",
+      "name": "Filter Out Empties",
+      "type": "n8n-nodes-base.filter",
+      "position": [
+        608,
+        288
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "bf0a5053-9660-457c-9581-964793bb6d7d",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              },
+              "leftValue": "={{ $json.website }}",
+              "rightValue": "schema"
+            },
+            {
+              "id": "9110b9e0-12aa-45cc-bde0-9eda8c10970e",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              },
+              "leftValue": "={{ $json.website }}",
+              "rightValue": "google"
+            },
+            {
+              "id": "fb9b6ed6-96a5-4560-ab10-b8a4b9a61a2b",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              },
+              "leftValue": "={{ $json.website }}",
+              "rightValue": "gg"
+            },
+            {
+              "id": "10500c0b-cdbd-4816-aba3-df60d69845dc",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              },
+              "leftValue": "={{ $json.website }}",
+              "rightValue": "gstatic"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3fd5c997-d9d4-48a6-9099-66a4da40c35f",
+      "name": "Filter Google URLs",
+      "type": "n8n-nodes-base.filter",
+      "position": [
+        -368,
+        352
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "963a76c6-bef3-4481-ab31-8297b1434692",
+      "name": "Remove Duplicates (2)",
+      "type": "n8n-nodes-base.removeDuplicates",
+      "position": [
+        992,
+        288
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1wlPMHS4f268wQ6bB9T97UYax9OLVj2LA44qQfK7zYVM",
+          "mode": "list",
+          "cachedResultName": "emails",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wlPMHS4f268wQ6bB9T97UYax9OLVj2LA44qQfK7zYVM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1432361606,
+          "mode": "list",
+          "cachedResultName": "Página3",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wlPMHS4f268wQ6bB9T97UYax9OLVj2LA44qQfK7zYVM/edit#gid=1432361606"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "13470ad3-28a4-479f-9003-8ac81915ebb8",
+      "name": "Add to Sheet (or whatever you want!)",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [
+        1184,
+        288
+      ],
+      "typeVersion": 4.5,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "9mBAGO96M4MyCggv",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-08-02T02:08:31.747Z",
+      "updatedAt": "2025-08-02T02:08:31.747Z",
+      "role": "workflow:owner",
+      "workflowId": "f1elqTZXuSCUe3gD",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-08-02T09:36:04.345Z",
+  "versionId": "e6c7b1f8-f165-4f93-b3d8-ff94899291e1"
+}

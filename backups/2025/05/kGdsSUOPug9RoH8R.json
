@@ -1,0 +1,97 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Preparar input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-15T09:44:47.104Z",
+  "id": "kGdsSUOPug9RoH8R",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 13",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "responder-conversa",
+        "options": {}
+      },
+      "id": "2ab94caa-f80d-4615-8c30-f8b511b905c3",
+      "name": "Webhook1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        400,
+        740
+      ],
+      "webhookId": "a81da3bd-1105-4c55-835b-966a9ad8de8c"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "input",
+              "value": "={{ $json.body.mensagem || $json.body.text || $json.body.body }}"
+            },
+            {
+              "name": "sessionId",
+              "value": "={{ $json.body.sessionId || $execution.id }}"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "id": "330af7f6-0293-428b-bd43-a5ca1ab13ffd",
+      "name": "Preparar input",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        700,
+        740
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "514125bc-30ff-4ac0-be72-6ce4154baf88",
+      "name": "Simple Memory",
+      "type": "n8n-nodes-base.simpleMemory",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        740
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-05-15T09:44:47.104Z",
+      "updatedAt": "2025-05-15T09:44:47.104Z",
+      "role": "workflow:owner",
+      "workflowId": "kGdsSUOPug9RoH8R",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-15T09:44:47.104Z",
+  "versionId": "1f536e3c-fae2-404a-97e6-b0d8d6b067e6"
+}

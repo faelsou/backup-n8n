@@ -1,0 +1,123 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Prepare Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Prompt": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Process Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-14T05:31:40.141Z",
+  "id": "DCndR8nyxhLu1iFX",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 71",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "/professor-espanhol-ti",
+        "options": {}
+      },
+      "id": "f21dfd37-6538-457f-9a0f-f8981e68b7d0",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "7e6f8c17-d3d1-4734-8d82-8f8a1b95e879"
+    },
+    {
+      "parameters": {},
+      "id": "6fbcbc17-19a8-44c3-88cb-9ad7f0830e8a",
+      "name": "Prepare Prompt",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "createChatCompletion",
+        "requestOptions": {}
+      },
+      "id": "d04dc2db-1caf-4c8c-8e19-34f5a99558a2",
+      "name": "OpenAI",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        480,
+        0
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": null,
+          "name": "OpenAI Account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "23cafcf4-53ad-4d2e-9ae5-ebcf6cd846df",
+      "name": "Process Response",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        720,
+        0
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-14T05:31:40.141Z",
+      "updatedAt": "2025-09-14T05:31:40.141Z",
+      "role": "workflow:owner",
+      "workflowId": "DCndR8nyxhLu1iFX",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-14T05:32:53.152Z",
+  "versionId": "1f19b6a6-4fb6-4f70-8df8-eceeb8ee9df7"
+}

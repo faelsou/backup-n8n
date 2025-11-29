@@ -1,0 +1,401 @@
+{
+  "active": false,
+  "connections": {
+    "CRON Trigger 9h": {
+      "main": [
+        [
+          {
+            "node": "Configurações",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configurações": {
+      "main": [
+        [
+          {
+            "node": "Buscar Mensagens Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Mensagens Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Tratamento de Erros",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tratamento de Erros": {
+      "main": [
+        [
+          {
+            "node": "Processar Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Mensagens": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp Grupo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp Grupo": {
+      "main": [
+        [
+          {
+            "node": "Log no Supabase",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Log no PostgreSQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log no Supabase": {
+      "main": [
+        [
+          {
+            "node": "Notificação Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-13T01:38:34.524Z",
+  "id": "Vk7vUI71U4IQmDMK",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 26",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "014c0fbe-0415-4eff-b797-fff4bf2fe08e",
+      "name": "CRON Trigger 9h",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        200,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1X5OdVwfmCJxSXiabf30HHMGZadOrol9leMEKAQuVqHM",
+          "mode": "list",
+          "cachedResultName": "Sacadas Espanhol",
+          "cachedResultUrl": "https://docs.google.com/document/d/1X5OdVwfmCJxSXiabf30HHMGZadOrol9leMEKAQuVqHM/edit?usp=drivesdk"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain"
+            }
+          }
+        }
+      },
+      "id": "53c3c784-4249-4c06-abbd-324c5c5ab82b",
+      "name": "Buscar Mensagens Google Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        580,
+        120
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "AMnU78157s5pFXnN",
+          "name": "Google AiAgent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "file-id-assignment",
+              "name": "file_id",
+              "value": "1ABC123DEF456GHI789JKL",
+              "type": "string"
+            },
+            {
+              "id": "group-id-assignment",
+              "name": "group_jid",
+              "value": "120363025123456789@g.us",
+              "type": "string"
+            },
+            {
+              "id": "instance-assignment",
+              "name": "instance_name",
+              "value": "aiagenteautomate@gmail.com",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "91d771fd-ea29-4eb4-af96-de509bc986b9",
+      "name": "Configurações",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n\n  // DEBUG aprimorado: captura o estado do item\n  const debug = {\n    hasBinary: !!item.binary,\n    hasBinaryData: !!(item.binary?.['data']?.data),\n    hasJsonData: !!(item.json?.data),\n  };\n\n  let fileContent = null;\n\n  // Primeiro verifica se existe binário (Google Drive modo File - Binary)\n  if (item.binary?.['data']?.data) {\n    try {\n      fileContent = Buffer.from(item.binary['data'].data, 'base64').toString('utf8');\n    } catch (err) {\n      return {\n        json: {\n          error: \"Erro ao converter binário para texto.\",\n          details: err.message,\n          debug\n        }\n      };\n    }\n  }\n\n  // Depois verifica se existe conteúdo em json.data (Google Drive modo Text)\n  else if (item.json?.data) {\n    fileContent = item.json.data;\n  } \n\n  // Se nenhum dos dois existir, retorna erro controlado\n  else {\n    return {\n      json: {\n        error: \"Nenhum arquivo foi recebido ou o arquivo está vazio.\",\n        debug\n      }\n    };\n  }\n\n  // Processa o conteúdo em linhas\n  const messages = fileContent\n    .split('\\n')\n    .map(line => line.trim())\n    .filter(line => line.length > 0);\n\n  // Valida se há mensagens disponíveis\n  if (messages.length === 0) {\n    return {\n      json: {\n        error: \"O arquivo está vazio ou não contém mensagens válidas.\",\n        debug\n      }\n    };\n  }\n\n  // Seleciona uma mensagem aleatória\n  const randomMessage = messages[Math.floor(Math.random() * messages.length)];\n\n  // Formata a mensagem com emojis e assinatura\n  const formattedMessage = `🌟 *Mensagem do Dia* 🌟\\n\\n${randomMessage}\\n\\n_Enviado automaticamente às 9h_ ⏰`;\n\n  // Retorno final sempre em json (padrão n8n)\n  return {\n    json: {\n      selected_message: randomMessage,\n      formatted_message: formattedMessage,\n      total_messages: messages.length,\n      timestamp: new Date().toISOString(),\n      debug\n    }\n  };\n});\n"
+      },
+      "id": "cf292e2b-8367-4a1f-90df-766cb37c66b5",
+      "name": "Processar Mensagens",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        940,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $('Configurações').item.json.instance_name }}",
+        "remoteJid": "={{ $('Configurações').item.json.group_jid }}",
+        "messageText": "={{ $('Tratamento de Erros').item.json.content }}",
+        "options_message": {}
+      },
+      "id": "18a696a9-7511-457b-a17f-3171b37f26a4",
+      "name": "Enviar WhatsApp Grupo",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        120
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "documentos"
+      },
+      "id": "3f68629e-e0a2-406d-b2db-6cd64a4236b2",
+      "name": "Log no Supabase",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        120
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": "message_logs",
+        "columns": "message_content, formatted_message, group_jid, instance_name, sent_at, status, total_messages_available",
+        "options": {}
+      },
+      "id": "c8f06b9d-1643-40c9-a6c2-5c5d3721e32f",
+      "name": "Log no PostgreSQL",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1440,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "admin@empresa.com",
+        "subject": "✅ Mensagem WhatsApp Enviada - {{ $now.format('dd/MM/yyyy HH:mm') }}",
+        "emailType": "text",
+        "message": "=📱 *Relatório de Envio Automático*\n\n🕘 **Horário:** {{ $now.format('dd/MM/yyyy HH:mm:ss') }}\n📋 **Instância:** {{ $('Configurações').item.json.instance_name }}\n👥 **Grupo:** {{ $('Configurações').item.json.group_jid }}\n📝 **Total de mensagens disponíveis:** {{ $('Processar Mensagens').item.json.total_messages }}\n\n📄 **Mensagem enviada:**\n{{ $('Processar Mensagens').item.json.selected_message }}\n\n✅ Status: Enviado com sucesso\n\n---\n_Enviado automaticamente pelo sistema N8N_",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Sistema N8N"
+        }
+      },
+      "id": "a7f5c3f8-fa30-4d13-8288-71b3d90c3439",
+      "name": "Notificação Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1700,
+        120
+      ],
+      "webhookId": "afcc4e7c-22da-43a7-8364-52e9b69e54bb"
+    },
+    {
+      "parameters": {
+        "content": "# 🤖 CRON WhatsApp Automation",
+        "height": 80,
+        "width": 400
+      },
+      "id": "2ed4a1cf-c537-4ef5-b09c-e84dfa7b2b2b",
+      "name": "Título Principal",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## ⏰ Trigger Diário\n- Executa todos os dias às 9h\n- Configurado com CRON: 0 9 * * *",
+        "height": 120,
+        "width": 300,
+        "color": 2
+      },
+      "id": "8cb53a25-4f2f-4d7f-b9aa-a5e32af448c9",
+      "name": "Info CRON",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 📁 Google Drive\n- Busca arquivo .docs\n- Converte para texto\n- Processa mensagens",
+        "height": 120,
+        "width": 300,
+        "color": 3
+      },
+      "id": "a166787d-153d-453c-8034-964d84d84536",
+      "name": "Info Google Drive",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        540,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🎲 Processamento\n- Seleciona mensagem aleatória\n- Adiciona formatação\n- Inclui emojis e timestamp",
+        "height": 120,
+        "width": 300,
+        "color": 4
+      },
+      "id": "8b29acc5-96fc-4051-b901-4db241832092",
+      "name": "Info Processamento",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        780,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 📱 Evolution API\n- Envia para grupo WhatsApp\n- Usa instância configurada\n- Mensagem formatada",
+        "height": 120,
+        "width": 300,
+        "color": 5
+      },
+      "id": "f08ed05f-25fb-4781-aa2f-06e1180c7c52",
+      "name": "Info WhatsApp",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 📊 Logs & Notificação\n- Salva no Supabase/PostgreSQL\n- Envia relatório por email\n- Registra estatísticas",
+        "height": 120,
+        "width": 400,
+        "color": 6
+      },
+      "id": "9ff9344f-f8e0-4758-a5a5-9d37abdd520a",
+      "name": "Info Logs",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1340,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Tratamento de erros e fallback\ntry {\n  // Verifica se o arquivo foi encontrado\n  if (!$input.item.binary || !$input.item.binary.data) {\n    throw new Error('Arquivo não encontrado no Google Drive');\n  }\n  \n  // Processa normalmente\n  const fileContent = $input.item.binary.data.data.toString('utf8');\n  \n  if (!fileContent.trim()) {\n    throw new Error('Arquivo está vazio');\n  }\n  \n  const messages = fileContent\n    .split('\\n')\n    .map(line => line.trim())\n    .filter(line => line.length > 0);\n    \n  if (messages.length === 0) {\n    throw new Error('Nenhuma mensagem válida encontrada no arquivo');\n  }\n  \n  return { \n    success: true, \n    content: fileContent,\n    message_count: messages.length\n  };\n  \n} catch (error) {\n  // Mensagem de fallback em caso de erro\n  const fallbackMessage = `🔄 *Mensagem Automática*\\n\\nOlá! Esta é uma mensagem automática enviada às 9h.\\n\\n📅 Data: ${new Date().toLocaleDateString('pt-BR')}\\n⏰ Horário: ${new Date().toLocaleTimeString('pt-BR')}\\n\\n_Sistema funcionando normalmente_`;\n  \n  return {\n    success: false,\n    error: error.message,\n    fallback_content: fallbackMessage,\n    message_count: 1\n  };\n}"
+      },
+      "id": "004b5885-bb75-4ccf-a8b6-a101d97c024f",
+      "name": "Tratamento de Erros",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        760,
+        120
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-06-13T01:38:34.524Z",
+      "updatedAt": "2025-06-13T01:38:34.524Z",
+      "role": "workflow:owner",
+      "workflowId": "Vk7vUI71U4IQmDMK",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-13T03:21:07.444Z",
+  "versionId": "8541e5fb-c81c-44c4-b7de-bf418af2d96f"
+}

@@ -1,0 +1,134 @@
+{
+  "active": false,
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Buscar E-mails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar E-mails": {
+      "main": [
+        [
+          {
+            "node": "Apagar E-mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-01T09:06:06.004Z",
+  "id": "mGHXbU7Ruf9fN9nA",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 73",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "da0d0e49-9085-462e-8db2-5a90d9165a64",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "simple": false,
+        "filters": {
+          "labelIds": [
+            "INBOX"
+          ],
+          "readStatus": "unread",
+          "sender": ""
+        },
+        "options": {}
+      },
+      "id": "38ea775e-8de3-48d6-8a34-91670371d0d7",
+      "name": "Buscar E-mails",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        128,
+        80
+      ],
+      "webhookId": "8ee8b5a4-2ba2-4ed1-8142-1e069877863b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bMTj7PQt4FxoCvuP",
+          "name": "Gmail account AiAgentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "messageId": "={{ $json.id }}"
+      },
+      "id": "21b0a59a-00f3-4442-8867-59b0fb21e94a",
+      "name": "Apagar E-mail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        336,
+        80
+      ],
+      "webhookId": "0d1bb790-a8bc-4437-8941-4a78447e8e5a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bMTj7PQt4FxoCvuP",
+          "name": "Gmail account AiAgentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Fluxo para Apagar E-mails do Gmail\n\nConfigurações:\n- Filtrar por pasta (INBOX, SPAM, TRASH)\n- Filtrar por status (lido/não lido)\n- Filtrar por remetente ou assunto\n- Limite de e-mails por execução",
+        "height": 240,
+        "width": 400,
+        "color": 4
+      },
+      "id": "45d16cf3-3821-4906-ac71-83aab99e342b",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        512,
+        192
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-01T09:06:06.004Z",
+      "updatedAt": "2025-10-01T09:06:06.004Z",
+      "role": "workflow:owner",
+      "workflowId": "mGHXbU7Ruf9fN9nA",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-01T09:12:14.910Z",
+  "versionId": "5dff87dc-6fc7-4276-a071-08590a1be532"
+}

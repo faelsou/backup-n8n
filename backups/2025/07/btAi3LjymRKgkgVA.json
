@@ -1,0 +1,538 @@
+{
+  "active": true,
+  "connections": {
+    "Info Base1": {
+      "main": [
+        [
+          {
+            "node": "Busca Versão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Paga Token": {
+      "main": [
+        [
+          {
+            "node": "Busca as Stacks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Stack": {
+      "main": [
+        [
+          {
+            "node": "Paga Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca Versão": {
+      "main": [
+        [
+          {
+            "node": "Extrai Ultima Versão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Info Base1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrai Ultima Versão": {
+      "main": [
+        [
+          {
+            "node": "Stack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca as Stacks": {
+      "main": [
+        [
+          {
+            "node": "Filtra Stack Evo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Stack": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca Conteineres Vazios": {
+      "main": [
+        [
+          {
+            "node": "Filtra Conteineres Vazios",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Deleta Conteiner Vazio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deleta Conteiner Vazio": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Busca Conteineres Vazios",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtra Stack Evo": {
+      "main": [
+        [
+          {
+            "node": "Converte Stack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtra Conteineres Vazios": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Converte Stack": {
+      "main": [
+        [
+          {
+            "node": "Update Stack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-27T06:02:59.935Z",
+  "id": "btAi3LjymRKgkgVA",
+  "isArchived": false,
+  "meta": null,
+  "name": "Atualiza Versão Evolution API",
+  "nodes": [
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "UrlPortainer",
+              "value": "https://portainer.aiagentautomate.com.br"
+            },
+            {
+              "name": "LoginPortainer",
+              "value": "admin"
+            },
+            {
+              "name": "SenhaPortainer",
+              "value": "061603F@tim@"
+            },
+            {
+              "name": "NomeStack",
+              "value": "evolution_aiagent"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5596ee08-069e-44bd-9c0f-f487440066bd",
+      "name": "Info Base1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        192,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info Base1').item.json.UrlPortainer }}/api/auth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"username\": \"{{ $('Info Base1').item.json.LoginPortainer }}\",\n  \"password\": \"{{ $('Info Base1').item.json.SenhaPortainer }}\"\n}\n",
+        "options": {}
+      },
+      "id": "6334d24b-318c-4c55-bab4-2ad370010ec9",
+      "name": "Paga Token",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "suastack",
+              "value": "=version: \"3.8\"\n\nservices:\n  evolution_v2:\n    ### Escolha sua versão: https://hub.docker.com/r/atendai/evolution-api/tags\n    image: evoapicloud/evolution-api:v2.3.6 ## atendai/evolution-api:v2.2.2 ## Versão da Evolution API\n    volumes:\n      - evolution_instancesv2:/evolution/instances\n    networks:\n      - network_public\n    environment:\n    ## Url da Evolution API\n    - SERVER_URL=https://apiwp.aiagentautomate.com.br\n    ## Dados de Autenticação\n    - AUTHENTICATION_TYPE=apikey\n    - AUTHENTICATION_API_KEY=CN4AnbOtY79Wv6wNyx88cdoKXqugcINi ## GLOBAL API KEY\n    - AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES=true\n    ## Configurações\n    - LANGUAGE=pt-BR\n    - CONFIG_SESSION_PHONE_CLIENT=Aiagent Automate ## Nome que aparece no celular\n    - CONFIG_SESSION_PHONE_NAME=chrome\n    ## Definir versão do Whatsapp Web\n    ## pegue a versão em: https://web.whatsapp.com/check-update?version=0&platform=web\n    - CONFIG_SESSION_PHONE_VERSION=2.3000.1027390275\n    ## Configurações do Whatsapp Business Cloud (Api Oficial)\n    - WA_BUSINESS_TOKEN_WEBHOOK=evolution\n    - WA_BUSINESS_URL=https://graph.facebook.com\n    - WA_BUSINESS_VERSION=v20.0\n    - WA_BUSINESS_LANGUAGE=pt_BR\n    ## Sobre o QR-Code\n    - QRCODE_LIMIT=1902\n    - QRCODE_COLOR=#000000\n    ## Aivar Banco de Dados Postgres\n    - DATABASE_ENABLED=true\n    - DATABASE_PROVIDER=postgresql\n    - DATABASE_CONNECTION_URI=postgresql://postgres:061603F@tim@@postgres_postgres:5432/evolution\n    - DATABASE_CONNECTION_CLIENT_NAME=evolution\n    - DATABASE_SAVE_DATA_INSTANCE=true\n    - DATABASE_SAVE_DATA_NEW_MESSAGE=true\n    - DATABASE_SAVE_MESSAGE_UPDATE=true\n    - DATABASE_SAVE_DATA_CONTACTS=true\n    - DATABASE_SAVE_DATA_CHATS=true\n    # OpenAI\n    - OPENAI_ENABLED=true\n    # Dify\n    - DIFY_ENABLED=true\n    ## Ativar Banco de dados MinIO ou S3\n    - S3_ENABLED=false\n    - S3_ACCESS_KEY=\n    - S3_SECRET_KEY=\n    - S3_BUCKET=evolution\n    - S3_PORT=443\n    - S3_ENDPOINT=\n    - S3_USE_SSL=true\n    ## Ativar o Cache Redis\n    - CACHE_REDIS_ENABLED=true\n    - CACHE_REDIS_URI=redis://redis:6379/2\n    - CACHE_REDIS_PREFIX_KEY=evolution\n    - CACHE_REDIS_SAVE_INSTANCES=false\n    - CACHE_LOCAL_ENABLED=false\n    ## Configurações das instancias\n    - DEL_INSTANCE=false\n    - DEL_TEMP_INSTANCES=false\n    ## Carregar módulo Typebot\n    - TYPEBOT_ENABLED=true\n    - TYPEBOT_API_VERSION=latest\n    ## Carregar módulo Chatwoot\n    - CHATWOOT_ENABLED=true\n    - CHATWOOT_MESSAGE_READ=true\n    - CHATWOOT_MESSAGE_DELETE=true\n    - CHATWOOT_IMPORT_DATABASE_CONNECTION_URI=postgresql://postgres:061603F@tim@@postgres_postgres:5432/chatwoot?sslmode=disable\n    - CHATWOOT_IMPORT_PLACEHOLDER_MEDIA_MESSAGE=false ## true = Importar midia | false = Não importar midia \n    ## Dados do RabbitMQ\n    - RABBITMQ_ENABLED=false\n    - RABBITMQ_URI=amqp://admin:admin@rabbitmq:5672/default\n    - RABBITMQ_EXCHANGE_NAME=evolution\n    - RABBITMQ_GLOBAL_ENABLED=false\n    - RABBITMQ_EVENTS_APPLICATION_STARTUP=false\n    - RABBITMQ_EVENTS_INSTANCE_CREATE=false\n    - RABBITMQ_EVENTS_INSTANCE_DELETE=false\n    - RABBITMQ_EVENTS_QRCODE_UPDATED=false\n    - RABBITMQ_EVENTS_MESSAGES_SET=false\n    - RABBITMQ_EVENTS_MESSAGES_UPSERT=true\n    - RABBITMQ_EVENTS_MESSAGES_EDITED=false\n    - RABBITMQ_EVENTS_MESSAGES_UPDATE=false\n    - RABBITMQ_EVENTS_MESSAGES_DELETE=false\n    - RABBITMQ_EVENTS_SEND_MESSAGE=false\n    - RABBITMQ_EVENTS_CONTACTS_SET=false\n    - RABBITMQ_EVENTS_CONTACTS_UPSERT=false\n    - RABBITMQ_EVENTS_CONTACTS_UPDATE=false\n    - RABBITMQ_EVENTS_PRESENCE_UPDATE=false\n    - RABBITMQ_EVENTS_CHATS_SET=false\n    - RABBITMQ_EVENTS_CHATS_UPSERT=false\n    - RABBITMQ_EVENTS_CHATS_UPDATE=false\n    - RABBITMQ_EVENTS_CHATS_DELETE=false\n    - RABBITMQ_EVENTS_GROUPS_UPSERT=false\n    - RABBITMQ_EVENTS_GROUP_UPDATE=false\n    - RABBITMQ_EVENTS_GROUP_PARTICIPANTS_UPDATE=false\n    - RABBITMQ_EVENTS_CONNECTION_UPDATE=true\n    - RABBITMQ_EVENTS_CALL=false\n    - RABBITMQ_EVENTS_TYPEBOT_START=false\n    - RABBITMQ_EVENTS_TYPEBOT_CHANGE_STATUS=false\n    ## Informações do Webhook\n    - WEBHOOK_GLOBAL_ENABLED=false\n    - WEBHOOK_GLOBAL_URL=\n    - WEBHOOK_GLOBAL_WEBHOOK_BY_EVENTS=false\n    - WEBHOOK_EVENTS_APPLICATION_STARTUP=false\n    - WEBHOOK_EVENTS_QRCODE_UPDATED=true\n    - WEBHOOK_EVENTS_MESSAGES_SET=true\n    - WEBHOOK_EVENTS_MESSAGES_UPSERT=true\n    - WEBHOOK_EVENTS_MESSAGES_EDITED=true\n    - WEBHOOK_EVENTS_MESSAGES_UPDATE=true\n    - WEBHOOK_EVENTS_MESSAGES_DELETE=true\n    - WEBHOOK_EVENTS_SEND_MESSAGE=true\n    - WEBHOOK_EVENTS_CONTACTS_SET=true\n    - WEBHOOK_EVENTS_CONTACTS_UPSERT=true\n    - WEBHOOK_EVENTS_CONTACTS_UPDATE=true\n    - WEBHOOK_EVENTS_PRESENCE_UPDATE=true\n    - WEBHOOK_EVENTS_CHATS_SET=true\n    - WEBHOOK_EVENTS_CHATS_UPSERT=true\n    - WEBHOOK_EVENTS_CHATS_UPDATE=true\n    - WEBHOOK_EVENTS_CHATS_DELETE=true\n    - WEBHOOK_EVENTS_GROUPS_UPSERT=true\n    - WEBHOOK_EVENTS_GROUPS_UPDATE=true\n    - WEBHOOK_EVENTS_GROUP_PARTICIPANTS_UPDATE=true\n    - WEBHOOK_EVENTS_CONNECTION_UPDATE=true\n    - WEBHOOK_EVENTS_LABELS_EDIT=true\n    - WEBHOOK_EVENTS_LABELS_ASSOCIATION=true\n    - WEBHOOK_EVENTS_CALL=true\n    - WEBHOOK_EVENTS_TYPEBOT_START=false\n    - WEBHOOK_EVENTS_TYPEBOT_CHANGE_STATUS=false\n    - WEBHOOK_EVENTS_ERRORS=false\n    - WEBHOOK_EVENTS_ERRORS_WEBHOOK=\n    deploy:\n      mode: replicated\n      replicas: 1\n      placement:\n        constraints:\n        - node.role == manager\n      labels:\n      - traefik.enable=1\n      - traefik.http.routers.evolution_v2.rule=Host(`apiwp.aiagentautomate.com.br`) ## Url da aplicação\n      - traefik.http.routers.evolution_v2.entrypoints=websecure\n      - traefik.http.routers.evolution_v2.priority=1\n      - traefik.http.routers.evolution_v2.tls.certresolver=letsencryptresolver\n      - traefik.http.routers.evolution_v2.service=evolution_v2\n      - traefik.http.services.evolution_v2.loadbalancer.server.port=8080   ## porta que estava sendo utilizada 8080\n      - traefik.http.services.evolution_v2.loadbalancer.passHostHeader=true\n\nvolumes:\n  evolution_instancesv2:\n    external: true\n    name: evolution_instancesv2\n\nnetworks:\n  network_public:\n    name: network_public\n    external: true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6ac755bb-baee-4d0c-bbd2-76e5256cde6d",
+      "name": "Stack",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        720,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://wppconnect.io/whatsapp-versions/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        368,
+        0
+      ],
+      "id": "710534b1-f16b-4ce1-997d-a6b8895477c5",
+      "name": "Busca Versão"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                0,
+                1,
+                3,
+                5
+              ]
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5b93cdce-73ee-492b-9229-6b8059a50eb0",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.first().json.data;\nconst html = response.body || response;\n\nconst match = html.match(/https:\\/\\/web\\.whatsapp\\.com\\/\\?v=([\\d.-\\w]+)/);\n\nif (match && match[1]) {\n  const version = match[1].replace(/-.*$/, ''); \n  return [{ json: { whatsappVersion: version } }];\n} else {\n  return [{ json: { error: \"Versão não encontrada\" } }];\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        0
+      ],
+      "id": "c4718272-098c-4ab4-8a42-f3b49f645be8",
+      "name": "Extrai Ultima Versão"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $('Info Base1').item.json.UrlPortainer }}/api/stacks/{{ $('Filtra Stack Evo').item.json.Id }}?endpointId=1",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Paga Token').item.json.jwt }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"pullImage\": false,\n  \"prune\": true,\n  \"stackFileContent\": \"{{ $json.stackConvert }}\"\n}",
+        "options": {
+          "lowercaseHeaders": false
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        208
+      ],
+      "id": "072d051a-92d9-4467-a1f6-2ac8377c144e",
+      "name": "Update Stack"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Info Base1').item.json.UrlPortainer }}/api/stacks",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Paga Token').item.json.jwt }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        192,
+        208
+      ],
+      "id": "11242bfc-cca7-42bb-8663-aa0986c523b4",
+      "name": "Busca as Stacks"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Info Base1').item.json.UrlPortainer }}/api/endpoints/1/docker/containers/json?all=true",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Paga Token').item.json.jwt }}"
+            }
+          ]
+        },
+        "options": {
+          "lowercaseHeaders": false
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        208,
+        400
+      ],
+      "id": "51e52401-4860-49d0-88b9-34c6f29124f7",
+      "name": "Busca Conteineres Vazios"
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "={{ $('Info Base1').item.json.UrlPortainer }}/api/endpoints/1/docker/containers/{{ $json.Id }}?force=true",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Paga Token').item.json.jwt }}"
+            }
+          ]
+        },
+        "options": {
+          "lowercaseHeaders": false
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        432
+      ],
+      "id": "3d5c3675-5ac0-4708-96e8-507e4904d827",
+      "name": "Deleta Conteiner Vazio"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        640,
+        400
+      ],
+      "id": "73ba2475-376a-44c4-a693-2b7600ee42df",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        32,
+        400
+      ],
+      "id": "7c07125a-2b40-4d70-8aef-0a7dd75c2cc8",
+      "name": "Wait",
+      "webhookId": "59ee23fe-9a83-4810-846e-b601b380754e"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "55352201-6ab6-4df1-99eb-48dd4c2c25a7",
+              "leftValue": "={{ $json.Name }}",
+              "rightValue": "={{ $('Info Base1').item.json.NomeStack }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        368,
+        208
+      ],
+      "id": "b14e2341-13af-4669-a7ee-8a94dc6e9522",
+      "name": "Filtra Stack Evo"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7f9e3b65-00fa-4105-9c64-d8df353ccac6",
+              "leftValue": "={{ $json.State }}",
+              "rightValue": "exited",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        432,
+        400
+      ],
+      "id": "149e2626-97e3-4b76-840b-7be0c0c7c25e",
+      "name": "Filtra Conteineres Vazios"
+    },
+    {
+      "parameters": {
+        "jsCode": "const originalYaml = $('Stack').first().json.suastack;\n\nconst stackConvert = originalYaml\n  .replace(/\\\\/g, '\\\\\\\\')\n  .replace(/\"/g, '\\\\\"')\n  .replace(/\\n/g, '\\\\n')\n  .replace(/\\t/g, '\\\\t');\n\nreturn [{\n  json: {\n    stackConvert: stackConvert\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        208
+      ],
+      "id": "56e383d3-2d51-4b62-bd8c-545532b41c6f",
+      "name": "Converte Stack"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-07-27T06:02:59.935Z",
+      "updatedAt": "2025-07-27T06:02:59.935Z",
+      "role": "workflow:owner",
+      "workflowId": "btAi3LjymRKgkgVA",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-18T06:13:51.911Z",
+  "versionId": "630fe7d4-0443-4ebf-9163-b6e192f87e05"
+}

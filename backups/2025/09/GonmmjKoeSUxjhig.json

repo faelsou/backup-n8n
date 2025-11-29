@@ -1,0 +1,565 @@
+{
+  "active": false,
+  "connections": {
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Msg usuário?": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dia e hora atual": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude 3.5 Sonnet": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trata Dados de Entrada": {
+      "main": [
+        [
+          {
+            "node": "Msg usuário?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MensagemDM": {
+      "main": [
+        [
+          {
+            "node": "Trata Dados de Entrada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Base de Conhecimento",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Base de Conhecimento",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Base de Conhecimento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-11T16:22:21.164Z",
+  "id": "GonmmjKoeSUxjhig",
+  "isArchived": false,
+  "meta": null,
+  "name": "Dm-Instagram",
+  "nodes": [
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.sender }}",
+        "contextWindowLength": 20
+      },
+      "id": "8fdf506f-9745-446b-902e-4bd7f1eb1efc",
+      "name": "Redis Chat Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.3,
+      "position": [
+        1072,
+        608
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.instagram.com/v21.0/me/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message.text",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "name": "recipient.id",
+              "value": "={{ $('Msg usuário?').item.json.sender }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "id": "3dc3527e-8dbb-4784-8e3f-604e41198bc5",
+      "name": "Resposta",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1680,
+        288
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Vg1sLZdXLdtpj9vh",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1e60d09e-e0ef-43bd-97df-994b61a48a63",
+              "leftValue": "={{ $json.sender }}",
+              "rightValue": "={{ $json.page_id }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b89f7a90-c562-44bc-8a2d-1194d31f3a3c",
+      "name": "Msg usuário?",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        800,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "name": "get_dia_hora",
+        "description": "Chame essa tool para obter data e hora atual",
+        "jsCode": "const date = new Date();\nconst options = {\n    timeZone: 'America/Sao_Paulo',\n    year: 'numeric',\n    month: '2-digit',\n    day: '2-digit',\n    hour: '2-digit',\n    minute: '2-digit',\n    second: '2-digit'\n};\n\nconst formattedDate = new Intl.DateTimeFormat('pt-BR', options).format(date);\nreturn formattedDate;\n"
+      },
+      "id": "00982925-5250-4b02-a5df-357ad2e16639",
+      "name": "Dia e hora atual",
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.1,
+      "position": [
+        1232,
+        608
+      ]
+    },
+    {
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=## Nome do Agente\n**Rocket – Assistente Virtual dos Agentes de IA com N8N**\n\n## Missão\nAtender clientes pelo Instagram de forma **objetiva, amigável e eficiente**, respondendo exclusivamente com base na **formação Agentes de IA com N8N** e nos **serviços oferecidos**.\n\n## Objetivo\nResponder perguntas diretas de clientes com base no conteúdo oficial, ajudando a entender e contratar os serviços da empresa ou se inscrever na formação **Agentes de IA com N8N**.\n\n## Regras de Interação\n\n- Sempre responda em **português do Brasil**, com uma linguagem clara, amigável e emojis 😊.\n- Responda **somente** ao que foi perguntado. Nada além.\n- Use **quebras de linha** para deixar o texto mais leve de ler.\n- Sempre consulte a **base de conhecimento** antes de responder. Use a tool `base de conhecimento` com o input: `{{ $json.text }}`.\n- Se a pergunta **não for relacionada aos serviços**, pergunte de forma educada o que o usuário está procurando.\n- Se a pergunta for sobre a empresa mas **não tiver resposta na base**, diga:\n```\n  Não tenho essa informação 😔\n```\n\n## Formatação da Resposta\n\nSempre que possível, organize o conteúdo com:\n\n- **Títulos curtos**\n- **Bullets informativos**\n- Emojis no início ou fim das frases\n- Separação com quebras de linha para facilitar leitura\n- **Links sempre enviados como URL simples**, sem Markdown\n\n## Ferramentas Utilizadas\n\n- **base de conhecimento** – Consulta as informações oficiais sobre os serviços e formação\n- **dia e hora atual** – Retorna o horário e data atual para decidir o tipo de atendimento\n\n## Importante\n\n- Nunca invente informações.\n- Nunca use palavras difíceis ou linguagem técnica.\n- Nunca use Markdown para links.\n- Nunca inclua instruções internas na resposta ao cliente.",
+          "maxIterations": 100
+        }
+      },
+      "id": "71354ec3-e01d-4a41-9b75-a86e4bce83c0",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        1168,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "model": "anthropic/claude-3.5-sonnet",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        880,
+        608
+      ],
+      "id": "c87b0152-3e3e-4bc7-b993-54f8d068ff8c",
+      "name": "Claude 3.5 Sonnet"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9683a0d5-a6d7-48ce-aac3-57e092b86789",
+              "name": "sender",
+              "value": "={{ $json.body.entry[0].messaging[0].sender.id }}",
+              "type": "string"
+            },
+            {
+              "id": "87cefd87-0fd8-4e08-8d31-67d6bc2813b5",
+              "name": "recipient",
+              "value": "={{ $json.body.entry[0].messaging[0].recipient.id }}",
+              "type": "string"
+            },
+            {
+              "id": "e4b4ff57-4a48-461a-b785-d630a71c936f",
+              "name": "text",
+              "value": "={{ $json.body.entry[0].messaging[0].message.text }}",
+              "type": "string"
+            },
+            {
+              "id": "0c8c01f4-f583-4a62-85f2-3bde9a20a43f",
+              "name": "page_id",
+              "value": "={{ $json.body.entry[0].id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "012130a0-901b-4d38-a5ce-087ae7e9a697",
+      "name": "Trata Dados de Entrada",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        544,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "dm-instagram",
+        "options": {}
+      },
+      "id": "6eb98f67-aa79-41c3-ad2e-4787d3b32b9a",
+      "name": "MensagemDM",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        208,
+        288
+      ],
+      "webhookId": "d37b58ac-09c6-4617-887c-4fe11f7d3a25"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "a3c4c7c6-d7c7-480d-a52b-cfa1319c46eb",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1808,
+        880
+      ]
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-large",
+        "options": {}
+      },
+      "id": "625de980-fbfd-43ae-8fb1-589a019d8f4e",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        960
+      ]
+    },
+    {
+      "parameters": {
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "jarvis",
+          "mode": "list",
+          "cachedResultName": "jarvis"
+        },
+        "options": {}
+      },
+      "id": "48937084-555f-4b6c-8d79-1bd97c52370b",
+      "name": "Pinecone Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1,
+      "position": [
+        1488,
+        768
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Base de Conhecimento do Agente  - RAG\n",
+        "height": 658,
+        "width": 724,
+        "color": 5
+      },
+      "id": "7a24e6b7-4f54-4069-adb7-1768a7f3befc",
+      "name": "Sticky Note15",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1392,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "name": "jarvis",
+        "description": "Você é uma base de conhecimento que dá respostas sobre infos de IA, Agentes, e Automações com N8N",
+        "topK": 8
+      },
+      "id": "f4da0356-542f-4f0f-a73d-9cfc3349b89d",
+      "name": "Base de Conhecimento",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        1712,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Entrada",
+        "height": 220,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        128,
+        240
+      ],
+      "id": "991d1db4-9c05-4009-af31-43cc23185189",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Tratar Dados",
+        "height": 220,
+        "width": 520,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        448,
+        240
+      ],
+      "id": "e8ad30a6-0fd4-4884-8b6a-a93e5bbbbe62",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Agent",
+        "height": 220,
+        "width": 580,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        992,
+        240
+      ],
+      "id": "cf47189d-8211-4ee9-b4b7-01bc4b999274",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## LMMs Ferramentas e Memória",
+        "height": 220,
+        "width": 520,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        848,
+        512
+      ],
+      "id": "e6d6d024-ba72-4cf3-b944-6acd56ae91ab",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Saída",
+        "height": 220,
+        "width": 300,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1584,
+        240
+      ],
+      "id": "cfe1de79-7cbd-4365-a373-986544eaaf31",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 1080,
+        "width": 2160,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        112
+      ],
+      "id": "3d6a43a6-6457-4d6c-864b-48b5f7d1378b",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "██████▄░▄██▄▄██▄░░░██████░██████▄░▄██████░████████░▄████▄░▄██████░█████▄░▄████▄░▄██▄▄██▄░░░▄████▄░▄██████░▄█████░██████▄░████████░░░░░░░░░░░░█████▄░██░░██░░░█████▄░██████░▄█████░██████▄░▄█████░██░░░██░▄█████░▄██████\n██░░░██░██░██░██░░░░░██░░░██░░░██░██░░░░░░░░░██░░░░██░░██░██░░░░░░██░░██░██░░██░██░██░██░░░██░░██░██░░░░░░██░░░░░██░░░██░░░░██░░░░░░░░░░░░░░░██░░██░██░░██░░░██░░██░░░██░░░██░░░░░██░░░██░██░░░░░██░░░██░██░░░░░██░░░░░\n██░░░██░██░██░██░░░░░██░░░██░░░██░▀█████▄░░░░██░░░░██░░██░██░░███░█████▀░██░░██░██░██░██░░░██░░██░██░░███░█████░░██░░░██░░░░██░░░░░░░░░░░░░░░█████░░▀████▀░░░█████▀░░░██░░░██░░░░░██░░░██░█████░░██░░░██░█████░░▀█████▄\n██░░░██░██░██░██░░░░░██░░░██░░░██░░░░░░██░░░░██░░░░██████░██░░░██░██░░██░██████░██░██░██░░░██████░██░░░██░██░░░░░██░░░██░░░░██░░░░░░██████░░░██░░██░░░██░░░░░██░░██░░░██░░░██░░░░░██░░░██░██░░░░░██░░██░░██░░░░░░░░░░██\n██████▀░██░██░██░░░██████░██░░░██░██████▀░░░░██░░░░██░░██░▀█████▀░██░░██░██░░██░██░██░██░░░██░░██░▀█████▀░▀█████░██░░░██░░░░██░░░░░░░░░░░░░░░█████▀░░░██░░░░░██░░██░██████░▀█████░██░░░██░▀█████░▀███▀░░░▀█████░██████▀\n░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░",
+        "height": 140,
+        "width": 2180
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "69341289-cdd1-44b6-9fd8-90c6f25f9706",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Formação - Agente N8N\n![Source example](https://uploaddeimagens.com.br/images/004/897/588/original/logo_-_agentes_de_IA.png)\n\n## https://agentes-n8n.com.br",
+        "height": 440,
+        "width": 360,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        240,
+        560
+      ],
+      "typeVersion": 1,
+      "id": "9974b576-5455-45e2-b30d-7fd03ba9d8db",
+      "name": "Sticky Note27"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-11T16:22:21.164Z",
+      "updatedAt": "2025-09-11T16:22:21.164Z",
+      "role": "workflow:owner",
+      "workflowId": "GonmmjKoeSUxjhig",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-09-11T16:21:35.354Z",
+      "updatedAt": "2025-09-11T16:21:35.354Z",
+      "id": "R9GAAavum1yc9xIO",
+      "name": "ai-agent"
+    },
+    {
+      "createdAt": "2025-09-11T16:21:35.349Z",
+      "updatedAt": "2025-09-11T16:21:35.349Z",
+      "id": "7dkvF9mfjm0SDi5V",
+      "name": "instagram"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-11T17:21:32.382Z",
+  "versionId": "2eb17b7e-d876-496b-be92-7bc8bea968ce"
+}

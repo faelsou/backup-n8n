@@ -1,0 +1,1319 @@
+{
+  "active": false,
+  "connections": {
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "dados_IA",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Created": {
+      "main": [
+        [
+          {
+            "node": "Set File ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Updated": {
+      "main": [
+        [
+          {
+            "node": "Set File ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Document Text": {
+      "main": [
+        [
+          {
+            "node": "Merge Extracted Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Old Doc Rows": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set File ID": {
+      "main": [
+        [
+          {
+            "node": "Delete Old Doc Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Text": {
+      "main": [
+        [
+          {
+            "node": "Merge Extracted Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Summarize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize": {
+      "main": [
+        [
+          {
+            "node": "Merge Extracted Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Extract PDF Text",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from Excel",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract Document Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert into Supabase Vectorstore": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "dados_IA",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from Excel": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Download File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "dados_IA": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Comercial",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Comercial",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Agente Comercial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente Comercial",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-31T08:14:56.494Z",
+  "id": "q0KYKBJ59vxSQoDK",
+  "isArchived": true,
+  "meta": null,
+  "name": "My workflow 75",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "63cb2ff9-e2d3-422a-b7c6-c5123e5f39f1",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        2336,
+        480
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.data || $json.text || $json.concatenated_data }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "=file_id",
+                "value": "={{ $('Set File ID').first().json.file_id }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "30755942-4a53-453e-872a-929880d7c49f",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        2096,
+        1168
+      ]
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "2b2d0985-9b2b-4edf-9f85-13ce9c0b1f95",
+      "name": "Embeddings OpenAI1",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1952,
+        1200
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.file_id }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain"
+            }
+          }
+        }
+      },
+      "id": "29afa326-8adc-4329-8f9e-2e7ef21cc56e",
+      "name": "Download File",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1056,
+        944
+      ],
+      "executeOnce": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "lEIDsWEIbsEr4Vq9",
+          "name": "Google Drive GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 1,
+              "unit": "minutes"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1z_I4-X1DXlnPQoxCnYSR1bQ9In-vBjcG",
+          "mode": "list",
+          "cachedResultName": "MATERIAL PARA COMERCIAL ",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1z_I4-X1DXlnPQoxCnYSR1bQ9In-vBjcG"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "id": "408545e7-cbe3-4de7-87f5-4aba0bf13d45",
+      "name": "File Created",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        160,
+        880
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "lEIDsWEIbsEr4Vq9",
+          "name": "Google Drive GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1z_I4-X1DXlnPQoxCnYSR1bQ9In-vBjcG",
+          "mode": "list",
+          "cachedResultName": "MATERIAL PARA COMERCIAL ",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1z_I4-X1DXlnPQoxCnYSR1bQ9In-vBjcG"
+        },
+        "event": "fileUpdated",
+        "options": {}
+      },
+      "id": "ad302797-823b-4322-b65e-481753246e96",
+      "name": "File Updated",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        160,
+        1072
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "lEIDsWEIbsEr4Vq9",
+          "name": "Google Drive GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "id": "0cc822c5-4b2d-4c1a-b17e-39babd6e2a9a",
+      "name": "Extract Document Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1632,
+        1120
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "f3f6493f-a2b6-48ea-aaa5-8cd0939e7a6a",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1840,
+        544
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "documentos_comercial",
+        "filterType": "string",
+        "filterString": "=metadata->>file_id=like.*{{ $json.file_id }}*"
+      },
+      "id": "29de6186-491b-4ae4-aaeb-da155db9baee",
+      "name": "Delete Old Doc Rows",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        512,
+        928
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "10646eae-ae46-4327-a4dc-9987c2d76173",
+              "name": "file_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f4536df5-d0b1-4392-bf17-b8137fb31a44",
+              "name": "file_type",
+              "value": "={{ $json.mimeType }}",
+              "type": "string"
+            },
+            {
+              "id": "c774ed34-0d67-44b7-a537-83810f357b7c",
+              "name": "originalFilename",
+              "value": "={{ $json.originalFilename }}",
+              "type": "string"
+            },
+            {
+              "id": "dff39c85-b4a2-45ba-a5ff-f4b311999efc",
+              "name": "sha1Checksum",
+              "value": "={{ $json.sha1Checksum }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c18e9c09-bcb8-4943-b7f5-256b2f76b72c",
+      "name": "Set File ID",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        352,
+        928
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "id": "09ff1786-2300-4dee-bb94-af77cb226c4d",
+      "name": "Extract PDF Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1632,
+        768
+      ]
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "id": "6dfc8187-2081-466b-96a6-4d8d4e92fe1c",
+      "name": "Aggregate",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        944
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "00215454-005e-4ff6-b43e-d3a2bfbfd037",
+      "name": "Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        2160,
+        1328
+      ]
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "concatenate",
+              "field": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "07b36610-1bb2-4457-b1c5-ce5b904ca096",
+      "name": "Summarize",
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1,
+      "position": [
+        1936,
+        944
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.file_type }}",
+                    "rightValue": "application/pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "2ae7faa7-a936-4621-a680-60c512163034",
+                    "leftValue": "={{ $json.file_type }}",
+                    "rightValue": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "fc193b06-363b-4699-a97d-e5a850138b0e",
+                    "leftValue": "={{ $json.file_type }}",
+                    "rightValue": "application/vnd.google-apps.document",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": 2
+        }
+      },
+      "id": "f5ab2a25-fe2a-4176-9187-ee756e4e72dd",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        1232,
+        944
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documentos_comercial",
+          "mode": "list",
+          "cachedResultName": "documentos_comercial"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "id": "fe1ff582-eb7a-451f-b8c7-0027fc41d60c",
+      "name": "Insert into Supabase Vectorstore",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        2048,
+        944
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "value": "documentos_comercial",
+          "mode": "list",
+          "cachedResultName": "documentos_comercial"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "id": "da94d727-ffba-43c2-b6ce-cb071b803feb",
+      "name": "Supabase Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        1888,
+        400
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "options": {}
+      },
+      "id": "cde38e16-f9d7-4d33-9fcb-d6f0200847c9",
+      "name": "Extract from Excel",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1632,
+        944
+      ]
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 800,
+        "width": 2300,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        96,
+        640
+      ],
+      "typeVersion": 1,
+      "id": "6ebbd7d4-26ee-437a-946e-54b671212c67",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Arquivos criados em uma pasta específica > Verificar o tipo de arquivo e realizar conversão > Extrair o texto > Adicionar ao Vector Store",
+        "height": 80,
+        "width": 1600,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        96,
+        1344
+      ],
+      "typeVersion": 1,
+      "id": "e090228b-35df-41a2-b771-b75dd8ebe7b2",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "## Gatilho de Monitoramento",
+        "height": 440,
+        "width": 213,
+        "color": 5
+      },
+      "id": "52537ec5-9241-4422-aecb-448aa2ddc1ad",
+      "name": "Sticky Note10",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        112,
+        784
+      ]
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 280,
+        "width": 260,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -256,
+        1040
+      ],
+      "typeVersion": 1,
+      "id": "fdb4534d-1853-41d0-9437-177f8934c51b",
+      "name": "Sticky Note31"
+    },
+    {
+      "parameters": {
+        "content": "## Cria tabela documentos",
+        "height": 80,
+        "width": 180,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -208,
+        1056
+      ],
+      "typeVersion": 1,
+      "id": "58ff9486-a55a-4929-ac62-fd83205e075f",
+      "name": "Sticky Note32"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "create table dados_cliente (\n  id bigserial primary key,\n  created_at TIMESTAMPTZ, \n  telefone text, \n  sessionid text\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -480,
+        1168
+      ],
+      "id": "8319c9e4-906c-4c05-aa83-636743a276cd",
+      "name": "Postgres1",
+      "credentials": {
+        "postgres": {
+          "id": "CbbTX7ryuVXsyhIG",
+          "name": "Postgres_AIAgentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 280,
+        "width": 260,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -544,
+        1040
+      ],
+      "typeVersion": 1,
+      "id": "4b77b2c2-d72f-4306-a33a-e5f3fbf57d36",
+      "name": "Sticky Note33"
+    },
+    {
+      "parameters": {
+        "content": "## Cria tabela dados_cliente",
+        "height": 80,
+        "width": 180,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -496,
+        1056
+      ],
+      "typeVersion": 1,
+      "id": "bc3c2185-d7f4-486e-a81a-1544fd990c4c",
+      "name": "Sticky Note34"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from dados_cliente",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -464,
+        1536
+      ],
+      "id": "c02bb490-de31-4076-9a16-3443eec9eb21",
+      "name": "Postgres2",
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 340,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -544,
+        1360
+      ],
+      "typeVersion": 1,
+      "id": "866a0e1d-d22f-413d-ac02-6da0d8f1b239",
+      "name": "Sticky Note35"
+    },
+    {
+      "parameters": {
+        "content": "## Deleta dados tabela dados_cliente",
+        "height": 120,
+        "width": 200,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -496,
+        1376
+      ],
+      "typeVersion": 1,
+      "id": "1bf3a560-d8de-48df-a35d-31fd925c50ae",
+      "name": "Sticky Note36"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $items(\"Set File ID\").map(item => {\n  return {\n    json: {\n      file_id: item.json.file_id,\n      file_type: item.json.file_type\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        928
+      ],
+      "id": "401f9cc8-ae0b-4a76-b707-25fed1ef049b",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        832,
+        928
+      ],
+      "id": "8a0fed9f-a156-4102-8173-0d5574291c38",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 340,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -256,
+        1360
+      ],
+      "typeVersion": 1,
+      "id": "541ac9b4-0694-4729-9cc5-d4d8395050b0",
+      "name": "Sticky Note37"
+    },
+    {
+      "parameters": {
+        "content": "## Deleta dados tabela documentos",
+        "height": 120,
+        "width": 200,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -208,
+        1376
+      ],
+      "typeVersion": 1,
+      "id": "cd15490e-0722-4ae7-8120-a31caab5642b",
+      "name": "Sticky Note38"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from n8n_chat_histories",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -176,
+        816
+      ],
+      "id": "09fa5557-1a9b-42b4-ace0-72eea2dd4fc8",
+      "name": "Postgres4",
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 340,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -256,
+        656
+      ],
+      "typeVersion": 1,
+      "id": "3d3c8d20-cb67-4014-b1c9-ad249f299e2a",
+      "name": "Sticky Note39"
+    },
+    {
+      "parameters": {
+        "name": "dados_IA",
+        "description": "Use esta ferramenta para buscar informações sobre comercial, materiais, e detalhes da GRD MAD para responder às perguntas do time de vendas."
+      },
+      "id": "b93aa35d-542a-4be3-8c25-e66d560f929f",
+      "name": "dados_IA",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from documentos_comercial",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -176,
+        1536
+      ],
+      "id": "7370186d-633b-418a-90b0-d9db4d159d09",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1-mini",
+        "options": {
+          "topP": 0.3
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        288
+      ],
+      "id": "e35e03c7-59de-4f5a-84d1-d2cb462a3b58",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.sessionId }}",
+        "contextWindowLength": 1000
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1632,
+        336
+      ],
+      "id": "ca3fc133-9fd0-44ae-accd-da6de78e45e9",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        176,
+        16
+      ],
+      "id": "569c226d-e18c-4d77-8857-8a14ee84ea3a",
+      "name": "When chat message received",
+      "webhookId": "af1a7b1b-2ee0-48c2-821e-e3096a1635ed"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Create a table to store your documents\ncreate table documentos_comercial (\n  id bigserial primary key,\n  content text, -- corresponds to Document.pageContent\n  metadata jsonb, -- corresponds to Document.metadata\n  embedding vector(1536) -- 1536 works for OpenAI embeddings, change if needed\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -192,
+        1168
+      ],
+      "id": "4d89ee2e-eda7-4493-90f8-5b422afc0967",
+      "name": "Postgres_GRD",
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        896,
+        320
+      ],
+      "id": "104bcf86-b96e-47e3-84b7-cfaa6c99c1fd",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ccbf11a4-873c-43c4-afeb-e1f55fcf8a70",
+              "name": "nomeCliente",
+              "value": "={{ $json.body?.data?.pushName || $json.pushName || 'User' }}",
+              "type": "string"
+            },
+            {
+              "id": "f5827ae7-c964-472f-b3a1-75197205bf15",
+              "name": "messageType",
+              "value": "={{ ($json.message?.type || $json.type || $json.chatInput || '').toString().toLowerCase() }}",
+              "type": "string"
+            },
+            {
+              "id": "8831f1be-1420-4644-a30d-61a9e176188d",
+              "name": "messageText",
+              "value": "={{ $json.message?.text?.body || $json.body?.message?.extendedTextMessage?.text || $json.text?.body || $json.mensagem || $json.text || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1040,
+        16
+      ],
+      "id": "98d83e1c-b7fa-4d26-a7c5-793999178f0f",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Webhook').item.json.body.message }}",
+        "options": {
+          "systemMessage": "=Aqui está a data/hora atual: {{ $now.format('dd-MM-yyyy HH:mm') }}\n\n# 🎯 Visão Geral\n\nVocê é **Joanna**, Assistente Comercial da **GRD MAD** — uma empresa especializada em **móveis planejados, sob medida e soluções corporativas premium**.\n\nSeu papel é **consultar a base de conhecimento RAG (dados_IA)** e responder **vendedores** e **consultores internos** da GRD MAD com **clareza, precisão e tom humano**.  \nVocê **não agenda reuniões, não envia e-mails e não interage com leads** diretamente.  \nSeu foco é **orientar os vendedores e fornecer informações exatas** com base no conteúdo do banco de conhecimento.\n\n---\n\n## 🧩 **Diretrizes de Função**\n\n- Sempre **consultar a ferramenta `dados_IA`** (base RAG) para buscar informações sobre produtos, acabamentos, medidas, prazos, políticas comerciais, montagem, orçamentos ou dúvidas técnicas.\n- Utilize a ferramenta `think` quando precisar **refletir antes de responder**, consolidando informações da base para gerar uma resposta precisa e coerente.\n- Suas respostas devem ter no máximo **duas frases curtas**, claras e úteis.\n- **Nunca invente informações.** Se não encontrar uma resposta na base, diga:\n  > \"Essa informação ainda não está na nossa base, mas posso pedir para o time atualizar o conhecimento interno.\"\n- **Não cumprimente o usuário mais de uma vez.**\n- **Nunca copie ou repita textos genéricos.**\n- Sempre mantenha um **tom profissional, confiante e acolhedor**.\n- Use **negrito** para destacar termos importantes (ex: materiais, prazos, políticas).\n- Se a pergunta estiver confusa, peça para resumir:\n  > \"Pode resumir sua dúvida em uma frase para eu consultar a base corretamente?\"\n\n---\n\n## 💬 **Diretriz Roteiro da Conversa**\n\n### 1. Saudação Inicial (apenas uma vez)\n> \"Olá! 👋 Sou Assistente Comercial da GRD MAD.  \n> Posso te ajudar a consultar informações sobre produtos, prazos, montagem ou condições comerciais.\"\n\n---\n\n## 🧭 **Instruções de Atendimento**\n\n- Antes de responder, consulte sempre a ferramenta **`dados_IA`**.\n---\n\n## ⚙️ **Diretriz Ferramentas**\n\n Ferramenta\n\n**dados_IA** Acessar base de conhecimento RAG (produtos, políticas, montagem, prazos, acabamentos etc.) |\n**think** Usada para refletir e consolidar a resposta com base nos dados do RAG |\n\n---\n\n## 🧱 **Regras de Ouro**\n\n- Sempre consultar o **RAG** antes de responder.\n- Nunca responder algo fora do contexto da GRD MAD.\n- Ser breve, humana e assertiva.\n- Evitar respostas genéricas ou repetitivas.\n- Não criar novos fluxos, apenas direcionar e consultar.\n- Se a dúvida envolver outro agente, **recomende o agente certo**, nunca execute a ação.\n\n---\n\n## 🧠 **Exemplos de uso RAG**\n\n**Pergunta:**  \n> \"Qual o prazo médio de fabricação dos móveis planejados de MDF?\"\n\n**Resposta (via RAG):**  \n> \"O prazo médio de fabricação é de **25 a 35 dias úteis**, dependendo da complexidade e acabamento do projeto.\"\n\n---\n\n**Pergunta:**  \n> \"Vocês trabalham com clínicas médicas também?\"\n\n**Resposta (via RAG):**  \n> \"Sim! A GRD MAD atende **projetos corporativos e clínicas**, com foco em ergonomia e acabamentos de alto padrão.\"\n\n---\n\n**Pergunta:**  \n> \"Quais materiais vocês usam nas portas dos armários?\"\n\n**Resposta (via RAG):**  \n> \"Usamos **MDF 18 mm de alta densidade**, com opções de **acabamento fosco, brilho ou amadeirado**.\"\n\n---\n\n## ✅ **Finalização**\n\nSempre que encerrar uma conversa, mantenha a assinatura padrão:\n\n> \"Sou a Joanna, assistente da GRD MAD.  \n> Qualquer dúvida, posso consultar nossa base de conhecimento para te ajudar novamente. 💬\"\n\n---\n\n## 🔗 **Fonte oficial**\n**Instagram:** [https://www.instagram.com/grd_mad/](https://www.instagram.com/grd_mad/)  \n**Base RAG:** `dados_IA`  \n**Agente responsável:** Joanna — Orquestradora de Conhecimento GRD MAD\n"
+        }
+      },
+      "id": "29881edc-e96f-44c2-bfe8-50d4dfd79e72",
+      "name": "Agente Comercial",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        1584,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "comercial",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        464,
+        256
+      ],
+      "id": "2daeac04-335c-4270-803b-3eea55e62748",
+      "name": "Webhook",
+      "webhookId": "5bbc7234-5661-4086-bb77-f5e03ae30722"
+    },
+    {
+      "parameters": {
+        "content": "## Deleta dados tabela chat_history",
+        "height": 120,
+        "width": 200,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -240,
+        672
+      ],
+      "typeVersion": 1,
+      "id": "a5796ff0-34b1-4213-b0b2-7f07e23525ed",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "mode": "mergeByPosition",
+        "options": {}
+      },
+      "id": "3a9de999-9fb6-4391-8710-b29a139b8c50",
+      "name": "Merge Extracted Data",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        1856,
+        1168
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-31T08:14:56.494Z",
+      "updatedAt": "2025-10-31T08:14:56.494Z",
+      "role": "workflow:owner",
+      "workflowId": "q0KYKBJ59vxSQoDK",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": {
+    "node:File Created": {
+      "lastTimeChecked": "2025-10-31T08:14:58Z"
+    },
+    "node:File Updated": {
+      "lastTimeChecked": "2025-10-31T08:14:59Z"
+    }
+  },
+  "tags": [],
+  "triggerCount": 4,
+  "updatedAt": "2025-10-31T10:23:53.110Z",
+  "versionId": "e5cf722d-99cd-480d-83db-57fbf89c6427"
+}

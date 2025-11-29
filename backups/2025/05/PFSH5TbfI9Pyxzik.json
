@@ -1,0 +1,177 @@
+{
+  "active": false,
+  "connections": {},
+  "createdAt": "2025-05-19T04:25:48.628Z",
+  "id": "PFSH5TbfI9Pyxzik",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 19",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "novo-lead",
+        "options": {}
+      },
+      "id": "a8ba1cc6-aaab-46d5-906d-47739a076ce0",
+      "name": "Webhook Novo Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "a80321f4-a3cb-419c-95eb-ff48d1746c8f"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Normaliza dados do formulário/WhatsApp\nconst nome = $json.nome || $json.fullname || '';\nconst email = $json.email || '';\nconst telefone = $json.telefone?.replace(/\\D/g, '') || $json.phone?.replace(/\\D/g, '') || '';\nconst servico = $json.servico || $json.service || '';\nconst sessionId = telefone || $json.sessionId || $execution.id;\nconst status = 'Novo';\nconst criadoEm = new Date().toISOString();\nreturn [{json: {nome, email, telefone, servico, sessionId, status, criadoEm}}];"
+      },
+      "id": "3c25a055-df9b-4c18-98df-75869da2d179",
+      "name": "Preparar Lead",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        200,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "3df85375-3537-4056-9844-a53f9086d66e",
+      "name": "RegistrarLeadTool",
+      "type": "n8n-nodes-supabase.supabase",
+      "typeVersion": 1,
+      "position": [
+        400,
+        0
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "functionCode": "// Carrega contexto do lead\nreturn [{json: {...$json, context: `lead_${$json.sessionId}`}}];"
+      },
+      "id": "b0070401-e219-40d4-8290-7a69e06ba389",
+      "name": "Load Context",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        600,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "3228b8b0-2342-4e2c-80d9-e30176ed62ae",
+      "name": "HistoricoTool",
+      "type": "n8n-nodes-supabase.supabase",
+      "typeVersion": 1,
+      "position": [
+        800,
+        0
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "functionCode": "// Prompt IA considerando contexto\nconst ultimas = $json.data.map(i => `${i.origem}: ${i.mensagem}`).join('\\n');\nconst prompt = `Você é Aurora, especialista de automação. Aqui está o histórico da conversa:\\n${ultimas}\\n\\nAção: continue a conversa, peça o serviço se não coletou, pergunte horário, confirme agendamento, se sumiu envie follow-up, nunca repita perguntas.`;\nreturn [{json: {...$json, prompt}}];"
+      },
+      "id": "07dc7d11-3f09-4d68-8b33-40bdae08d010",
+      "name": "Gerar Prompt IA",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "afcec250-18cb-462e-8081-4147eef43fc5",
+      "name": "Agent Aurora (LangChain/LLM)",
+      "type": "n8n-nodes-openai.chatgpt",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        0
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "url": "https://api.evolutionapi.com.br/v1/messages/send-text",
+        "options": {}
+      },
+      "id": "f4e8611e-89fb-40bd-bd08-194e20ae099e",
+      "name": "EnviarMensagemTool",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1400,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "93a5a854-4d25-40e3-900b-ceccfdea9923",
+      "name": "LogTool",
+      "type": "n8n-nodes-supabase.supabase",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        0
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "id": "db6a08e6-5f2e-4fbe-b319-b5abe305d7d2",
+      "name": "Wait p/ Follow-up",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        1800,
+        0
+      ],
+      "webhookId": "0b41d236-bbb0-4e04-990b-46f90718426c"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Decide se envia follow-up\n// (Pega histórico dos últimos 12h e envia mensagem se não houver resposta)\nreturn [{json: {...$json, acao: 'follow-up'}}];"
+      },
+      "id": "eaccff0a-21b5-4d5a-8418-a01c6ea6f924",
+      "name": "FollowUpTool",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        0
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-05-19T04:25:48.628Z",
+      "updatedAt": "2025-05-19T04:25:48.628Z",
+      "role": "workflow:owner",
+      "workflowId": "PFSH5TbfI9Pyxzik",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-19T04:25:48.628Z",
+  "versionId": "67c0e6a4-f47f-49b1-85a6-55cff6e48c8a"
+}

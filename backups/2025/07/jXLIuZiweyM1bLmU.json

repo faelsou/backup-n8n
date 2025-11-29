@@ -1,0 +1,338 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook (Recebe LLM Usage)": {
+      "main": [
+        [
+          {
+            "node": "Switch Model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Model": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "PostgreSQL Insert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-26T06:54:07.086Z",
+  "id": "jXLIuZiweyM1bLmU",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Metrics Log LLM Usage",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "metrics-llm",
+        "options": {}
+      },
+      "name": "Webhook (Recebe LLM Usage)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        112
+      ],
+      "id": "03a636d6-944d-4c0a-bbaf-58b9eacba83d",
+      "webhookId": "cb4e7f55-d511-4ac7-bbfc-1f8f9338b468"
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{ $json.body.model }}",
+        "rules": {
+          "rules": [
+            {
+              "operation": "=equal",
+              "value2": "gpt-3.5-turbo"
+            },
+            {
+              "value2": "gpt-4",
+              "output": 1
+            },
+            {
+              "value2": "gpt-4o",
+              "output": 2
+            },
+            {
+              "value2": "gpt-4-turbo",
+              "output": 3
+            },
+            {
+              "value2": "text-davinci-003",
+              "output": "={{ 4 }}"
+            },
+            {
+              "value2": "text-embedding-3-small",
+              "output": "={{ 5 }}"
+            },
+            {
+              "value2": "text-embedding-3-large",
+              "output": "={{ 6 }}"
+            },
+            {
+              "value2": "whisper-1",
+              "output": "={{ 7 }}"
+            },
+            {
+              "value2": "tts-1",
+              "output": "={{ 8 }}"
+            },
+            {
+              "value2": "tts-1-hd",
+              "output": "={{ 9 }}"
+            },
+            {
+              "value2": "dall-e-3",
+              "output": "={{ 10 }}"
+            },
+            {
+              "value2": "gpt-4o.mini",
+              "output": "={{ 11 }}"
+            },
+            {}
+          ]
+        }
+      },
+      "name": "Switch Model",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        80
+      ],
+      "id": "2f2607df-1947-4d10-9203-9364e2942388"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "llm_usage",
+          "mode": "list",
+          "cachedResultName": "llm_usage"
+        },
+        "options": {}
+      },
+      "name": "PostgreSQL Insert",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        592,
+        96
+      ],
+      "id": "8a121145-8266-46a0-80cd-93d1116cd89d",
+      "credentials": {
+        "postgres": {
+          "id": "14tTXgURBrGAGzff",
+          "name": "Postgres findfruit"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 1,
+      "position": [
+        176,
+        96
+      ],
+      "id": "2ead11f0-0cdb-46d5-a714-9dfc7bf6b978"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0e9c8ada-d1b3-4dc9-b755-85a350a9e7d4",
+              "name": "usd_cost",
+              "value": "=return (\n  $json[\"model\"] === \"gpt-3.5-turbo\"\n    ? ($json[\"prompt_tokens\"] * 0.0015 + $json[\"completion_tokens\"] * 0.002) / 1000\n    : $json[\"model\"] === \"gpt-4\"\n    ? ($json[\"prompt_tokens\"] * 0.03 + $json[\"completion_tokens\"] * 0.06) / 1000\n    : $json[\"model\"] === \"gpt-4o\"\n    ? ($json[\"prompt_tokens\"] * 0.005 + $json[\"completion_tokens\"] * 0.015) / 1000\n    : 0\n);\n\n",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -64,
+        80
+      ],
+      "id": "67aa3ee4-43b7-4357-bd4d-b665ffd09b14",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2012fadc-0459-466d-a6fe-5e1a2d8ee7ff",
+              "name": "workflow",
+              "value": "={{$json[\"body\"][\"workflow\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "18dea60b-21d2-4cb7-b6be-90788e34d347",
+              "name": "model",
+              "value": "={{$json[\"body\"][\"model\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "ddb4c8ff-6b6f-4a13-b287-b8d19ccdfca2",
+              "name": "prompt_tokens",
+              "value": "={{$json[\"body\"][\"prompt_tokens\"]}}",
+              "type": "number"
+            },
+            {
+              "id": "1852265b-937f-4579-ae26-8ff97774ce04",
+              "name": "completion_tokens",
+              "value": "={{$json[\"body\"][\"completion_tokens\"]}}",
+              "type": "number"
+            },
+            {
+              "id": "23550501-7539-46c9-a37c-0b9cfd08cb60",
+              "name": "total_tokens",
+              "value": "={{$json[\"body\"][\"total_tokens\"]}}",
+              "type": "number"
+            },
+            {
+              "id": "833c7244-e5bf-445e-8e55-e4c595914a24",
+              "name": "usd_cost",
+              "value": "={{$json[\"body\"][\"usd_cost\"]}}",
+              "type": "number"
+            },
+            {
+              "id": "e378c595-4063-406b-b745-c41ff955ee68",
+              "name": "timestamp",
+              "value": "={{new Date().toISOString()}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        336,
+        96
+      ],
+      "id": "d19f3488-4a2a-48fe-b476-5da936e6ec42",
+      "name": "Edit Fields1"
+    }
+  ],
+  "pinData": {
+    "Webhook (Recebe LLM Usage)": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.aiagentautomate.com.br",
+            "user-agent": "curl/7.81.0",
+            "content-length": "161",
+            "accept": "*/*",
+            "content-type": "application/json",
+            "x-forwarded-for": "200.39.37.99",
+            "x-forwarded-host": "n8n.aiagentautomate.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "bffe728326c9",
+            "x-real-ip": "200.39.37.99",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "workflow": "teste_fluxo",
+            "model": "gpt-4",
+            "prompt_tokens": 400,
+            "completion_tokens": 600,
+            "total_tokens": 1000,
+            "usd_cost": 0.06
+          },
+          "webhookUrl": "https://n8n.aiagentautomate.com.br/webhook/metrics-llm",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-07-26T06:54:07.086Z",
+      "updatedAt": "2025-07-26T06:54:07.086Z",
+      "role": "workflow:owner",
+      "workflowId": "jXLIuZiweyM1bLmU",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-07-27T04:06:35.010Z",
+  "versionId": "550a2593-b42e-4e1f-82a8-185501bb2d60"
+}

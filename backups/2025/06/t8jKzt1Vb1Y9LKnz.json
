@@ -1,0 +1,402 @@
+{
+  "active": false,
+  "connections": {
+    "CRON Trigger 9h": {
+      "main": [
+        [
+          {
+            "node": "Configurações",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configurações": {
+      "main": [
+        [
+          {
+            "node": "Buscar Mensagens Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Mensagens Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Tratamento de Erros",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tratamento de Erros": {
+      "main": [
+        [
+          {
+            "node": "Processar Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Mensagens": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp Grupo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp Grupo": {
+      "main": [
+        [
+          {
+            "node": "Log no Supabase",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Log no PostgreSQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log no Supabase": {
+      "main": [
+        [
+          {
+            "node": "Notificação Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-18T08:50:28.018Z",
+  "id": "t8jKzt1Vb1Y9LKnz",
+  "isArchived": false,
+  "meta": null,
+  "name": "Sacada simples",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "d4089c6b-5eb2-4268-809a-c50221e9d6fe",
+      "name": "CRON Trigger 9h",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        200,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.file_id }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain"
+            }
+          }
+        }
+      },
+      "id": "4b09328a-deb9-4c8d-9c8f-1127cf9cf8cc",
+      "name": "Buscar Mensagens Google Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        600,
+        120
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "AMnU78157s5pFXnN",
+          "name": "Google AiAgent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "file-id-assignment",
+              "name": "file_id",
+              "value": "1X5OdVwfmCJxSXiabf30HHMGZadOrol9leMEKAQuVqHM",
+              "type": "string"
+            },
+            {
+              "id": "group-id-assignment",
+              "name": "group_jid",
+              "value": "120363418260249154@g.us",
+              "type": "string"
+            },
+            {
+              "id": "instance-assignment",
+              "name": "instance_name",
+              "value": "aiagentautomate",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6a654be8-c174-4aef-be55-99a89ad8674d",
+      "name": "Configurações",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "try {\n  const mensagemCompleta = $json.mensagem;\n  const dia = $json.dia || \"N/D\";\n\n  if (!mensagemCompleta) {\n    throw new Error(\"Mensagem não encontrada no JSON de entrada.\");\n  }\n\n  // Expressão regular para extrair o bloco correspondente ao Dia X\n  const regex = new RegExp(`Dia\\\\s*0?${dia}\\\\s*—[\\\\s\\\\S]*?(?=\\\\nDia\\\\s*\\\\d{1,2}\\\\s*—|$)`, \"g\");\n  const resultado = mensagemCompleta.match(regex);\n\n  if (!resultado || resultado.length === 0) {\n    throw new Error(`Mensagem para o Dia ${dia} não encontrada.`);\n  }\n\n  const mensagemDoDia = resultado[0].trim();\n\n  const formattedMessage = `📘 *Mensagem do Dia ${dia}*\\n\\n${mensagemDoDia}\\n\\n_Enviado automaticamente às 9h_ ⏰`;\n\n  return [\n    {\n      json: {\n        dia,\n        original: mensagemDoDia,\n        formatada: formattedMessage,\n        timestamp: new Date().toISOString(),\n      }\n    }\n  ];\n\n} catch (error) {\n  return [\n    {\n      json: {\n        error: error.message,\n        fallback: \"⚠️ Não foi possível processar a mensagem hoje.\",\n        timestamp: new Date().toISOString(),\n      }\n    }\n  ];\n}\n"
+      },
+      "id": "b1b0ea46-d8f5-4782-9fcb-02da6f2fb220",
+      "name": "Processar Mensagens",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1020,
+        -20
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $('Configurações').item.json.instance_name }}",
+        "remoteJid": "={{ $('Configurações').item.json.group_jid }}",
+        "messageText": "={{ $json.formatada }}",
+        "options_message": {}
+      },
+      "id": "879ae0fa-de9a-4bc5-be73-071c839971e0",
+      "name": "Enviar WhatsApp Grupo",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        120
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "insert"
+      },
+      "id": "e9102cfb-6ee5-4583-9351-c13841d1794f",
+      "name": "Log no Supabase",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        120
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "M658CwP1x5QAYDSu",
+          "name": "Supabase teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": "message_logs",
+        "columns": "message_content, formatted_message, group_jid, instance_name, sent_at, status, total_messages_available",
+        "options": {}
+      },
+      "id": "d7152cba-c3e4-44b1-9fa6-5b8efb19bf08",
+      "name": "Log no PostgreSQL",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1440,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "rafadsouz@gmail.com",
+        "subject": "✅ Mensagem WhatsApp Enviada - {{ $now.format('dd/MM/yyyy HH:mm') }}",
+        "emailType": "text",
+        "message": "=📱 *Relatório de Envio Automático*\n\n🕘 **Horário:** {{ $now.format('dd/MM/yyyy HH:mm:ss') }}\n📋 **Instância:** {{ $('Configurações').item.json.instance_name }}\n👥 **Grupo:** {{ $('Configurações').item.json.group_jid }}\n📝 **Total de mensagens disponíveis:** {{ $('Processar Mensagens').item.json.total_messages }}\n\n📄 **Mensagem enviada:**\n{{ $('Processar Mensagens').item.json.selected_message }}\n\n✅ Status: Enviado com sucesso\n\n---\n_Enviado automaticamente pelo sistema N8N_",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Sistema N8N"
+        }
+      },
+      "id": "e987ea13-d44f-43bd-9170-a364615cf53c",
+      "name": "Notificação Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1700,
+        120
+      ],
+      "webhookId": "139ee10e-804f-431d-a1b5-e13eab81bbb1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bMTj7PQt4FxoCvuP",
+          "name": "Gmail account AiAgentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# 🤖 CRON WhatsApp Automation",
+        "height": 120,
+        "width": 400
+      },
+      "id": "b6e5e1f1-eef6-4493-8805-54cac525adc5",
+      "name": "Título Principal",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        -220
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## ⏰ Trigger Diário\n- Executa todos os dias às 9h\n- Configurado com CRON: 0 9 * * *",
+        "height": 120,
+        "width": 300,
+        "color": 2
+      },
+      "id": "f96467b1-756d-4263-a023-733764da2ba8",
+      "name": "Info CRON",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 📁 Google Drive\n- Busca arquivo .docs\n- Converte para texto\n- Processa mensagens",
+        "height": 120,
+        "width": 300,
+        "color": 3
+      },
+      "id": "888a8c30-ac1d-4773-8e44-5abd934c5d39",
+      "name": "Info Google Drive",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        520,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🎲 Processamento\n- Seleciona mensagem aleatória\n- Adiciona formatação\n- Inclui emojis e timestamp",
+        "height": 120,
+        "width": 300,
+        "color": 4
+      },
+      "id": "651a9e70-6208-407f-9970-ce5fa5288fe4",
+      "name": "Info Processamento",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        920,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 📱 Evolution API\n- Envia para grupo WhatsApp\n- Usa instância configurada\n- Mensagem formatada",
+        "height": 120,
+        "width": 300,
+        "color": 5
+      },
+      "id": "998eaa5c-ff43-482a-80d9-c8cc22e61edb",
+      "name": "Info WhatsApp",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1060,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 📊 Logs & Notificação\n- Salva no Supabase/PostgreSQL\n- Envia relatório por email\n- Registra estatísticas",
+        "height": 120,
+        "width": 400,
+        "color": 6
+      },
+      "id": "8868eb64-a2b5-4e14-bfc7-e5f7113e8140",
+      "name": "Info Logs",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1400,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "try {\n  // ✅ Acesso correto ao base64\n  const binaryData = $input.all()[0].binary.data.data;\n\n  if (!binaryData) {\n    throw new Error(\"Arquivo não encontrado ou sem conteúdo.\");\n  }\n\n  // ✅ Converte de base64 para texto\n  const fileContent = Buffer.from(binaryData, 'base64').toString('utf-8');\n\n  // ✅ Separa as mensagens (por 2 quebras de linha)\n  const messages = fileContent.split('\\n\\n').filter(m => m.trim() !== '');\n\n  if (messages.length === 0) {\n    throw new Error('Nenhuma mensagem encontrada no arquivo');\n  }\n\n  // ✅ Seleciona a mensagem do dia\n  const startDate = new Date(\"2025-06-17\"); // Dia 01\n  const today = new Date();\n  const diffDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));\n  const diaIndex = diffDays % messages.length;\n\n  const mensagemDoDia = messages[diaIndex];\n\n  return [\n    {\n      json: {\n        success: true,\n        dia: diaIndex + 1,\n        mensagem: mensagemDoDia,\n        total_mensagens: messages.length,\n      }\n    }\n  ];\n\n} catch (error) {\n  const fallbackMessage = `📌 *Mensagem Automática*\\n\\n🔔 Esta é uma mensagem automática enviada às 9h.\\n🗓️ Data: ${new Date().toLocaleDateString('pt-BR')}\\n🕘 Horário: ${new Date().toLocaleTimeString('pt-BR')}\\n\\n_Sistema funcionando normalmente._`;\n\n  return [\n    {\n      json: {\n        success: false,\n        error: error.message,\n        fallback_content: fallbackMessage,\n        message_count: 1,\n      }\n    }\n  ];\n}\n"
+      },
+      "id": "b6f13627-9630-4b2d-85c3-57b520461eec",
+      "name": "Tratamento de Erros",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        760,
+        -20
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-06-18T08:50:28.018Z",
+      "updatedAt": "2025-06-18T08:50:28.018Z",
+      "role": "workflow:owner",
+      "workflowId": "t8jKzt1Vb1Y9LKnz",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-18T10:13:25.375Z",
+  "versionId": "c2ca2483-f3b4-42c0-abe9-f2c9cd49813b"
+}

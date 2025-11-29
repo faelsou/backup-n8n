@@ -1,0 +1,348 @@
+{
+  "active": false,
+  "connections": {
+    "Predição OK?": {
+      "main": [
+        [
+          {
+            "node": "Formatar Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Imagem": {
+      "main": [
+        [
+          {
+            "node": "🤖 IA Classificação Frutas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Limite": {
+      "main": [
+        [
+          {
+            "node": "Extrair Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-06T08:52:51.546Z",
+  "id": "6QNSxHcQKWCqmiwv",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 55",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "find-fruit",
+        "options": {}
+      },
+      "id": "79d83dbd-3b7e-44e3-a7a5-03450292b704",
+      "name": "Webhook Principal",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1136,
+        208
+      ],
+      "webhookId": "41c7c31c-1c22-44be-a86b-ce69e27a80c0"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "mobile-format",
+              "name": "mobile",
+              "value": "={{ $json.body.data.key.remoteJid.replace(/\\D/g, '').replace(/^55(\\d{2})(\\d{8})$/, '55$19$2') }}",
+              "type": "string"
+            },
+            {
+              "id": "message-type",
+              "name": "message_type",
+              "value": "={{ $json.body.data.messageType }}",
+              "type": "string"
+            },
+            {
+              "id": "user-name",
+              "name": "user_name",
+              "value": "={{ $json.body.data.pushName || 'Usuário' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9d4911d6-b6e7-4dfe-a846-ff0e799efd9e",
+      "name": "Extrair Variáveis",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -928,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message_type }}",
+                    "rightValue": "imageMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            },
+            {
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message_type }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "97d3d396-5f97-4706-bcd6-bc716916d804",
+      "name": "Classificar Mensagem",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -736,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "keyValue": "={{ $('Extrair Variáveis').item.json.mobile }}"
+            }
+          ]
+        }
+      },
+      "id": "c190be1c-994b-45a3-939e-e7ad1038e5dc",
+      "name": "Verificar Usuário",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -528,
+        112
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "fjHcjT7VqLyt2ORT",
+          "name": "Supabase findfruit"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.length > 0 }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              },
+              "id": "44f67a47-b8d1-44fd-9a2f-4916f8e700ba"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "68944f7d-2d70-49fa-811d-496a6c1538d9",
+      "name": "Usuário Existe?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -496,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json[0].consultas_realizadas }}",
+              "rightValue": 3,
+              "operator": {
+                "type": "number",
+                "operation": "smaller"
+              },
+              "id": "7c23971c-3bbf-4a90-b540-3f66ae6112c2"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "78d92914-ef2d-44ba-91bf-09f2bbcdd08d",
+      "name": "Verificar Limite",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -256,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "image-data",
+              "name": "image_base64",
+              "value": "={{ $('Webhook Principal').item.json.body.data.message.base64 }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "eb49cabe-2c84-411f-9be8-6f3033a29afd",
+      "name": "Extrair Imagem",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8000/n8n/predict",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"image_base64\": \"{{ $json.image_base64 }}\",\n  \"user_id\": \"{{ $('Verificar Usuário').item.json[0].id }}\",\n  \"phone_number\": \"{{ $('Extrair Variáveis').item.json.mobile }}\"\n}",
+        "options": {}
+      },
+      "id": "97f41865-b077-4907-aca1-82f10d68f4af",
+      "name": "🤖 IA Classificação Frutas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        272,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "conditions": [
+            {
+              "leftValue": "={{ $json.success }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cd63def9-e6e7-408c-8e4e-4d7aaa9ad2ff",
+      "name": "Predição OK?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Formatar resposta da IA para WhatsApp\nconst prediction = $input.first().json;\n\n// Emojis para cada fruta\nconst fruitEmojis = {\n  'banana': '🍌',\n  'maca': '🍎', \n  'laranja': '🍊',\n  'mamao': '🫐',\n  'manga': '🥭',\n  'abacaxi': '🍍',\n  'uva': '🍇',\n  'morango': '🍓',\n  'pera': '🍐',\n  'limao': '🍋'\n};\n\n// Emojis para maturação\nconst ripenessEmojis = {\n  'verde': '🟢',\n  'maduro': '🟡', \n  'passado': '🟠',\n  'podre': '🔴'\n};\n\nconst fruitName = prediction.fruit_name;\nconst emoji = fruitEmojis[fruitName] || '🍎';\nconst ripenessEmoji = ripenessEmojis[prediction.ripeness] || '🟡';\n\n// Formatar informações nutricionais\nlet nutritionText = '';\nif (prediction.nutrition && Object.keys(prediction.nutrition).length > 0) {\n  const n = prediction.nutrition;\n  nutritionText = `🍃 *Informações Nutricionais (100g):*\\n` +\n    `• Calorias: ${n.calories_per_100g || 0} kcal\\n` +\n    `• Carboidratos: ${n.carbs_g || 0}g\\n` +\n    `• Proteínas: ${n.protein_g || 0}g\\n` +\n    `• Fibras: ${n.fiber_g || 0}g\\n` +\n    `• Vitamina C: ${n.vitamin_c_mg || 0}mg\\n\\n`;\n}\n\n// Formatar receitas\nlet recipesText = '';\nif (prediction.recipes && prediction.recipes.length > 0) {\n  recipesText = `🥗 *Receita Sugerida:*\\n`;\n  const recipe = prediction.recipes[0];\n  recipesText += `*${recipe.name}*\\n`;\n  recipesText += `${recipe.description}\\n`;\n  recipesText += `⏱️ Tempo: ${recipe.prep_time} min\\n\\n`;\n}\n\n// Formatar dicas de compra\nlet tipsText = '';\nif (prediction.purchase_tips && prediction.purchase_tips.length > 0) {\n  tipsText = `💡 *Dicas de escolha:*\\n`;\n  prediction.purchase_tips.forEach((tip, index) => {\n    tipsText += `• ${tip}\\n`;\n  });\n  tipsText += '\\n';\n}\n\n// Montar mensagem final\nconst confidence = Math.round(prediction.confidence * 100);\nconst qualityScore = Math.round(prediction.quality_score * 100);\n\nconst message = `${emoji} *${fruitName.toUpperCase()}* ${ripenessEmoji} *${prediction.ripeness.toUpperCase()}*\\n\\n` +\n  `🎯 *Confiança:* ${confidence}% | *Qualidade:* ${qualityScore}%\\n\\n` +\n  `📝 *Recomendação:* ${prediction.recommendation.message}\\n\\n` +\n  nutritionText +\n  recipesText +\n  tipsText +\n  `📅 *Dica:* ${prediction.recommendation.storage || 'Armazene adequadamente'}\\n\\n` +\n  `✨ _Análise realizada pela IA FindFruit_`;\n\nreturn [{ json: { \n  formatted_message: message,\n  fruit_name: fruitName,\n  confidence: confidence,\n  ripeness: prediction.ripeness\n}}];"
+      },
+      "id": "7e26d6bb-a7dd-48a2-a3ca-d941ead3d27a",
+      "name": "Formatar Resposta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        736,
+        320
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-08-06T08:52:51.546Z",
+      "updatedAt": "2025-08-06T08:52:51.546Z",
+      "role": "workflow:owner",
+      "workflowId": "6QNSxHcQKWCqmiwv",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-08-07T04:59:26.427Z",
+  "versionId": "1f6a0c2c-9039-46ec-ae66-50cd02e1a8ea"
+}

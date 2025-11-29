@@ -1,0 +1,94 @@
+{
+  "active": false,
+  "connections": {
+    "Formatar Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-05-15T06:47:24.327Z",
+  "id": "qKU46So8II4HS8W4",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 12",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.myNewField = 1;\n}\n\nreturn $input.all();"
+      },
+      "name": "Formatar Mensagem",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        660,
+        -100
+      ],
+      "id": "7bc706f5-a547-4c62-abce-e20ea2e66b35"
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://api.evolution.com.br/message/send-text",
+        "jsonParameters": true,
+        "options": {}
+      },
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        880,
+        -100
+      ],
+      "id": "63d26754-baa8-472f-b83b-b6931fda5ce2"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "responder-conversa",
+        "options": {}
+      },
+      "name": "Webhook1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        420,
+        -100
+      ],
+      "webhookId": "responder-conversa",
+      "id": "b4f469f3-57de-4f20-a63a-b3d4b39cb33e"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-05-15T06:47:24.327Z",
+      "updatedAt": "2025-05-15T06:47:24.327Z",
+      "role": "workflow:owner",
+      "workflowId": "qKU46So8II4HS8W4",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-15T07:28:38.626Z",
+  "versionId": "27daf30d-e81a-4a3a-93cf-4f70118e629f"
+}

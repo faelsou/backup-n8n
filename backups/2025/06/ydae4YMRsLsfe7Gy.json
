@@ -1,0 +1,747 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook - Novo Cliente": {
+      "main": [
+        [
+          {
+            "node": "Organizar Dados Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Organizar Dados Cliente": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar Cliente no DB": {
+      "main": [
+        [
+          {
+            "node": "Etapa 1 - Boas Vindas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Etapa 1 - Boas Vindas": {
+      "main": [
+        [
+          {
+            "node": "Wait 5s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 5s": {
+      "main": [
+        [
+          {
+            "node": "Etapa 2 - Próximos Passos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Etapa 2 - Próximos Passos": {
+      "main": [
+        [
+          {
+            "node": "Wait 10s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 10s": {
+      "main": [
+        [
+          {
+            "node": "Etapa 3 - Agendamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Etapa 3 - Agendamento": {
+      "main": [
+        [
+          {
+            "node": "Wait 15s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 15s": {
+      "main": [
+        [
+          {
+            "node": "Etapa 4 - Formulário",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Etapa 4 - Formulário": {
+      "main": [
+        [
+          {
+            "node": "Wait 20s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 20s": {
+      "main": [
+        [
+          {
+            "node": "Etapa 5 - Materiais de Apoio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Etapa 5 - Materiais de Apoio": {
+      "main": [
+        [
+          {
+            "node": "Atualizar Etapa Concluído",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger Follow-up 7 dias": {
+      "main": [
+        [
+          {
+            "node": "Buscar Clientes 7 dias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Clientes 7 dias": {
+      "main": [
+        [
+          {
+            "node": "Etapa 6 - Follow-up 7 dias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger Pesquisa 30 dias": {
+      "main": [
+        [
+          {
+            "node": "Buscar Clientes 30 dias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Clientes 30 dias": {
+      "main": [
+        [
+          {
+            "node": "Etapa 7 - Pesquisa 30 dias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook - Resposta Formulário": {
+      "main": [
+        [
+          {
+            "node": "Confirmação Formulário",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook - Resposta Pesquisa": {
+      "main": [
+        [
+          {
+            "node": "Confirmação Pesquisa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Salvar Cliente no DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-23T08:25:53.966Z",
+  "id": "ydae4YMRsLsfe7Gy",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Onboading Novos Contratos",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "onboarding",
+        "options": {}
+      },
+      "name": "Webhook - Novo Cliente",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        4420,
+        1440
+      ],
+      "webhookId": "onboarding-webhook",
+      "id": "1f2af5de-0d1e-4412-ada5-13cda2ed83d1"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "nome_cliente",
+              "value": "={{ $json.body.data.pushName }}"
+            },
+            {
+              "name": "email_cliente",
+              "value": "={{ $json.body.email }}"
+            },
+            {
+              "name": "telefone_cliente",
+              "value": "={{ $json.body.data.key.remoteJid }}"
+            },
+            {
+              "name": "telefone_formatado",
+              "value": "={{ $json.body.data.key.remoteJid}}"
+            },
+            {
+              "name": "data_contratacao",
+              "value": "={{ $now.format('yyyy-MM-dd') }}"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "id": "c1cbbbcb-7d5e-42f7-b006-0fde86e3db26",
+      "name": "Organizar Dados Cliente",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        4680,
+        1440
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO onboarding_clientes (nome, email, telefone, data_contratacao, etapa_atual, status)\nVALUES ('{{ $json.nome_cliente }}', '{{ $json.email_cliente }}', '{{ $json.telefone_cliente }}', '{{ $json.data_contratacao }}', 'boas_vindas', 'ativo')\nON CONFLICT (email)\nDO UPDATE SET\n  nome = EXCLUDED.nome,\n  telefone = EXCLUDED.telefone,\n  data_contratacao = EXCLUDED.data_contratacao,\n  etapa_atual = 'boas_vindas',\n  status = 'ativo';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        5160,
+        1440
+      ],
+      "id": "9cf808a5-af20-49e3-96fa-793173fec507",
+      "name": "Salvar Cliente no DB",
+      "credentials": {
+        "postgres": {
+          "id": "CbbTX7ryuVXsyhIG",
+          "name": "Postgres_Whats"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "onboarding",
+        "remoteJid": "={{ $('Organizar Dados Cliente').item.json.telefone_formatado }}",
+        "messageText": "=Olá, {{ $('Webhook - Novo Cliente').item.json.body.data.pushName }}! Seja bem-vindo(a) à AIAgent Automate! 🎉 Estamos felizes por você fazer parte da nossa jornada em automação inteligente. ",
+        "options_message": {}
+      },
+      "id": "7f0d6b55-3e56-4302-a4d2-8f6c081927ed",
+      "name": "Etapa 1 - Boas Vindas",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        5420,
+        1440
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 5,
+        "unit": "seconds"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        5680,
+        1440
+      ],
+      "id": "0e5faf93-ab5f-4182-aaf5-5dbea4018b1d",
+      "name": "Wait 5s",
+      "webhookId": "6298d19c-51fb-4b76-885f-f5512692b068"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "onboarding",
+        "remoteJid": "={{ $('Organizar Dados Cliente').item.json.telefone_formatado }}",
+        "messageText": "Para garantir o máximo sucesso com a sua solução, siga estas etapas iniciais:\n\n✅ Agendar reunião inicial\n✅ Preencher formulário de alinhamento\n✅ Receber materiais de apoio\n✅ Acompanhar seu progresso\n\nVamos começar! 🚀",
+        "options_message": {}
+      },
+      "id": "86d8b17e-3bce-49b6-88f1-a0a7893f6d7f",
+      "name": "Etapa 2 - Próximos Passos",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        5940,
+        1440
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 10,
+        "unit": "seconds"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        6200,
+        1440
+      ],
+      "id": "d5fa1b68-adc9-4418-8cb2-3d31ac31d115",
+      "name": "Wait 10s",
+      "webhookId": "fcc80e45-b02d-43d2-94c4-f51210c92cb8"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "onboarding",
+        "remoteJid": "={{ $('Organizar Dados Cliente').item.json.telefone_formatado }}",
+        "messageText": "📅 *ETAPA 1: AGENDAMENTO*|Clique aqui para agendar sua reunião inicial com nossa equipe especialista em automação:👉 https://calendar.google.com/calendar/appointments/schedules/AcZssZ2H8K9 Essa reunião é fundamental para alinhamos suas necessidades e expectativas!",
+        "options_message": {}
+      },
+      "id": "23db3311-b86a-4b42-a0da-a1a8c740e847",
+      "name": "Etapa 3 - Agendamento",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        6460,
+        1440
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 15,
+        "unit": "seconds"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        6720,
+        1440
+      ],
+      "id": "8fdea95c-e10c-43b9-ae1c-fea46ad4d46e",
+      "name": "Wait 15s",
+      "webhookId": "bfe57f91-6218-49f6-b416-4f6cd75213dd"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "onboarding",
+        "remoteJid": "={{ $('Organizar Dados Cliente').item.json.telefone_formatado }}",
+        "messageText": "📋 *ETAPA 2: FORMULÁRIO DE ALINHAMENTO*|Preencha este breve formulário para entendermos melhor suas expectativas e necessidades específicas:👉 https://forms.gle/dvkJbgZ3TL3vwbi5A Suas respostas nos ajudarão a personalizar sua experiência! ⚡",
+        "options_message": {}
+      },
+      "id": "49c40aef-6518-434c-a563-1605e27701f5",
+      "name": "Etapa 4 - Formulário",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        6980,
+        1440
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 20,
+        "unit": "seconds"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        7240,
+        1440
+      ],
+      "id": "e4f687a6-338e-4523-8bab-4c05654c98f9",
+      "name": "Wait 20s",
+      "webhookId": "897efbad-80bd-4e3b-9f9e-e1e3f8d30bac"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "onboarding",
+        "remoteJid": "={{ $('Organizar Dados Cliente').item.json.telefone_formatado }}",
+        "messageText": "📚 *ETAPA 3: MATERIAIS DE APOIO*|Aqui estão alguns materiais úteis para você começar:📖 Guia rápido de uso❓ Perguntas frequentes📞 Contato direto do suporte*WhatsApp Suporte:* (11) 95231-3944*Email:* aiagenteautomate@gmail.com Estamos sempre aqui para ajudar! 💪",
+        "options_message": {}
+      },
+      "id": "e7cbee50-10e7-4192-983f-cc3066a5f3af",
+      "name": "Etapa 5 - Materiais de Apoio",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        7500,
+        1440
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE onboarding_clientes SET etapa_atual = 'concluido', updated_at = NOW() WHERE email = '{{ $('Organizar Dados Cliente').item.json.email_cliente }}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        7760,
+        1440
+      ],
+      "id": "adceafc8-c432-4846-a000-6868aeeca5da",
+      "name": "Atualizar Etapa Concluído",
+      "credentials": {
+        "postgres": {
+          "id": "uZ2YXOutUwoulr1r",
+          "name": "Postgres-Supabaser-versiculo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        4420,
+        1740
+      ],
+      "id": "7f9d744f-25cf-4de0-bcbf-09b88a37cd9e",
+      "name": "Trigger Follow-up 7 dias"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT nome, email, telefone FROM onboarding_clientes WHERE data_contratacao = CURRENT_DATE - INTERVAL '7 days' AND status = 'ativo';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        4680,
+        1740
+      ],
+      "id": "54acf526-ec15-4fcc-a025-9913bfc060b2",
+      "name": "Buscar Clientes 7 dias",
+      "credentials": {
+        "postgres": {
+          "id": "CbbTX7ryuVXsyhIG",
+          "name": "Postgres_Whats"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "onboarding",
+        "remoteJid": "={{ '55' + $json.telefone.trim().replace(/\\D/g, '').slice(-11) }}",
+        "messageText": "Olá novamente, {{ $json.nome }}! 👋\n\nPassando para garantir que esteja tudo certo com seu início conosco. Como está sendo sua experiência até agora?\n\nSe precisar de algo, estamos sempre aqui para ajudar! 😉\n\n*Equipe AIAgent Automate*",
+        "options_message": {}
+      },
+      "id": "c621a1ea-8404-4fd1-83b1-ece9382e33d0",
+      "name": "Etapa 6 - Follow-up 7 dias",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        4940,
+        1740
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        4420,
+        2040
+      ],
+      "id": "43de7cb8-c0ff-41c2-adc7-068f03015749",
+      "name": "Trigger Pesquisa 30 dias"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT nome, email, telefone FROM onboarding_clientes WHERE data_contratacao = CURRENT_DATE - INTERVAL '30 days' AND status = 'ativo';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        4680,
+        2040
+      ],
+      "id": "7ad26009-2d27-4df8-ad21-febb1db1ae37",
+      "name": "Buscar Clientes 30 dias",
+      "credentials": {
+        "postgres": {
+          "id": "CbbTX7ryuVXsyhIG",
+          "name": "Postgres_Whats"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "onboarding",
+        "remoteJid": "={{ '55' + $json.telefone.trim().replace(/\\D/g, '').slice(-11) }}",
+        "messageText": "🎉 *30 DIAS JUNTOS!*\n\nOlá, {{ $json.nome }}! Agora que completamos nosso primeiro mês juntos, gostaríamos de ouvir sua opinião.\n\nPor favor, preencha esta rápida pesquisa de satisfação:\n\n👉 https://forms.google.com/pesquisa-satisfacao-30dias\n\nSua opinião é fundamental para melhorarmos sempre! 🚀\n\n*Equipe AIAgent Automate*",
+        "options_message": {}
+      },
+      "id": "844c0364-f07c-4af0-bf1d-afe7ff87c062",
+      "name": "Etapa 7 - Pesquisa 30 dias",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        4940,
+        2040
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "form-response",
+        "options": {}
+      },
+      "name": "Webhook - Resposta Formulário",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        4420,
+        2340
+      ],
+      "webhookId": "form-response-webhook",
+      "id": "8dbfdb4c-00c7-4dfc-98da-38f733fd6281"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "onboarding",
+        "remoteJid": "={{ '55' + $json.body.telefone.trim().replace(/\\D/g, '').slice(-11) }}",
+        "messageText": "✅ *FORMULÁRIO RECEBIDO!*\n\nObrigado, {{ $json.body.nome }}! Formulário recebido com sucesso!\n\nNossa equipe revisará suas informações e estará pronta para tornar sua experiência excepcional.\n\nEm breve entraremos em contato! 🎯",
+        "options_message": {}
+      },
+      "id": "49b3f73b-99c6-4e12-89e4-73beb6532447",
+      "name": "Confirmação Formulário",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        4680,
+        2340
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "survey-response",
+        "options": {}
+      },
+      "name": "Webhook - Resposta Pesquisa",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        4420,
+        2640
+      ],
+      "webhookId": "survey-response-webhook",
+      "id": "50bd660d-b43a-4e0a-b8fb-e7b23ab1cb77"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "onboarding",
+        "remoteJid": "={{ '55' + $json.body.telefone.trim().replace(/\\D/g, '').slice(-11) }}",
+        "messageText": "🙏 *OBRIGADO PELA SUA OPINIÃO!*\n\nOlá, {{ $json.body.nome }}! Obrigado pela sua valiosa contribuição!\n\nSeus comentários são fundamentais para melhorarmos sempre! Continuamos trabalhando para oferecer a melhor experiência possível.\n\n*Equipe AIAgent Automate* 💪",
+        "options_message": {}
+      },
+      "id": "b75caeda-4b70-4edc-a89e-d70e028b29ec",
+      "name": "Confirmação Pesquisa",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        4680,
+        2640
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c9be92ef-2df7-4925-9dbc-56a7234ceb9b",
+              "name": "=telefone",
+              "value": "=$json.telefone_cliente.replace('@s.whatsapp.net', '')",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4900,
+        1440
+      ],
+      "id": "8fccdc06-7fa4-41ae-ba4e-bfc4400508cc",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-06-23T08:25:53.966Z",
+      "updatedAt": "2025-06-23T08:25:53.966Z",
+      "role": "workflow:owner",
+      "workflowId": "ydae4YMRsLsfe7Gy",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": {
+    "node:Trigger Follow-up 7 dias": {
+      "recurrenceRules": []
+    },
+    "node:Trigger Pesquisa 30 dias": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 5,
+  "updatedAt": "2025-07-06T23:38:11.053Z",
+  "versionId": "85f50458-84ee-4e99-9a78-e487f4ea27bf"
+}

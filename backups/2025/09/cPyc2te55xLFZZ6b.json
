@@ -1,0 +1,343 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook - Receber Imagem": {
+      "main": [
+        [
+          {
+            "node": "Extrair Dados do Usuário",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Dados do Usuário": {
+      "main": [
+        [
+          {
+            "node": "Verificar Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Imagem": {
+      "main": [
+        [
+          {
+            "node": "Baixar Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "WhatsApp - Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baixar Imagem": {
+      "main": [
+        [
+          {
+            "node": "Preparar Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Imagem": {
+      "main": [
+        [
+          {
+            "node": "IA - Analisar Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IA - Analisar Imagem": {
+      "main": [
+        [
+          {
+            "node": "Preparar Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Email": {
+      "main": [
+        [
+          {
+            "node": "Gmail - Enviar Relatório",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail - Enviar Relatório": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp - Confirmação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-07T17:44:31.028Z",
+  "id": "cPyc2te55xLFZZ6b",
+  "isArchived": false,
+  "meta": null,
+  "name": "envio de e-mail gmail",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ai-agent-image",
+        "options": {}
+      },
+      "name": "Webhook - Receber Imagem",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        576,
+        128
+      ],
+      "webhookId": "ai-agent-image-webhook",
+      "id": "586071e7-6b9c-4836-abf4-6efbed879c1d"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "usuario_nome",
+              "value": "={{ $json.body.data.pushName || 'Usuário' }}"
+            },
+            {
+              "name": "usuario_telefone",
+              "value": "={{ $json.body.data.key.remoteJid }}"
+            },
+            {
+              "name": "imagem_url",
+              "value": "={{ $json.body.data.message.imageMessage?.url }}"
+            },
+            {
+              "name": "imagem_caption",
+              "value": "={{ $json.body.data.message.imageMessage?.caption || '' }}"
+            },
+            {
+              "name": "timestamp",
+              "value": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bf604f91-bbb6-4927-a6fd-9fe0d3ee9c62",
+      "name": "Extrair Dados do Usuário",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        832,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.imagem_url }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "id": "8beeaea3-1d45-408b-9314-20877d45c240",
+      "name": "Verificar Imagem",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.imagem_url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "0d8ed773-0277-474e-abeb-2b42e3265b6d",
+      "name": "Baixar Imagem",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1344,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "imagem_base64",
+              "value": "={{ $json.data.toString('base64') }}"
+            },
+            {
+              "name": "tamanho_imagem",
+              "value": "={{ $json.data.length }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        128
+      ],
+      "id": "9ffe7448-e170-45c5-b0e9-2a16ed55dff9",
+      "name": "Preparar Imagem"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4-vision-preview",
+        "options": {
+          "temperature": 0.3
+        },
+        "requestOptions": {}
+      },
+      "id": "42e9755d-e88f-46ab-9902-2a9618079dc6",
+      "name": "IA - Analisar Imagem",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        1856,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "email_destinatario",
+              "value": "relatorios@empresa.com"
+            },
+            {
+              "name": "email_assunto",
+              "value": "Relatório de Análise IA - {{ $('Extrair Dados do Usuário').item.json.usuario_nome }}"
+            },
+            {
+              "name": "email_corpo",
+              "value": "RELATÓRIO DE ANÁLISE DE IMAGEM\n\n===========================================\n\nUsuário: {{ $('Extrair Dados do Usuário').item.json.usuario_nome }}\nTelefone: {{ $('Extrair Dados do Usuário').item.json.usuario_telefone }}\nData/Hora: {{ $('Extrair Dados do Usuário').item.json.timestamp }}\nContexto: {{ $('Extrair Dados do Usuário').item.json.imagem_caption }}\nTamanho: {{ Math.round($('Preparar Imagem').item.json.tamanho_imagem / 1024) }} KB\n\n===========================================\n\nANÁLISE DA IMAGEM:\n\n{{ $json.choices[0].message.content }}\n\n===========================================\n\nRelatório gerado automaticamente pelo Agente IA\nPowered by OpenAI GPT-4 Vision"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "dfa338a0-e3d0-4192-9aa6-8c1c29316ce9",
+      "name": "Preparar Email",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        2112,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email_destinatario }}",
+        "subject": "={{ $json.email_assunto }}",
+        "message": "={{ $json.email_corpo }}",
+        "options": {}
+      },
+      "id": "7c3f8639-9edf-40d8-8eba-f6dc3d4fbafb",
+      "name": "Gmail - Enviar Relatório",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [
+        2368,
+        128
+      ],
+      "webhookId": "0918808c-0ffb-4cf8-a00b-cbc1d15d4b0d"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "ai-agent",
+        "remoteJid": "={{ $('Extrair Dados do Usuário').item.json.usuario_telefone }}",
+        "messageText": "🤖 Análise IA Concluída!\n\n✅ Sua imagem foi analisada\n📧 Relatório enviado por email\n⏰ {{ $now.format('dd/MM/yyyy HH:mm') }}\n\n💡 Prévia: {{ $('IA - Analisar Imagem').item.json.choices[0].message.content.substring(0, 150) }}...",
+        "options_message": {}
+      },
+      "id": "ba94609f-8f34-443a-af73-ab1e8842dea4",
+      "name": "WhatsApp - Confirmação",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        2624,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "ai-agent",
+        "remoteJid": "={{ $('Extrair Dados do Usuário').item.json.usuario_telefone }}",
+        "messageText": "❌ Erro: Por favor envie uma imagem\n\n🖼️ Nosso agente IA analisa:\n• Documentos\n• Produtos\n• Gráficos\n• E muito mais!\n\n💡 Tente novamente com uma imagem",
+        "options_message": {}
+      },
+      "id": "89819105-bedc-441b-a5b8-270acf7ca1b7",
+      "name": "WhatsApp - Erro",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        368
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-07T17:44:31.028Z",
+      "updatedAt": "2025-09-07T17:44:31.028Z",
+      "role": "workflow:owner",
+      "workflowId": "cPyc2te55xLFZZ6b",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-07T17:48:18.397Z",
+  "versionId": "4795f05b-3f3f-4e61-ba74-cd3e903836b8"
+}

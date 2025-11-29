@@ -1,0 +1,871 @@
+{
+  "active": false,
+  "connections": {
+    "Roteador de Agentes": {
+      "main": [
+        [
+          {
+            "node": "Agente Financeiro",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agente Agendamento",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agente B2B",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "Agente B2C",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agente SDR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Variáveis Melhoradas": {
+      "main": [
+        [
+          {
+            "node": "Roteador de Agentes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Variáveis Melhoradas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Task ClickUp": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-08-09T09:26:59.949Z",
+  "id": "veHnmCXC1GehA4KQ",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 57",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "8cf9fc38-55fb-4d81-8519-528cedd19966",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.2,
+      "position": [
+        -8704,
+        -1856
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "4685bc2d-c144-4d99-8297-f4aecf38b277",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -5536,
+        -880
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.data || $json.text || $json.concatenated_data }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "=file_id",
+                "value": "={{ $('Set File ID').first().json.file_id }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "ba673c2d-3dec-49c7-be80-de848584428d",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        -6032,
+        -736
+      ]
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "d0e4a597-1885-4d74-8a2c-bfa4b1a39aa9",
+      "name": "Embeddings OpenAI1",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -6176,
+        -704
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# MCP Server Integration",
+        "height": 336,
+        "width": 350,
+        "color": 4
+      },
+      "id": "a7dfdfbc-7857-494a-a68b-ba129ace987f",
+      "name": "MCP Server Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -4944,
+        -1808
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:3001/mcp/invoke",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $('Variáveis').item.json.MCP_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"method\": \"{{ $json.mcpMethod }}\",\n  \"params\": {{ $json.mcpParams }},\n  \"sessionId\": \"{{ $('Edit Fields1').item.json.sessionId }}\"\n}",
+        "options": {}
+      },
+      "id": "9b6d5350-8eaa-4958-bc16-8d4196fecce9",
+      "name": "MCP Server Connector",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -4752,
+        -1824
+      ]
+    },
+    {
+      "parameters": {
+        "command": "mcp-cli"
+      },
+      "id": "37534a0a-ea7f-4294-8b4e-78adf6f53690",
+      "name": "MCP CLI Connector",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -4752,
+        -1696
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# ClickUp CRM Integration",
+        "height": 80,
+        "width": 350,
+        "color": 6
+      },
+      "id": "d6f271f2-4fe1-42fb-b460-c50b293a09bb",
+      "name": "ClickUp CRM Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -4720,
+        -1136
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "team": "9014787595",
+        "space": "90143334326",
+        "folder": "90145519172",
+        "list": "901410847273",
+        "name": "Lead: {{ $('Variáveis Melhoradas').item.json.mobile }}",
+        "additionalFields": {
+          "assignees": [
+            "{{ $json.assignee_id }}"
+          ],
+          "priority": 3,
+          "status": "new lead"
+        }
+      },
+      "id": "97d3c4b7-dfbc-43ff-b994-1cdc1e701d49",
+      "name": "ClickUp Create Task",
+      "type": "n8n-nodes-base.clickUp",
+      "typeVersion": 1,
+      "position": [
+        -4720,
+        -1056
+      ],
+      "credentials": {
+        "clickUpOAuth2Api": {
+          "id": "hPaiRfEyoPyspnxG",
+          "name": "ClickUp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "update",
+        "updateFields": {
+          "status": "{{ $json.new_status }}"
+        }
+      },
+      "id": "ac5e2225-3844-44b4-a0e4-18fa70c435ea",
+      "name": "ClickUp Update Task",
+      "type": "n8n-nodes-base.clickUp",
+      "typeVersion": 1,
+      "position": [
+        -4720,
+        -896
+      ],
+      "credentials": {
+        "clickUpOAuth2Api": {
+          "id": "hPaiRfEyoPyspnxG",
+          "name": "ClickUp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Agente SDR - Prospecção e Qualificação",
+        "height": 352,
+        "width": 500
+      },
+      "id": "baba3c73-e5a4-4f98-a28f-737a498bfc65",
+      "name": "SDR Agent Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -6144,
+        -1360
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.listaMensagens }}",
+        "options": {
+          "systemMessage": "=# Agente SDR - Studio R Planejados\n\n## Persona\n- **Nome:** Alex - SDR Especialista\n- **Função:** Representante de Desenvolvimento de Vendas\n- **Especialidade:** Prospecção e qualificação de leads para móveis planejados\n\n## Objetivos\n1. **Qualificar leads** rapidamente (BANT - Budget, Authority, Need, Timeline)\n2. **Identificar prospects** de alta qualidade\n3. **Agendar reuniões** com agente de agendamento\n4. **Nutrir leads** não prontos para compra\n\n## Processo de Qualificação\n### 1. Descoberta Inicial\n- Qual ambiente deseja planejar?\n- Qual o prazo para execução?\n- Já tem orçamento definido?\n- Quem toma a decisão de compra?\n\n### 2. Scoring do Lead\n- **Lead Quente (A):** Necessidade clara + Orçamento + Decisor + Prazo < 30 dias\n- **Lead Morno (B):** 3 critérios atendidos\n- **Lead Frio (C):** Menos de 3 critérios\n\n### 3. Encaminhamento\n- Lead A/B: Transferir para Agente de Agendamento\n- Lead C: Nutrir com conteúdo educativo\n\n## Ferramentas Disponíveis\n- **dados_IA:** Buscar informações sobre produtos e projetos\n- **ClickUp:** Criar e atualizar leads no CRM\n- **Agendamento:** Transferir leads qualificados\n\n## Métricas\n- Taxa de qualificação\n- Leads transferidos por dia\n- Tempo médio de qualificação\n\nData atual: {{ $now.format('dd/MM/yyyy HH:mm') }}"
+        }
+      },
+      "id": "4d8ef54c-58f7-422d-8fd7-9dcf2c3c757c",
+      "name": "Agente SDR",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        -6080,
+        -1248
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Agente Agendamento - Gestão de Reuniões",
+        "height": 288,
+        "width": 500,
+        "color": 2
+      },
+      "id": "231ae10e-31ba-415c-babd-aedbb2af73ef",
+      "name": "Scheduling Agent Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -6032,
+        -2736
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.listaMensagens }}",
+        "options": {
+          "systemMessage": "=# Agente de Agendamento - Studio R Planejados\n\n## Persona\n- **Nome:** Sofia - Especialista em Agendamento\n- **Função:** Coordenadora de Reuniões e Visitas Técnicas\n- **Especialidade:** Otimização de agenda e experiência do cliente\n\n## Objetivos\n1. **Agendar visitas técnicas** (presencial/online)\n2. **Otimizar agenda** dos consultores\n3. **Confirmar agendamentos** via múltiplos canais\n4. **Reagendar** quando necessário\n5. **Preparar briefing** para o consultor\n\n## Processo de Agendamento\n### 1. Coleta de Informações\n- Preferência: presencial ou online?\n- Melhor dia da semana\n- Período do dia (manhã/tarde)\n- Endereço (se presencial)\n- Email para confirmação\n\n### 2. Verificação de Disponibilidade\n- Consultar agenda no Google Calendar\n- Propor 3 opções de horário\n- Confirmar com o cliente\n\n### 3. Confirmação\n- Enviar email de confirmação\n- Adicionar no ClickUp com status 'Agendado'\n- Criar evento no calendar\n- Preparar briefing do lead\n\n## Ferramentas\n- **Google Calendar:** Buscar/criar/atualizar eventos\n- **Gmail:** Enviar confirmações\n- **ClickUp:** Atualizar status do lead\n- **dados_IA:** Buscar informações específicas\n\n## Regras de Negócio\n- Visitas presenciais: apenas em horário comercial\n- Reuniões online: flexibilidade até 19h\n- Confirmar 24h antes do agendamento\n- Máximo 2 reagendamentos por lead\n\nData atual: {{ $now.format('dd/MM/yyyy HH:mm') }}"
+        }
+      },
+      "id": "5e27e7b2-7273-4d7e-ad50-8a418209e57d",
+      "name": "Agente Agendamento",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        -6032,
+        -2656
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Agente B2B - Clientes Empresariais",
+        "height": 288,
+        "width": 500,
+        "color": 3
+      },
+      "id": "fa6ac508-077f-421e-85bc-c8ccebf6f8e6",
+      "name": "B2B Agent Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -6096,
+        -2400
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.listaMensagens }}",
+        "options": {
+          "systemMessage": "=# Agente B2B - Studio R Planejados\n\n## Persona\n- **Nome:** Roberto - Especialista B2B\n- **Função:** Consultor para Clientes Empresariais\n- **Especialidade:** Projetos corporativos e grandes volumes\n\n## Foco B2B\n1. **Escritórios corporativos**\n2. **Lojas e estabelecimentos comerciais**\n3. **Hotéis e pousadas**\n4. **Clínicas e consultórios**\n5. **Projetos de grande escala**\n\n## Processo B2B\n### 1. Identificação\n- CNPJ da empresa\n- Segmento de atuação\n- Porte da empresa\n- Decisor/influenciador\n\n### 2. Necessidades Específicas\n- Volume do projeto\n- Prazo de entrega\n- Orçamento disponível\n- Padrão de acabamento\n- Necessidades técnicas especiais\n\n### 3. Proposta Comercial\n- Condições especiais B2B\n- Parcelamento diferenciado\n- Desconto por volume\n- Cronograma de entrega\n- Garantias estendidas\n\n## Diferenciais B2B\n- Atendimento personalizado\n- Projeto 3D detalhado\n- Acompanhamento de obra\n- Pós-venda especializado\n- Certificações técnicas\n\n## Ferramentas\n- **dados_IA:** Informações sobre projetos corporativos\n- **ClickUp:** Gestão de projetos B2B\n- **Gmail:** Envio de propostas\n- **Google Calendar:** Agendamento de apresentações\n\nData atual: {{ $now.format('dd/MM/yyyy HH:mm') }}"
+        }
+      },
+      "id": "a6688a08-965a-4cfb-b7ed-bbce145eaf4f",
+      "name": "Agente B2B",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        -6064,
+        -2288
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Agente B2C - Clientes Residenciais",
+        "height": 336,
+        "width": 500,
+        "color": 5
+      },
+      "id": "6aca6ca5-c317-446e-82aa-280dc5431f15",
+      "name": "B2C Agent Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -6128,
+        -1792
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.listaMensagens }}",
+        "options": {
+          "systemMessage": "=# Agente B2C - Studio R Planejados\n\n## Persona\n- **Nome:** Carla - Especialista B2C\n- **Função:** Consultora para Clientes Residenciais\n- **Especialidade:** Projetos residenciais e experiência familiar\n\n## Foco B2C\n1. **Cozinhas residenciais**\n2. **Quartos e closets**\n3. **Salas de estar/TV**\n4. **Banheiros planejados**\n5. **Áreas de lazer/gourmet**\n\n## Processo B2C\n### 1. Conexão Emocional\n- Entender o sonho da família\n- Identificar necessidades do dia a dia\n- Considerar crescimento familiar\n- Estilo de vida\n\n### 2. Necessidades Residenciais\n- Funcionalidade do espaço\n- Otimização de área\n- Preferências estéticas\n- Orçamento familiar\n- Prazo desejado\n\n### 3. Soluções Personalizadas\n- Projeto 3D realista\n- Simulação de materiais\n- Opções de pagamento\n- Cronograma flexível\n- Garantia residencial\n\n## Abordagem B2C\n- **Linguagem acessível** e próxima\n- **Foco na experiência** familiar\n- **Educação** sobre materiais e processos\n- **Transparência** em prazos e custos\n- **Acompanhamento** pós-entrega\n\n## Diferenciais B2C\n- Showroom para visitação\n- Projeto 3D incluído\n- Instalação especializada\n- Garantia de 5 anos\n- Manutenção preventiva\n\n## Ferramentas\n- **dados_IA:** Catálogo de projetos residenciais\n- **ClickUp:** Acompanhamento do projeto\n- **Gmail:** Comunicação com a família\n- **Google Calendar:** Visitas técnicas\n\nData atual: {{ $now.format('dd/MM/yyyy HH:mm') }}"
+        }
+      },
+      "id": "711ec743-1261-48fb-830a-8a89ac83a328",
+      "name": "Agente B2C",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        -6128,
+        -1664
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Agente Financeiro - Gestão de Pagamentos",
+        "height": 304,
+        "width": 500,
+        "color": 7
+      },
+      "id": "1ba925ff-330c-4434-80c0-d58f43efd68a",
+      "name": "Financial Agent Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -6048,
+        -3120
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.listaMensagens }}",
+        "options": {
+          "systemMessage": "=# Agente Financeiro - Studio R Planejados\n\n## Persona\n- **Nome:** Ricardo - Especialista Financeiro\n- **Função:** Consultor de Crédito e Pagamentos\n- **Especialidade:** Estruturação financeira e aprovação de crédito\n\n## Objetivos\n1. **Análise de crédito** do cliente\n2. **Estruturação de pagamento** personalizada\n3. **Aprovação** de financiamentos\n4. **Gestão de inadimplência**\n5. **Orientação financeira**\n\n## Produtos Financeiros\n### 1. Pagamento à Vista\n- Desconto especial (até 15%)\n- Condições diferenciadas\n- Prazo de execução reduzido\n\n### 2. Parcelamento Próprio\n- Até 24x sem juros\n- Entrada mínima 30%\n- Análise simplificada\n\n### 3. Financiamento Bancário\n- Parcerias com bancos\n- Até 60x com juros competitivos\n- Análise completa de crédito\n\n### 4. CDC (Crédito Direto ao Consumidor)\n- Aprovação em até 24h\n- Até 36x\n- Taxa pré-fixada\n\n## Processo de Análise\n### 1. Coleta de Dados\n- CPF/CNPJ\n- Renda comprovada\n- Score de crédito\n- Histórico financeiro\n\n### 2. Simulação\n- Capacidade de pagamento\n- Melhor modalidade\n- Prazo ideal\n- Valor das parcelas\n\n### 3. Aprovação\n- Documentação necessária\n- Assinatura de contratos\n- Liberação do projeto\n\n## Ferramentas\n- **Sistema de Crédito:** Consulta CPF/CNPJ\n- **ClickUp:** Controle de aprovações\n- **dados_IA:** Políticas financeiras\n- **Gmail:** Envio de contratos\n\n## Política de Crédito\n- Score mínimo: 300\n- Renda mínima: 2x valor da parcela\n- Comprometimento máximo: 30% da renda\n- Análise de relacionamento bancário\n\nData atual: {{ $now.format('dd/MM/yyyy HH:mm') }}"
+        }
+      },
+      "id": "86f89bd8-5f3f-408a-bd29-c5f77593d2cc",
+      "name": "Agente Financeiro",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        -6032,
+        -3008
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Agente Suporte - Atendimento Pós-Venda",
+        "height": 80,
+        "width": 500,
+        "color": 4
+      },
+      "id": "288bc86b-a34a-4911-bfaa-40aa252a8afb",
+      "name": "Support Agent Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -6192,
+        -128
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.listaMensagens }}",
+        "options": {
+          "systemMessage": "=# Agente de Suporte - Studio R Planejados\n\n## Persona\n- **Nome:** Ana - Especialista em Suporte\n- **Função:** Atendimento Pós-Venda e Suporte Técnico\n- **Especialidade:** Resolução de problemas e manutenção\n\n## Objetivos\n1. **Suporte pós-venda** especializado\n2. **Resolução de problemas** técnicos\n3. **Agendamento de manutenção**\n4. **Gestão de garantias**\n5. **Satisfação do cliente**\n\n## Tipos de Suporte\n### 1. Dúvidas sobre Produto\n- Funcionamento de mecanismos\n- Cuidados e limpeza\n- Uso adequado\n- Manutenção preventiva\n\n### 2. Problemas Técnicos\n- Defeitos de fabricação\n- Problemas de instalação\n- Ajustes necessários\n- Peças de reposição\n\n### 3. Garantia\n- Verificação de cobertura\n- Acionamento de garantia\n- Agendamento de técnico\n- Substituição de peças\n\n### 4. Manutenção\n- Manutenção preventiva\n- Lubrificação de dobradiças\n- Ajuste de portas\n- Troca de puxadores\n\n## Processo de Atendimento\n### 1. Identificação\n- Número do pedido/projeto\n- Data de instalação\n- Tipo de problema\n- Urgência do atendimento\n\n### 2. Diagnóstico\n- Análise técnica remota\n- Solução por orientação\n- Necessidade de visita técnica\n- Peças necessárias\n\n### 3. Resolução\n- Agendamento de técnico\n- Envio de peças\n- Orientações por WhatsApp\n- Follow-up de satisfação\n\n## Ferramentas\n- **ClickUp:** Tickets de suporte\n- **dados_IA:** Base de conhecimento técnico\n- **Google Calendar:** Agendamento técnico\n- **Gmail:** Comunicação formal\n\n## SLA (Acordo de Nível de Serviço)\n- **Resposta inicial:** Até 2 horas\n- **Problemas críticos:** Atendimento em 24h\n- **Problemas normais:** Até 48h\n- **Manutenção preventiva:** Agendamento em 7 dias\n\nData atual: {{ $now.format('dd/MM/yyyy HH:mm') }}"
+        }
+      },
+      "id": "2c6c512c-cf2e-4c35-96f9-98364a3c9069",
+      "name": "Agente Suporte",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        -6192,
+        -48
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Roteador de Agentes - Classificação Inteligente",
+        "height": 464,
+        "width": 532,
+        "color": 6
+      },
+      "id": "7807570d-c51b-44df-b4db-d8d04509ec27",
+      "name": "Agent Router Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -7520,
+        -2224
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.listaMensagens }}",
+                    "rightValue": "orçamento|preço|valor|quanto custa|financiamento|pagamento|parcela",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "financeiro"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.listaMensagens }}",
+                    "rightValue": "agendar|visita|reunião|horário|disponibilidade|consultor",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "agendamento"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.listaMensagens }}",
+                    "rightValue": "empresa|cnpj|corporativo|escritório|loja|comercial|hotel",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "b2b"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.listaMensagens }}",
+                    "rightValue": "problema|defeito|garantia|manutenção|técnico|reparo|suporte",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "suporte"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.listaMensagens }}",
+                    "rightValue": "casa|residencial|apartamento|cozinha|quarto|sala|closet",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "b2c"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.listaMensagens }}",
+                    "rightValue": "olá|gostaria de informações|como funciona|oi",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "sdr"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "fallback"
+        }
+      },
+      "id": "a0d4b4ec-277d-4770-9603-6fd87cc70c99",
+      "name": "Roteador de Agentes",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -7392,
+        -2048
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "mcp-key",
+              "name": "MCP_API_KEY",
+              "value": "mcp_secret_key_12345",
+              "type": "string"
+            },
+            {
+              "id": "clickup-list-leads",
+              "name": "CLICKUP_LIST_LEADS",
+              "value": "90120000123",
+              "type": "string"
+            },
+            {
+              "id": "clickup-list-projects",
+              "name": "CLICKUP_LIST_PROJECTS",
+              "value": "90120000124",
+              "type": "string"
+            },
+            {
+              "id": "clickup-list-support",
+              "name": "CLICKUP_LIST_SUPPORT",
+              "value": "90120000125",
+              "type": "string"
+            },
+            {
+              "id": "mobile-phone",
+              "name": "mobile",
+              "value": "={{ $json.body.data.from }}",
+              "type": "string"
+            },
+            {
+              "id": "message-list",
+              "name": "listaMensagens",
+              "value": "={{ $json.body.data.body }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "50c0b35d-cd7b-48af-9ac8-f5e9b927d107",
+      "name": "Variáveis Melhoradas",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -7664,
+        -1984
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "clickup_integration",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "keyValue": "={{ $('Variáveis Melhoradas').item.json.mobile }}"
+            }
+          ]
+        }
+      },
+      "id": "8f2a4ea7-f6ef-4e86-9c6b-154a19f16e52",
+      "name": "Buscar Task ClickUp",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -7392,
+        -1568
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Integração com ClickUp CRM\nconst phone = $input.all()[0].json.phone;\nconst action = $input.all()[0].json.action; // 'create', 'update', 'get'\nconst data = $input.all()[0].json.data;\n\nswitch(action) {\n  case 'create':\n    // Criar nova task no ClickUp\n    return {\n      task_id: 'new_task_' + Date.now(),\n      status: 'created',\n      message: 'Lead criado no ClickUp'\n    };\n    \n  case 'update':\n    // Atualizar task existente\n    return {\n      task_id: data.task_id,\n      status: 'updated', \n      message: 'Lead atualizado no ClickUp'\n    };\n    \n  case 'get':\n    // Buscar task existente\n    return {\n      task_id: 'task_' + phone,\n      lead_data: {\n        status: 'qualificado',\n        agent: 'sdr',\n        last_contact: new Date().toISOString()\n      }\n    };\n    \n  default:\n    return { error: 'Ação não reconhecida' };\n}"
+      },
+      "id": "53edba43-5926-44be-87d5-eb1437815760",
+      "name": "CRM Integration Tool",
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1,
+      "position": [
+        -4752,
+        -1536
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Conector MCP\nconst method = $input.all()[0].json.method;\nconst params = $input.all()[0].json.params;\nconst server = $input.all()[0].json.server || 'default';\n\n// Simular conexão MCP\nconst mcpResponse = {\n  server: server,\n  method: method,\n  params: params,\n  result: {\n    status: 'success',\n    data: `Resultado do método ${method} no servidor ${server}`,\n    timestamp: new Date().toISOString()\n  }\n};\n\nreturn mcpResponse;"
+      },
+      "id": "918a3b74-f1bd-440f-8551-9d5738eb24d2",
+      "name": "MCP Connector Tool",
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1,
+      "position": [
+        -4752,
+        -1376
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Métricas e Analytics",
+        "height": 80,
+        "width": 500,
+        "color": 2
+      },
+      "id": "a8dbaa1b-c285-470b-a4a6-14568c72346f",
+      "name": "Metrics Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -5392,
+        -2128
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "upsert"
+      },
+      "id": "01ac4417-077e-468a-9a12-9407ac9b1e00",
+      "name": "Salvar Métricas",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -5392,
+        -2048
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Sistema de Fallback",
+        "height": 80,
+        "width": 350,
+        "color": 7
+      },
+      "id": "ecf2e661-c398-4170-b420-c9d75ec66225",
+      "name": "Fallback Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -5136,
+        -1216
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.listaMensagens }}",
+        "options": {
+          "systemMessage": "=# Sistema de Fallback - Studio R Planejados\n\nVocê é um agente de fallback que atua quando nenhum agente especializado foi identificado.\n\n## Função\n- Atendimento geral\n- Classificação de demandas\n- Direcionamento para agente correto\n- Primeiras informações sobre a empresa\n\n## Processo\n1. Entender a necessidade do cliente\n2. Fornecer informações básicas\n3. Direcionar para o agente especializado correto\n4. Se necessário, agendar retorno\n\n## Agentes Disponíveis\n- **SDR:** Qualificação e prospecção\n- **Agendamento:** Marcação de visitas\n- **B2B:** Clientes empresariais\n- **B2C:** Clientes residenciais  \n- **Financeiro:** Condições de pagamento\n- **Suporte:** Problemas pós-venda\n\nSempre seja educado e direcionador.\n\nData atual: {{ $now.format('dd/MM/yyyy HH:mm') }}"
+        }
+      },
+      "id": "dfbaecbd-fea8-404d-9d5d-a16633bd6c8f",
+      "name": "Agente Fallback",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        -5152,
+        -1040
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "studio-r",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -7904,
+        -1984
+      ],
+      "id": "5d33bd5c-f0eb-4cba-913c-c3dd409e1d8e",
+      "name": "Webhook1",
+      "webhookId": "ef176f94-ddec-4428-8543-e54d3e6fa942"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -5152,
+        -2032
+      ],
+      "id": "1ea9bdc0-ca59-49ff-b386-f8df21e3187c",
+      "name": "Respond to Webhook1"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-08-09T09:26:59.949Z",
+      "updatedAt": "2025-08-09T09:26:59.949Z",
+      "role": "workflow:owner",
+      "workflowId": "veHnmCXC1GehA4KQ",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-08-10T05:02:52.020Z",
+  "versionId": "c6f016b4-d355-4aad-a979-522d19ecb93f"
+}

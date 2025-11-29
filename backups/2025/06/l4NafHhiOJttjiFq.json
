@@ -1,0 +1,663 @@
+{
+  "active": false,
+  "connections": {
+    "Buscar Leads Elegíveis": {
+      "main": [
+        []
+      ]
+    },
+    "Verificar Leads Disponíveis": {
+      "main": [
+        [
+          {
+            "node": "Verificar Anti-Duplicata",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Registro - Sem Leads Iniciais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Anti-Duplicata": {
+      "main": [
+        [
+          {
+            "node": "Tem Leads Válidos?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tem Leads Válidos?": {
+      "main": [
+        [
+          {
+            "node": "Estratégia Follow-up Inteligente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Registro - Sem Leads Válidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Estratégia Follow-up Inteligente": {
+      "main": [
+        [
+          {
+            "node": "Processar em Lotes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cron Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Buscar Leads Elegíveis1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Follow-up WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Delay Anti-Spam",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Follow-up WhatsApp1": {
+      "main": [
+        [
+          {
+            "node": "Relatório de Performance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Relatório de Performance": {
+      "main": [
+        [
+          {
+            "node": "Salvar Relatório Executivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Detalhado Follow-up": {
+      "main": [
+        [
+          {
+            "node": "Lead de Alto Potencial?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar Lead com Métricas": {
+      "main": [
+        [
+          {
+            "node": "Log Detalhado Follow-up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delay Anti-Spam": {
+      "main": [
+        [
+          {
+            "node": "Atualizar Lead com Métricas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar em Lotes": {
+      "main": [
+        [
+          {
+            "node": "Enviar Follow-up WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar Follow-up WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead de Alto Potencial?": {
+      "main": [
+        [
+          {
+            "node": "Enviar Follow-up WhatsApp1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Leads Elegíveis1": {
+      "main": [
+        [
+          {
+            "node": "Verificar Leads Disponíveis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-05T06:58:12.382Z",
+  "id": "l4NafHhiOJttjiFq",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 22",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "dados_cliente",
+        "limit": 100,
+        "filterType": "string",
+        "filterString": "=status=in.(novo,em atendimento,interessado)&tentativas_followup=lt.3&or=(ultimo_contato.is.null,ultimo_contato.lt.2025-06-04T03:00:00.000Z)"
+      },
+      "name": "Buscar Leads Elegíveis",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1640,
+        -340
+      ],
+      "id": "15e930b2-4d72-43af-ab7d-a54323e5230e",
+      "credentials": {
+        "supabaseApi": {
+          "id": "wKMmHUFNQJCXhQYj",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "has-leads",
+              "leftValue": "={{$items().length > 0}}",
+              "rightValue": 0,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "name": "Verificar Leads Disponíveis",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -1360,
+        120
+      ],
+      "id": "7d56464f-6dd8-49e3-a764-85328482a169"
+    },
+    {
+      "parameters": {
+        "jsCode": "const leads = $input.all();\nconst agora = new Date();\nconst ultimasVintEQuatroHoras = new Date(agora.getTime() - (24 * 60 * 60 * 1000));\nconst leadsVerificados = [];\n\nfor (const lead of leads) {\n  const leadData = lead.json;\n  const ultimoLog = leadData.ultimo_followup_enviado;\n  let podeEnviar = true;\n\n  if (ultimoLog) {\n    const dataUltimoLog = new Date(ultimoLog);\n    if (dataUltimoLog > ultimasVintEQuatroHoras) {\n      podeEnviar = false;\n      leadData.motivo_reprovado = 'Já enviado nas últimas 24h';\n    }\n  }\n\n  // Verificar horário comercial (9h às 18h)\n  const horaAtual = agora.getHours();\n  const diaAtual = agora.getDay(); // 0 = domingo, 6 = sábado\n  const isHorarioComercial = (diaAtual >= 1 && diaAtual <= 6) && (horaAtual >= 9 && horaAtual <= 18);\n\n  if (!isHorarioComercial) {\n    leadData.motivo_reprovado = 'Fora do horário comercial';\n  }\n\n  if (podeEnviar && isHorarioComercial) {\n    leadsVerificados.push({\n      json: {\n        ...leadData,\n        verificado_duplicata: true,\n        horario_comercial: true\n      }\n    });\n  }\n}\n\nif (leadsVerificados.length === 0) {\n  // Para debug: retorne todos os leads, mas marcados com o motivo da reprovação\n  return leads.map(lead => ({\n    json: {\n      ...lead.json,\n      aprovado: false,\n      motivo_reprovado: lead.json.motivo_reprovado || 'Reprovado por critério'\n    }\n  }));\n}\n\nreturn leadsVerificados;\n"
+      },
+      "name": "Verificar Anti-Duplicata",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1160,
+        120
+      ],
+      "id": "83ab6710-e0f3-44aa-9ef2-c5f6d819f1a0"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "leads-validos",
+              "leftValue": "={{$items().length > 0}}",
+              "rightValue": 0,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "name": "Tem Leads Válidos?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -960,
+        120
+      ],
+      "id": "1a939668-891f-4bc2-8377-39674b06e423"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Processar estratégia inteligente de follow-up com personalização avançada\nconst leads = $input.all();\nconst processedLeads = [];\n\nfor (const lead of leads) {\n  const leadData = lead.json;\n  \n  // Calcular métricas do lead\n  const ultimoContato = new Date(leadData.ultimo_contato || leadData.created_at);\n  const diasSemContato = Math.floor((Date.now() - ultimoContato.getTime()) / (1000 * 60 * 60 * 24));\n  const tentativas = leadData.tentativas_followup || 0;\n  const nomeCompleto = leadData.name || leadData.nome_completo || '';\n  const nomeCurto = nomeCompleto.split(' ')[0] || 'Amigo(a)';\n  const segmento = leadData.segmento || 'geral';\n  const origem = leadData.origem || 'site';\n  \n  // Personalização baseada no perfil do lead\n  let tipoFollowup = '';\n  let mensagem = '';\n  let prioridadeMsg = 'normal';\n  \n  // Estratégias diferenciadas por tentativa e perfil\n  if (tentativas === 0) {\n    tipoFollowup = 'boas_vindas';\n    prioridadeMsg = 'alta';\n    \n    if (segmento === 'e-commerce') {\n      mensagem = `Oi ${nomeCurto}! 🛒 Vi que você tem interesse em automação para e-commerce. Nossos clientes aumentam as vendas em até 40% com nossas soluções. Quer saber como?`;\n    } else if (segmento === 'servicos') {\n      mensagem = `${nomeCurto}, tudo bem? 💼 Automação para prestadores de serviços é nossa especialidade! Que tal economizar 20h/semana em tarefas repetitivas?`;\n    } else {\n      mensagem = `Oi ${nomeCurto}! 😊 Obrigado pelo interesse em automação. Vamos conversar sobre como podemos otimizar seus processos e aumentar sua produtividade?`;\n    }\n    \n  } else if (tentativas === 1) {\n    tipoFollowup = 'valor_agregado';\n    prioridadeMsg = 'alta';\n    \n    const casosDeSuccesso = {\n      'e-commerce': 'Recentemente ajudamos uma loja online a automatizar todo o processo de pós-venda e eles aumentaram a retenção de clientes em 35%',\n      'servicos': 'Um cliente nosso de consultoria conseguiu dobrar a capacidade de atendimento sem contratar mais funcionários',\n      'geral': 'Nossos clientes economizam em média R$ 8.500/mês só em custos operacionais'\n    };\n    \n    mensagem = `${nomeCurto}, imagino que deve estar corrido! 🚀 ${casosDeSuccesso[segmento] || casosDeSuccesso.geral}. Que tal 15 minutos para mostrar como isso pode funcionar no seu negócio?`;\n    \n  } else if (tentativas === 2) {\n    tipoFollowup = 'urgencia_social';\n    prioridadeMsg = 'media';\n    \n    mensagem = `${nomeCurto}, última semana tivemos 12 novos clientes! 📈 O mercado está acelerando e quem não automatizar vai ficar para trás. Vamos conversar antes que sua vaga seja preenchida?`;\n    \n  } else if (tentativas === 3) {\n    tipoFollowup = 'oferta_especial';\n    prioridadeMsg = 'media';\n    \n    mensagem = `${nomeCurto}, estou com uma proposta especial! 🎯 Para leads antigos como você, estou oferecendo 30% de desconto na primeira automação. Mas só até sexta. Interessado?`;\n    \n  } else if (tentativas === 4) {\n    tipoFollowup = 'despedida_inteligente';\n    prioridadeMsg = 'baixa';\n    \n    mensagem = `${nomeCurto}, sei que deve estar ocupado(a) demais para automação agora. 😅 Vou parar de insistir, mas se mudar de ideia, é só chamar. Sucesso aí! 🚀`;\n  }\n  \n  // Formatação inteligente do telefone\n  let telefoneFormatado = '';\n  if (leadData.phone) {\n    const phoneClean = leadData.phone.toString().replace(/\\D/g, '');\n    telefoneFormatado = phoneClean.length === 11 ? `55${phoneClean}` : `55${phoneClean.slice(-11)}`;\n  } else if (leadData.telefone_formatado) {\n    telefoneFormatado = leadData.telefone_formatado;\n  }\n  \n  // Score de conversão baseado em múltiplos fatores\n  let scoreConversao = 50; // Base\n  if (diasSemContato <= 3) scoreConversao += 20;\n  if (origem === 'indicacao') scoreConversao += 30;\n  if (leadData.interacoes_site > 5) scoreConversao += 15;\n  if (segmento === 'e-commerce') scoreConversao += 10;\n  \n  processedLeads.push({\n    json: {\n      ...leadData,\n      telefone_formatado: telefoneFormatado,\n      nome_curto: nomeCurto,\n      tipo_followup: tipoFollowup,\n      mensagem_followup: mensagem,\n      dias_sem_contato: diasSemContato,\n      nova_tentativa: tentativas + 1,\n      prioridade_mensagem: prioridadeMsg,\n      score_conversao: scoreConversao,\n      timestamp_processamento: new Date().toISOString()\n    }\n  });\n}\n\n// Ordenar por prioridade e score\nprocessedLeads.sort((a, b) => {\n  const prioridadeOrder = { 'alta': 3, 'media': 2, 'baixa': 1 };\n  const prioridadeA = prioridadeOrder[a.json.prioridade_mensagem];\n  const prioridadeB = prioridadeOrder[b.json.prioridade_mensagem];\n  \n  if (prioridadeA !== prioridadeB) return prioridadeB - prioridadeA;\n  return b.json.score_conversao - a.json.score_conversao;\n});\n\nreturn processedLeads;"
+      },
+      "name": "Estratégia Follow-up Inteligente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -760,
+        120
+      ],
+      "id": "82063c92-4051-44e4-91ec-e72bf39dbb8b"
+    },
+    {
+      "parameters": {
+        "batchSize": 10,
+        "options": {
+          "reset": false
+        }
+      },
+      "name": "Processar em Lotes",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -540,
+        120
+      ],
+      "id": "ed2661c8-a870-4f74-8336-0584ed772c23"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "name": "Delay Anti-Spam",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -120,
+        120
+      ],
+      "id": "e2411f8b-3d19-4357-bdc0-ac63a2b29e83",
+      "webhookId": "e5b27745-019f-4f57-ad7a-dbd3c43a25b3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "ultimo_contato",
+              "fieldValue": "={{ $now.toISO() }}"
+            },
+            {
+              "fieldId": "tentativas_followup",
+              "fieldValue": "={{ $json.nova_tentativa }}"
+            },
+            {
+              "fieldId": "tipo_ultimo_followup",
+              "fieldValue": "={{ $json.tipo_followup }}"
+            },
+            {
+              "fieldId": "ultimo_followup_enviado",
+              "fieldValue": "={{ $now.toISO() }}"
+            },
+            {
+              "fieldId": "score_conversao",
+              "fieldValue": "={{ $json.score_conversao }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ $json.nova_tentativa >= 5 ? 'follow_up_completo' : ($json.nova_tentativa >= 3 ? 'follow_up_avancado' : 'seguimento_ativo') }}"
+            },
+            {
+              "fieldId": "bloqueado_followup",
+              "fieldValue": "={{ $json.nova_tentativa >= 5 ? 'true' : 'false' }}"
+            }
+          ]
+        }
+      },
+      "name": "Atualizar Lead com Métricas",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        40,
+        120
+      ],
+      "id": "746aa801-5e42-4403-9557-6942906717ac",
+      "credentials": {
+        "supabaseApi": {
+          "id": "wKMmHUFNQJCXhQYj",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "insert"
+      },
+      "name": "Log Detalhado Follow-up",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        240,
+        120
+      ],
+      "id": "837515c2-6c30-4593-88b7-464668083650",
+      "credentials": {
+        "supabaseApi": {
+          "id": "wKMmHUFNQJCXhQYj",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "score-alto",
+              "leftValue": "={{ $json.score_conversao }}",
+              "rightValue": 80,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "name": "Lead de Alto Potencial?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        440,
+        120
+      ],
+      "id": "8e7332d7-b56c-4db8-8a19-621b419fc107"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "summary",
+              "name": "resumo_execucao",
+              "type": "object",
+              "value": "={\n  \"timestamp\": \"{{ $now.toISO() }}\",\n  \"total_leads_processados\": {{ $('Estratégia Follow-up Inteligente').all().length }},\n  \"leads_enviados\": {{ $('Enviar WhatsApp com Delay').all().length }},\n  \"leads_bloqueados_duplicata\": {{ $('Buscar Leads Elegíveis').first().json.length - $('Verificar Anti-Duplicata').all().length }},\n  \"tipos_followup\": {\n    \"boas_vindas\": {{ $('Estratégia Follow-up Inteligente').all().filter(lead => lead.json.tipo_followup === 'boas_vindas').length }},\n    \"valor_agregado\": {{ $('Estratégia Follow-up Inteligente').all().filter(lead => lead.json.tipo_followup === 'valor_agregado').length }},\n    \"urgencia_social\": {{ $('Estratégia Follow-up Inteligente').all().filter(lead => lead.json.tipo_followup === 'urgencia_social').length }},\n    \"oferta_especial\": {{ $('Estratégia Follow-up Inteligente').all().filter(lead => lead.json.tipo_followup === 'oferta_especial').length }},\n    \"despedida_inteligente\": {{ $('Estratégia Follow-up Inteligente').all().filter(lead => lead.json.tipo_followup === 'despedida_inteligente').length }}\n  },\n  \"segmentos\": {\n    \"e_commerce\": {{ $('Estratégia Follow-up Inteligente').all().filter(lead => lead.json.segmento === 'e-commerce').length }},\n    \"servicos\": {{ $('Estratégia Follow-up Inteligente').all().filter(lead => lead.json.segmento === 'servicos').length }},\n    \"geral\": {{ $('Estratégia Follow-up Inteligente').all().filter(lead => lead.json.segmento === 'geral').length }}\n  },\n  \"leads_alto_potencial\": {{ $('Lead de Alto Potencial?').all().length }},\n  \"score_medio\": {{ $('Estratégia Follow-up Inteligente').all().reduce((acc, lead) => acc + lead.json.score_conversao, 0) / $('Estratégia Follow-up Inteligente').all().length }}\n}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Relatório de Performance",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        860,
+        120
+      ],
+      "id": "4c119f36-ede5-41bc-86d1-7d8e15c8bca1"
+    },
+    {
+      "parameters": {
+        "operation": "insert"
+      },
+      "name": "Salvar Relatório Executivo",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        120
+      ],
+      "id": "0989b889-6794-49be-9c83-ae3f7806d49a",
+      "credentials": {
+        "supabaseApi": {
+          "id": "wKMmHUFNQJCXhQYj",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "no-leads",
+              "name": "mensagem",
+              "type": "string",
+              "value": "Nenhum lead válido encontrado para follow-up. Critérios: sem duplicatas nas últimas 24h, dentro do horário comercial, máximo 5 tentativas."
+            },
+            {
+              "id": "timestamp",
+              "name": "timestamp",
+              "type": "string",
+              "value": "={{ $now.toISO() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Registro - Sem Leads Válidos",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -760,
+        320
+      ],
+      "id": "d135b49c-5200-4a4a-9ba3-985e033c8c70"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "no-leads-initial",
+              "name": "mensagem",
+              "type": "string",
+              "value": "Nenhum lead encontrado na base que atenda aos critérios de follow-up."
+            },
+            {
+              "id": "timestamp",
+              "name": "timestamp",
+              "type": "string",
+              "value": "={{ $now.toISO() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Registro - Sem Leads Iniciais",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1160,
+        320
+      ],
+      "id": "f4168ccc-233a-45ed-818f-ddd99578f669"
+    },
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "hour": 3,
+              "minute": 5
+            }
+          ]
+        }
+      },
+      "name": "Cron Trigger1",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        -1740,
+        120
+      ],
+      "id": "7b8fdcc2-0ae7-4b39-96f0-d4e0cffa1a61"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "aiagenteautomate@gmail.com",
+        "remoteJid": "={{ $json.telefone_formatado }}@s.whatsapp.net",
+        "messageText": "={{ $json.mensagem_followup }}",
+        "options_message": {}
+      },
+      "name": "Enviar Follow-up WhatsApp",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        120
+      ],
+      "id": "f794a597-e515-4d20-9e02-3c86039ed5f6",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "aiagenteautomate@gmail.com",
+        "remoteJid": "={{ $json.telefone_formatado }}@s.whatsapp.net",
+        "messageText": "={{ $json.mensagem_followup }}",
+        "options_message": {}
+      },
+      "name": "Enviar Follow-up WhatsApp1",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        680,
+        120
+      ],
+      "id": "020474a1-b208-4ec3-b027-003e90439075",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "dados_cliente",
+        "returnAll": true,
+        "filterType": "string",
+        "filterString": "=status=in.(novo,em atendimento,interessado,qualificado)&tentativas_followup=lt.3&or=(ultimo_contato.is.null,ultimo_contato.lt.{{$now.minus({days: 2}).toISO()}})"
+      },
+      "name": "Buscar Leads Elegíveis1",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1560,
+        120
+      ],
+      "id": "6e026512-828b-4382-9b53-95ad8e4c057e",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "wKMmHUFNQJCXhQYj",
+          "name": "Supabase account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-06-05T06:58:12.382Z",
+      "updatedAt": "2025-06-05T06:58:12.382Z",
+      "role": "workflow:owner",
+      "workflowId": "l4NafHhiOJttjiFq",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-05T19:49:54.583Z",
+  "versionId": "c32412d5-b706-40ea-837a-63c61e052ea6"
+}

@@ -1,0 +1,937 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook Entrada": {
+      "main": [
+        [
+          {
+            "node": "Set Dados Entrada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Dados Entrada": {
+      "main": [
+        [
+          {
+            "node": "Insert Estacionamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Estacionamento": {
+      "main": [
+        [
+          {
+            "node": "Enviar Confirmação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Lembretes": {
+      "main": [
+        [
+          {
+            "node": "Buscar Ativos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Ativos": {
+      "main": [
+        [
+          {
+            "node": "Calcular Valores",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular Valores": {
+      "main": [
+        [
+          {
+            "node": "Enviar Lembrete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Pagamento": {
+      "main": [
+        [
+          {
+            "node": "Buscar Estacionamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Estacionamento": {
+      "main": [
+        [
+          {
+            "node": "Calcular Valor Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular Valor Final": {
+      "main": [
+        [
+          {
+            "node": "Switch Pagamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Pagamento": {
+      "main": [
+        [
+          {
+            "node": "Gerar PIX",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Processar Cartão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Confirmação Pagamento": {
+      "main": [
+        [
+          {
+            "node": "Update Pagamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Pagamento": {
+      "main": [
+        [
+          {
+            "node": "Preparar QR Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar QR Code": {
+      "main": [
+        [
+          {
+            "node": "Gerar QR Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar QR Code": {
+      "main": [
+        [
+          {
+            "node": "Enviar QR Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar QR Code": {
+      "main": [
+        [
+          {
+            "node": "Notificar App",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-11T19:48:44.576Z",
+  "id": "8cgMFnIcOznQYQuA",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "FlowPark-new",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "flowpark",
+        "options": {}
+      },
+      "id": "ff08d0bc-ac26-4378-99d9-f295c4eb840d",
+      "name": "Webhook Entrada",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -48,
+        304
+      ],
+      "webhookId": "entrada-estacionamento"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "placa-veiculo",
+              "name": "placa",
+              "value": "={{ $json.body.plate }}",
+              "type": "string"
+            },
+            {
+              "id": "telefone-cliente",
+              "name": "telefone",
+              "value": "={{ $json.body.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "horario-entrada",
+              "name": "entrada",
+              "value": "={{ $now }}\n\n",
+              "type": "string"
+            },
+            {
+              "id": "valor-hora",
+              "name": "valor_hora",
+              "value": "5.00",
+              "type": "string"
+            },
+            {
+              "id": "status",
+              "name": "status",
+              "value": "ATIVO",
+              "type": "string"
+            },
+            {
+              "id": "67f78954-1d75-4b2a-9068-d3e8c52a7845",
+              "name": "tipo_cliente",
+              "value": "={{ $json.body.clientType }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6af5c34a-b811-4221-b764-0b6b3c53896f",
+      "name": "Set Dados Entrada",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        160,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO estacionamento (\n  placa,\n  telefone,\n  entrada,\n  valor_hora,\n  status,\n  created_at\n)\nVALUES (\n  '{{ $(\"Webhook Entrada\").item.json.body.plate }}',\n  '{{ $(\"Webhook Entrada\").item.json.body.phone }}',\n  '{{ $json.entrada }}',\n  {{ $json.valor_hora }},\n  '{{ $json.status }}',\n  NOW()\n)\nRETURNING id;\n",
+        "options": {}
+      },
+      "id": "11b3982d-83c1-4ea1-afda-231c91359ea4",
+      "name": "Insert Estacionamento",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        416,
+        304
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LcPSd7FLQY8Hpijr",
+          "name": "Postgres flowpark"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "flowpark",
+        "remoteJid": "={{ $('Webhook Entrada').item.json.body.phone }}",
+        "messageText": "=🚗 *ESTACIONAMENTO CONFIRMADO FlowPark*\n📋 *Dados do veículo:\n🚗 *Placa:  {{ $('Webhook Entrada').item.json.body.plate }}\n   *Tipo:  \n⏱️ Entrada: {{ $('Set Dados Entrada').item.json.entrada }}\n💰 Valor por hora: R$ {{ $('Set Dados Entrada').item.json.valor_hora }}\n⏰ Você receberá lembretes a cada hora.\n💳 *Formas de pagamento:\n*• PIX• \n*Cartão de Crédito/Débito\n",
+        "options_message": {}
+      },
+      "id": "a7f135f9-13d8-4592-96b4-22be5452f321",
+      "name": "Enviar Confirmação",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        608,
+        304
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      },
+      "id": "19e59872-77f6-40f1-92d5-b4a7bba0c94f",
+      "name": "Schedule Lembretes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        608
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM estacionamento WHERE status = 'ATIVO' AND entrada < NOW() - INTERVAL '5 minute';",
+        "options": {}
+      },
+      "id": "ee7c456b-8c37-467f-8cff-e152bdf65d69",
+      "name": "Buscar Ativos",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        208,
+        608
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LcPSd7FLQY8Hpijr",
+          "name": "Postgres flowpark"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Calcular tempo e valor atual\nconst items = [];\n\nfor (const item of $input.all()) {\n  const entrada = new Date(item.json.entrada);\n  const agora = new Date();\n  const horasEstacionado = Math.ceil((agora - entrada) / (1000 * 60 * 60));\n  const valorTotal = (horasEstacionado * parseFloat(item.json.valor_hora)).toFixed(2);\n  \n  items.push({\n    json: {\n      ...item.json,\n      horas_estacionado: horasEstacionado,\n      valor_total: valorTotal,\n      tempo_formatado: `${horasEstacionado}h`\n    }\n  });\n}\n\nreturn items;"
+      },
+      "id": "156c3bdf-7dbf-4e1e-878e-6e908388bce4",
+      "name": "Calcular Valores",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        608
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "flowpark",
+        "remoteJid": "={{ $json.telefone }}",
+        "messageText": "=⏰ *LEMBRETE DE ESTACIONAMENTO*\n\n🚗 Placa: {{ $json.placa }}\n⏱️ Tempo: {{ $json.tempo_formatado }}\n💰 Valor atual: R$ {{ $json.valor_total }}\n\n💳 Para pagar e sair:\n• Responda *PIX* para pagamento via PIX\n• Responda *CARTAO* para cartão\n• Ou acesse nosso app\n\n📱 ID do veículo: {{ $json.id }}",
+        "options_message": {}
+      },
+      "id": "c13cd22f-b59f-4775-95c0-e8e0c5dda7ae",
+      "name": "Enviar Lembrete",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        608,
+        608
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "flowpark",
+        "options": {}
+      },
+      "id": "5e974de2-bb72-45a6-b291-274a85ff91db",
+      "name": "Webhook Pagamento",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -48,
+        1040
+      ],
+      "webhookId": "pagamento-estacionamento"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT *,\n       EXTRACT(EPOCH FROM (NOW() - entrada))/3600 AS horas_decorridas\nFROM estacionamento\nWHERE placa = '{{ $(\"Webhook Pagamento\").item.json.body.plate }}'\n  AND status = 'ATIVO';\n",
+        "options": {}
+      },
+      "id": "5adc7762-56cf-4fc5-b0c9-34c2849a4514",
+      "name": "Buscar Estacionamento",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        160,
+        1040
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LcPSd7FLQY8Hpijr",
+          "name": "Postgres flowpark"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Calcular valor final\nconst item = $input.first();\nconst horasDecorridas = Math.ceil(item.json.horas_decorridas);\nconst valorFinal = (horasDecorridas * parseFloat(item.json.valor_hora)).toFixed(2);\n\nreturn [{\n  json: {\n    ...item.json,\n    horas_final: horasDecorridas,\n    valor_final: valorFinal,\n    forma_pagamento: $('Webhook Pagamento').first().json.forma_pagamento\n  }\n}];"
+      },
+      "id": "a5025ce3-b4b0-495e-9202-f1df01285c06",
+      "name": "Calcular Valor Final",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        352,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.forma_pagamento }}",
+                    "rightValue": "PIX",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pix"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.forma_pagamento }}",
+                    "rightValue": "CARTAO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "cartao"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a12a3985-2819-4dff-a18c-09500b6cef8d",
+      "name": "Switch Pagamento",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        560,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.gerencianet.com.br/v1/charge/one-step",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "calendar",
+              "value": "={{ {\"expiration\": 3600} }}"
+            },
+            {
+              "name": "value",
+              "value": "={{ parseInt($json.valor_final * 100) }}"
+            },
+            {
+              "name": "key",
+              "value": "sua-chave-pix"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2f8192fc-8671-479b-b512-887223716289",
+      "name": "Gerar PIX",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        752,
+        928
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Vg1sLZdXLdtpj9vh",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.stripe.com/v1/payment_intents",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/x-www-form-urlencoded"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "amount",
+              "value": "={{ parseInt($json.valor_final * 100) }}"
+            },
+            {
+              "name": "currency",
+              "value": "brl"
+            },
+            {
+              "name": "payment_method_types[]",
+              "value": "card"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3e6cd5e3-2fea-4e10-92c7-35d75e87bfab",
+      "name": "Processar Cartão",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        752,
+        1136
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Vg1sLZdXLdtpj9vh",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "estacionamento/webhook-pagamento",
+        "options": {}
+      },
+      "id": "2605cb52-ed2e-4d90-8df3-a8c42bdb8e3a",
+      "name": "Webhook Confirmação Pagamento",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -64,
+        1472
+      ],
+      "webhookId": "confirmacao-pagamento"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE estacionamento SET status = 'PAGO', saida = NOW(), valor_final = {{ $json.valor_pago }}, forma_pagamento = '{{ $json.forma_pagamento }}' WHERE id = {{ $json.estacionamento_id }} RETURNING *;",
+        "options": {}
+      },
+      "id": "5804aa9e-83fb-46bc-86c4-e19b55af98b8",
+      "name": "Update Pagamento",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        112,
+        1472
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LcPSd7FLQY8Hpijr",
+          "name": "Postgres flowpark"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "qr_data",
+        "options": {
+          "fileName": "qrcode-saida.png",
+          "mimeType": "image/png"
+        }
+      },
+      "id": "f9e30946-aaa3-4a49-876a-7c679a074d4e",
+      "name": "Gerar QR Code",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        416,
+        1472
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gerar dados do QR Code\nconst item = $input.first();\nconst qrData = JSON.stringify({\n  id: item.json.id,\n  placa: item.json.placa,\n  saida: item.json.saida,\n  valor: item.json.valor_final,\n  status: 'LIBERADO'\n});\n\n// Simular geração de QR Code (na prática, usar biblioteca específica)\nconst qrCodeBase64 = Buffer.from(qrData).toString('base64');\n\nreturn [{\n  json: {\n    ...item.json,\n    qr_data: qrCodeBase64,\n    qr_text: qrData\n  }\n}];"
+      },
+      "id": "07e28ff3-2a46-4edb-a149-9986acecf12e",
+      "name": "Preparar QR Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        272,
+        1472
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "flowpark",
+        "remoteJid": "{{ $json.telefone }}",
+        "messageText": "=✅ *PAGAMENTO CONFIRMADO*\n\n🚗 Placa: {{ $json.placa }}\n⏰ Tempo total: {{ $json.horas_final }}h\n💰 Valor pago: R$ {{ $json.valor_final }}\n💳 Forma: {{ $json.forma_pagamento }}\n\n🎫 *QR CODE PARA SAÍDA*\nUse o código abaixo na cancela:\n\n📱 Apresente este QR Code na saída.",
+        "options_message": {}
+      },
+      "id": "1f76e85c-27f7-42e6-ae2e-811cc48cb894",
+      "name": "Enviar QR Code",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        592,
+        1472
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://app-estacionamento.com/api/status-update",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $credentials.estacionamento_app.token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "estacionamento_id",
+              "value": "={{ $json.id }}"
+            },
+            {
+              "name": "status",
+              "value": "PAGO"
+            },
+            {
+              "name": "valor_final",
+              "value": "={{ $json.valor_final }}"
+            },
+            {
+              "name": "qr_code",
+              "value": "={{ $json.qr_text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f8d66cc5-8efe-4ae2-a2ec-08b763f3a99a",
+      "name": "Notificar App",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        784,
+        1472
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "CREATE TABLE IF NOT EXISTS estacionamento (\n  id SERIAL PRIMARY KEY,\n  placa VARCHAR(10) NOT NULL,\n  telefone VARCHAR(20),\n  entrada TIMESTAMP NOT NULL,\n  saida TIMESTAMP,\n  valor_hora DECIMAL(10,2) NOT NULL,\n  valor_final DECIMAL(10,2),\n  forma_pagamento VARCHAR(20),\n  status VARCHAR(20) DEFAULT 'ATIVO',\n  created_at TIMESTAMP DEFAULT NOW(),\n  updated_at TIMESTAMP DEFAULT NOW()\n);",
+        "options": {}
+      },
+      "id": "5fc19015-2bad-4a3a-b5b5-3422308d5298",
+      "name": "Criar Tabela",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        0,
+        0
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LcPSd7FLQY8Hpijr",
+          "name": "Postgres flowpark"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Sistema de Estacionamento",
+        "height": 192,
+        "width": 400,
+        "color": 5
+      },
+      "id": "39389c87-03e3-448a-add1-175fdba5ca2a",
+      "name": "Nota Título",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        -224
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 1. Entrada do Veículo\n- Recebe dados via webhook\n- Registra no banco\n- Envia confirmação",
+        "height": 280,
+        "width": 860,
+        "color": 3
+      },
+      "id": "1395317b-d8c9-4c2a-a39a-5d6cf3cc54ee",
+      "name": "Nota Entrada",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 2. Lembretes Automáticos\n- A cada 1 hora\n- Calcula tempo e valor\n- Envia por WhatsApp",
+        "height": 280,
+        "width": 860,
+        "color": 4
+      },
+      "id": "d7dceee9-6d5c-40e0-b871-93f049e62865",
+      "name": "Nota Lembretes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 3. Processamento de Pagamento\n- PIX ou Cartão\n- Integração com gateways\n- Atualiza status",
+        "height": 360,
+        "width": 1020,
+        "color": 6
+      },
+      "id": "bc828a54-d8bd-4207-b6a7-830ddbaf4942",
+      "name": "Nota Pagamento",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        896
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 4. Geração de QR Code\n- Após pagamento confirmado\n- Envia para cliente\n- Notifica aplicação",
+        "height": 312,
+        "width": 1068,
+        "color": 2
+      },
+      "id": "fdc5ee13-1386-465a-8587-8c3b9e869d5d",
+      "name": "Nota QR Code",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        1344
+      ]
+    }
+  ],
+  "pinData": {
+    "Webhook Pagamento": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.aiagentautomate.com.br",
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+            "content-length": "144",
+            "accept": "application/json",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9,pt;q=0.8",
+            "content-type": "application/json",
+            "origin": "https://5a20fc70-b41b-43f1-b97c-758ff779360f.sandbox.lovable.dev",
+            "priority": "u=1, i",
+            "referer": "https://5a20fc70-b41b-43f1-b97c-758ff779360f.sandbox.lovable.dev/",
+            "sec-ch-ua": "\"Chromium\";v=\"140\", \"Not=A?Brand\";v=\"24\", \"Google Chrome\";v=\"140\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Linux\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "200.39.37.99",
+            "x-forwarded-host": "n8n.aiagentautomate.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "181847215a3a",
+            "x-real-ip": "200.39.37.99"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "plate": "DUS-0989",
+            "phone": "+55 11 95231-3944",
+            "entryTime": "2025-09-13T03:46:01.469Z",
+            "company": "FlowPark",
+            "message_type": "entry_notification"
+          },
+          "webhookUrl": "https://n8n.aiagentautomate.com.br/webhook/flowpark",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Webhook Entrada": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.aiagentautomate.com.br",
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+            "content-length": "166",
+            "accept": "application/json",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9,pt;q=0.8",
+            "content-type": "application/json",
+            "origin": "https://id-preview--5a20fc70-b41b-43f1-b97c-758ff779360f.lovable.app",
+            "priority": "u=1, i",
+            "referer": "https://id-preview--5a20fc70-b41b-43f1-b97c-758ff779360f.lovable.app/",
+            "sec-ch-ua": "\"Google Chrome\";v=\"141\", \"Not?A_Brand\";v=\"8\", \"Chromium\";v=\"141\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Linux\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "200.39.37.99",
+            "x-forwarded-host": "n8n.aiagentautomate.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "39017bc971e2",
+            "x-real-ip": "200.39.37.99"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "plate": "DUS-0989",
+            "phone": "+55 11 95231-3944",
+            "entryTime": "2025-11-18T04:12:51.519Z",
+            "company": "FlowPark",
+            "message_type": "entry_notification",
+            "clientType": "avulso"
+          },
+          "webhookUrl": "https://n8n.aiagentautomate.com.br/webhook/flowpark",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-11T19:48:44.576Z",
+      "updatedAt": "2025-09-11T19:48:44.576Z",
+      "role": "workflow:owner",
+      "workflowId": "8cgMFnIcOznQYQuA",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": {
+    "node:Schedule Lembretes": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 4,
+  "updatedAt": "2025-11-18T05:37:03.979Z",
+  "versionId": "f8560c08-9f35-4526-bd0c-a892a4f14c52"
+}

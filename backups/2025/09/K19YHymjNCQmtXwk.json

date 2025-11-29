@@ -1,0 +1,330 @@
+{
+  "active": false,
+  "connections": {},
+  "createdAt": "2025-09-11T19:46:26.338Z",
+  "id": "K19YHymjNCQmtXwk",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 64",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://pt.wikipedia.org/wiki/Lista_de_frutas",
+        "options": {}
+      },
+      "id": "1041e275-4fb4-4308-bc8a-a6c4e96b77f0",
+      "name": "Pegar Lista Frutas",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -1392,
+        -80
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "d4da7ca9-4969-4795-85a1-79abf759a3ce",
+      "name": "Extrair Nomes Frutas",
+      "type": "n8n-nodes-base.htmlExtract",
+      "position": [
+        -1200,
+        -80
+      ],
+      "connections": {
+        "main": [
+          [
+            {
+              "node": "Pegar Lista Frutas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "c98c86a9-5005-4a77-abe1-6321c06c9590",
+      "name": "Limitar 100 Frutas",
+      "type": "n8n-nodes-base.itemLists",
+      "position": [
+        -992,
+        -80
+      ],
+      "connections": {
+        "main": [
+          [
+            {
+              "node": "Extrair Nomes Frutas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "typeVersion": 3.1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "c68d719f-d2c5-4115-976f-879464e6bde4",
+      "name": "Set Maduro",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -800,
+        -192
+      ],
+      "connections": {
+        "main": [
+          [
+            {
+              "node": "Limitar 100 Frutas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {},
+      "id": "c1dc697a-65b9-4d0e-ac55-fe3120a09995",
+      "name": "Google Images Maduro",
+      "type": "n8n-nodes-base.googleImages",
+      "position": [
+        -592,
+        -192
+      ],
+      "connections": {
+        "main": [
+          [
+            {
+              "node": "Set Maduro",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "typeVersion": 1,
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "e8a5ab2c-0b1e-4e17-a5e6-cab7b38208a1",
+      "name": "Set Verde",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -800,
+        16
+      ],
+      "connections": {
+        "main": [
+          [
+            {
+              "node": "Limitar 100 Frutas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {},
+      "id": "27f29cbc-ebdf-4c2f-8686-4c7da4b50879",
+      "name": "Google Images Verde",
+      "type": "n8n-nodes-base.googleImages",
+      "position": [
+        -592,
+        16
+      ],
+      "connections": {
+        "main": [
+          [
+            {
+              "node": "Set Verde",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "typeVersion": 1,
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "af7b3122-b3db-4334-9e8a-4f98100a9a9b",
+      "name": "Set Passado",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -800,
+        224
+      ],
+      "connections": {
+        "main": [
+          [
+            {
+              "node": "Limitar 100 Frutas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {},
+      "id": "77bb2e2c-3b52-4246-a73f-826bf6815347",
+      "name": "Google Images Passado",
+      "type": "n8n-nodes-base.googleImages",
+      "position": [
+        -592,
+        224
+      ],
+      "connections": {
+        "main": [
+          [
+            {
+              "node": "Set Passado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "typeVersion": 1,
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "id": "cee9c2f3-c1c9-4f94-b103-0eba7b8f5fb9",
+      "name": "Merge Estados",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        -400,
+        16
+      ],
+      "connections": {
+        "main": [
+          [
+            {
+              "node": "Google Images Maduro",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Google Images Verde",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Google Images Passado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "4c872a5f-a004-4f6c-845e-154e258d2d47",
+      "name": "Estruturar Dados",
+      "type": "n8n-nodes-base.itemLists",
+      "position": [
+        -192,
+        16
+      ],
+      "connections": {
+        "main": [
+          [
+            {
+              "node": "Merge Estados",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "typeVersion": 3.1
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "id": "e5aeaf26-5d81-4ec4-a27f-f51c40864f9d",
+      "name": "Salvar Banco de Dados",
+      "type": "n8n-nodes-base.postgres",
+      "position": [
+        16,
+        16
+      ],
+      "connections": {
+        "main": [
+          [
+            {
+              "node": "Estruturar Dados",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "typeVersion": 2.6
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-11T19:46:26.338Z",
+      "updatedAt": "2025-09-11T19:46:26.338Z",
+      "role": "workflow:owner",
+      "workflowId": "K19YHymjNCQmtXwk",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-11T19:46:26.338Z",
+  "versionId": "42cc71e6-2d48-4dd8-a442-1f34757aa0cc"
+}

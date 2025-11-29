@@ -1,0 +1,307 @@
+{
+  "active": true,
+  "connections": {
+    "Buscar Último Lead": {
+      "main": [
+        []
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Organizar Dados1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Organizar Dados1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crypto": {
+      "main": [
+        []
+      ]
+    },
+    "Atualizar Lead session_id": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-05-29T10:10:55.633Z",
+  "id": "Nh0GauTFJIWIMxO5",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Fluxo Leads Inicial copy",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "=dados_cliente",
+        "limit": 1
+      },
+      "name": "Buscar Último Lead",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1500,
+        -60
+      ],
+      "id": "a81ebe61-7974-451c-8f64-54e16bd7df71",
+      "credentials": {
+        "supabaseApi": {
+          "id": "wKMmHUFNQJCXhQYj",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "dados_cliente",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -1100,
+        240
+      ],
+      "webhookId": "3ac43d78-da28-49b4-9e57-ae13b166d326",
+      "id": "07ba76ec-3558-4a3d-a89d-44dfd690884d"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "name",
+              "value": "={{ $json.body.name }}"
+            },
+            {
+              "name": "company",
+              "value": "={{ $json.body.company }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $json.body.email }}"
+            },
+            {
+              "name": "phone",
+              "value": "={{ '55' + $json.body.phone.trim().replace(/\\D/g, '').slice(-11) }}"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "name": "Organizar Dados1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -900,
+        240
+      ],
+      "id": "2c0a34b5-ded7-403c-831f-6e1115cf5716"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "aiagenteautomate@gmail.com",
+        "remoteJid": "={{ $('Organizar Dados1').item.json.telefone_formatado }}{{ $('Organizar Dados1').item.json.phone }}",
+        "messageText": "=Olá {{ $('Code').item.json.body.name }}, como vai? 👋 Sou a Aurora, especialista da AIAgent Automate. Vi que você se interessou por nossa solução de automação utilizando IA. Posso te ajudar com alguma dúvida?",
+        "options_message": {}
+      },
+      "name": "Enviar WhatsApp1",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        240
+      ],
+      "id": "d95837b5-0417-4c04-aa3f-9310a2625cb0",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const lead = $input.first().json;\n// Verifica e formata telefone\nif (lead.telefone) {\n  lead.telefone_formatado = '55' + lead.telefone.replace(/\\D/g, '').slice(-11);\n} else {\n  lead.telefone_formatado = '';\n}\n// Nome curto para mensagens\nlead.nome_curto = lead.nome_completo?.split(' ')[0] || lead.nome || '';\n// Define sessionId com prioridade para:\n// 1. lead.data.instancedId\n// 2. sessionId vindo do JSON\n// 3. telefone formatado\n// 4. ID da execução\nlead.sessionId = lead.data?.instancedId || $json.sessionId || lead.telefone_formatado || $execution.id;\n\nreturn [{ json: lead }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -700,
+        240
+      ],
+      "id": "0fbd4743-0224-4a34-9ef5-5361a8e91b2d",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.aiagentautomate.com.br/webhook/responde-cliente",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "sessionId",
+              "value": "={{ $('Code').item.json.sessionId }}"
+            },
+            {
+              "name": "telefone",
+              "value": "={{ $('Code').item.json.telefone_formatado }}"
+            },
+            {
+              "name": "nome",
+              "value": "={{ $('Code').item.json.nome_curto }}"
+            },
+            {
+              "name": "mensagem",
+              "value": "\"continuar\""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -220,
+        240
+      ],
+      "id": "779a7b93-fd97-4d7d-ba10-61c2ce61a6ea",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "action": "generate",
+        "dataPropertyName": "sessionid"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [
+        -1300,
+        -60
+      ],
+      "id": "800de573-1c33-4489-907f-e30d5470df12",
+      "name": "Crypto"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "phone",
+              "fieldValue": "={{ $('Organizar Dados1').item.json.body.phone }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "novo"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $now.toISO() }}"
+            },
+            {
+              "fieldId": "sessionid",
+              "fieldValue": "={{ $json.session_id }}{{ $json.sessionid }}"
+            }
+          ]
+        }
+      },
+      "name": "Atualizar Lead session_id",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1100,
+        -60
+      ],
+      "id": "6d6e0df0-f4aa-463c-8725-9f94442e3835",
+      "credentials": {
+        "supabaseApi": {
+          "id": "wKMmHUFNQJCXhQYj",
+          "name": "Supabase account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-05-29T10:10:55.633Z",
+      "updatedAt": "2025-05-29T10:10:55.633Z",
+      "role": "workflow:owner",
+      "workflowId": "Nh0GauTFJIWIMxO5",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-06-05T20:29:54.090Z",
+  "versionId": "b80da549-710a-4d5a-b63e-7a954e8ce44d"
+}

@@ -1,0 +1,195 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook (B2B)": {
+      "main": [
+        [
+          {
+            "node": "Set Vars",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-24T04:06:21.700Z",
+  "id": "wMLn77svOJU9WAZN",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 62",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "agent-b2b",
+        "options": {}
+      },
+      "id": "e49fa501-630d-4c8b-8305-e43091ae3f8c",
+      "name": "Webhook (B2B)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        656,
+        -128
+      ],
+      "webhookId": "f02ea5e0-9371-4e35-93f6-99d5d24f6ef9"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "name": "sessionId",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "name": "telefone",
+              "value": "={{ $json.telefone }}",
+              "type": "string"
+            },
+            {
+              "name": "nome",
+              "value": "={{ $json.nome || '' }}",
+              "type": "string"
+            },
+            {
+              "name": "email",
+              "value": "={{ $json.email || '' }}",
+              "type": "string"
+            },
+            {
+              "name": "EV_URL",
+              "value": "={{ $json.EV_URL }}",
+              "type": "string"
+            },
+            {
+              "name": "EV_INSTANCE",
+              "value": "={{ $json.EV_INSTANCE }}",
+              "type": "string"
+            },
+            {
+              "name": "EV_KEY",
+              "value": "={{ $json.EV_KEY }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4485d74a-e882-4016-987e-578878d1e422",
+      "name": "Set Vars",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        864,
+        -128
+      ]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.sessionId }}",
+        "contextWindowLength": 1000
+      },
+      "id": "d8bebef7-aa6b-4a5a-9a12-2e0e697fcdad",
+      "name": "Postgres Chat Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1088,
+        -128
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "CbbTX7ryuVXsyhIG",
+          "name": "Postgres_AIAgentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "value": "documentos",
+          "mode": "list",
+          "cachedResultName": "documentos"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "id": "76d1014a-ec5f-4643-af22-888c25543f6d",
+      "name": "Supabase Vector Store (RAG)",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        -128
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase account teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "4f43e845-0d5f-47d5-bb26-2d9c3b8ccd06",
+      "name": "OpenAI Chat (B2B)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1232,
+        128
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.EV_URL + '/message/sendText/' + $json.EV_INSTANCE }}",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "id": "a81877c1-4405-433b-a528-3ce21bf40612",
+      "name": "EvolutionAPI → sendText",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1744,
+        -128
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-08-24T04:06:21.700Z",
+      "updatedAt": "2025-08-24T04:06:21.700Z",
+      "role": "workflow:owner",
+      "workflowId": "wMLn77svOJU9WAZN",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-08-24T04:06:21.700Z",
+  "versionId": "b1a92a8b-ec48-47b7-ae66-de87b5fe70bb"
+}

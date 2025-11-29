@@ -1,0 +1,454 @@
+{
+  "active": false,
+  "connections": {
+    "Cron Trigger": {
+      "main": [
+        [
+          {
+            "node": "Buscar Leads para Follow-up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Leads para Follow-up": {
+      "main": [
+        [
+          {
+            "node": "Verificar se há Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar se há Leads": {
+      "main": [
+        [
+          {
+            "node": "Processar Estratégia Follow-up",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sem Leads para Follow-up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Estratégia Follow-up": {
+      "main": [
+        [
+          {
+            "node": "Enviar Follow-up WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Follow-up WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Atualizar Status Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar Status Lead": {
+      "main": [
+        [
+          {
+            "node": "Log Atividade",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Atividade": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar Log Follow-up": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Resumo Execução",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-05T04:50:50.055Z",
+  "id": "Q6bSSINJ7HQFQ3U2",
+  "isArchived": false,
+  "meta": null,
+  "name": "Follow-up",
+  "nodes": [
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "hour": 11,
+              "minute": 40
+            }
+          ]
+        }
+      },
+      "name": "Cron Trigger",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "287fc68d-035f-46ed-9d33-fe6fc87980d0"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "dados_cliente",
+        "returnAll": true,
+        "filterType": "string",
+        "filterString": "=status=in.(novo,em atendimento,interessado)&tentativas_followup=lt.3&or=(ultimo_contato.is.null,ultimo_contato.lt.2025-06-04T03:00:00.000Z)"
+      },
+      "name": "Buscar Leads para Follow-up",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "ab869af6-50c1-489a-8163-0489d48218ce",
+      "credentials": {
+        "supabaseApi": {
+          "id": "4VasV1hYVXWuYPjJ",
+          "name": "Supabase Aiagent Automate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "has-leads",
+              "leftValue": "={{$items().length > 0}}",
+              "rightValue": 0,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "name": "Verificar se há Leads",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        400,
+        0
+      ],
+      "id": "f28c3f70-7766-46e6-b8e7-183cfab79f5d"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Processar cada lead e definir estratégia de follow-up\nconst leads = $input.all();\nconst processedLeads = [];\n\nfor (const lead of leads) {\n  const leadData = lead.json;\n  \n  // Calcular dias desde último contato\n  const ultimoContato = new Date(leadData.ultimo_contato || leadData.created_at);\n  const diasSemContato = Math.floor((Date.now() - ultimoContato.getTime()) / (1000 * 60 * 60 * 24));\n  \n  // Definir tipo de follow-up baseado no status e tentativas\n  let tipoFollowup = 'padrao';\n  let mensagem = '';\n  \n  const tentativas = leadData.tentativas_followup || 0;\n  const nomeCompleto = leadData.name || leadData.nome_completo || '';\n  const nomeCurto = nomeCompleto.split(' ')[0] || '';\n  \n  // Estratégias diferentes baseadas no número de tentativas\n  if (tentativas === 0) {\n    tipoFollowup = 'primeiro_followup';\n    mensagem = `Oi ${nomeCurto}! 😊 Como você está? Queria saber se teve tempo de pensar sobre nossa conversa sobre automação. Tem alguma dúvida que posso esclarecer?`;\n  } else if (tentativas === 1) {\n    tipoFollowup = 'segundo_followup';\n    mensagem = `${nomeCurto}, tudo bem? 🤔 Imagino que deve estar corrido por aí. Nossa proposta de automação pode justamente te ajudar a ter mais tempo livre. Que tal uma conversa rápida de 15 min?`;\n  } else if (tentativas === 2) {\n    tipoFollowup = 'ultimo_followup';\n    mensagem = `${nomeCurto}, última tentativa! 😅 Sei que automação pode parecer complexa, mas nossos clientes economizam em média 20h/semana. Vale a pena pelo menos conhecer, não acha? 🚀`;\n  }\n  \n  // Formatação do telefone\n  const telefoneFormatado = leadData.phone ? \n    '55' + leadData.phone.toString().replace(/\\D/g, '').slice(-11) : \n    leadData.telefone_formatado;\n  \n  processedLeads.push({\n    json: {\n      ...leadData,\n      telefone_formatado: telefoneFormatado,\n      nome_curto: nomeCurto,\n      tipo_followup: tipoFollowup,\n      mensagem_followup: mensagem,\n      dias_sem_contato: diasSemContato,\n      nova_tentativa: tentativas + 1\n    }\n  });\n}\n\nreturn processedLeads;"
+      },
+      "name": "Processar Estratégia Follow-up",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        608,
+        -16
+      ],
+      "id": "d58a98a5-ef0d-49e0-8a6f-e9efab5d651f"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "aiagenteautomate@gmail.com",
+        "remoteJid": "={{ $json.telefone_formatado }}@s.whatsapp.net",
+        "messageText": "={{ $json.mensagem_followup }}",
+        "options_message": {}
+      },
+      "name": "Enviar Follow-up WhatsApp",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        800,
+        -16
+      ],
+      "id": "c9a05e07-1eca-4a31-ac54-53a515f512ce",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}{{ $('Processar Estratégia Follow-up').item.json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "ultimo_contato",
+              "fieldValue": "={{ $now.toISO() }}"
+            },
+            {
+              "fieldId": "tentativas_followup",
+              "fieldValue": "={{ $json.nova_tentativa }}"
+            },
+            {
+              "fieldId": "tipo_ultimo_followup",
+              "fieldValue": "={{ $json.tipo_followup }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ $json.nova_tentativa >= 3 ? 'follow_up_completo' : 'seguimento' }}"
+            }
+          ]
+        }
+      },
+      "name": "Atualizar Status Lead",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1008,
+        -16
+      ],
+      "id": "5dd7f7b4-9828-4cd4-8eb5-839dae5665a8",
+      "credentials": {
+        "supabaseApi": {
+          "id": "4VasV1hYVXWuYPjJ",
+          "name": "Supabase Aiagent Automate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "log-entry",
+              "name": "log_followup",
+              "type": "object",
+              "value": "={\n  \"lead_id\": \"{{ $json.id }}\",\n  \"nome\": \"{{ $json.name }}\",\n  \"tipo_followup\": \"WhatsApp\",   // exemplo fixo, ou puxe de onde quiser\n  \"tentativa\": \"{{ $json.tentativas_followup }}\",\n  \"telefone\": \"{{ $json.phone }}\",\n  \"status_anterior\": \"{{ $json.status }}\",\n  \"timestamp\": \"{{$now.toISO()}}\"\n}\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Log Atividade",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1200,
+        -16
+      ],
+      "id": "3f948cde-97dd-4546-aa26-277782d21b01"
+    },
+    {
+      "parameters": {
+        "operation": "insert"
+      },
+      "name": "Salvar Log Follow-up",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        -320
+      ],
+      "id": "4c8847fc-d3ce-4e06-98e8-289101c4d69c",
+      "credentials": {
+        "supabaseApi": {
+          "id": "4VasV1hYVXWuYPjJ",
+          "name": "Supabase Aiagent Automate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "summary",
+              "name": "resumo_execucao",
+              "type": "object",
+              "value": "={\n  \"total_leads_processados\": {{ $('Processar Estratégia Follow-up').all().length }},\n  \"data_execucao\": \"{{ $now.toISO() }}\",\n  \"tipos_followup\": {\n    \"primeiro\": {{ $('Processar Estratégia Follow-up').all().filter(lead => lead.json.tipo_followup === 'primeiro_followup').length }},\n    \"segundo\": {{ $('Processar Estratégia Follow-up').all().filter(lead => lead.json.tipo_followup === 'segundo_followup').length }},\n    \"ultimo\": {{ $('Processar Estratégia Follow-up').all().filter(lead => lead.json.tipo_followup === 'ultimo_followup').length }}\n  }\n}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Resumo Execução",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1600,
+        -16
+      ],
+      "id": "0d3763d8-3ec5-4fc1-9ade-bcfbc0c1c08a"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "no-leads",
+              "name": "mensagem",
+              "type": "string",
+              "value": "Nenhum lead encontrado para follow-up no momento"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Sem Leads para Follow-up",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        608,
+        208
+      ],
+      "id": "cef7ff2b-e265-45c1-b32d-80efb738d019"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://krqjybpktokadpdmlouo.supabase.co/rest/v1/log_followups",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtycWp5YnBrdG9rYWRwZG1sb3VvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA2MzE0MTUsImV4cCI6MjA1NjIwNzQxNX0.i3IKbxW2Y5R7D5dkzA56z2mBw0-h4WaRM0GMrCIDcOU"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtycWp5YnBrdG9rYWRwZG1sb3VvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA2MzE0MTUsImV4cCI6MjA1NjIwNzQxNX0.i3IKbxW2Y5R7D5dkzA56z2mBw0-h4WaRM0GMrCIDcOU"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Prefer",
+              "value": "return=representation"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "lead_id",
+              "value": "={{ $json.log_followup.lead_id }}"
+            },
+            {
+              "name": "nome_lead",
+              "value": "={{ $json.log_followup.nome }}"
+            },
+            {
+              "name": "tipo_followup",
+              "value": "={{ $json.log_followup.tipo_followup }}"
+            },
+            {
+              "name": "tentativa_numero",
+              "value": "={{ $json.log_followup.tentativa }}"
+            },
+            {
+              "name": "telefone",
+              "value": "={{ $json.log_followup.telefone }}"
+            },
+            {
+              "name": "enviado_em",
+              "value": "={{ $now.toISO() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1408,
+        -16
+      ],
+      "id": "1e67e3c5-fc04-4345-bf85-302db394139f",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {
+    "Cron Trigger": [
+      {
+        "json": {}
+      }
+    ]
+  },
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-06-05T04:50:50.055Z",
+      "updatedAt": "2025-06-05T04:50:50.055Z",
+      "role": "workflow:owner",
+      "workflowId": "Q6bSSINJ7HQFQ3U2",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-14T05:10:12.544Z",
+  "versionId": "f7ca968f-5b26-4555-a884-d85e2e2f7253"
+}

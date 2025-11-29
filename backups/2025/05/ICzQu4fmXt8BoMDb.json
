@@ -1,0 +1,286 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Validar Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Dados": {
+      "main": [
+        [
+          {
+            "node": "Dados Válidos?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados Válidos?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Redis - Busca Respostas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - Busca Respostas": {
+      "main": [
+        [
+          {
+            "node": "Verifica Pergunta Respondida",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica Pergunta Respondida": {
+      "main": [
+        [
+          {
+            "node": "Pergunta Respondida?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pergunta Respondida?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Aurora Esperar Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-17T09:25:40.181Z",
+  "id": "ICzQu4fmXt8BoMDb",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 17",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "responder-conversa",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -1640,
+        -120
+      ],
+      "webhookId": "responder-conversa",
+      "id": "6c0914d1-684b-4680-9728-a0f5cf64f313"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst nome = $json.nome?.trim();\nconst email = $json.email?.trim();\nconst telefone = $json.telefone?.replace(/\\D/g, '');\n\n// Geração do sessionId a partir do corpo recebido no webhook\nconst sessionId = $json.body?.data?.key?.id || $json.body?.data?.id || $execution.id;\n\nconst valido = nome && email?.match(/\\S+@\\S+\\.\\S+/) && telefone?.length >= 10;\n\nreturn [{\n  json: {\n    nome,\n    email,\n    telefone,\n    valido,\n    sessionId\n  }\n}];\n"
+      },
+      "name": "Validar Dados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1440,
+        -120
+      ],
+      "id": "7047face-0cfa-4717-a5f0-6403a72fd394"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.valido }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "Dados Válidos?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1240,
+        -120
+      ],
+      "id": "6c656f76-f3fb-4cc8-b8cf-445eb16bf846"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "={{ $json.sessionId }}",
+        "options": {}
+      },
+      "name": "Redis - Busca Respostas",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1000,
+        -120
+      ],
+      "id": "0389726a-4078-45a4-96c7-bc0dd78994f8",
+      "credentials": {
+        "redis": {
+          "id": "Q9fFQv1hEnIedFTx",
+          "name": "Redis account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst respostas = $json.respostasAnteriores || {};\nconst perguntaAtual = \"email\";\n\nif (respostas[perguntaAtual]) {\n  return [{ json: { skip: true, motivo: \"Pergunta já respondida\", resposta: respostas[perguntaAtual] }}];\n}\n\nreturn [{ json: { skip: false }}];"
+      },
+      "name": "Verifica Pergunta Respondida",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -840,
+        -120
+      ],
+      "id": "77321165-b83a-45f3-8a09-1a8ca92f60e3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.skip }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "Pergunta Respondida?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -120
+      ],
+      "id": "fa79745e-c068-47e6-8393-1f91bbc62ee4"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "aiagenteautomate@gmail.com",
+        "remoteJid": "={{ $('Webhook').item.json.body.data.key.remoteJid }}",
+        "messageText": "={{ $json.output }}",
+        "options_message": {}
+      },
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        -120
+      ],
+      "id": "0cbfd8ea-ddb7-42c2-9b2b-7c694be193da",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 120
+      },
+      "name": "Aurora Esperar Resposta",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        40,
+        -120
+      ],
+      "id": "c40f8507-d3de-41fa-ad21-626b84425783",
+      "webhookId": "27089339-fb3d-4c05-aa9c-c37970f2658f"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "38863cb1-2559-4ab9-baa4-b276f75e2d9c",
+              "name": "output",
+              "value": "Olá! Tudo certo por aqui. Como posso te ajudar agora? 😊",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -420,
+        -60
+      ],
+      "id": "c95c8945-73b0-497b-8306-f8cdbf36747b",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-05-17T09:25:40.181Z",
+      "updatedAt": "2025-05-17T09:25:40.181Z",
+      "role": "workflow:owner",
+      "workflowId": "ICzQu4fmXt8BoMDb",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-18T04:37:59.113Z",
+  "versionId": "917e48ed-a43c-48a6-9683-0f5c67269d47"
+}

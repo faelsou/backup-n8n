@@ -1,0 +1,512 @@
+{
+  "active": false,
+  "connections": {
+    "Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Process Execution Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Usage Table": {
+      "main": [
+        [
+          {
+            "node": "Create Pricing Table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Pricing Table": {
+      "main": [
+        [
+          {
+            "node": "Insert Model Pricing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Model Pricing": {
+      "main": [
+        [
+          {
+            "node": "Create Cost View",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Execution Data": {
+      "main": [
+        [
+          {
+            "node": "Filter LLM Usage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter LLM Usage": {
+      "main": [
+        [
+          {
+            "node": "Insert Usage Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Usage Data": {
+      "main": [
+        [
+          {
+            "node": "Generate Weekly Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM Usage Webhook": {
+      "main": [
+        [
+          {
+            "node": "Process Webhook Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Webhook Data": {
+      "main": [
+        [
+          {
+            "node": "Insert Usage Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Weekly Report": {
+      "main": [
+        [
+          {
+            "node": "Grafana Queries Reference",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-14T01:52:18.680Z",
+  "id": "xFOifn4m31oXP9Ji",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 69",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e51b7db5-7b15-4791-967a-8fd159d2e6c9",
+      "name": "Workflow Trigger",
+      "type": "n8n-nodes-base.n8nTrigger",
+      "typeVersion": 1,
+      "position": [
+        80,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Criar tabela de uso de LLM\nCREATE TABLE IF NOT EXISTS llm_usage (\n  id BIGSERIAL PRIMARY KEY,\n  ts TIMESTAMPTZ NOT NULL,\n  workflow_id TEXT NOT NULL,\n  workflow_name TEXT NOT NULL,\n  run_id TEXT NOT NULL,\n  node_name TEXT,\n  provider TEXT NOT NULL,\n  model TEXT NOT NULL,\n  input_tokens INTEGER NOT NULL DEFAULT 0,\n  output_tokens INTEGER NOT NULL DEFAULT 0,\n  total_tokens INTEGER NOT NULL DEFAULT 0,\n  latency_ms INTEGER,\n  status TEXT DEFAULT 'success',\n  region TEXT DEFAULT 'BR-SP',\n  user_id TEXT,\n  cost_usd NUMERIC(12,6) DEFAULT 0\n);",
+        "options": {}
+      },
+      "id": "987fcaf2-b829-4f8e-aa62-b382e24c98b2",
+      "name": "Create Usage Table",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        288,
+        48
+      ],
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Criar tabela de preços dos modelos\nCREATE TABLE IF NOT EXISTS model_pricing (\n  provider TEXT NOT NULL,\n  model TEXT NOT NULL,\n  prompt_price_per_1k NUMERIC(12,6) NOT NULL,\n  completion_price_per_1k NUMERIC(12,6) NOT NULL,\n  currency TEXT DEFAULT 'USD',\n  PRIMARY KEY (provider, model)\n);",
+        "options": {}
+      },
+      "id": "3a50c2bc-d7d5-4c5a-a174-19ddb8271889",
+      "name": "Create Pricing Table",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        288,
+        208
+      ],
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Inserir preços dos modelos OpenAI (atualize conforme necessário)\nINSERT INTO model_pricing (provider, model, prompt_price_per_1k, completion_price_per_1k) VALUES\n('openai', 'gpt-4o-mini', 0.00015, 0.0006),\n('openai', 'gpt-4o', 0.005, 0.015),\n('openai', 'gpt-4-turbo', 0.01, 0.03),\n('openai', 'gpt-3.5-turbo', 0.0005, 0.0015),\n('openai', 'text-embedding-3-small', 0.00002, 0.00002),\n('openai', 'text-embedding-3-large', 0.00013, 0.00013)\nON CONFLICT (provider, model) DO UPDATE SET\n  prompt_price_per_1k = EXCLUDED.prompt_price_per_1k,\n  completion_price_per_1k = EXCLUDED.completion_price_per_1k;",
+        "options": {}
+      },
+      "id": "a08e294f-a235-4f6e-9a93-ed1ec16e2c33",
+      "name": "Insert Model Pricing",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        288,
+        368
+      ],
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Criar view com custo calculado\nCREATE OR REPLACE VIEW v_llm_usage_cost AS\nSELECT\n  u.*,\n  COALESCE(u.input_tokens,0)/1000.0 * COALESCE(p.prompt_price_per_1k,0)\n  + COALESCE(u.output_tokens,0)/1000.0 * COALESCE(p.completion_price_per_1k,0)\n  AS total_cost_usd,\n  CASE WHEN u.total_tokens = 0 THEN 0\n       ELSE (COALESCE(u.input_tokens,0)/1000.0 * COALESCE(p.prompt_price_per_1k,0)\n             + COALESCE(u.output_tokens,0)/1000.0 * COALESCE(p.completion_price_per_1k,0))\n             / (u.total_tokens/1000.0)\n  END AS usd_per_k_token\nFROM llm_usage u\nLEFT JOIN model_pricing p\n  ON p.provider = u.provider\n AND p.model = u.model;",
+        "options": {}
+      },
+      "id": "81c647fb-b234-4bf9-ba0b-741b7e8b9d20",
+      "name": "Create Cost View",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        288,
+        528
+      ],
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Processar dados de execução do workflow\nconst items = $input.all();\nconst processedItems = [];\n\nfor (const item of items) {\n  const execution = item.json;\n  \n  // Extrair informações básicas da execução\n  const executionData = {\n    workflow_id: execution.workflowId || $workflow.id,\n    workflow_name: execution.workflowName || $workflow.name,\n    run_id: execution.id || $runId,\n    ts: execution.startedAt || new Date().toISOString(),\n    status: execution.finished ? 'success' : 'running',\n    user_id: execution.userId || 'system'\n  };\n  \n  // Procurar por nós que usaram LLM\n  if (execution.data && execution.data.resultData && execution.data.resultData.runData) {\n    const runData = execution.data.resultData.runData;\n    \n    for (const nodeName in runData) {\n      const nodeData = runData[nodeName];\n      \n      if (nodeData && nodeData.length > 0) {\n        for (const nodeExecution of nodeData) {\n          // Verificar se há dados de uso de LLM\n          if (nodeExecution.data && nodeExecution.data.main && nodeExecution.data.main.length > 0) {\n            for (const output of nodeExecution.data.main) {\n              if (output && output.length > 0) {\n                for (const outputItem of output) {\n                  // Procurar por dados de usage de LLM\n                  if (outputItem.json && (outputItem.json.usage || outputItem.json.token_usage)) {\n                    const usage = outputItem.json.usage || outputItem.json.token_usage;\n                    \n                    // Detectar provider e model\n                    let provider = 'openai'; // default\n                    let model = 'gpt-4o-mini'; // default\n                    \n                    // Tentar detectar provider baseado no nome do nó\n                    if (nodeName.toLowerCase().includes('openai')) provider = 'openai';\n                    if (nodeName.toLowerCase().includes('anthropic')) provider = 'anthropic';\n                    if (nodeName.toLowerCase().includes('gemini')) provider = 'google';\n                    \n                    // Tentar extrair model dos parâmetros ou resposta\n                    if (outputItem.json.model) model = outputItem.json.model;\n                    if (nodeExecution.source && nodeExecution.source.main && nodeExecution.source.main[0] && nodeExecution.source.main[0][0] && nodeExecution.source.main[0][0].json && nodeExecution.source.main[0][0].json.model) {\n                      model = nodeExecution.source.main[0][0].json.model;\n                    }\n                    \n                    const llmUsage = {\n                      ...executionData,\n                      node_name: nodeName,\n                      provider: provider,\n                      model: model,\n                      input_tokens: usage.prompt_tokens || usage.input_tokens || 0,\n                      output_tokens: usage.completion_tokens || usage.output_tokens || 0,\n                      total_tokens: usage.total_tokens || ((usage.prompt_tokens || usage.input_tokens || 0) + (usage.completion_tokens || usage.output_tokens || 0)),\n                      latency_ms: nodeExecution.executionTime || 0\n                    };\n                    \n                    processedItems.push({ json: llmUsage });\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n\nreturn processedItems.length > 0 ? processedItems : [{ json: { no_llm_usage: true } }];"
+      },
+      "id": "9d5c0794-65f3-45a7-9b33-68998d6f279d",
+      "name": "Process Execution Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "has-llm-usage",
+              "leftValue": "={{ $json.no_llm_usage }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a09dbd1e-d6cb-4788-97d8-10f5722da9ea",
+      "name": "Filter LLM Usage",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        688,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ts": "={{ $json.ts }}",
+            "workflow_id": "={{ $json.workflow_id }}",
+            "workflow_name": "={{ $json.workflow_name }}",
+            "run_id": "={{ $json.run_id }}",
+            "node_name": "={{ $json.node_name }}",
+            "provider": "={{ $json.provider }}",
+            "model": "={{ $json.model }}",
+            "input_tokens": "={{ $json.input_tokens }}",
+            "output_tokens": "={{ $json.output_tokens }}",
+            "total_tokens": "={{ $json.total_tokens }}",
+            "latency_ms": "={{ $json.latency_ms }}",
+            "status": "={{ $json.status }}",
+            "region": "BR-SP",
+            "user_id": "={{ $json.user_id }}"
+          }
+        },
+        "table": "llm_usage",
+        "options": {}
+      },
+      "id": "e950b309-65e8-4425-a6de-d9838ab89d48",
+      "name": "Insert Usage Data",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        880,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# LLM Usage Monitoring System",
+        "height": 80,
+        "width": 800,
+        "color": 5
+      },
+      "id": "786b3944-da4f-4fff-9d4a-400b3f797177",
+      "name": "Sistema de Monitoramento LLM",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Configuração Inicial do Banco\n\nCria tabelas e views necessárias para o monitoramento",
+        "height": 100,
+        "width": 400,
+        "color": 3
+      },
+      "id": "3fe326d2-75ac-4275-826c-b1844831e137",
+      "name": "Setup Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        160,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Processamento de Dados\n\nExtrai informações de uso de LLM das execuções",
+        "height": 100,
+        "width": 350,
+        "color": 4
+      },
+      "id": "f426bf32-1925-455d-9d25-f1d3e10d928a",
+      "name": "Processing Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        400,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "llm-usage-webhook",
+        "options": {}
+      },
+      "id": "96c47741-8045-450f-a388-b935a47135a7",
+      "name": "LLM Usage Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        80,
+        368
+      ],
+      "webhookId": "llm-usage-monitor"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Processar dados recebidos via webhook\nconst item = $input.first();\nconst data = item.json.body || item.json;\n\n// Estrutura esperada do webhook:\n// {\n//   workflow_id: string,\n//   workflow_name: string,\n//   run_id: string,\n//   node_name: string,\n//   provider: string,\n//   model: string,\n//   usage: {\n//     prompt_tokens: number,\n//     completion_tokens: number,\n//     total_tokens: number\n//   },\n//   latency_ms: number\n// }\n\nconst processedData = {\n  ts: new Date().toISOString(),\n  workflow_id: data.workflow_id || $workflow.id,\n  workflow_name: data.workflow_name || $workflow.name,\n  run_id: data.run_id || $runId,\n  node_name: data.node_name || 'Unknown',\n  provider: data.provider || 'openai',\n  model: data.model || 'gpt-4o-mini',\n  input_tokens: data.usage?.prompt_tokens || data.usage?.input_tokens || 0,\n  output_tokens: data.usage?.completion_tokens || data.usage?.output_tokens || 0,\n  total_tokens: data.usage?.total_tokens || ((data.usage?.prompt_tokens || 0) + (data.usage?.completion_tokens || 0)),\n  latency_ms: data.latency_ms || 0,\n  status: data.status || 'success',\n  user_id: data.user_id || 'webhook'\n};\n\nreturn [{ json: processedData }];"
+      },
+      "id": "25203516-397d-432e-9879-bc0731b1cb97",
+      "name": "Process Webhook Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        288,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Query para relatório de custo por workflow (últimos 7 dias)\nSELECT \n  workflow_name,\n  COUNT(*) as executions,\n  SUM(total_tokens) as total_tokens,\n  AVG(total_tokens) as avg_tokens_per_run,\n  SUM(total_cost_usd) as total_cost_usd,\n  AVG(total_cost_usd) as avg_cost_per_run,\n  AVG(usd_per_k_token) as avg_usd_per_k_token\nFROM v_llm_usage_cost\nWHERE ts >= NOW() - INTERVAL '7 days'\nGROUP BY workflow_name\nORDER BY total_cost_usd DESC;",
+        "options": {}
+      },
+      "id": "699b9255-c80a-4b3d-b92f-2824c4d2a4bb",
+      "name": "Generate Weekly Report",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1088,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "grafana-queries",
+              "name": "grafana_queries",
+              "value": "{\n  \"custo_por_fluxo_diario\": \"SELECT date_trunc('day', ts) AS day, workflow_name, SUM(total_cost_usd) AS cost_usd FROM v_llm_usage_cost WHERE $__timeFilter(ts) GROUP BY 1,2 ORDER BY 1 ASC\",\n  \"tokens_media_diaria\": \"SELECT date_trunc('day', ts) AS day, AVG(total_tokens) AS avg_tokens_per_run FROM llm_usage WHERE $__timeFilter(ts) GROUP BY 1 ORDER BY 1 ASC\",\n  \"custo_semanal\": \"SELECT date_trunc('week', ts) AS bucket, SUM(total_cost_usd) AS cost_usd FROM v_llm_usage_cost WHERE $__timeFilter(ts) GROUP BY 1 ORDER BY 1\",\n  \"custo_mensal\": \"SELECT date_trunc('month', ts) AS bucket, SUM(total_cost_usd) AS cost_usd FROM v_llm_usage_cost WHERE $__timeFilter(ts) GROUP BY 1 ORDER BY 1\",\n  \"top_workflows_caros\": \"SELECT workflow_name, SUM(total_cost_usd) AS cost_7d FROM v_llm_usage_cost WHERE ts >= NOW() - INTERVAL '7 days' GROUP BY 1 ORDER BY cost_7d DESC LIMIT 10\",\n  \"custo_por_1k_tokens\": \"SELECT date_trunc('day', ts) AS day, provider || '|' || model AS model_key, CASE WHEN SUM(total_tokens) = 0 THEN 0 ELSE SUM(total_cost_usd) / (SUM(total_tokens)/1000.0) END AS usd_per_k_token FROM v_llm_usage_cost WHERE $__timeFilter(ts) GROUP BY 1,2 ORDER BY 1\",\n  \"kpis_30d\": \"SELECT SUM(total_cost_usd) as total_cost_30d, SUM(total_tokens) as total_tokens_30d, AVG(usd_per_k_token) as avg_cost_per_k_token_30d, COUNT(*) as total_executions_30d FROM v_llm_usage_cost WHERE ts >= NOW() - INTERVAL '30 days'\"\n}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "553b19e7-7857-4253-806a-4c59d8d1f22f",
+      "name": "Grafana Queries Reference",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1280,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Exemplo de Nó para Adicionar nos Workflows\n\nAdicione este nó HTTP Request após seus nós de LLM:",
+        "height": 80,
+        "width": 600,
+        "color": 6
+      },
+      "id": "a3f1cf19-0e65-4d82-b984-b653d5fd9423",
+      "name": "Example Usage Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1488,
+        64
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('LLM Usage Webhook').json.webhookUrl || 'https://sua-instancia-n8n.com/webhook/llm-usage-webhook' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "workflow_id",
+              "value": "={{ $workflow.id }}"
+            },
+            {
+              "name": "workflow_name",
+              "value": "={{ $workflow.name }}"
+            },
+            {
+              "name": "run_id",
+              "value": "={{ $runId }}"
+            },
+            {
+              "name": "node_name",
+              "value": "OpenAI Chat Model"
+            },
+            {
+              "name": "provider",
+              "value": "openai"
+            },
+            {
+              "name": "model",
+              "value": "gpt-4o-mini"
+            },
+            {
+              "name": "input_tokens",
+              "value": "={{ $('OpenAI Chat Model').json.usage?.prompt_tokens || 0 }}"
+            },
+            {
+              "name": "output_tokens",
+              "value": "={{ $('OpenAI Chat Model').json.usage?.completion_tokens || 0 }}"
+            },
+            {
+              "name": "total_tokens",
+              "value": "={{ $('OpenAI Chat Model').json.usage?.total_tokens || 0 }}"
+            },
+            {
+              "name": "latency_ms",
+              "value": "={{ $('OpenAI Chat Model').executionTime || 0 }}"
+            },
+            {
+              "name": "status",
+              "value": "success"
+            },
+            {
+              "name": "user_id",
+              "value": "={{ $('VariÃ¡veis')?.json?.mobile || 'system' }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "6d4d5a23-bd24-4924-b8e6-6a26e94718ec",
+      "name": "Monitor LLM Usage",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1488,
+        160
+      ],
+      "continueOnFail": true
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-14T01:52:18.680Z",
+      "updatedAt": "2025-09-14T01:52:18.680Z",
+      "role": "workflow:owner",
+      "workflowId": "xFOifn4m31oXP9Ji",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-14T01:52:18.680Z",
+  "versionId": "bbd5cf53-b4cf-402f-88f6-3be8f03d283e"
+}

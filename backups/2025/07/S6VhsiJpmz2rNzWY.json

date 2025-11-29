@@ -1,0 +1,382 @@
+{
+  "active": false,
+  "connections": {
+    "Todos os dias às 09:30": {
+      "main": [
+        [
+          {
+            "node": "Busca Clientes para Follow-up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca Clientes para Follow-up": {
+      "main": [
+        [
+          {
+            "node": "Loop Clientes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Clientes": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Switch por Intervalo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch por Intervalo": {
+      "main": [
+        [
+          {
+            "node": "Mensagem 30 Dias",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mensagem 45 Dias",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mensagem 60 Dias",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mensagem 90 Dias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem 30 Dias": {
+      "main": [
+        [
+          {
+            "node": "Envia Follow-up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem 45 Dias": {
+      "main": [
+        [
+          {
+            "node": "Envia Follow-up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem 60 Dias": {
+      "main": [
+        [
+          {
+            "node": "Envia Follow-up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem 90 Dias": {
+      "main": [
+        [
+          {
+            "node": "Envia Follow-up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-01T01:48:35.297Z",
+  "id": "S6VhsiJpmz2rNzWY",
+  "isArchived": false,
+  "meta": null,
+  "name": "Follow-up Pump 30-45-60-90",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            },
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "id": "a7ed8a38-d944-43c0-98b2-b422d1e119da",
+      "name": "Todos os dias às 09:30",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1000,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "dados_cliente"
+      },
+      "id": "442fbcb1-30cc-48bf-8a03-6cfeea1252c0",
+      "name": "Busca Clientes para Follow-up",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        140
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase account teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "dbcbc045-0e15-440a-8aca-85c33e4f6290",
+      "name": "Loop Clientes",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -500,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.dias_desde_compra }}",
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals",
+                      "rightValue": 30
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.dias_desde_compra }}",
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals",
+                      "rightValue": 45
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.dias_desde_compra }}",
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals",
+                      "rightValue": 60
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.dias_desde_compra }}",
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals",
+                      "rightValue": 90
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "af8d7077-a050-466a-be18-8ac390c80cc9",
+      "name": "Switch por Intervalo",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -260,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "name": "mensagem",
+              "value": "Olá {{ $json.nome_cliente }}! E aí, tudo certo? Faz 30 dias desde sua última compra e seu estoque de suplementos já deve estar no fim. 📉 Que tal garantir a reposição pra não perder o ritmo? Me diga um 'sim' e eu já preparo seu pedido! 💪",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bf5671f1-1919-4c5e-9f72-0889630015aa",
+      "name": "Mensagem 30 Dias",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        -100
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "name": "mensagem",
+              "value": "Fala, {{ $json.nome_cliente }}! Passando pra saber como estão os treinos! Já faz um tempinho que você não repõe seus suplementos. Preparamos um cupom de 10% pra te dar aquela força: *VOLTA10*. Bora aproveitar? 🔥",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "73039cfa-ce1c-49ed-9587-452802a7429e",
+      "name": "Mensagem 45 Dias",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "name": "mensagem",
+              "value": "Oi, {{ $json.nome_cliente }}, sentimos sua falta por aqui! 😥 Seus resultados não podem esperar! Temos novidades e um cupom especial de 15% pra você: *SAUDADE15*. Vamos voltar com tudo?",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "121989cd-0cf3-48ed-ac2b-81500136b976",
+      "name": "Mensagem 60 Dias",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "name": "mensagem",
+              "value": "{{ $json.nome_cliente }}, essa é sua última chamada para o sucesso! 💪 Um cupom de 20%, o maior que já demos, está te esperando: *ULTIMACHANCE20*. É agora ou nunca para turbinar seus treinos. Responda 'QUERO' para ativar!",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f0625379-3111-4519-8814-1202539e4463",
+      "name": "Mensagem 90 Dias",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "suplementos",
+        "remoteJid": "={{ $json.telefone_cliente }}",
+        "messageText": "={{ $json.mensagem }}",
+        "options_message": {}
+      },
+      "id": "edffcd56-e276-47c6-93ae-dbc0e2adf571",
+      "name": "Envia Follow-up",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        240,
+        140
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-07-01T01:48:35.297Z",
+      "updatedAt": "2025-07-01T01:48:35.297Z",
+      "role": "workflow:owner",
+      "workflowId": "S6VhsiJpmz2rNzWY",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-01T02:50:40.432Z",
+  "versionId": "6740c00d-fb1d-425c-adca-885e2a8d26a3"
+}

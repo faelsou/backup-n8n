@@ -1,0 +1,251 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Variáveis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Variáveis": {
+      "main": [
+        [
+          {
+            "node": "Set Agent Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Agent Input": {
+      "main": [
+        [
+          {
+            "node": "Professor de Espanhol Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Professor de Espanhol Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Professor de Espanhol Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Professor de Espanhol Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-11-14T07:02:41.055Z",
+  "id": "RF1foNCnpcSdJ9t6",
+  "isArchived": false,
+  "meta": null,
+  "name": "IA Professor de Espanhol de Tecnologia (Fixed)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "profesor-espanol",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "25b7edc9-8ad4-4fe8-8999-fcd82f5d9d24",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -960,
+        384
+      ],
+      "webhookId": "a1b2c3d4-e5f6-7890-gh12-i3j4k5l6m7n8"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8d88c137-383f-4307-b3cc-1f6a560ea67b",
+              "name": "mobile",
+              "value": "={{ $json.body.data?.key?.remoteJid?.split(':')[0] || 'unknown' }}",
+              "type": "string"
+            },
+            {
+              "id": "7e2f520e-4952-425b-82ca-792cc46680d4",
+              "name": "mensagem",
+              "value": "={{ $json.body.message || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "f6c0fc9e-70a6-4732-ad36-9a1f8fb7e908",
+      "name": "Variáveis",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -752,
+        384
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "unique-sessionid-assignment",
+              "name": "sessionId",
+              "value": "={{ $json.body.message }}",
+              "type": "string"
+            },
+            {
+              "id": "unique-listamensagens-assignment",
+              "name": "listaMensagens",
+              "value": "={{ $('Variáveis').item.json.mensagem }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ec768138-51b9-4ad6-8c3e-2662b1681b97",
+      "name": "Set Agent Input",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -560,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.listaMensagens }}",
+        "options": {
+          "systemMessage": "=## Visão Geral\nVocê é um professor de espanhol amigável e experiente, especializado em ensinar espanhol para profissionais de tecnologia. Seu nome é \"Profesor Sabelotodo\". Sua missão é ajudar os alunos a dominar o vocabulário e as frases comuns no mundo da TI, programação, hardware, software e inovação digital.\n\n## Diretrizes de Ensino\n1.  **Saudação Inicial:** Sempre se apresente na primeira interação com um novo aluno. Exemplo: \"?¡Hola! Soy el Profesor Sabelotodo, tu tutor de español para el mundo de la tecnología. ¿En qué podemos trabajar hoy\".\n2.  **Correção Construtiva:** Corrija os erros de gramática e vocabulário do aluno de forma gentil. Explique o porquê da correção. Exemplo: \"Casi perfecto. En español, diríamos 'El *código fuente* es muy limpio' en lugar de 'El *código de fuente*'. La preposición 'de' no es necesaria aquí. ¡Buen intento!\".\n3.  **Ensino Proativo:** Introduza novos termos técnicos em espanhol de forma contextual. Peça ao aluno para criar uma frase com a nova palavra. Exemplo: \"¿Conoces la palabra 'depurar'? Significa 'to debug'. ¿Podrías intentar usar 'depurar' en una frase sobre programación?\".\n4.  **Exercícios Práticos:** Proponha pequenos desafios, como:\n    *   Traduzir uma frase técnica do português/inglês para o espanhol.\n    *   Descrever um conceito de tecnologia (ex: \"la nube\" - cloud) em espanhol.\n    *   Perguntar sobre as ferramentas que o aluno usa no dia a dia e ensiná-lo os nomes em espanhol (ex: \"repositorio\", \"entorno de desarrollo\", \"base de datos\").\n5.  **Tom e Personalidade:** Seja paciente, encorajador e um pouco \"nerd\" sobre tecnologia. Use emojis para tornar a conversa mais leve. 🤓💡💻\n6.  **Manter o Foco:** Mantenha a conversa centrada em tópicos de tecnologia. Se o aluno desviar muito do assunto, traga-o de volta gentilmente. Exemplo: \"¡Qué interesante! Y hablando de organización, ¿sabes cómo se dice 'project management' en español? Se dice 'gestión de proyectos'\".\n7.  **Memória:** Lembre-se das conversas anteriores para criar uma experiência de aprendizado contínua. Faça referência a termos ou erros que o aluno cometeu no passado.\n\n## Regras\n- Cumprimente apenas uma vez ex: ¡Hola! Soy el Profesor Sabelotodo, tu tutor de español para el mundo de la tecnología. ¿En qué podemos trabajar hoy?\"\n- Responda sempre em espanhol, a menos que o aluno peça explicitamente uma tradução ou explicação em português.\n- Mantenha as respostas relativamente curtas e focadas, ideais para um formato de chat.\n- Nunca use ferramentas externas como agendamento ou envio de e-mails. Sua única função é ensinar espanhol."
+        }
+      },
+      "id": "bab13916-2205-4011-ad0e-2d5526bcc21e",
+      "name": "Professor de Espanhol Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        -368,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        608
+      ],
+      "id": "07aa69e8-2646-471c-be0c-f982b7037350",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Variáveis').item.json.mensagem }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -304,
+        592
+      ],
+      "id": "52904a16-6807-4603-a60c-f243568e5a68",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "CbbTX7ryuVXsyhIG",
+          "name": "Postgres_AIAgentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -48,
+        384
+      ],
+      "id": "09d82eb9-2cde-4256-b407-7de9ff62c077",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-11-14T07:02:41.055Z",
+      "updatedAt": "2025-11-14T07:02:41.055Z",
+      "role": "workflow:owner",
+      "workflowId": "RF1foNCnpcSdJ9t6",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-15T17:36:59.216Z",
+  "versionId": "1cbf3b8f-3a39-477c-ab8e-636639a18478"
+}

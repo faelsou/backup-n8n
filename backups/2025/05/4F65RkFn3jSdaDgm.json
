@@ -1,0 +1,369 @@
+{
+  "active": false,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Verifica no Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "main": [
+        []
+      ]
+    },
+    "Verifica no Postgres": {
+      "main": [
+        [
+          {
+            "node": "IF Não Repetido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Não Repetido": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Registrar no Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-22T07:45:47.595Z",
+  "id": "4F65RkFn3jSdaDgm",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Mensagem Bíblica WhatsApp",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 7
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -440,
+        0
+      ],
+      "id": "50d07089-fa68-439c-9972-0315e6de755c",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Edit Fields').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "Gere uma mensagem de um versículo bíblico motivacional, curta e apropriada para ser enviada no WhatsApp. \n\n- O versículo deve ser o **\"versículo do dia\" do aplicativo YouVersion** (ou, se não tiver acesso à API, busque o versículo do dia de hoje do YouVersion em fontes abertas).\n- Nunca repita o mesmo versículo em mensagens subsequentes.\n- Sempre cite o livro e o versículo de onde foi retirado.\n- A mensagem deve ser humana, acolhedora e inspiradora.\n\nSe não encontrar o versículo do dia, busque um versículo motivacional relevante para o momento.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        220,
+        0
+      ],
+      "id": "8d97a568-f603-49bc-b1b2-c4f929cf1240",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        180,
+        160
+      ],
+      "id": "efdc932b-dfa2-451f-b48c-41984f5a3058",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "aiagenteautomate@gmail.com",
+        "remoteJid": "={{ $('Split Out').item.json.phone }}",
+        "messageText": "={{ $json.output }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        0
+      ],
+      "id": "709ca5cc-f11a-4e16-84cb-9a4be84a65be",
+      "name": "Evolution API",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0d9049a7-8d47-4563-b682-b3492f2d67ae",
+              "name": "chatInput",
+              "value": "Gere uma mensagem de um versículo bíblico. A mensagem deve ser curta, motivacional e apropriada para enviar via WhatsApp. Cite o livro e versiculo.  Seja humano.",
+              "type": "string"
+            },
+            {
+              "id": "c247b9d9-0759-4b36-ace3-5081b02d4f1a",
+              "name": "phone",
+              "value": "=[\n  \"+5511952313944\"\n]",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -180,
+        0
+      ],
+      "id": "d0069606-747a-4e7a-9bff-3aa1f46c162f",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "phone",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        20,
+        0
+      ],
+      "id": "b077502d-4e7c-4808-8ed4-a86aea5c933b",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        40,
+        -200
+      ],
+      "id": "98cada1b-4098-47ad-b137-13447bc5e2da",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "uZ2YXOutUwoulr1r",
+          "name": "Postgres-Supabaser-versiculo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT 1 FROM versiculos_enviados WHERE referencia_versiculo = {{$json[\"referencia\"]}} AND numero_destinatario = '+5511999999999' AND data_envio = CURRENT_DATE",
+        "additionalFields": {}
+      },
+      "name": "Verifica no Postgres",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        560,
+        0
+      ],
+      "id": "57e43359-4f05-4356-9b99-910f4fb36fda",
+      "credentials": {
+        "postgres": {
+          "id": "uZ2YXOutUwoulr1r",
+          "name": "Postgres-Supabaser-versiculo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [],
+          "number": [],
+          "string": [
+            {
+              "value1": "={{ $items(\"Verifica no Postgres\")[0].json[\"exists\"] || $items(\"Verifica no Postgres\")[0].json[\"1\"] }}",
+              "operation": "isEmpty"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "IF Não Repetido",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        760,
+        0
+      ],
+      "id": "41d7c75d-a650-4d03-a646-07baf1c4e34f"
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://your-evolution-api-instance.com/messages/send-text",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\n  \"instanceId\": \"ID_DA_SUA_INSTANCIA\",\n  \"to\": \"+5511999999999\",\n  \"type\": \"text\",\n  \"message\": \"{{$json[\"mensagem\"]}}\"\n}"
+      },
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        960,
+        -60
+      ],
+      "id": "cb1dbc43-788d-41fb-836f-ad16f615c608"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO versiculos_enviados (numero_destinatario, referencia_versiculo, mensagem) VALUES ('+5511999999999', {{$json[\"referencia\"]}}, {{$json[\"mensagem\"]}})",
+        "additionalFields": {}
+      },
+      "name": "Registrar no Postgres",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        -60
+      ],
+      "id": "35cf0eca-4766-4570-9c0e-5783af90ba4c"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-05-22T07:45:47.595Z",
+      "updatedAt": "2025-05-22T07:45:47.595Z",
+      "role": "workflow:owner",
+      "workflowId": "4F65RkFn3jSdaDgm",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [
+    {
+      "createdAt": "2025-05-18T07:37:11.854Z",
+      "updatedAt": "2025-05-18T07:37:11.854Z",
+      "id": "5YHy6kb35V3opGK2",
+      "name": "aiagentautomate"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-05-25T07:51:28.910Z",
+  "versionId": "d0132de8-0df7-4f25-8dd9-1a1fe4e2320c"
+}

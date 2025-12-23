@@ -1,0 +1,385 @@
+{
+  "active": true,
+  "connections": {
+    "Middleware Auth JWT": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sessão Ativa?": {
+      "main": [
+        [
+          {
+            "node": "Merge Auth Cliente",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Response Auth Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Criar Cliente": {
+      "main": [
+        [
+          {
+            "node": "Validar Input Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Input Cliente": {
+      "main": [
+        [
+          {
+            "node": "Input Cliente Válido?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Cliente Válido?": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Response Validation Cliente Error",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Response Auth Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Auth Cliente": {
+      "main": [
+        [
+          {
+            "node": "Inserir Cliente Auth",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query1": {
+      "main": [
+        [
+          {
+            "node": "Sessão Ativa?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inserir Cliente Auth": {
+      "main": [
+        [
+          {
+            "node": "Response Cliente Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Middleware Auth JWT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-22T14:02:10.759Z",
+  "id": "roCzi3PseAtbr8r2",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 77",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "function base64UrlDecode(str) {\n  const pad = '='.repeat((4 - (str.length % 4)) % 4);\n  const base64 = (str + pad).replace(/-/g, '+').replace(/_/g, '/');\n  return JSON.parse(Buffer.from(base64, 'base64').toString('utf8'));\n}\n\n// 1) tenta pegar headers de todos os lugares comuns no n8n\nconst headers =\n  $json.headers ||\n  $json.body?.headers ||\n  $json.request?.headers ||\n  $json.rawBody?.headers ||\n  {};\n\n// 2) procura Authorization ignorando maiúsculas/minúsculas\nconst authHeader =\n  headers.authorization ||\n  headers.Authorization ||\n  headers.AUTHORIZATION ||\n  '';\n\n// DEBUG (opcional): ajuda a ver se chegou algo\n// return [{ json: { debug_headers_keys: Object.keys(headers), authHeader } }];\n\nif (!authHeader || !authHeader.startsWith('Bearer ')) {\n  return [{ json: { autenticado: false, erro: 'NO_TOKEN', authHeaderRecebido: authHeader || null } }];\n}\n\nconst token = authHeader.slice(7).trim();\nconst parts = token.split('.');\n\nif (parts.length !== 3) {\n  return [{ json: { autenticado: false, erro: 'INVALID_TOKEN_FORMAT' } }];\n}\n\nconst payload = base64UrlDecode(parts[1]);\n\nif (!payload?.exp || payload.exp * 1000 < Date.now()) {\n  return [{ json: { autenticado: false, erro: 'TOKEN_EXPIRED' } }];\n}\n\nif (payload.iss !== 'credgestor-api') {\n  return [{ json: { autenticado: false, erro: 'INVALID_ISSUER', iss: payload.iss } }];\n}\n\nif (!payload.tenant_id) {\n  return [{ json: { autenticado: false, erro: 'MISSING_TENANT_ID' } }];\n}\n\nreturn [{\n  json: {\n    autenticado: true,\n    usuario: {\n      id: payload.sub,\n      email: payload.email,\n      tenant_id: payload.tenant_id,\n      role: payload.role\n    }\n  }\n}];\nreturn [{ json: { headers: $json.headers, keys: Object.keys($json.headers || {}) } }];\n"
+      },
+      "id": "336ae9f0-373b-4d18-86d2-433ae76b4795",
+      "name": "Middleware Auth JWT",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        -192
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $items().length }}",
+              "operation": "larger"
+            }
+          ]
+        }
+      },
+      "id": "d9bdd2b2-a067-4ce3-bb06-166aac8064e7",
+      "name": "Sessão Ativa?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        512,
+        -192
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Middleware Auth JWT').item.json }}",
+        "options": {}
+      },
+      "id": "d8cf6e7e-7667-428f-8ec0-d4edee0ee9e0",
+      "name": "Response Auth Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        400,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "clientes",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "428e56b2-f2f8-4f3d-80c4-bace7631c121",
+      "name": "Webhook Criar Cliente",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -928,
+        -128
+      ],
+      "webhookId": "criar-cliente"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body ?? {};\nconst errors = [];\n\nconst nome = body.nome_completo ?? body.name ?? body.nome;\nif (!nome || typeof nome !== 'string' || nome.trim().length < 3) {\n  errors.push('nome_completo (ou name) é obrigatório e deve ter no mínimo 3 caracteres');\n}\n\n// CPF (se você realmente precisar, mantenha obrigatório)\nconst cpf = body.cpf;\nif (cpf) {\n  const cpfLimpo = String(cpf).replace(/\\D/g, '');\n  if (cpfLimpo.length !== 11) errors.push('cpf deve conter 11 dígitos');\n}\n// Se for obrigatório, troque por:\n// if (!cpf) errors.push('cpf é obrigatório');\n\nreturn [{\n  valido: errors.length === 0,\n  erro: errors.length ? 'Validação falhou' : null,\n  detalhes: errors,\n  input: body,\n}];\n"
+      },
+      "id": "357756ba-9d85-4e20-87d9-1d888815b6af",
+      "name": "Validar Input Cliente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -736,
+        -128
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.valido }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "b5c87f0e-0c1f-42af-841d-c0a9dfbf5117",
+      "name": "Input Cliente Válido?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -544,
+        -128
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "fcc3fe6c-3e2b-4972-9d61-dc3110937f40",
+      "name": "Response Validation Cliente Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "options": {}
+      },
+      "id": "8a43426d-eef8-480b-a914-252ba0e4c166",
+      "name": "Merge Auth Cliente",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        784,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "64c001dc-7c42-4b17-9064-6d23d12b0051",
+      "name": "Response Cliente Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1328,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select table_schema, table_name\nfrom information_schema.tables\nwhere table_type = 'BASE TABLE'\n  and table_schema not in ('pg_catalog','information_schema')\n  and (\n    table_name ilike '%session%' OR\n    table_name ilike '%token%' OR\n    table_name ilike '%refresh%' OR\n    table_name ilike '%jwt%'\n  )\norder by table_schema, table_name;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        288,
+        -192
+      ],
+      "id": "db831f7e-baa8-4df8-838a-580a439588a0",
+      "name": "Execute a SQL query1",
+      "credentials": {
+        "postgres": {
+          "id": "ISeq8ovLtFz7Vb1t",
+          "name": "Postgres CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "insert into public.clientes (\n  tenant_id,\n  nome_completo,\n  cpf,\n  whatsapp,\n  email,\n  cep,\n  endereco,\n  complemento,\n  bairro,\n  cidade,\n  estado,\n  data_nascimento\n)\nvalues (\n  $1::uuid,\n  $2::varchar,\n  $3::varchar,\n  $4::varchar,\n  $5::varchar,\n  $6::varchar,\n  $7::varchar,\n  $8::varchar,\n  $9::varchar,\n  $10::varchar,\n  $11::varchar,\n  $12::date\n)\nreturning *;\n",
+        "options": {
+          "queryReplacement": "=={{ $items(\"Middleware Auth JWT\")[0].json.usuario.tenant_id }}\n={{ $items(\"Webhook Criar Cliente\")[0].json.body.nome_completo }}\n={{ $items(\"Webhook Criar Cliente\")[0].json.body.cpf }}\n={{ $items(\"Webhook Criar Cliente\")[0].json.body.whatsapp || null }}\n={{ $items(\"Webhook Criar Cliente\")[0].json.body.email || null }}\n={{ $items(\"Webhook Criar Cliente\")[0].json.body.cep || null }}\n={{ $items(\"Webhook Criar Cliente\")[0].json.body.endereco || null }}\n={{ $items(\"Webhook Criar Cliente\")[0].json.body.complemento || null }}\n={{ $items(\"Webhook Criar Cliente\")[0].json.body.bairro || null }}\n={{ $items(\"Webhook Criar Cliente\")[0].json.body.cidade || null }}\n={{ $items(\"Webhook Criar Cliente\")[0].json.body.estado || null }}\n={{ $items(\"Webhook Criar Cliente\")[0].json.body.data_nascimento || null }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        992,
+        -96
+      ],
+      "id": "95f190db-a9fc-4a0a-92a0-fabeaa37aade",
+      "name": "Inserir Cliente Auth",
+      "credentials": {
+        "postgres": {
+          "id": "ISeq8ovLtFz7Vb1t",
+          "name": "Postgres CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega dados DIRETAMENTE do Webhook\nconst wh = $node[\"Webhook Criar Cliente\"].json;\n\n// Headers\nconst headers = wh.headers || {};\nconst auth =\n  headers.authorization ||\n  headers.Authorization ||\n  \"\";\n\n// Validação básica\nif (!auth.startsWith(\"Bearer \")) {\n  return [{\n    json: {\n      autenticado: false,\n      erro: \"NO_TOKEN\",\n      headers\n    }\n  }];\n}\n\n// Token JWT\nconst token = auth.replace(\"Bearer \", \"\").trim();\nconst parts = token.split(\".\");\n\n// JWT inválido\nif (parts.length !== 3) {\n  return [{\n    json: {\n      autenticado: false,\n      erro: \"INVALID_JWT_FORMAT\"\n    }\n  }];\n}\n\n// Decode payload (base64url)\nconst payloadB64 = parts[1]\n  .replace(/-/g, \"+\")\n  .replace(/_/g, \"/\");\n\nconst padded =\n  payloadB64 + \"=\".repeat((4 - payloadB64.length % 4) % 4);\n\nlet payload;\ntry {\n  payload = JSON.parse(\n    Buffer.from(padded, \"base64\").toString(\"utf8\")\n  );\n} catch (e) {\n  return [{\n    json: {\n      autenticado: false,\n      erro: \"INVALID_JWT_PAYLOAD\"\n    }\n  }];\n}\n\n// Tenant\nconst tenant_id =\n  payload.tenant_id ||\n  payload.tenantId ||\n  payload.tenant ||\n  null;\n\nif (!tenant_id) {\n  return [{\n    json: {\n      autenticado: false,\n      erro: \"TENANT_ID_NOT_FOUND\",\n      payload\n    }\n  }];\n}\n\n// SUCESSO\nreturn [{\n  json: {\n    autenticado: true,\n    usuario: {\n      id: payload.sub || null,\n      email: payload.email || null,\n      tenant_id,\n      role: payload.role || null\n    },\n    body: wh.body,\n    headers,\n    token,\n    payload\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -336,
+        -224
+      ],
+      "id": "1154e4e7-c98b-4cea-a992-d75e5b8d29e4",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7f74fa19-a1e0-4f9a-aedb-2347f9e1c088",
+              "name": "tenant_debug",
+              "value": "={{ $json.usuario?.tenant_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        -192
+      ],
+      "id": "0b217b1d-dcfe-40b0-ab9e-5f6ff1214c59",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-12-22T14:02:10.759Z",
+      "updatedAt": "2025-12-22T14:02:10.759Z",
+      "role": "workflow:owner",
+      "workflowId": "roCzi3PseAtbr8r2",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-12-22T14:23:11.049Z",
+  "versionId": "005e0283-55bf-4579-a199-9f8b4d7d7f8d"
+}

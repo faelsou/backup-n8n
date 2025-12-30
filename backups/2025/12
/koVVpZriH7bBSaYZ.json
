@@ -1,0 +1,288 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook Criar Cliente": {
+      "main": [
+        [
+          {
+            "node": "Middleware Auth Simples",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Middleware Auth Simples": {
+      "main": [
+        [
+          {
+            "node": "Autenticado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Autenticado?": {
+      "main": [
+        [
+          {
+            "node": "Validar Input Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Response Auth Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Input Cliente": {
+      "main": [
+        [
+          {
+            "node": "Input Válido?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Válido?": {
+      "main": [
+        [
+          {
+            "node": "Preparar Dados",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Response Validation Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Dados": {
+      "main": [
+        [
+          {
+            "node": "Inserir Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inserir Cliente": {
+      "main": [
+        [
+          {
+            "node": "Response Cliente Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-29T19:42:31.881Z",
+  "id": "koVVpZriH7bBSaYZ",
+  "isArchived": false,
+  "meta": null,
+  "name": "Backend-credGestor-COMPLETO",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "clientes",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "38563955-7249-424a-8482-b21647d36ed3",
+      "name": "Webhook Criar Cliente",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1008,
+        208
+      ],
+      "webhookId": "criar-cliente"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Validar JWT SEM crypto - apenas verificar estrutura\nconst headers = $json.headers || {};\nconst auth = headers.authorization || headers.Authorization || '';\n\nif (!auth.startsWith('Bearer ')) {\n  return [{\n    json: {\n      autenticado: false,\n      erro: 'TOKEN_NAO_FORNECIDO'\n    }\n  }];\n}\n\nconst token = auth.slice(7).trim();\nconst parts = token.split('.');\n\nif (parts.length !== 3) {\n  return [{\n    json: {\n      autenticado: false,\n      erro: 'TOKEN_INVALIDO'\n    }\n  }];\n}\n\n// Decodificar payload (sem validar assinatura aqui)\ntry {\n  const payloadB64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');\n  const padded = payloadB64 + '='.repeat((4 - payloadB64.length % 4) % 4);\n  const payload = JSON.parse(Buffer.from(padded, 'base64').toString('utf8'));\n  \n  return [{\n    json: {\n      autenticado: true,\n      usuario: {\n        id: payload.sub,\n        email: payload.email,\n        tenant_id: payload.tenant_id,\n        role: payload.role\n      },\n      token_completo: token\n    }\n  }];\n} catch (e) {\n  return [{\n    json: {\n      autenticado: false,\n      erro: 'PAYLOAD_INVALIDO'\n    }\n  }];\n}\n"
+      },
+      "id": "555729aa-caa3-41ca-a1d8-0e98ed5747c2",
+      "name": "Middleware Auth Simples",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -800,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.autenticado }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "7b9cf20a-3ca3-49d4-b7ea-a99f4960ac57",
+      "name": "Autenticado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {erro: 'NAO_AUTORIZADO', mensagem: 'Token inválido ou não fornecido'} }}",
+        "options": {}
+      },
+      "id": "adb72a10-fb3c-4ad0-8fc6-5a8305e825b4",
+      "name": "Response Auth Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $items('Webhook Criar Cliente')[0].json.body || {};\nconst errors = [];\n\nif (!body.nome_completo || body.nome_completo.trim().length < 3) {\n  errors.push('nome_completo é obrigatório');\n}\n\nif (body.cpf) {\n  const cpfLimpo = String(body.cpf).replace(/\\D/g, '');\n  if (cpfLimpo.length !== 11) {\n    errors.push('CPF deve ter 11 dígitos');\n  }\n}\n\nreturn [{\n  json: {\n    valido: errors.length === 0,\n    erro: errors.length ? 'Validação falhou' : null,\n    detalhes: errors,\n    dados: body\n  }\n}];\n"
+      },
+      "id": "d81909bd-11e4-4e26-8a64-ebbe70b778e3",
+      "name": "Validar Input Cliente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.valido }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "dbd30ff6-3b3d-42e5-b157-2f3fc2c8c186",
+      "name": "Input Válido?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "4dc8d960-8708-4dcc-8b64-01cfd91a3500",
+      "name": "Response Validation Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $items('Validar Input Cliente')[0].json.dados;\nconst usuario = $items('Middleware Auth Simples')[0].json.usuario;\n\nreturn [{\n  json: {\n    tenant_id: usuario.tenant_id,\n    nome_completo: body.nome_completo,\n    cpf: String(body.cpf || '').replace(/\\D/g, ''),\n    whatsapp: body.whatsapp || null,\n    email: body.email || null,\n    cep: body.cep || null,\n    endereco: body.endereco || null,\n    complemento: body.complemento || null,\n    bairro: body.bairro || null,\n    cidade: body.cidade || null,\n    estado: body.estado || null,\n    data_nascimento: body.data_nascimento || null\n  }\n}];\n"
+      },
+      "id": "707c8173-0e2c-4def-8989-2a9cd892819a",
+      "name": "Preparar Dados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO public.clientes (\n  id, tenant_id, nome_completo, cpf, whatsapp, email,\n  cep, endereco, complemento, bairro, cidade, estado, data_nascimento\n)\nVALUES (\n  gen_random_uuid(), $1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12\n)\nON CONFLICT (tenant_id, cpf)\nDO UPDATE SET\n  nome_completo = EXCLUDED.nome_completo,\n  whatsapp = EXCLUDED.whatsapp,\n  email = EXCLUDED.email,\n  updated_at = NOW()\nRETURNING *;",
+        "options": {
+          "queryReplacement": "={{ $json.tenant_id }}\n={{ $json.nome_completo }}\n={{ $json.cpf }}\n={{ $json.whatsapp }}\n={{ $json.email }}\n={{ $json.cep }}\n={{ $json.endereco }}\n={{ $json.complemento }}\n={{ $json.bairro }}\n={{ $json.cidade }}\n={{ $json.estado }}\n={{ $json.data_nascimento }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        208,
+        0
+      ],
+      "id": "49277b08-b69b-4aca-9cfd-2a8485a10a59",
+      "name": "Inserir Cliente",
+      "credentials": {
+        "postgres": {
+          "id": "ISeq8ovLtFz7Vb1t",
+          "name": "Postgres CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {sucesso: true, cliente: $json, timestamp: new Date().toISOString()} }}",
+        "options": {}
+      },
+      "id": "71fb00b3-4ba6-4639-b35c-2589746cc139",
+      "name": "Response Cliente Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        400,
+        0
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-12-29T19:42:31.881Z",
+      "updatedAt": "2025-12-29T19:42:31.881Z",
+      "role": "workflow:owner",
+      "workflowId": "koVVpZriH7bBSaYZ",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-12-30T00:48:35.869Z",
+  "versionId": "d90ee523-bc52-48df-a16d-95b315bbedec"
+}

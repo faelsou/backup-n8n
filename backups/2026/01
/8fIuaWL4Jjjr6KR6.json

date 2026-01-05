@@ -1,0 +1,515 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook Criar Empréstimo": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular Parcelas": {
+      "main": [
+        [
+          {
+            "node": "Inserir Empréstimo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inserir Empréstimo": {
+      "main": [
+        [
+          {
+            "node": "Preparar Parcelas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Parcelas": {
+      "main": [
+        [
+          {
+            "node": "Inserir Parcelas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inserir Parcelas": {
+      "main": [
+        [
+          {
+            "node": "Preparar Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Resposta": {
+      "main": [
+        [
+          {
+            "node": "Response Sucesso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Válido?2": {
+      "main": [
+        [
+          {
+            "node": "Calcular Parcelas",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Response Validation Error2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Input Válido?2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-05T02:34:52.748Z",
+  "id": "8fIuaWL4Jjjr6KR6",
+  "isArchived": false,
+  "meta": null,
+  "name": "Workflow Empréstimos - CredGestor",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "emprestimos",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "20ca2e82-ff8a-4e88-8673-584d9168c1f3",
+      "name": "Webhook Criar Empréstimo",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        336,
+        192
+      ],
+      "webhookId": "emprestimos-criar"
+    },
+    {
+      "parameters": {
+        "jsCode": "const dados = $json.dados;\nconst valor = dados.valor;\nconst juros = dados.juros;\nconst parcelas = dados.parcelas;\nconst dataPrimeira = new Date(dados.data_primeira_parcela);\n\n// Calcular valor com juros\nconst valorComJuros = valor * (1 + (juros / 100));\n\n// Calcular valor de cada parcela\nconst valorParcela = valorComJuros / parcelas;\n\n// Gerar array de parcelas\nconst parcelasArray = [];\nfor (let i = 1; i <= parcelas; i++) {\n  const dataVencimento = new Date(dataPrimeira);\n  dataVencimento.setMonth(dataVencimento.getMonth() + (i - 1));\n  \n  // Calcular juros acumulado até esta parcela\n  const jurosAcumulado = (valorParcela * i) - (valor / parcelas * i);\n  \n  parcelasArray.push({\n    numero: i,\n    valor: parseFloat(valorParcela.toFixed(2)),\n    data_vencimento: dataVencimento.toISOString().split('T')[0],\n    juros: parseFloat((valorParcela - (valor / parcelas)).toFixed(2)),\n    amortizacao: parseFloat((valor / parcelas).toFixed(2)),\n    status: 'pendente'\n  });\n}\n\nreturn [{\n  json: {\n    dados: dados,\n    calculos: {\n      valor_original: valor,\n      taxa_juros: juros,\n      numero_parcelas: parcelas,\n      valor_com_juros: parseFloat(valorComJuros.toFixed(2)),\n      valor_parcela: parseFloat(valorParcela.toFixed(2)),\n      valor_total_juros: parseFloat((valorComJuros - valor).toFixed(2))\n    },\n    parcelas: parcelasArray\n  }\n}];"
+      },
+      "id": "3d470f43-163d-47ca-9d92-07ecdb256981",
+      "name": "Calcular Parcelas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1136,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "emprestimos",
+          "mode": "list",
+          "cachedResultName": "emprestimos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "cliente_id": "={{ $json.dados.cliente_id }}",
+            "valor": "={{ $json.calculos.valor_original }}",
+            "juros": "={{ $json.calculos.taxa_juros }}",
+            "modelo_emprestimo": "={{ $json.dados.modelo_emprestimo }}",
+            "parcelas": "={{ $json.calculos.numero_parcelas }}",
+            "valor_total": "={{ $json.calculos.valor_com_juros }}",
+            "valor_parcela": "={{ $json.calculos.valor_parcela }}",
+            "hash_nota": "={{ $json.dados.hash_nota }}",
+            "indicacao": "={{ $json.dados.indicacao }}",
+            "data_emissao": "={{ $json.dados.data_emissao }}",
+            "data_vencimento": "={{ $json.dados.data_vencimento }}",
+            "observacoes": "={{ $json.dados.observacoes }}",
+            "status": "Em Aberto",
+            "criado_em": "={{ new Date().toISOString() }}"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1328,
+        96
+      ],
+      "id": "06991def-789f-4450-8eff-6564eaaae2fd",
+      "name": "Inserir Empréstimo",
+      "credentials": {
+        "postgres": {
+          "id": "ISeq8ovLtFz7Vb1t",
+          "name": "Postgres CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const emprestimo = $items('Inserir Empréstimo')[0].json;\nconst parcelas = $items('Calcular Parcelas')[0].json.parcelas;\nconst emprestimoId = emprestimo.id;\n\n// Preparar parcelas para inserção\nconst parcelasParaInserir = parcelas.map(parcela => ({\n  emprestimo_id: emprestimoId,\n  numero: parcela.numero,\n  valor: parcela.valor,\n  data_vencimento: parcela.data_vencimento,\n  juros: parcela.juros,\n  amortizacao: parcela.amortizacao,\n  status: parcela.status,\n  criado_em: new Date().toISOString()\n}));\n\nreturn parcelasParaInserir.map(p => ({ json: p }));"
+      },
+      "id": "5eabea79-d3fe-4b3b-9a34-a7e1c85221a4",
+      "name": "Preparar Parcelas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "parcelas",
+          "mode": "list",
+          "cachedResultName": "parcelas"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "emprestimo_id": "={{ $json.emprestimo_id }}",
+            "numero": "={{ $json.numero }}",
+            "valor": "={{ $json.valor }}",
+            "data_vencimento": "={{ $json.data_vencimento }}",
+            "juros": "={{ $json.juros }}",
+            "amortizacao": "={{ $json.amortizacao }}",
+            "status": "={{ $json.status }}",
+            "criado_em": "={{ $json.criado_em }}"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1712,
+        96
+      ],
+      "id": "249cda0e-ebb7-445e-8d50-175a3131d05f",
+      "name": "Inserir Parcelas",
+      "credentials": {
+        "postgres": {
+          "id": "ISeq8ovLtFz7Vb1t",
+          "name": "Postgres CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const emprestimo = $items('Inserir Empréstimo')[0].json;\nconst calculos = $items('Calcular Parcelas')[0].json.calculos;\nconst parcelas = $items('Calcular Parcelas')[0].json.parcelas;\n\nreturn [{\n  json: {\n    sucesso: true,\n    mensagem: 'Empréstimo criado com sucesso',\n    emprestimo: {\n      id: emprestimo.id,\n      cliente_id: emprestimo.cliente_id,\n      valor_original: calculos.valor_original,\n      taxa_juros: calculos.taxa_juros,\n      numero_parcelas: calculos.numero_parcelas,\n      valor_com_juros: calculos.valor_com_juros,\n      valor_parcela: calculos.valor_parcela,\n      valor_total_juros: calculos.valor_total_juros,\n      modelo_emprestimo: emprestimo.modelo_emprestimo,\n      hash_nota: emprestimo.hash_nota,\n      indicacao: emprestimo.indicacao,\n      data_emissao: emprestimo.data_emissao,\n      data_vencimento: emprestimo.data_vencimento,\n      status: emprestimo.status,\n      criado_em: emprestimo.criado_em\n    },\n    parcelas: parcelas\n  }\n}];"
+      },
+      "id": "822546dc-c809-41fa-865b-171a70a57551",
+      "name": "Preparar Resposta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1904,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 201
+        }
+      },
+      "id": "38213051-b95b-49e9-8b5e-d6b09ca908a7",
+      "name": "Response Sucesso",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        2096,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.valido }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "936d6362-451f-4e3c-a630-217c620b33ef",
+      "name": "Input Válido?2",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        944,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { sucesso: false, erro: $json.erro, detalhes: $json.detalhes } }}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "id": "c3f3be44-e112-485d-b75d-bb3ee2df968b",
+      "name": "Response Validation Error2",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c68e2675-b467-46c6-bc1e-a58b50132473",
+              "name": "id",
+              "value": "={{ $json.body.client.id }}",
+              "type": "string"
+            },
+            {
+              "id": "1ea9ea31-ea0a-404c-a48f-9ccc2c6ccbf3",
+              "name": "clientId",
+              "value": "={{ $json.body.loan.clientId }}",
+              "type": "string"
+            },
+            {
+              "id": "a562b423-2286-4352-8d51-03ad2d97a40f",
+              "name": "name",
+              "value": "={{ $json.body.client.name }}",
+              "type": "string"
+            },
+            {
+              "id": "88d7efa7-f028-431d-b79e-b0e72e082096",
+              "name": "cpf",
+              "value": "={{ $json.body.client.cpf }}",
+              "type": "string"
+            },
+            {
+              "id": "2d397024-fc0d-487a-953f-56dcdd6abd9a",
+              "name": "telefone",
+              "value": "={{ $json.body.client.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "02a40ae4-0899-4fa8-877e-aec311641e8d",
+              "name": "email",
+              "value": "={{ $json.body.client.email }}",
+              "type": "string"
+            },
+            {
+              "id": "dea299b8-f622-4143-9632-2a1013a2e3d2",
+              "name": "cep",
+              "value": "={{ $json.body.client.cep }}",
+              "type": "string"
+            },
+            {
+              "id": "0a00c6b2-0d4c-4178-825a-3fd547f47c90",
+              "name": "rua",
+              "value": "={{ $json.body.client.street }}",
+              "type": "string"
+            },
+            {
+              "id": "c2aceeb9-1050-4f21-85a6-60a572ea875c",
+              "name": "complemento",
+              "value": "={{ $json.body.client.complement }}",
+              "type": "string"
+            },
+            {
+              "id": "1b3b8e24-c06b-42ee-8dca-83d1338e7d00",
+              "name": "bairro",
+              "value": "={{ $json.body.client.neighborhood }}",
+              "type": "string"
+            },
+            {
+              "id": "f7868e7a-9676-4f8b-be1b-3ebedbcc788f",
+              "name": "cidade",
+              "value": "={{ $json.body.client.city }}",
+              "type": "string"
+            },
+            {
+              "id": "f4fbba6e-3181-4f80-b247-2fde5133b34a",
+              "name": "estado",
+              "value": "={{ $json.body.client.state }}",
+              "type": "string"
+            },
+            {
+              "id": "b3b8a247-fb78-40bb-9f8f-23f8c0e6aefa",
+              "name": "status",
+              "value": "={{ $json.body.client.status }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        656,
+        192
+      ],
+      "id": "667d2cb3-8788-41df-b0c6-714ade112901",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {
+    "Webhook Criar Empréstimo": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.aiagentautomate.com.br",
+            "user-agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0",
+            "content-length": "1031",
+            "accept": "application/json",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.8,en-US;q=0.5,en;q=0.3",
+            "content-type": "application/json",
+            "origin": "https://credgestor.app.br",
+            "priority": "u=0",
+            "referer": "https://credgestor.app.br/",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "te": "trailers",
+            "x-forwarded-for": "200.39.37.99",
+            "x-forwarded-host": "n8n.aiagentautomate.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "39017bc971e2",
+            "x-real-ip": "200.39.37.99"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "action": "create",
+            "confirmedAt": "2026-01-05T02:24:52.863Z",
+            "loan": {
+              "id": "qszyyb3m3",
+              "clientId": "692599d1-f94a-4ca2-b068-45c945293c38",
+              "amount": 1000,
+              "interestRate": 20,
+              "totalAmount": 1200,
+              "startDate": "2026-01-04",
+              "installmentsCount": 1,
+              "model": "PRICE",
+              "status": "ACTIVE",
+              "promissoryNote": {
+                "capital": 1000,
+                "interestRate": 20,
+                "issueDate": "2026-01-04",
+                "dueDate": "2026-01-04",
+                "indication": "Sem Garantia",
+                "numberHash": "ef015c7b982a72f9",
+                "observation": ""
+              }
+            },
+            "installments": [
+              {
+                "id": "inst_qszyyb3m3_1",
+                "loanId": "qszyyb3m3",
+                "clientId": "692599d1-f94a-4ca2-b068-45c945293c38",
+                "number": 1,
+                "dueDate": "2026-02-04",
+                "amount": 1200,
+                "interestAmount": 200,
+                "principalAmount": 1000,
+                "amountPaid": 0,
+                "status": "PENDING"
+              }
+            ],
+            "client": {
+              "id": "692599d1-f94a-4ca2-b068-45c945293c38",
+              "name": "Edson Santos",
+              "cpf": "842.984.092-84",
+              "phone": "(12)12121-2122",
+              "email": "edsantos@gmail.com",
+              "cep": "01001-010",
+              "street": "Rua Filipe de Oliveira",
+              "complement": "20",
+              "neighborhood": "Sé",
+              "city": "São Paulo",
+              "state": "SP",
+              "status": "active",
+              "birthDate": "2020-12-12T00:00:00.000Z",
+              "notes": ""
+            }
+          },
+          "webhookUrl": "https://n8n.aiagentautomate.com.br/webhook/emprestimos",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2026-01-05T02:34:52.748Z",
+      "updatedAt": "2026-01-05T02:34:52.748Z",
+      "role": "workflow:owner",
+      "workflowId": "8fIuaWL4Jjjr6KR6",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-05T02:34:52.748Z",
+  "versionId": "486efb04-9494-478e-a215-bbc5905a052d"
+}

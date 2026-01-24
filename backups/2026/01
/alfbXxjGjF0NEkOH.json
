@@ -1,0 +1,280 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook - Receber Tarefa": {
+      "main": [
+        [
+          {
+            "node": "Inicializar Agente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inicializar Agente": {
+      "main": [
+        [
+          {
+            "node": "Verificar Saude API",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Verificar Metricas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Saude API": {
+      "main": [
+        [
+          {
+            "node": "Agregar Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Metricas": {
+      "main": [
+        [
+          {
+            "node": "Agregar Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agregar Dados": {
+      "main": [
+        [
+          {
+            "node": "Preparar Prompt Claude",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Prompt Claude": {
+      "main": [
+        [
+          {
+            "node": "Analise com Claude",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analise com Claude": {
+      "main": [
+        [
+          {
+            "node": "Processar Analise",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Analise": {
+      "main": [
+        [
+          {
+            "node": "Responder ao Orquestrador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-23T06:51:07.298Z",
+  "id": "alfbXxjGjF0NEkOH",
+  "isArchived": false,
+  "meta": null,
+  "name": "CredGestor - Agente Especialista em Containers",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "agente-containers",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "00961f60-c5ac-4738-9619-416d35a226cd",
+      "name": "Webhook - Receber Tarefa",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        304,
+        384
+      ],
+      "webhookId": "agente-containers"
+    },
+    {
+      "parameters": {
+        "jsCode": "const payload = $input.item.json.body || $input.item.json;\n\nreturn [{\n  json: {\n    agent: {\n      name: 'Agente Especialista em Containers',\n      version: '2.0',\n      specialization: ['Docker Swarm', 'Containers', 'Docker Services', 'Logs', 'Recursos'],\n      role: 'Troubleshooting e resolucao de problemas em containers Docker'\n    },\n    sessionId: payload.sessionId,\n    timestamp: payload.timestamp,\n    issues: payload.issues || [],\n    context: payload.context || {},\n    mode: payload.mode || 'troubleshooting_and_resolution',\n    status: 'analyzing'\n  }\n}];"
+      },
+      "id": "7f343c3a-b2cc-422b-b04c-87aed91d5199",
+      "name": "Inicializar Agente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        528,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://credgestor.app.br/api/health",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "f6f2609e-195c-46ad-8c48-64d132d3f20a",
+      "name": "Verificar Saude API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        736,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://credgestor.app.br/api/metrics",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "e9ae7212-7cc9-4c76-a272-711c0fcd4b90",
+      "name": "Verificar Metricas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        736,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const agentData = $('Inicializar Agente').item.json;\nconst apiHealth = $('Verificar Saude API').item.json;\nconst metrics = $('Verificar Metricas').item.json;\n\nconst collectedData = {\n  api: {\n    status: apiHealth.statusCode,\n    response: apiHealth.body || {},\n    healthy: apiHealth.statusCode === 200\n  },\n  metrics: {\n    available: metrics.statusCode === 200,\n    data: metrics.body || ''\n  },\n  vps: {\n    host: '167.235.76.26',\n    user: 'root',\n    dockerSwarm: true\n  }\n};\n\nreturn [{\n  json: {\n    ...agentData,\n    collectedData: collectedData,\n    readyForAnalysis: true\n  }\n}];"
+      },
+      "id": "813f52c7-7900-4393-be7b-4cd68b27d1d7",
+      "name": "Agregar Dados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\n\nconst prompt = `Voce e o Agente Especialista em Containers Docker do CredGestor.\n\nCONTEXTO DA APLICACAO:\n- VPS: 167.235.76.26\n- Stack: Docker Swarm, Traefik, FastAPI, React\n- Servicos principais: credgestor_api, credgestor_site\n\nPROBLEMAS DETECTADOS:\n${JSON.stringify(data.issues, null, 2)}\n\nCONTEXTO TECNICO:\n${JSON.stringify({...data.context, collectedData: data.collectedData}, null, 2)}\n\nSUA TAREFA:\n1. Analisar e diagnosticar problemas\n2. Gerar plano de execucao com comandos Docker Swarm\n\nFORMATO DE RESPOSTA (JSON):\n{\n  \"troubleshooting\": {\n    \"diagnosis\": {\n      \"summary\": \"Resumo do problema\",\n      \"rootCause\": \"Causa raiz\",\n      \"severity\": \"critical|high|medium|low\"\n    },\n    \"actionPlan\": []\n  },\n  \"resolution\": {\n    \"executionPlan\": [],\n    \"requiresApproval\": true\n  }\n}`;\n\nreturn [{\n  json: {\n    ...data,\n    prompt: prompt,\n    model: 'claude-3-5-sonnet-20241022'\n  }\n}];"
+      },
+      "id": "292a6803-f6e7-43d1-9331-103418add97a",
+      "name": "Preparar Prompt Claude",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "x-api-key",
+              "value": "={{ $env.ANTHROPIC_API_KEY }}"
+            },
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "a4304c52-7737-4c35-ae19-66b058986a66",
+      "name": "Analise com Claude",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1408,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const agentData = $('Agregar Dados').item.json;\nconst llmResponse = $input.item.json;\n\nlet analysisText = '';\nlet responseBody = llmResponse.body || llmResponse;\nif (typeof responseBody === 'string') {\n  try {\n    responseBody = JSON.parse(responseBody);\n  } catch (e) {\n    responseBody = { content: [{ type: 'text', text: responseBody }] };\n  }\n}\n\nif (responseBody.content && Array.isArray(responseBody.content)) {\n  const textContent = responseBody.content.find(c => c.type === 'text');\n  analysisText = textContent ? textContent.text : JSON.stringify(responseBody.content);\n} else {\n  analysisText = JSON.stringify(responseBody);\n}\n\nlet troubleshooting = {};\nlet resolution = {};\n\ntry {\n  const jsonMatch = analysisText.match(/\\{[\\s\\S]*\\}/);\n  if (jsonMatch) {\n    const parsed = JSON.parse(jsonMatch[0]);\n    troubleshooting = parsed.troubleshooting || {};\n    resolution = parsed.resolution || {};\n  }\n} catch (e) {\n  troubleshooting = { diagnosis: { summary: analysisText.substring(0, 500) } };\n  resolution = { validation: { safeToExecute: false } };\n}\n\nreturn [{\n  json: {\n    agent: agentData.agent,\n    sessionId: agentData.sessionId,\n    timestamp: new Date().toISOString(),\n    issues: agentData.issues,\n    troubleshooting: troubleshooting,\n    resolution: resolution\n  }\n}];"
+      },
+      "id": "720b426b-f28a-46c2-b8e6-5ddb4b0b18b0",
+      "name": "Processar Analise",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1616,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "9521a5d4-5005-40d3-bc77-7803e5622c46",
+      "name": "Responder ao Orquestrador",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1840,
+        384
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2026-01-23T06:51:07.298Z",
+      "updatedAt": "2026-01-23T06:51:07.298Z",
+      "role": "workflow:owner",
+      "workflowId": "alfbXxjGjF0NEkOH",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-23T06:51:07.298Z",
+  "versionId": "482413c3-d084-4eca-aa50-2027c45529be"
+}

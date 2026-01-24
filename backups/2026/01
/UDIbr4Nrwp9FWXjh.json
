@@ -1,0 +1,256 @@
+{
+  "active": false,
+  "connections": {
+    "Chat Model Claude": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Orquestrador",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory Buffer": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent - Orquestrador",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent Troubleshooting",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Orquestrador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent Troubleshooting": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent - Orquestrador",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent Resolut": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent - Orquestrador",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent Resolut",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-23T07:42:31.940Z",
+  "id": "UDIbr4Nrwp9FWXjh",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 77",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Voce e o Agente Orquestrador do CredGestor - um sistema inteligente de diagnostico e resolucao automatizada.\n\nMISSAO:\nCoordenar sub-agentes especialistas para diagnosticar e resolver problemas tecnicos no sistema CredGestor.\n\nCONTEXTO DO SISTEMA:\n- VPS: 167.235.76.26 (Ubuntu 24.04, 16GB RAM, 8 cores)\n- Stack: Docker Swarm, Traefik, PostgreSQL, FastAPI, React\n- Servicos Docker: credgestor_api, credgestor_site, traefik\n- Banco: PostgreSQL 15 com schemas public e auth\n\nSUB-AGENTES DISPONIVEIS:\n\n1. TROUBLESHOOTING INFRA\n   - Diagnostica: CPU, memoria, disco, rede, recursos\n   - Quando usar: lentidao, timeout, recursos esgotados\n\n2. TROUBLESHOOTING CONTAINERS  \n   - Diagnostica: Docker Swarm, containers, servicos, logs\n   - Quando usar: servicos parados, crashes, problemas de deploy\n\n3. TROUBLESHOOTING DATABASE\n   - Diagnostica: queries lentas, locks, conexoes, indices\n   - Quando usar: banco lento, timeouts, deadlocks\n\n4. TROUBLESHOOTING DEV\n   - Diagnostica: erros de codigo, APIs, bugs, runtime\n   - Quando usar: erros 500, bugs, comportamento inesperado\n\nPROTOCOLO DE ATUACAO:\n\n1. COLETA DE INFORMACOES\n   - Entenda completamente o problema\n   - Faca perguntas especificas se necessario\n   - Identifique sintomas e contexto\n\n2. DIAGNOSTICO\n   - Acione os sub-agentes de troubleshooting apropriados\n   - Pode acionar multiplos agentes em paralelo\n   - Analise os resultados de forma integrada\n\n3. PLANEJAMENTO\n   - Com base nos diagnosticos, planeje as acoes\n   - Priorize por criticidade e impacto\n   - Sempre considere riscos e rollback\n\n4. COMUNICACAO\n   - Seja claro e objetivo\n   - Explique o diagnostico em termos simples\n   - Detalhe as acoes propostas\n   - Peca aprovacao para acoes criticas\n\nREGRAS IMPORTANTES:\n- Nunca execute comandos sem diagnostico previo\n- Sempre explique o que cada sub-agente encontrou\n- Coordene multiplos agentes quando necessario\n- Mantenha o usuario informado em cada etapa\n- Priorize seguranca sobre velocidade",
+        "options": {
+          "systemMessage": "Voce e um orquestrador inteligente que coordena sub-agentes especialistas."
+        }
+      },
+      "id": "36a40669-d69b-4621-a745-5079149242ec",
+      "name": "AI Agent - Orquestrador",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.5,
+      "position": [
+        944,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": "claude-3-5-sonnet-20241022",
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "id": "ad0f859c-096a-4c7d-88b3-0f4e9dabc4fb",
+      "name": "Chat Model Claude",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1,
+      "position": [
+        896,
+        288
+      ],
+      "credentials": {
+        "anthropicApi": {
+          "id": "QbeXtjJ3K8JigBxF",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.sessionId }}",
+        "contextWindowLength": 15
+      },
+      "id": "4f0e14e0-9645-4f7b-a55f-6fc3d0485449",
+      "name": "Memory Buffer",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.2,
+      "position": [
+        1040,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-20250514",
+          "cachedResultName": "Claude 4 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        944,
+        608
+      ],
+      "id": "76b8a91f-c83a-494d-9e1b-8842e2b96aca",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "QbeXtjJ3K8JigBxF",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        608,
+        0
+      ],
+      "id": "4aa99ac1-cfd4-40d9-843d-906b1f494c76",
+      "name": "When chat message received",
+      "webhookId": "15237698-77ad-40cc-a395-c8a09ef249bc"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        1008,
+        432
+      ],
+      "id": "c47a5363-5862-4854-ae6d-df00179f3c10",
+      "name": "Agent Troubleshooting"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        432
+      ],
+      "id": "c4ba8c03-68a1-4c87-8b36-a71ea293d036",
+      "name": "Agent Resolut"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-20250514",
+          "cachedResultName": "Claude 4 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        1312,
+        640
+      ],
+      "id": "053da685-f954-43f2-b3c6-1c38a8080952",
+      "name": "Anthropic Chat Model1",
+      "credentials": {
+        "anthropicApi": {
+          "id": "QbeXtjJ3K8JigBxF",
+          "name": "Anthropic account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2026-01-23T07:42:31.940Z",
+      "updatedAt": "2026-01-23T07:42:31.940Z",
+      "role": "workflow:owner",
+      "workflowId": "UDIbr4Nrwp9FWXjh",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-23T07:50:14.653Z",
+  "versionId": "3498075b-16d0-49d4-82cc-e40db82277f3"
+}

@@ -1,0 +1,291 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Preparar Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Request": {
+      "main": [
+        [
+          {
+            "node": "OpenAI API Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI API Call": {
+      "main": [
+        [
+          {
+            "node": "Processar Sucesso",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Processar Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Sucesso": {
+      "main": [
+        [
+          {
+            "node": "Merge Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Erro": {
+      "main": [
+        [
+          {
+            "node": "Merge Results",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Results": {
+      "main": [
+        [
+          {
+            "node": "Gravar no Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gravar no Postgres": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-30T05:58:14.068Z",
+  "id": "8ul8Acn4u7IM7w6E",
+  "isArchived": true,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "LLM Monitoring - Wrapper OpenAI",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "llm-call",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "8873c9a6-2bab-45bf-9375-2b8ea6999ed8",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -656,
+        112
+      ],
+      "webhookId": "llm-monitoring-webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ========================================\n// INÍCIO DO PROCESSAMENTO - Captura timestamp\n// ========================================\n\nconst input = $input.first().json;\n\n// Gera IDs de correlação\nconst traceId = input.trace_id || crypto.randomUUID();\nconst startTime = Date.now();\n\n// Extrai contexto do n8n (vindo do webhook ou hardcoded)\nconst context = {\n  trace_id: traceId,\n  start_time: startTime,\n  \n  // Contexto n8n\n  environment: input.environment || 'prod',\n  workflow_id: input.workflow_id || $workflow.id || 'unknown',\n  workflow_name: input.workflow_name || $workflow.name || 'unknown',\n  execution_id: input.execution_id || $execution?.id || crypto.randomUUID(),\n  node_name: input.node_name || 'LLM Wrapper',\n  tenant_id: input.tenant_id || null,\n  channel: input.channel || null,\n  user_id: input.user_id || null,\n  \n  // Parâmetros do modelo\n  provider: input.provider || 'openai',\n  model: input.model || 'gpt-4o-mini',\n  temperature: input.temperature ?? 0.7,\n  top_p: input.top_p ?? 1,\n  max_tokens: input.max_tokens || 4096,\n  \n  // Mensagens para a API\n  messages: input.messages || [],\n  tools: input.tools || null,\n  \n  // Para cálculo de custo\n  input_chars: JSON.stringify(input.messages || []).length\n};\n\nreturn { json: context };"
+      },
+      "id": "09b51cb4-f999-46fe-99cf-67948fd0bac5",
+      "name": "Preparar Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  \"model\": $json.model,\n  \"messages\": $json.messages,\n  \"temperature\": $json.temperature,\n  \"top_p\": $json.top_p,\n  \"max_tokens\": $json.max_tokens,\n  ...(($json.tools && $json.tools.length > 0) ? { \"tools\": $json.tools } : {})\n} }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          },
+          "timeout": 120000
+        }
+      },
+      "id": "3b7ebfda-8fa0-4271-9b58-c05a6d5e3c17",
+      "name": "OpenAI API Call",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -224,
+        112
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ========================================\n// PROCESSA RESPOSTA DE SUCESSO\n// ========================================\n\nconst context = $('Preparar Request').first().json;\nconst response = $input.first().json;\nconst endTime = Date.now();\n\n// Extrai dados de uso\nconst usage = response.body?.usage || {};\nconst choice = response.body?.choices?.[0] || {};\n\n// Tabela de preços (atualizar conforme necessário)\nconst PRICE_TABLE = {\n  'gpt-4o': { input: 0.0025, output: 0.01 },\n  'gpt-4o-mini': { input: 0.00015, output: 0.0006 },\n  'gpt-4-turbo': { input: 0.01, output: 0.03 },\n  'gpt-4': { input: 0.03, output: 0.06 },\n  'gpt-3.5-turbo': { input: 0.0005, output: 0.0015 },\n  'o1': { input: 0.015, output: 0.06 },\n  'o1-mini': { input: 0.003, output: 0.012 },\n  'o3-mini': { input: 0.0011, output: 0.0044 }\n};\n\nconst prices = PRICE_TABLE[context.model] || { input: 0.001, output: 0.002 };\nconst promptTokens = usage.prompt_tokens || 0;\nconst completionTokens = usage.completion_tokens || 0;\nconst totalTokens = usage.total_tokens || (promptTokens + completionTokens);\n\n// Calcula custo em USD (por 1K tokens)\nconst costUsd = ((promptTokens / 1000) * prices.input) + ((completionTokens / 1000) * prices.output);\n\nconst outputContent = choice.message?.content || '';\nconst outputChars = outputContent.length;\n\n// Monta evento de monitoramento\nconst llmEvent = {\n  // Contexto\n  environment: context.environment,\n  workflow_id: context.workflow_id,\n  workflow_name: context.workflow_name,\n  execution_id: context.execution_id,\n  node_name: context.node_name,\n  tenant_id: context.tenant_id,\n  channel: context.channel,\n  trace_id: context.trace_id,\n  \n  // LLM\n  provider: context.provider,\n  model: context.model,\n  temperature: context.temperature,\n  top_p: context.top_p,\n  max_tokens: context.max_tokens,\n  \n  // Tokens & Custo\n  prompt_tokens: promptTokens,\n  completion_tokens: completionTokens,\n  total_tokens: totalTokens,\n  cost_usd: Math.round(costUsd * 1000000) / 1000000, // 6 casas decimais\n  price_version: '2025-01',\n  \n  // Performance\n  latency_ms: endTime - context.start_time,\n  retries: 0,\n  status: 'success',\n  http_status: response.statusCode || 200,\n  error_type: null,\n  error_hash: null,\n  \n  // Qualidade\n  input_chars: context.input_chars,\n  output_chars: outputChars,\n  truncated: choice.finish_reason === 'length',\n  fallback_used: false,\n  guardrail_triggered: false,\n  tools_used: context.tools && context.tools.length > 0\n};\n\n// Resposta para o chamador\nconst apiResponse = {\n  success: true,\n  data: response.body,\n  monitoring: {\n    trace_id: context.trace_id,\n    latency_ms: llmEvent.latency_ms,\n    tokens: totalTokens,\n    cost_usd: llmEvent.cost_usd\n  }\n};\n\nreturn {\n  json: {\n    llm_event: llmEvent,\n    api_response: apiResponse,\n    original_response: response.body\n  }\n};"
+      },
+      "id": "13b6fcc3-ee20-412a-8991-f270c58d204f",
+      "name": "Processar Sucesso",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ========================================\n// PROCESSA ERRO\n// ========================================\n\nconst context = $('Preparar Request').first().json;\nconst errorData = $input.first().json;\nconst endTime = Date.now();\n\n// Tenta extrair informações do erro\nconst httpStatus = errorData.statusCode || errorData.error?.status || 500;\nconst errorMessage = errorData.message || errorData.error?.message || 'Unknown error';\n\n// Classifica tipo de erro\nlet errorType = 'unknown';\nif (httpStatus === 429) {\n  errorType = 'rate_limit';\n} else if (httpStatus === 401) {\n  errorType = 'authentication';\n} else if (httpStatus === 400) {\n  errorType = 'invalid_request';\n} else if (httpStatus >= 500) {\n  errorType = 'server_error';\n} else if (errorMessage.toLowerCase().includes('timeout')) {\n  errorType = 'timeout';\n}\n\n// Hash do erro para agrupamento (sem expor dados sensíveis)\nconst errorHash = Buffer.from(errorType + ':' + httpStatus).toString('base64').slice(0, 16);\n\n// Monta evento de monitoramento (erro)\nconst llmEvent = {\n  // Contexto\n  environment: context.environment,\n  workflow_id: context.workflow_id,\n  workflow_name: context.workflow_name,\n  execution_id: context.execution_id,\n  node_name: context.node_name,\n  tenant_id: context.tenant_id,\n  channel: context.channel,\n  trace_id: context.trace_id,\n  \n  // LLM\n  provider: context.provider,\n  model: context.model,\n  temperature: context.temperature,\n  top_p: context.top_p,\n  max_tokens: context.max_tokens,\n  \n  // Tokens & Custo (zero em caso de erro)\n  prompt_tokens: 0,\n  completion_tokens: 0,\n  total_tokens: 0,\n  cost_usd: 0,\n  price_version: '2025-01',\n  \n  // Performance\n  latency_ms: endTime - context.start_time,\n  retries: 0,\n  status: 'error',\n  http_status: httpStatus,\n  error_type: errorType,\n  error_hash: errorHash,\n  \n  // Qualidade\n  input_chars: context.input_chars,\n  output_chars: 0,\n  truncated: false,\n  fallback_used: false,\n  guardrail_triggered: false,\n  tools_used: false\n};\n\n// Resposta para o chamador\nconst apiResponse = {\n  success: false,\n  error: {\n    type: errorType,\n    message: errorMessage,\n    http_status: httpStatus\n  },\n  monitoring: {\n    trace_id: context.trace_id,\n    latency_ms: llmEvent.latency_ms\n  }\n};\n\nreturn {\n  json: {\n    llm_event: llmEvent,\n    api_response: apiResponse,\n    is_error: true\n  }\n};"
+      },
+      "id": "ac8e7ce2-c814-4dc5-b883-f74f44004890",
+      "name": "Processar Erro",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "17c0f22d-9515-473b-b6ba-d382b1fe3786",
+      "name": "Merge Results",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        224,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO observability.llm_events (\n  ts,\n  environment,\n  workflow_id,\n  workflow_name,\n  execution_id,\n  node_name,\n  tenant_id,\n  channel,\n  provider,\n  model,\n  temperature,\n  top_p,\n  max_tokens,\n  prompt_tokens,\n  completion_tokens,\n  total_tokens,\n  cost_usd,\n  price_version,\n  latency_ms,\n  retries,\n  status,\n  http_status,\n  error_type,\n  error_hash,\n  input_chars,\n  output_chars,\n  truncated,\n  fallback_used,\n  guardrail_triggered,\n  trace_id\n) VALUES (\n  NOW(),\n  $1, $2, $3, $4, $5, $6, $7, $8, $9, $10,\n  $11, $12, $13, $14, $15, $16, $17, $18, $19, $20,\n  $21, $22, $23, $24, $25, $26, $27, $28, $29\n)",
+        "options": {}
+      },
+      "id": "a8b7fa5c-d6dc-4bac-9e04-8656e3fd527d",
+      "name": "Gravar no Postgres",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        448,
+        112
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LAJU8e1BewlbISMn",
+          "name": "Postgres_n8n"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Merge Results').first().json.api_response }}",
+        "options": {
+          "responseCode": "={{ $('Merge Results').first().json.is_error ? 500 : 200 }}"
+        }
+      },
+      "id": "e4c2261e-01cb-4c96-a1d7-9ebda4409997",
+      "name": "Webhook Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        112
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2026-01-30T05:58:14.068Z",
+      "updatedAt": "2026-01-30T05:58:14.068Z",
+      "role": "workflow:owner",
+      "workflowId": "8ul8Acn4u7IM7w6E",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2026-01-23T05:21:27.131Z",
+      "updatedAt": "2026-01-23T05:21:27.131Z",
+      "id": "ViJVX5zY7d3huOM8",
+      "name": "Monitoring"
+    },
+    {
+      "createdAt": "2026-01-30T05:04:36.055Z",
+      "updatedAt": "2026-01-30T05:04:36.055Z",
+      "id": "l9vhmG27o6VAgwM0",
+      "name": "LLM"
+    },
+    {
+      "createdAt": "2026-01-30T05:04:36.065Z",
+      "updatedAt": "2026-01-30T05:04:36.065Z",
+      "id": "nkqChYqyAYXiMKB0",
+      "name": "FinOps"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-30T07:26:11.771Z",
+  "versionId": "e9ec5c92-af98-4998-9ae4-671562503396"
+}

@@ -1,0 +1,1816 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook Login": {
+      "main": [
+        [
+          {
+            "node": "Buscar Usuário",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Usuário": {
+      "main": [
+        [
+          {
+            "node": "Usuário Existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Usuário Existe?": {
+      "main": [
+        [
+          {
+            "node": "Merge Senha",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Resposta Login Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Senha": {
+      "main": [
+        [
+          {
+            "node": "Validar Senha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Senha": {
+      "main": [
+        [
+          {
+            "node": "Criar Sessão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Sessão": {
+      "main": [
+        [
+          {
+            "node": "Resposta Login Sucesso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Criar Cliente": {
+      "main": [
+        [
+          {
+            "node": "Extrair Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Token": {
+      "main": [
+        [
+          {
+            "node": "Validar Sessão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Sessão": {
+      "main": [
+        [
+          {
+            "node": "Sessão Válida?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sessão Válida?": {
+      "main": [
+        [
+          {
+            "node": "Inserir Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resposta Não Autorizado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inserir Cliente": {
+      "main": [
+        [
+          {
+            "node": "Resposta Cliente Sucesso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Simular Empréstimo": {
+      "main": [
+        [
+          {
+            "node": "Extrair Dados Simulação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Dados Simulação": {
+      "main": [
+        [
+          {
+            "node": "Validar Sessão Empréstimo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Sessão Empréstimo": {
+      "main": [
+        [
+          {
+            "node": "Sessão Válida Empréstimo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sessão Válida Empréstimo?": {
+      "main": [
+        [
+          {
+            "node": "Calcular Parcelas",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resposta Simulação Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular Parcelas": {
+      "main": [
+        [
+          {
+            "node": "Resposta Simulação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Confirmar Empréstimo": {
+      "main": [
+        [
+          {
+            "node": "Extrair Dados Empréstimo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Dados Empréstimo": {
+      "main": [
+        [
+          {
+            "node": "Validar Sessão Confirmar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Sessão Confirmar": {
+      "main": [
+        [
+          {
+            "node": "Sessão Válida Confirmar?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sessão Válida Confirmar?": {
+      "main": [
+        [
+          {
+            "node": "Buscar Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resposta Empréstimo Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Cliente": {
+      "main": [
+        [
+          {
+            "node": "Gerar Hash Nota",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar Hash Nota": {
+      "main": [
+        [
+          {
+            "node": "Criar Empréstimo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Empréstimo": {
+      "main": [
+        [
+          {
+            "node": "Loop Parcelas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Parcelas": {
+      "main": [
+        [
+          {
+            "node": "Criar Parcela",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge Dados PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Parcela": {
+      "main": [
+        [
+          {
+            "node": "Loop Parcelas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Dados PDF": {
+      "main": [
+        [
+          {
+            "node": "Preparar Dados PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Dados PDF": {
+      "main": [
+        [
+          {
+            "node": "Gerar HTML PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar PDF Empréstimo": {
+      "main": [
+        [
+          {
+            "node": "Resposta Empréstimo Sucesso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Listar Clientes": {
+      "main": [
+        [
+          {
+            "node": "Extrair Token Listar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Token Listar": {
+      "main": [
+        [
+          {
+            "node": "Validar Sessão Listar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Sessão Listar": {
+      "main": [
+        [
+          {
+            "node": "Sessão Válida Listar?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sessão Válida Listar?": {
+      "main": [
+        [
+          {
+            "node": "Buscar Clientes",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resposta Listar Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Clientes": {
+      "main": [
+        [
+          {
+            "node": "Resposta Clientes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Listar Parcelas": {
+      "main": [
+        [
+          {
+            "node": "Extrair Params Parcelas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Params Parcelas": {
+      "main": [
+        [
+          {
+            "node": "Validar Sessão Parcelas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Sessão Parcelas": {
+      "main": [
+        [
+          {
+            "node": "Sessão Válida Parcelas?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sessão Válida Parcelas?": {
+      "main": [
+        [
+          {
+            "node": "Buscar Parcelas",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resposta Parcelas Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Parcelas": {
+      "main": [
+        [
+          {
+            "node": "Resposta Parcelas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Receber Parcela": {
+      "main": [
+        [
+          {
+            "node": "Extrair Dados Pagamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Dados Pagamento": {
+      "main": [
+        [
+          {
+            "node": "Validar Sessão Pagamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Sessão Pagamento": {
+      "main": [
+        [
+          {
+            "node": "Sessão Válida Pagamento?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sessão Válida Pagamento?": {
+      "main": [
+        [
+          {
+            "node": "Atualizar Parcela Paga",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resposta Pagamento Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar Parcela Paga": {
+      "main": [
+        [
+          {
+            "node": "Resposta Pagamento Sucesso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Histórico": {
+      "main": [
+        [
+          {
+            "node": "Extrair Token Histórico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair Token Histórico": {
+      "main": [
+        [
+          {
+            "node": "Validar Sessão Histórico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Sessão Histórico": {
+      "main": [
+        [
+          {
+            "node": "Sessão Válida Histórico?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sessão Válida Histórico?": {
+      "main": [
+        [
+          {
+            "node": "Buscar Histórico",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resposta Histórico Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Histórico": {
+      "main": [
+        [
+          {
+            "node": "Resposta Histórico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-21T05:23:23.648Z",
+  "id": "neDanBfWfFAzLcM0",
+  "isArchived": true,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Backend Gestão de Empréstimos - Multi-tenant",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "auth/login",
+        "options": {}
+      },
+      "id": "f3293359-ef8a-459f-9049-6174ec702c1d",
+      "name": "Webhook Login",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -608,
+        80
+      ],
+      "webhookId": "auth-login"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery"
+      },
+      "id": "612b4fab-6e60-4493-b78b-95df28bd5c20",
+      "name": "Buscar Usuário",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        80
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "condition1",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "9c0dbd69-b900-4ba6-a42e-490ba5121bc8",
+      "name": "Usuário Existe?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -208,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "options": {}
+      },
+      "id": "224a00a1-ef9d-4075-8682-8d210db6668b",
+      "name": "Merge Senha",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\nconst bcrypt = require('bcrypt');\n\nconst senhaDigitada = $input.first().json.body.senha;\nconst senhaHash = $input.last().json[0].senha_hash;\n\n// Verificar senha usando bcrypt\nconst senhaValida = await bcrypt.compare(senhaDigitada, senhaHash);\n\nif (!senhaValida) {\n  return {\n    json: {\n      autenticado: false,\n      mensagem: 'Credenciais inválidas'\n    }\n  };\n}\n\n// Gerar token JWT simplificado (em produção use biblioteca JWT)\nconst usuario = $input.last().json[0];\nconst token = crypto.randomBytes(32).toString('hex');\n\n// Preparar resposta\nreturn {\n  json: {\n    autenticado: true,\n    token: token,\n    usuario: {\n      id: usuario.id,\n      nome: usuario.nome,\n      email: usuario.email,\n      tenant_id: usuario.tenant_id,\n      tenant_nome: usuario.tenant_nome,\n      role: usuario.role\n    }\n  }\n};"
+      },
+      "id": "7d455858-4c7d-4cc7-a28c-595db80871ef",
+      "name": "Validar Senha",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "insert"
+      },
+      "id": "9fbb3ea8-97ec-4418-bd46-3a2eac9b1eb9",
+      "name": "Criar Sessão",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        400,
+        0
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "a30c78d1-0a4d-48d3-82f1-172ab5edcc0e",
+      "name": "Resposta Login Sucesso",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        608,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"erro\": \"Credenciais inválidas\", \"autenticado\": false}",
+        "options": {}
+      },
+      "id": "edd1f3bc-5cee-4ea5-85a5-e8f2588a01ad",
+      "name": "Resposta Login Erro",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "clientes",
+        "options": {}
+      },
+      "id": "19f1cb56-d771-4178-8281-8b7a7afc9cf3",
+      "name": "Webhook Criar Cliente",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -608,
+        384
+      ],
+      "webhookId": "criar-cliente"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Validar token de autenticação\nconst token = $json.headers.authorization?.replace('Bearer ', '');\n\nif (!token) {\n  return {\n    json: {\n      erro: 'Token não fornecido',\n      autenticado: false\n    }\n  };\n}\n\nreturn {\n  json: {\n    token: token,\n    body: $json.body\n  }\n};"
+      },
+      "id": "a025f124-5bb2-47d7-974d-b333700eb56c",
+      "name": "Extrair Token",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery"
+      },
+      "id": "22d8a77c-ebac-4999-aea0-bf4661baa63e",
+      "name": "Validar Sessão",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        384
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "sessao-valida",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d1eec856-7202-4f26-ae2a-9c8f41877cd9",
+      "name": "Sessão Válida?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        0,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "insert"
+      },
+      "id": "1fc2a837-53ca-4fb0-9be2-d8d17038f198",
+      "name": "Inserir Cliente",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        208,
+        304
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "a4c13b33-0696-40e5-ba62-002dbca4c635",
+      "name": "Resposta Cliente Sucesso",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        400,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"erro\": \"Não autorizado\"}",
+        "options": {}
+      },
+      "id": "407cd249-2e67-4ab5-88be-222d6a7753ff",
+      "name": "Resposta Não Autorizado",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        208,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "emprestimos/simular",
+        "options": {}
+      },
+      "id": "2a1be011-7cd9-4c2f-818a-cdcc2db66bf4",
+      "name": "Webhook Simular Empréstimo",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -608,
+        784
+      ],
+      "webhookId": "simular-emprestimo"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Validar token e extrair dados\nconst token = $json.headers.authorization?.replace('Bearer ', '');\nconst { cliente_id, valor, juros, modelo, parcelas, primeira_parcela } = $json.body;\n\nif (!token) {\n  return { json: { erro: 'Token não fornecido' } };\n}\n\nreturn {\n  json: {\n    token,\n    cliente_id,\n    valor: parseFloat(valor),\n    juros: parseFloat(juros),\n    modelo,\n    parcelas: parseInt(parcelas),\n    primeira_parcela\n  }\n};"
+      },
+      "id": "87068752-58aa-418c-8661-77243ca5738d",
+      "name": "Extrair Dados Simulação",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        784
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery"
+      },
+      "id": "e77ec693-c6a8-4ba7-b5a1-87951873c61e",
+      "name": "Validar Sessão Empréstimo",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        784
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "sessao-emprestimo-valida",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "0416c855-e061-4e2f-ab3a-614a02ef3cb5",
+      "name": "Sessão Válida Empréstimo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        0,
+        784
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Calcular parcelas baseado no modelo de empréstimo\nconst dados = $('Extrair Dados Simulação').item.json;\nconst { valor, juros, modelo, parcelas, primeira_parcela } = dados;\n\nconst taxaJuros = juros / 100;\nlet simulacao = [];\nlet totalComJuros = 0;\n\nif (modelo === 'Price') {\n  // Sistema Price (Amortização Constante + Juros Decrescentes)\n  const coeficiente = (taxaJuros * Math.pow(1 + taxaJuros, parcelas)) / (Math.pow(1 + taxaJuros, parcelas) - 1);\n  const valorParcela = valor * coeficiente;\n  \n  let saldoDevedor = valor;\n  let dataParcela = new Date(primeira_parcela);\n  \n  for (let i = 1; i <= parcelas; i++) {\n    const jurosParc = saldoDevedor * taxaJuros;\n    const amortizacao = valorParcela - jurosParc;\n    saldoDevedor -= amortizacao;\n    \n    simulacao.push({\n      numero: i,\n      data_vencimento: new Date(dataParcela).toISOString().split('T')[0],\n      valor_parcela: Math.round(valorParcela * 100) / 100,\n      juros: Math.round(jurosParc * 100) / 100,\n      amortizacao: Math.round(amortizacao * 100) / 100,\n      saldo_devedor: Math.max(0, Math.round(saldoDevedor * 100) / 100)\n    });\n    \n    dataParcela.setMonth(dataParcela.getMonth() + 1);\n  }\n  \n  totalComJuros = valorParcela * parcelas;\n  \n} else if (modelo === 'Amortização Fixa') {\n  // Sistema SAC (Amortização Constante)\n  const amortizacao = valor / parcelas;\n  let saldoDevedor = valor;\n  let dataParcela = new Date(primeira_parcela);\n  \n  for (let i = 1; i <= parcelas; i++) {\n    const jurosParc = saldoDevedor * taxaJuros;\n    const valorParcela = amortizacao + jurosParc;\n    saldoDevedor -= amortizacao;\n    \n    simulacao.push({\n      numero: i,\n      data_vencimento: new Date(dataParcela).toISOString().split('T')[0],\n      valor_parcela: Math.round(valorParcela * 100) / 100,\n      juros: Math.round(jurosParc * 100) / 100,\n      amortizacao: Math.round(amortizacao * 100) / 100,\n      saldo_devedor: Math.max(0, Math.round(saldoDevedor * 100) / 100)\n    });\n    \n    dataParcela.setMonth(dataParcela.getMonth() + 1);\n  }\n  \n  totalComJuros = simulacao.reduce((sum, p) => sum + p.valor_parcela, 0);\n  \n} else if (modelo === 'Juros Simples') {\n  // Juros Simples\n  const totalJuros = valor * taxaJuros * parcelas;\n  totalComJuros = valor + totalJuros;\n  const valorParcela = totalComJuros / parcelas;\n  const amortizacaoParcela = valor / parcelas;\n  const jurosParcela = totalJuros / parcelas;\n  \n  let dataParcela = new Date(primeira_parcela);\n  \n  for (let i = 1; i <= parcelas; i++) {\n    simulacao.push({\n      numero: i,\n      data_vencimento: new Date(dataParcela).toISOString().split('T')[0],\n      valor_parcela: Math.round(valorParcela * 100) / 100,\n      juros: Math.round(jurosParcela * 100) / 100,\n      amortizacao: Math.round(amortizacaoParcela * 100) / 100,\n      saldo_devedor: Math.round((valor - (amortizacaoParcela * i)) * 100) / 100\n    });\n    \n    dataParcela.setMonth(dataParcela.getMonth() + 1);\n  }\n  \n} else if (modelo === 'Juros Compostos') {\n  // Juros Compostos\n  totalComJuros = valor * Math.pow(1 + taxaJuros, parcelas);\n  const valorParcela = totalComJuros / parcelas;\n  const amortizacaoParcela = valor / parcelas;\n  \n  let dataParcela = new Date(primeira_parcela);\n  \n  for (let i = 1; i <= parcelas; i++) {\n    const jurosParcela = valorParcela - amortizacaoParcela;\n    \n    simulacao.push({\n      numero: i,\n      data_vencimento: new Date(dataParcela).toISOString().split('T')[0],\n      valor_parcela: Math.round(valorParcela * 100) / 100,\n      juros: Math.round(jurosParcela * 100) / 100,\n      amortizacao: Math.round(amortizacaoParcela * 100) / 100,\n      saldo_devedor: Math.round((valor - (amortizacaoParcela * i)) * 100) / 100\n    });\n    \n    dataParcela.setMonth(dataParcela.getMonth() + 1);\n  }\n  \n} else if (modelo === 'SAC') {\n  // Sistema SAC (igual Amortização Fixa)\n  const amortizacao = valor / parcelas;\n  let saldoDevedor = valor;\n  let dataParcela = new Date(primeira_parcela);\n  \n  for (let i = 1; i <= parcelas; i++) {\n    const jurosParc = saldoDevedor * taxaJuros;\n    const valorParcela = amortizacao + jurosParc;\n    saldoDevedor -= amortizacao;\n    \n    simulacao.push({\n      numero: i,\n      data_vencimento: new Date(dataParcela).toISOString().split('T')[0],\n      valor_parcela: Math.round(valorParcela * 100) / 100,\n      juros: Math.round(jurosParc * 100) / 100,\n      amortizacao: Math.round(amortizacao * 100) / 100,\n      saldo_devedor: Math.max(0, Math.round(saldoDevedor * 100) / 100)\n    });\n    \n    dataParcela.setMonth(dataParcela.getMonth() + 1);\n  }\n  \n  totalComJuros = simulacao.reduce((sum, p) => sum + p.valor_parcela, 0);\n  \n} else if (modelo === 'Somente Juros') {\n  // Somente Juros (pagamento de juros mensais e principal no final)\n  const jurosMensal = valor * taxaJuros;\n  let dataParcela = new Date(primeira_parcela);\n  \n  for (let i = 1; i <= parcelas; i++) {\n    const isUltima = i === parcelas;\n    const valorParcela = isUltima ? (jurosMensal + valor) : jurosMensal;\n    const amortizacao = isUltima ? valor : 0;\n    \n    simulacao.push({\n      numero: i,\n      data_vencimento: new Date(dataParcela).toISOString().split('T')[0],\n      valor_parcela: Math.round(valorParcela * 100) / 100,\n      juros: Math.round(jurosMensal * 100) / 100,\n      amortizacao: Math.round(amortizacao * 100) / 100,\n      saldo_devedor: isUltima ? 0 : valor\n    });\n    \n    dataParcela.setMonth(dataParcela.getMonth() + 1);\n  }\n  \n  totalComJuros = (jurosMensal * parcelas) + valor;\n  \n} else {\n  // Modelo Particular (customizado - padrão Price)\n  const coeficiente = (taxaJuros * Math.pow(1 + taxaJuros, parcelas)) / (Math.pow(1 + taxaJuros, parcelas) - 1);\n  const valorParcela = valor * coeficiente;\n  \n  let saldoDevedor = valor;\n  let dataParcela = new Date(primeira_parcela);\n  \n  for (let i = 1; i <= parcelas; i++) {\n    const jurosParc = saldoDevedor * taxaJuros;\n    const amortizacao = valorParcela - jurosParc;\n    saldoDevedor -= amortizacao;\n    \n    simulacao.push({\n      numero: i,\n      data_vencimento: new Date(dataParcela).toISOString().split('T')[0],\n      valor_parcela: Math.round(valorParcela * 100) / 100,\n      juros: Math.round(jurosParc * 100) / 100,\n      amortizacao: Math.round(amortizacao * 100) / 100,\n      saldo_devedor: Math.max(0, Math.round(saldoDevedor * 100) / 100)\n    });\n    \n    dataParcela.setMonth(dataParcela.getMonth() + 1);\n  }\n  \n  totalComJuros = valorParcela * parcelas;\n}\n\nreturn {\n  json: {\n    valor_liberado: valor,\n    total_com_juros: Math.round(totalComJuros * 100) / 100,\n    modelo: modelo,\n    quantidade_parcelas: parcelas,\n    simulacao: simulacao\n  }\n};"
+      },
+      "id": "0918b9c6-ba21-438d-a5e2-45581151f588",
+      "name": "Calcular Parcelas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        704
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "75cce2ce-3757-4c18-a6de-e3c9b19168cc",
+      "name": "Resposta Simulação",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        400,
+        704
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"erro\": \"Não autorizado\"}",
+        "options": {}
+      },
+      "id": "05b59ee4-beae-4729-a111-319772bd1f86",
+      "name": "Resposta Simulação Erro",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        208,
+        864
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "emprestimos/confirmar",
+        "options": {}
+      },
+      "id": "adb44ade-1ee5-4b91-bab6-995e2570d6ef",
+      "name": "Webhook Confirmar Empréstimo",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -608,
+        1184
+      ],
+      "webhookId": "confirmar-emprestimo"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Validar token e extrair dados do empréstimo\nconst token = $json.headers.authorization?.replace('Bearer ', '');\nconst body = $json.body;\n\nif (!token) {\n  return { json: { erro: 'Token não fornecido' } };\n}\n\nreturn {\n  json: {\n    token,\n    ...body\n  }\n};"
+      },
+      "id": "3904c6d6-8ceb-4eb1-88b8-a5ae4542adb5",
+      "name": "Extrair Dados Empréstimo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        1184
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery"
+      },
+      "id": "0554ebe7-4be7-459e-ba5f-f8f5ac4fe917",
+      "name": "Validar Sessão Confirmar",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        1184
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "sessao-confirmar-valida",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "653624c5-5b14-4d3f-8145-4f7cdaf471df",
+      "name": "Sessão Válida Confirmar?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        0,
+        1184
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery"
+      },
+      "id": "dcbcf066-b6fd-4558-9ba4-387373e1ca21",
+      "name": "Buscar Cliente",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        208,
+        1104
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gerar hash único para a nota promissória\nconst crypto = require('crypto');\nconst hash = crypto.randomBytes(16).toString('hex');\n\nreturn {\n  json: {\n    hash_nota: hash\n  }\n};"
+      },
+      "id": "c5f50659-83c5-4e09-834c-4dd6078372d1",
+      "name": "Gerar Hash Nota",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        1104
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "insert"
+      },
+      "id": "202c3f74-3ec3-4acc-9d03-23b39c0088c6",
+      "name": "Criar Empréstimo",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        608,
+        1104
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "c5f84355-832b-4c59-9266-ba3b3a5c7498",
+      "name": "Loop Parcelas",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        800,
+        1104
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "insert"
+      },
+      "id": "b9ce3950-d70d-4d26-8dfa-bcdedc8811b9",
+      "name": "Criar Parcela",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1008,
+        1104
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "options": {}
+      },
+      "id": "90c8ee54-6350-482c-ab04-81e5221afef6",
+      "name": "Merge Dados PDF",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1200,
+        1024
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Preparar dados para geração do PDF\nconst emprestimo = $('Criar Empréstimo').item.json[0];\nconst cliente = $('Buscar Cliente').item.json[0];\nconst parcelas = $('Extrair Dados Empréstimo').item.json.simulacao;\nconst usuario = $('Validar Sessão Confirmar').item.json[0];\n\n// Formatar valores para moeda brasileira\nconst formatarMoeda = (valor) => {\n  return new Intl.NumberFormat('pt-BR', { \n    style: 'currency', \n    currency: 'BRL' \n  }).format(valor);\n};\n\nconst formatarData = (data) => {\n  return new Date(data).toLocaleDateString('pt-BR');\n};\n\n// Preparar agenda de pagamento\nconst agendaPagamento = parcelas.map(p => {\n  return `Parcela ${p.numero} - ${formatarData(p.data_vencimento)}\\nJuros ${formatarMoeda(p.juros)} • Amortização ${formatarMoeda(p.amortizacao)}\\n${formatarMoeda(p.valor_parcela)}`;\n}).join('\\n\\n');\n\nconst parcelasTexto = parcelas.length > 1 \n  ? `${parcelas.length}x de ${formatarMoeda(parcelas[0].valor_parcela)}`\n  : `1x de ${formatarMoeda(parcelas[0].valor_parcela)}`;\n\nreturn {\n  json: {\n    numero: emprestimo.hash_nota,\n    emitente: cliente.nome_completo,\n    cpf: cliente.cpf,\n    contato: `${cliente.whatsapp || 'Não informado'} / ${cliente.email || 'sem email'}`,\n    endereco: `${cliente.endereco}, ${cliente.complemento || ''}, ${cliente.bairro}, ${cliente.cidade}/${cliente.estado} - CEP ${cliente.cep}`,\n    capital: formatarMoeda(emprestimo.valor_principal),\n    juros: `${emprestimo.taxa_juros}%`,\n    emissao: formatarData(emprestimo.data_emissao),\n    vencimento: formatarData(emprestimo.data_vencimento),\n    indicacao: emprestimo.indicacao,\n    valor_emprestimo: formatarMoeda(emprestimo.valor_principal),\n    data_liberacao: formatarData(emprestimo.data_emissao),\n    total_com_juros: formatarMoeda(emprestimo.total_com_juros),\n    modelo: emprestimo.modelo_calculo,\n    parcelas: parcelasTexto,\n    agenda_pagamento: agendaPagamento,\n    credor: usuario.usuario_nome,\n    devedor: cliente.nome_completo,\n    data_assinatura: formatarData(new Date())\n  }\n};"
+      },
+      "id": "4068afe7-6360-402c-835c-8a0538a54a2b",
+      "name": "Preparar Dados PDF",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1408,
+        1024
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gerar HTML da Nota Promissória\nconst dados = $json;\n\nconst html = `\n<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Nota Promissória</title>\n    <style>\n        * {\n            margin: 0;\n            padding: 0;\n            box-sizing: border-box;\n        }\n        \n        body {\n            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n            padding: 40px;\n            background: #fff;\n            color: #333;\n        }\n        \n        .container {\n            max-width: 800px;\n            margin: 0 auto;\n        }\n        \n        h1 {\n            text-align: center;\n            font-size: 32px;\n            margin-bottom: 40px;\n            color: #1a1a1a;\n        }\n        \n        .section {\n            margin-bottom: 30px;\n            padding: 20px;\n            background: #f9f9f9;\n            border-radius: 8px;\n        }\n        \n        .field {\n            margin-bottom: 12px;\n        }\n        \n        .label {\n            font-weight: 600;\n            color: #555;\n            font-size: 12px;\n            text-transform: uppercase;\n            letter-spacing: 0.5px;\n        }\n        \n        .value {\n            font-size: 16px;\n            color: #1a1a1a;\n            margin-top: 4px;\n        }\n        \n        .grid {\n            display: grid;\n            grid-template-columns: 1fr 1fr;\n            gap: 20px;\n        }\n        \n        .full-width {\n            grid-column: 1 / -1;\n        }\n        \n        .highlight {\n            background: #fff;\n            padding: 15px;\n            border-left: 4px solid #10b981;\n            margin: 20px 0;\n        }\n        \n        .agenda {\n            background: #fff;\n            padding: 20px;\n            border-radius: 4px;\n            margin-top: 10px;\n        }\n        \n        .parcela-item {\n            padding: 12px;\n            border-bottom: 1px solid #e5e5e5;\n            font-size: 14px;\n            line-height: 1.6;\n        }\n        \n        .parcela-item:last-child {\n            border-bottom: none;\n        }\n        \n        .assinaturas {\n            margin-top: 60px;\n            display: grid;\n            grid-template-columns: 1fr 1fr;\n            gap: 40px;\n        }\n        \n        .assinatura-box {\n            text-align: center;\n        }\n        \n        .assinatura-titulo {\n            font-weight: 600;\n            font-size: 12px;\n            text-transform: uppercase;\n            color: #666;\n            margin-bottom: 10px;\n        }\n        \n        .assinatura-desc {\n            font-size: 11px;\n            color: #999;\n            margin-bottom: 40px;\n            line-height: 1.5;\n        }\n        \n        .assinatura-linha {\n            border-top: 2px solid #333;\n            padding-top: 10px;\n            font-weight: 600;\n            font-size: 14px;\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <h1>Nota Promissória</h1>\n        \n        <div class=\"section\">\n            <div class=\"field\">\n                <div class=\"label\">Número:</div>\n                <div class=\"value\">${dados.numero}</div>\n            </div>\n            \n            <div class=\"grid\">\n                <div class=\"field\">\n                    <div class=\"label\">Emitente:</div>\n                    <div class=\"value\">${dados.emitente}</div>\n                </div>\n                \n                <div class=\"field\">\n                    <div class=\"label\">CPF:</div>\n                    <div class=\"value\">${dados.cpf}</div>\n                </div>\n            </div>\n            \n            <div class=\"field full-width\">\n                <div class=\"label\">Contato:</div>\n                <div class=\"value\">${dados.contato}</div>\n            </div>\n            \n            <div class=\"field full-width\">\n                <div class=\"label\">Endereço:</div>\n                <div class=\"value\">${dados.endereco}</div>\n            </div>\n        </div>\n        \n        <div class=\"section\">\n            <div class=\"grid\">\n                <div class=\"field\">\n                    <div class=\"label\">Capital:</div>\n                    <div class=\"value\">${dados.capital}</div>\n                </div>\n                \n                <div class=\"field\">\n                    <div class=\"label\">Juros:</div>\n                    <div class=\"value\">${dados.juros}</div>\n                </div>\n                \n                <div class=\"field\">\n                    <div class=\"label\">Emissão:</div>\n                    <div class=\"value\">${dados.emissao}</div>\n                </div>\n                \n                <div class=\"field\">\n                    <div class=\"label\">Vencimento:</div>\n                    <div class=\"value\">${dados.vencimento}</div>\n                </div>\n                \n                <div class=\"field full-width\">\n                    <div class=\"label\">Indicação:</div>\n                    <div class=\"value\">${dados.indicacao}</div>\n                </div>\n            </div>\n        </div>\n        \n        <div class=\"highlight\">\n            <div class=\"grid\">\n                <div class=\"field\">\n                    <div class=\"label\">Empréstimo:</div>\n                    <div class=\"value\">${dados.valor_emprestimo} liberado em ${dados.data_liberacao}</div>\n                </div>\n                \n                <div class=\"field\">\n                    <div class=\"label\">Total com Juros:</div>\n                    <div class=\"value\">${dados.total_com_juros}</div>\n                </div>\n                \n                <div class=\"field\">\n                    <div class=\"label\">Modelo:</div>\n                    <div class=\"value\">${dados.modelo}</div>\n                </div>\n                \n                <div class=\"field\">\n                    <div class=\"label\">Parcelas:</div>\n                    <div class=\"value\">${dados.parcelas}</div>\n                </div>\n            </div>\n        </div>\n        \n        <div class=\"section\">\n            <div class=\"field full-width\">\n                <div class=\"label\">Agenda de Pagamento</div>\n                <div class=\"value\" style=\"font-size: 11px; color: #666; margin-top: 4px;\">\n                    Juros e amortização por parcela para enviar ao cliente.\n                </div>\n                <div class=\"agenda\">\n                    ${dados.agenda_pagamento.split('\\n\\n').map(p => `<div class=\"parcela-item\">${p.replace(/\\n/g, '<br>')}</div>`).join('')}\n                </div>\n            </div>\n        </div>\n        \n        <div class=\"assinaturas\">\n            <div class=\"assinatura-box\">\n                <div class=\"assinatura-titulo\">Assinatura do Credor (Empresa)</div>\n                <div class=\"assinatura-desc\">\n                    Área reservada para assinatura digital do representante da empresa \n                    responsável pela emissão da nota promissória.\n                </div>\n                <div class=\"assinatura-linha\">${dados.credor}</div>\n            </div>\n            \n            <div class=\"assinatura-box\">\n                <div class=\"assinatura-titulo\">Assinatura do Devedor (Cliente)</div>\n                <div class=\"assinatura-desc\">\n                    Confirmação de ciência e concordância com os valores, datas e \n                    condições descritas nesta nota.\n                </div>\n                <div class=\"assinatura-linha\">${dados.devedor}</div>\n            </div>\n        </div>\n    </div>\n</body>\n</html>\n`;\n\nreturn {\n  json: {\n    html: html,\n    filename: `Nota_Promissoria_${dados.numero}.pdf`\n  }\n};"
+      },
+      "id": "a2358b1b-2c88-4776-88dd-9f3172c22668",
+      "name": "Gerar HTML PDF",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1600,
+        1024
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "a997397d-0b13-4079-a3e3-4d50229a365a",
+      "name": "Converter HTML para PDF",
+      "type": "n8n-nodes-base.htmlToPdf",
+      "typeVersion": 1,
+      "position": [
+        1808,
+        1024
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "emprestimos",
+        "filterType": "string",
+        "filterString": "id=eq.{{ $('Criar Empréstimo').item.json[0].id }}"
+      },
+      "id": "1b86c638-01b1-4ac0-b18e-951f110eba59",
+      "name": "Salvar PDF Empréstimo",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        1024
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \n  \"sucesso\": true, \n  \"emprestimo_id\": $('Criar Empréstimo').item.json[0].id,\n  \"hash_nota\": $('Criar Empréstimo').item.json[0].hash_nota,\n  \"pdf_gerado\": true,\n  \"mensagem\": \"Empréstimo criado com sucesso\"\n} }}",
+        "options": {}
+      },
+      "id": "0ad37381-258e-49f4-9f20-4272497ea733",
+      "name": "Resposta Empréstimo Sucesso",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        2208,
+        1024
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"erro\": \"Não autorizado\"}",
+        "options": {}
+      },
+      "id": "7ccb8f3c-7947-4d98-bccb-d97fdbbd7813",
+      "name": "Resposta Empréstimo Erro",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        208,
+        1264
+      ]
+    },
+    {
+      "parameters": {
+        "path": "clientes/:tenant_id",
+        "options": {}
+      },
+      "id": "05366d2b-d9fa-4823-a8ba-5d836978e1c4",
+      "name": "Webhook Listar Clientes",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -608,
+        1584
+      ],
+      "webhookId": "listar-clientes"
+    },
+    {
+      "parameters": {
+        "jsCode": "const token = $json.headers.authorization?.replace('Bearer ', '');\nconst tenantId = $json.params.tenant_id;\n\nreturn { json: { token, tenantId } };"
+      },
+      "id": "85b6cd82-b82a-403c-93f6-d0ba63868ef6",
+      "name": "Extrair Token Listar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        1584
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery"
+      },
+      "id": "1311d2e0-9eee-4115-bb3a-fff47c8aee04",
+      "name": "Validar Sessão Listar",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        1584
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "sessao-listar-valida",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "da5a65c7-9f67-4afb-89a1-f1530c4a947d",
+      "name": "Sessão Válida Listar?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        0,
+        1584
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "clientes",
+        "returnAll": true,
+        "filterType": "string",
+        "filterString": "tenant_id=eq.{{ $('Extrair Token Listar').item.json.tenantId }}"
+      },
+      "id": "5f8de65e-c8fa-4656-9aa1-eafda9080c29",
+      "name": "Buscar Clientes",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        208,
+        1504
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"clientes\": $json } }}",
+        "options": {}
+      },
+      "id": "7e68b1b1-6f72-47af-9ea1-d87cbf132938",
+      "name": "Resposta Clientes",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        400,
+        1504
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"erro\": \"Não autorizado\"}",
+        "options": {}
+      },
+      "id": "63f1a7a1-a783-4f3f-a7c8-1fc328fb29c6",
+      "name": "Resposta Listar Erro",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        208,
+        1664
+      ]
+    },
+    {
+      "parameters": {
+        "path": "parcelas/:tenant_id",
+        "options": {}
+      },
+      "id": "237aa8d4-294e-473b-b9b0-fed9bd480037",
+      "name": "Webhook Listar Parcelas",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -608,
+        1984
+      ],
+      "webhookId": "listar-parcelas"
+    },
+    {
+      "parameters": {
+        "jsCode": "const token = $json.headers.authorization?.replace('Bearer ', '');\nconst tenantId = $json.params.tenant_id;\nconst status = $json.query.status || 'todos';\n\nreturn { json: { token, tenantId, status } };"
+      },
+      "id": "d8ba9ba5-1b45-41c6-b027-9c70244be22d",
+      "name": "Extrair Params Parcelas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        1984
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery"
+      },
+      "id": "eca109fb-52e2-4f7b-a554-4997ce483f97",
+      "name": "Validar Sessão Parcelas",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        1984
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "sessao-parcelas-valida",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "2979a32d-6d31-4ba6-b187-368c9a4050a0",
+      "name": "Sessão Válida Parcelas?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        0,
+        1984
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery"
+      },
+      "id": "312d22ef-328f-41f0-b23a-bf3a9bcb09b9",
+      "name": "Buscar Parcelas",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        208,
+        1904
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"parcelas\": $json } }}",
+        "options": {}
+      },
+      "id": "30232b9b-803f-4289-a40c-f33c1fa50630",
+      "name": "Resposta Parcelas",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        400,
+        1904
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"erro\": \"Não autorizado\"}",
+        "options": {}
+      },
+      "id": "6b1a7333-d6e8-44f7-97db-a59d33ad843c",
+      "name": "Resposta Parcelas Erro",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        208,
+        2064
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "parcelas/:id/receber",
+        "options": {}
+      },
+      "id": "b4d99eea-ed64-41fd-9cea-fc05dbc5999b",
+      "name": "Webhook Receber Parcela",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -608,
+        2384
+      ],
+      "webhookId": "receber-parcela"
+    },
+    {
+      "parameters": {
+        "jsCode": "const token = $json.headers.authorization?.replace('Bearer ', '');\nconst parcelaId = $json.params.id;\nconst { data_pagamento, valor_pago } = $json.body;\n\nreturn { json: { token, parcelaId, data_pagamento, valor_pago } };"
+      },
+      "id": "f1205d1d-b524-4e23-b7e3-119cb0e3ad1e",
+      "name": "Extrair Dados Pagamento",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        2384
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery"
+      },
+      "id": "68917e5e-a981-427e-a57f-4cb98e5042fe",
+      "name": "Validar Sessão Pagamento",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        2384
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "sessao-pagamento-valida",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3e20160e-3368-4b60-bda0-a54c03ea71c9",
+      "name": "Sessão Válida Pagamento?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        0,
+        2384
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "parcelas",
+        "filterType": "string",
+        "filterString": "id=eq.{{ $('Extrair Dados Pagamento').item.json.parcelaId }}&tenant_id=eq.{{ $json[0].tenant_id }}"
+      },
+      "id": "d74d38d5-688f-448a-9c81-c2b60ff9a938",
+      "name": "Atualizar Parcela Paga",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        208,
+        2304
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"sucesso\": true, \"mensagem\": \"Parcela marcada como paga\" } }}",
+        "options": {}
+      },
+      "id": "55f67d66-61e5-48c7-afa7-4b6628f199fa",
+      "name": "Resposta Pagamento Sucesso",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        400,
+        2304
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"erro\": \"Não autorizado\"}",
+        "options": {}
+      },
+      "id": "6d61954a-70d6-4a94-91b7-6667fe8c7cf8",
+      "name": "Resposta Pagamento Erro",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        208,
+        2464
+      ]
+    },
+    {
+      "parameters": {
+        "path": "emprestimos/:tenant_id/historico",
+        "options": {}
+      },
+      "id": "42e41659-e0b6-4fe7-b4f6-12e40cec2ce1",
+      "name": "Webhook Histórico",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -608,
+        2784
+      ],
+      "webhookId": "historico-emprestimos"
+    },
+    {
+      "parameters": {
+        "jsCode": "const token = $json.headers.authorization?.replace('Bearer ', '');\nconst tenantId = $json.params.tenant_id;\n\nreturn { json: { token, tenantId } };"
+      },
+      "id": "3adc454d-15fb-4967-a378-13762a1fd295",
+      "name": "Extrair Token Histórico",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        2784
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery"
+      },
+      "id": "e0e718a1-0513-4a49-a44b-0e2908e3ac4f",
+      "name": "Validar Sessão Histórico",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        2784
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "sessao-historico-valida",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d511b73b-559a-4fb4-abf1-9bace77aef93",
+      "name": "Sessão Válida Histórico?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        0,
+        2784
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery"
+      },
+      "id": "db8ab0fe-8deb-4efd-8dc8-8b9e1934d00a",
+      "name": "Buscar Histórico",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        208,
+        2704
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "da98RlGr5W5pZnze",
+          "name": "Supabase CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"emprestimos\": $json } }}",
+        "options": {}
+      },
+      "id": "744971b9-6cc8-4ed9-8382-3776253543f6",
+      "name": "Resposta Histórico",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        400,
+        2704
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"erro\": \"Não autorizado\"}",
+        "options": {}
+      },
+      "id": "5353fb21-e4e4-48b0-8e73-98be7a28f6a5",
+      "name": "Resposta Histórico Erro",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        208,
+        2864
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-12-21T05:23:23.648Z",
+      "updatedAt": "2025-12-21T05:23:23.648Z",
+      "role": "workflow:owner",
+      "workflowId": "neDanBfWfFAzLcM0",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-22T03:28:57.979Z",
+  "versionId": "54d6028d-577b-4a73-a29a-32b1d94a1d74"
+}

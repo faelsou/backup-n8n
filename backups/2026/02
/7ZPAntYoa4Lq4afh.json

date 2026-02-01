@@ -1,0 +1,259 @@
+{
+  "active": true,
+  "connections": {
+    "⏰ A cada 5 minutos": {
+      "main": [
+        [
+          {
+            "node": "🔍 Descobrir Schema",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔍 Descobrir Schema": {
+      "main": [
+        [
+          {
+            "node": "🔧 Montar Query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔧 Montar Query": {
+      "main": [
+        [
+          {
+            "node": "📥 Buscar Execuções",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📥 Buscar Execuções": {
+      "main": [
+        [
+          {
+            "node": "🔍 Extrair Métricas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔍 Extrair Métricas": {
+      "main": [
+        [
+          {
+            "node": "🚦 Tem dados?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🚦 Tem dados?": {
+      "main": [
+        [
+          {
+            "node": "💾 Gravar Métricas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-30T06:40:27.165Z",
+  "id": "7ZPAntYoa4Lq4afh",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "📊 LLM Metrics Collector (Auto) v2",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "id": "99cec9ab-e4d9-4e0b-9fdc-c3343f892d1d",
+      "name": "⏰ A cada 5 minutos",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -48,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Descobre as colunas da tabela execution_entity\nSELECT column_name, data_type \nFROM information_schema.columns \nWHERE table_name = 'execution_entity'\nORDER BY ordinal_position;",
+        "options": {}
+      },
+      "id": "d140aef2-1bc9-428f-aca5-7dfdeb0e6f61",
+      "name": "🔍 Descobrir Schema",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        176,
+        336
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "tzSFXkfhpUlilSMn",
+          "name": "Postgres-n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Analisa as colunas disponíveis e monta a query correta\nconst columns = $input.all().map(item => item.json.column_name);\n\nconsole.log('Colunas encontradas:', columns.join(', '));\n\n// Verifica qual coluna contém os dados da execução\nlet dataColumn = null;\nif (columns.includes('data')) dataColumn = 'data';\nelse if (columns.includes('executionData')) dataColumn = '\"executionData\"';\nelse if (columns.includes('execution_data')) dataColumn = 'execution_data';\nelse if (columns.includes('workflowData')) dataColumn = '\"workflowData\"';\n\n// Verifica colunas de tempo\nlet startedAtCol = columns.includes('startedAt') ? '\"startedAt\"' : 'started_at';\nlet stoppedAtCol = columns.includes('stoppedAt') ? '\"stoppedAt\"' : 'stopped_at';\nlet workflowIdCol = columns.includes('workflowId') ? '\"workflowId\"' : 'workflow_id';\n\n// Se não encontrou coluna de dados, vamos tentar buscar sem ela\nlet query;\n\nif (dataColumn) {\n  query = `\n    SELECT \n      e.id as execution_id,\n      w.id as workflow_id,\n      w.name as workflow_name,\n      e.${startedAtCol} as started_at,\n      e.${stoppedAtCol} as stopped_at,\n      e.status,\n      e.${dataColumn}::text as execution_data\n    FROM execution_entity e\n    JOIN workflow_entity w ON e.${workflowIdCol} = w.id\n    WHERE e.${startedAtCol} > NOW() - INTERVAL '10 minutes'\n      AND e.finished = true\n    ORDER BY e.${startedAtCol} DESC\n    LIMIT 100\n  `;\n} else {\n  // Versão sem dados - apenas registra que houve execução\n  query = `\n    SELECT \n      e.id as execution_id,\n      w.id as workflow_id,\n      w.name as workflow_name,\n      e.${startedAtCol} as started_at,\n      e.${stoppedAtCol} as stopped_at,\n      e.status,\n      NULL as execution_data\n    FROM execution_entity e\n    JOIN workflow_entity w ON e.${workflowIdCol} = w.id\n    WHERE e.${startedAtCol} > NOW() - INTERVAL '10 minutes'\n      AND e.finished = true\n      AND (\n        w.name ILIKE '%ai%'\n        OR w.name ILIKE '%chat%'\n        OR w.name ILIKE '%llm%'\n        OR w.name ILIKE '%gpt%'\n        OR w.name ILIKE '%openai%'\n      )\n    ORDER BY e.${startedAtCol} DESC\n    LIMIT 100\n  `;\n}\n\nreturn [{ \n  json: { \n    query: query,\n    hasDataColumn: !!dataColumn,\n    columns: columns\n  } \n}];"
+      },
+      "id": "239da3fa-4806-4baa-aeef-ee6465255929",
+      "name": "🔧 Montar Query",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $json.query }}",
+        "options": {}
+      },
+      "id": "65622529-1d44-44cf-96b7-e53187ecce19",
+      "name": "📥 Buscar Execuções",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        624,
+        336
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "tzSFXkfhpUlilSMn",
+          "name": "Postgres-n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================\n// EXTRAIR MÉTRICAS DE LLM DAS EXECUÇÕES\n// ============================================\n\nconst executions = $input.all();\nconst metrics = [];\n\n// Tabela de preços OpenAI (2025-01)\nconst PRICES = {\n  'gpt-4o': { i: 0.0025, o: 0.01 },\n  'gpt-4o-mini': { i: 0.00015, o: 0.0006 },\n  'gpt-4-turbo': { i: 0.01, o: 0.03 },\n  'gpt-4': { i: 0.03, o: 0.06 },\n  'gpt-3.5-turbo': { i: 0.0005, o: 0.0015 },\n  'o1': { i: 0.015, o: 0.06 },\n  'o1-mini': { i: 0.003, o: 0.012 },\n  'o3-mini': { i: 0.0011, o: 0.0044 }\n};\n\nfunction extractLLMData(obj, path = '') {\n  const results = [];\n  \n  if (!obj || typeof obj !== 'object') return results;\n  \n  // Padrão 1: usage direto (OpenAI API)\n  if (obj.usage && (obj.usage.prompt_tokens || obj.usage.completion_tokens)) {\n    results.push({\n      model: obj.model || 'gpt-4o-mini',\n      prompt_tokens: obj.usage.prompt_tokens || 0,\n      completion_tokens: obj.usage.completion_tokens || 0,\n      total_tokens: obj.usage.total_tokens || 0\n    });\n  }\n  \n  // Padrão 2: message.usage (AI Agent)\n  if (obj.message?.usage) {\n    results.push({\n      model: obj.message.response_metadata?.model_name || obj.model || 'gpt-4o-mini',\n      prompt_tokens: obj.message.usage.prompt_tokens || obj.message.usage.input_tokens || 0,\n      completion_tokens: obj.message.usage.completion_tokens || obj.message.usage.output_tokens || 0,\n      total_tokens: obj.message.usage.total_tokens || 0\n    });\n  }\n  \n  // Padrão 3: tokenUsage (LangChain)\n  if (obj.tokenUsage && (obj.tokenUsage.promptTokens || obj.tokenUsage.completionTokens)) {\n    results.push({\n      model: obj.model || obj.modelName || 'gpt-4o-mini',\n      prompt_tokens: obj.tokenUsage.promptTokens || 0,\n      completion_tokens: obj.tokenUsage.completionTokens || 0,\n      total_tokens: obj.tokenUsage.totalTokens || 0\n    });\n  }\n  \n  // Padrão 4: response_metadata.tokenUsage\n  if (obj.response_metadata?.tokenUsage) {\n    results.push({\n      model: obj.response_metadata.model_name || 'gpt-4o-mini',\n      prompt_tokens: obj.response_metadata.tokenUsage.promptTokens || 0,\n      completion_tokens: obj.response_metadata.tokenUsage.completionTokens || 0,\n      total_tokens: obj.response_metadata.tokenUsage.totalTokens || 0\n    });\n  }\n  \n  // Recursão\n  for (const key in obj) {\n    if (obj[key] && typeof obj[key] === 'object') {\n      results.push(...extractLLMData(obj[key], path + '.' + key));\n    }\n  }\n  \n  return results;\n}\n\nfor (const exec of executions) {\n  try {\n    let llmCalls = [];\n    \n    // Tenta extrair dados se disponível\n    if (exec.json.execution_data) {\n      const data = JSON.parse(exec.json.execution_data);\n      llmCalls = extractLLMData(data);\n    }\n    \n    // Se não encontrou dados de token mas é workflow de AI, registra como estimativa\n    if (llmCalls.length === 0) {\n      const wfName = (exec.json.workflow_name || '').toLowerCase();\n      if (wfName.includes('ai') || wfName.includes('chat') || wfName.includes('llm') || wfName.includes('gpt') || wfName.includes('openai')) {\n        // Não temos dados de token, pula\n        continue;\n      }\n    }\n    \n    // Remove duplicatas\n    const seen = new Set();\n    const uniqueCalls = llmCalls.filter(call => {\n      const key = `${call.model}-${call.prompt_tokens}-${call.completion_tokens}`;\n      if (seen.has(key) || call.total_tokens === 0) return false;\n      seen.add(key);\n      return true;\n    });\n    \n    for (const call of uniqueCalls) {\n      // Normaliza modelo\n      let model = (call.model || 'gpt-4o-mini').toLowerCase();\n      if (model.includes('gpt-4o-mini')) model = 'gpt-4o-mini';\n      else if (model.includes('gpt-4o')) model = 'gpt-4o';\n      else if (model.includes('gpt-4-turbo')) model = 'gpt-4-turbo';\n      else if (model.includes('gpt-4')) model = 'gpt-4';\n      else if (model.includes('gpt-3.5')) model = 'gpt-3.5-turbo';\n      else if (model.includes('o1-mini')) model = 'o1-mini';\n      else if (model.includes('o1')) model = 'o1';\n      else if (model.includes('o3')) model = 'o3-mini';\n      \n      // Calcula custo\n      const price = PRICES[model] || PRICES['gpt-4o-mini'];\n      const costUsd = ((call.prompt_tokens / 1000) * price.i) + ((call.completion_tokens / 1000) * price.o);\n      \n      // Latência\n      let latencyMs = null;\n      if (exec.json.started_at && exec.json.stopped_at) {\n        latencyMs = new Date(exec.json.stopped_at) - new Date(exec.json.started_at);\n      }\n      \n      metrics.push({\n        json: {\n          execution_id: String(exec.json.execution_id),\n          workflow_id: String(exec.json.workflow_id),\n          workflow_name: exec.json.workflow_name,\n          model: model,\n          prompt_tokens: call.prompt_tokens,\n          completion_tokens: call.completion_tokens,\n          total_tokens: call.total_tokens,\n          cost_usd: Math.round(costUsd * 1000000) / 1000000,\n          latency_ms: latencyMs,\n          status: exec.json.status === 'success' ? 'success' : 'error',\n          started_at: exec.json.started_at\n        }\n      });\n    }\n  } catch (e) {\n    console.log('Erro ao processar execução:', e.message);\n  }\n}\n\nif (metrics.length === 0) {\n  return [{ json: { _empty: true, message: 'Nenhuma métrica LLM encontrada' } }];\n}\n\nconsole.log(`Encontradas ${metrics.length} chamadas LLM`);\nreturn metrics;"
+      },
+      "id": "37f01b87-b211-4de6-84bd-cae915b87900",
+      "name": "🔍 Extrair Métricas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        832,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check-empty",
+              "leftValue": "={{ $json._empty }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "notTrue"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a745a0b2-7ab3-4116-90d4-63cb0c3485a3",
+      "name": "🚦 Tem dados?",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1056,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO observability.llm_events (\n  ts, environment, workflow_id, workflow_name, execution_id,\n  provider, model, prompt_tokens, completion_tokens, total_tokens,\n  cost_usd, latency_ms, status, price_version\n) \nSELECT \n  $1::timestamptz,\n  'prod',\n  $2,\n  $3,\n  $4,\n  'openai',\n  $5,\n  $6,\n  $7,\n  $8,\n  $9,\n  $10,\n  $11,\n  '2025-01'\nWHERE NOT EXISTS (\n  SELECT 1 FROM observability.llm_events \n  WHERE execution_id = $4 \n    AND model = $5\n    AND total_tokens = $8\n);",
+        "options": {}
+      },
+      "id": "4f3e62b0-b483-4674-8312-816c516d4365",
+      "name": "💾 Gravar Métricas",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1280,
+        336
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "tzSFXkfhpUlilSMn",
+          "name": "Postgres-n8n"
+        }
+      },
+      "continueOnFail": true
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2026-01-30T06:40:27.165Z",
+      "updatedAt": "2026-01-30T06:40:27.165Z",
+      "role": "workflow:owner",
+      "workflowId": "7ZPAntYoa4Lq4afh",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": {
+    "node:⏰ A cada 5 minutos": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [
+    {
+      "createdAt": "2026-01-23T05:21:27.131Z",
+      "updatedAt": "2026-01-23T05:21:27.131Z",
+      "id": "ViJVX5zY7d3huOM8",
+      "name": "Monitoring"
+    },
+    {
+      "createdAt": "2026-01-30T06:40:17.551Z",
+      "updatedAt": "2026-01-30T06:40:17.551Z",
+      "id": "DMQX7xo2qxM3R87C",
+      "name": "Auto"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-01-30T06:48:07.360Z",
+  "versionId": "c8f8a21e-a7c2-4f78-89d1-7ab7cb3e5c4e"
+}

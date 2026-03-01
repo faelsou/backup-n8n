@@ -1,0 +1,342 @@
+{
+  "active": false,
+  "connections": {
+    "Chat Model Claude": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Orquestrador",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory Buffer": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent - Orquestrador",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Agent Troubleshooting",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Agent Resolut",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent Troubleshooting",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Orquestrador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent Troubleshooting": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent - Orquestrador",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent Resolut": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent - Orquestrador",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent Resolut",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent Troubleshooting",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent Resolut",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-23T07:42:31.940Z",
+  "id": "UDIbr4Nrwp9FWXjh",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 77",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Voce e o Agente Orquestrador do CredGestor - um sistema inteligente de diagnostico e resolucao automatizada.\n\nMISSAO:\nCoordenar sub-agentes especialistas para diagnosticar e resolver problemas tecnicos no sistema CredGestor.\n\nCONTEXTO DO SISTEMA:\n- VPS: 167.235.76.26 (Ubuntu 24.04, 16GB RAM, 8 cores)\n- Stack: Docker Swarm, Traefik, PostgreSQL, FastAPI, React\n- Servicos Docker: credgestor_api, credgestor_site, traefik\n- Banco: PostgreSQL 15 com schemas public e auth\n\nSUB-AGENTES DISPONIVEIS:\n\n1. TROUBLESHOOTING INFRA\n   - Diagnostica: CPU, memoria, disco, rede, recursos\n   - Quando usar: lentidao, timeout, recursos esgotados\n\n2. TROUBLESHOOTING CONTAINERS  \n   - Diagnostica: Docker Swarm, containers, servicos, logs\n   - Quando usar: servicos parados, crashes, problemas de deploy\n\n3. TROUBLESHOOTING DATABASE\n   - Diagnostica: queries lentas, locks, conexoes, indices\n   - Quando usar: banco lento, timeouts, deadlocks\n\n4. TROUBLESHOOTING DEV\n   - Diagnostica: erros de codigo, APIs, bugs, runtime\n   - Quando usar: erros 500, bugs, comportamento inesperado\n\nPROTOCOLO DE ATUACAO:\n\n1. COLETA DE INFORMACOES\n   - Entenda completamente o problema\n   - Faca perguntas especificas se necessario\n   - Identifique sintomas e contexto\n\n2. DIAGNOSTICO\n   - Acione os sub-agentes de troubleshooting apropriados\n   - Pode acionar multiplos agentes em paralelo\n   - Analise os resultados de forma integrada\n\n3. PLANEJAMENTO\n   - Com base nos diagnosticos, planeje as acoes\n   - Priorize por criticidade e impacto\n   - Sempre considere riscos e rollback\n\n4. COMUNICACAO\n   - Seja claro e objetivo\n   - Explique o diagnostico em termos simples\n   - Detalhe as acoes propostas\n   - Peca aprovacao para acoes criticas\n\nREGRAS IMPORTANTES:\n- Nunca execute comandos sem diagnostico previo\n- Sempre explique o que cada sub-agente encontrou\n- Coordene multiplos agentes quando necessario\n- Mantenha o usuario informado em cada etapa\n- Priorize seguranca sobre velocidade",
+        "options": {
+          "systemMessage": "Voce e um orquestrador inteligente que coordena sub-agentes especialistas."
+        }
+      },
+      "id": "36a40669-d69b-4621-a745-5079149242ec",
+      "name": "AI Agent - Orquestrador",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.5,
+      "position": [
+        944,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": "claude-3-5-sonnet-20241022",
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "id": "ad0f859c-096a-4c7d-88b3-0f4e9dabc4fb",
+      "name": "Chat Model Claude",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1,
+      "position": [
+        896,
+        288
+      ],
+      "credentials": {
+        "anthropicApi": {
+          "id": "QbeXtjJ3K8JigBxF",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.sessionId }}",
+        "contextWindowLength": 15
+      },
+      "id": "4f0e14e0-9645-4f7b-a55f-6fc3d0485449",
+      "name": "Memory Buffer",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.2,
+      "position": [
+        1072,
+        944
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-20250514",
+          "cachedResultName": "Claude 4 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        784,
+        704
+      ],
+      "id": "76b8a91f-c83a-494d-9e1b-8842e2b96aca",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "QbeXtjJ3K8JigBxF",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        608,
+        0
+      ],
+      "id": "4aa99ac1-cfd4-40d9-843d-906b1f494c76",
+      "name": "When chat message received",
+      "webhookId": "15237698-77ad-40cc-a395-c8a09ef249bc"
+    },
+    {
+      "parameters": {
+        "text": "=# 🔍 Prompt Troubleshooting - CredGestor\n\n## 📋 Visão Geral\n\nEste documento contém todos os casos de troubleshooting já resolvidos e que ainda podem ocorrer na aplicação CredGestor, organizados por área de especialização.\n\n**Aplicação**: CredGestor - Sistema de Gestão de Crédito Multi-Tenancy  \n**VPS**: 167.235.76.26  \n**Stack**: Docker Swarm, Traefik, FastAPI, React, Supabase\n\n---\n\n## 🐳 Especialista em Containers\n\n### ✅ Casos Já Resolvidos\n\n#### 1. Serviço Docker Swarm Não Inicia\n**Sintoma**: `docker service ls` mostra serviço com 0/1 replicas  \n**Causa**: Imagem não encontrada, configuração incorreta, ou recursos insuficientes  \n**Resolução**:\n```bash\n# Verificar status\ndocker service ls\ndocker service ps credgestor_api --no-trunc\n\n# Ver logs de erro\ndocker service logs credgestor_api --tail 100\n\n# Verificar imagem\ndocker images | grep credgestor\n\n# Recriar serviço\ndocker service update --force credgestor_api\n```\n\n#### 2. Container Reiniciando Constantemente\n**Sintoma**: `docker service ps` mostra múltiplos restarts  \n**Causa**: Health check falhando, erro na aplicação, ou falta de recursos  \n**Resolução**:\n```bash\n# Ver logs detalhados\ndocker service logs credgestor_api --tail 500 | grep -i \"error\\|exception\\|traceback\"\n\n# Verificar recursos\ndocker stats\n\n# Verificar health check\ndocker service inspect credgestor_api --format '{{.Spec.TaskTemplate.ContainerSpec.Healthcheck}}'\n\n# Reiniciar serviço\ndocker service update --force credgestor_api\n```\n\n#### 3. Traefik Não Roteia `/api` para Backend\n**Sintoma**: `curl https://credgestor.app.br/api/health` retorna HTML do frontend  \n**Causa**: Labels do Traefik não aplicadas no Docker Swarm  \n**Resolução**:\n```bash\n# Verificar labels\ndocker service inspect credgestor_api --format '{{range $k, $v := .Spec.TaskTemplate.ContainerSpec.Labels}}{{$k}}={{$v}}{{\"\\n\"}}{{end}}' | grep traefik\n\n# Recriar stack\ndocker stack rm credgestor\nsleep 10\ncd /var/www/credgestor-homologacao\nsource .env\ndocker stack deploy -c docker-compose.yml credgestor\n```\n\n#### 4. Serviço com Alto Uso de Recursos\n**Sintoma**: CPU ou memória acima de 80%  \n**Causa**: Vazamento de memória, queries lentas, ou carga alta  \n**Resolução**:\n```bash\n# Verificar recursos em tempo real\ndocker stats\n\n# Ver logs de performance\ndocker service logs credgestor_api --tail 1000 | grep -i \"slow\\|timeout\\|memory\"\n\n# Escalar serviço\ndocker service scale credgestor_api=2\n```\n\n### ⚠️ Casos que Podem Ocorrer\n\n#### 1. Container Não Consegue Conectar na Rede Docker\n**Sintoma**: Erro de conexão entre containers  \n**Diagnóstico**:\n```bash\n# Verificar rede\ndocker network ls\ndocker network inspect network_public\n\n# Verificar se serviço está na rede correta\ndocker service inspect credgestor_api --format '{{.Spec.TaskTemplate.Networks}}'\n```\n\n#### 2. Volume Docker Não Montado\n**Sintoma**: Erro de acesso a arquivos ou dados não persistem  \n**Diagnóstico**:\n```bash\n# Verificar volumes\ndocker volume ls\ndocker service inspect credgestor_api --format '{{.Spec.TaskTemplate.ContainerSpec.Mounts}}'\n```\n\n#### 3. Health Check Falhando\n**Sintoma**: Container marcado como unhealthy  \n**Diagnóstico**:\n```bash\n# Verificar health check\ndocker service ps credgestor_api --format \"table {{.Name}}\\t{{.CurrentState}}\\t{{.Error}}\"\n\n# Testar health check manualmente\ncurl http://localhost:8000/health\n```\n\n#### 4. Rollback Necessário Após Update\n**Sintoma**: Nova versão causou problemas  \n**Resolução**:\n```bash\n# Ver histórico de updates\ndocker service ps credgestor_api --no-trunc\n\n# Fazer rollback\ndocker service rollback credgestor_api\n\n# Verificar status\ndocker service ls\n```\n\n---\n\n## 🖥️ Especialista em Infraestrutura\n\n### ✅ Casos Já Resolvidos\n\n#### 1. API Não Acessível Via Traefik\n**Sintoma**: `curl https://credgestor.app.br/api/health` retorna erro  \n**Causa**: Traefik não configurado ou labels incorretas  \n**Resolução**:\n```bash\n# Verificar Traefik\ndocker service ls | grep traefik\ndocker service logs traefik --tail 100\n\n# Verificar configuração\ndocker service inspect traefik --format '{{.Spec.TaskTemplate.ContainerSpec.Config}}'\n\n# Usar IP direto temporariamente\ncurl http://167.235.76.26:8000/health\n```\n\n#### 2. Certificado SSL Expirado ou Inválido\n**Sintoma**: Aviso de certificado inválido no navegador  \n**Causa**: Certificado Let's Encrypt expirado ou não renovado  \n**Resolução**:\n```bash\n# Verificar certificado\ncurl -vI https://credgestor.app.br 2>&1 | grep -i certificate\n\n# Verificar Traefik logs\ndocker service logs traefik --tail 200 | grep -i \"certificate\\|acme\\|ssl\"\n```\n\n#### 3. Recursos do Sistema Esgotados\n**Sintoma**: Sistema lento, processos travando  \n**Causa**: CPU, memória ou disco cheio  \n**Resolução**:\n```bash\n# Verificar recursos\ntop\nhtop\ndf -h\nfree -h\n\n# Verificar processos\nps aux --sort=-%mem | head -20\nps aux --sort=-%cpu | head -20\n\n# Limpar espaço em disco\ndocker system prune -a --volumes\n```\n\n#### 4. Firewall Bloqueando Conexões\n**Sintoma**: Não consegue acessar serviços externamente  \n**Causa**: UFW ou iptables bloqueando portas  \n**Resolução**:\n```bash\n# Verificar firewall\nufw status\niptables -L -n\n\n# Verificar portas abertas\nnetstat -tulpn\nss -tulpn\n```\n\n### ⚠️ Casos que Podem Ocorrer\n\n#### 1. DNS Não Resolve\n**Sintoma**: `nslookup credgestor.app.br` falha  \n**Diagnóstico**:\n```bash\n# Verificar DNS\nnslookup credgestor.app.br\ndig credgestor.app.br\n\n# Verificar configuração DNS\ncat /etc/resolv.conf\n```\n\n#### 2. Rede Docker com Problemas\n**Sintoma**: Containers não conseguem se comunicar  \n**Diagnóstico**:\n```bash\n# Verificar rede\ndocker network ls\ndocker network inspect network_public\n\n# Verificar conectividade\ndocker exec -it $(docker ps -q -f name=credgestor_api) ping credgestor_site\n```\n\n#### 3. Logs do Sistema Cheios\n**Sintoma**: `/var/log` com pouco espaço  \n**Diagnóstico**:\n```bash\n# Verificar tamanho de logs\ndu -sh /var/log/*\njournalctl --disk-usage\n\n# Limpar logs antigos\njournalctl --vacuum-time=7d\n```\n\n#### 4. Serviços do Sistema Não Iniciam\n**Sintoma**: Docker ou outros serviços não iniciam após reboot  \n**Diagnóstico**:\n```bash\n# Verificar status de serviços\nsystemctl status docker\nsystemctl status traefik\n\n# Ver logs de sistema\njournalctl -xe\njournalctl -u docker -f\n```\n\n---\n\n## 🗄️ Especialista em Banco de Dados\n\n### ✅ Casos Já Resolvidos\n\n#### 1. Muitas Conexões Ativas\n**Sintoma**: Erro \"too many connections\" ou performance degradada  \n**Causa**: Connection pool esgotado ou conexões não fechadas  \n**Resolução**:\n```sql\n-- Verificar conexões\nSELECT \n  COUNT(*) as total_connections,\n  COUNT(*) FILTER (WHERE state = 'active') as active_connections,\n  COUNT(*) FILTER (WHERE state = 'idle') as idle_connections,\n  COUNT(*) FILTER (WHERE state = 'idle in transaction') as idle_in_transaction\nFROM pg_stat_activity\nWHERE datname = 'postgres';\n\n-- Ver conexões por aplicação\nSELECT application_name, COUNT(*) \nFROM pg_stat_activity \nWHERE datname = 'postgres'\nGROUP BY application_name;\n\n-- Matar conexões idle in transaction\nSELECT pg_terminate_backend(pid)\nFROM pg_stat_activity\nWHERE state = 'idle in transaction'\nAND datname = 'postgres';\n```\n\n#### 2. Queries Lentas\n**Sintoma**: Endpoints demorando muito para responder  \n**Causa**: Queries sem índices, N+1 queries, ou tabelas grandes  \n**Resolução**:\n```sql\n-- Ver queries lentas\nSELECT \n  query,\n  mean_exec_time,\n  calls,\n  total_exec_time\nFROM pg_stat_statements\nORDER BY mean_exec_time DESC\nLIMIT 10;\n\n-- Verificar índices faltando\nSELECT \n  schemaname,\n  tablename,\n  attname,\n  n_distinct,\n  correlation\nFROM pg_stats\nWHERE schemaname = 'public'\nORDER BY n_distinct DESC;\n```\n\n#### 3. Locks e Deadlocks\n**Sintoma**: Queries travando ou timeout  \n**Causa**: Transações longas ou locks não liberados  \n**Resolução**:\n```sql\n-- Ver locks ativos\nSELECT \n  l.locktype,\n  l.relation::regclass,\n  l.mode,\n  l.granted,\n  a.query,\n  a.pid\nFROM pg_locks l\nJOIN pg_stat_activity a ON l.pid = a.pid\nWHERE NOT l.granted;\n\n-- Ver deadlocks\nSELECT * FROM pg_stat_database_conflicts;\n\n-- Matar processo travado\nSELECT pg_terminate_backend(pid)\nFROM pg_stat_activity\nWHERE pid = <PID_DO_PROCESSO>;\n```\n\n#### 4. Tabelas Sem Índices\n**Sintoma**: Queries muito lentas em tabelas específicas  \n**Causa**: Falta de índices em colunas frequentemente consultadas  \n**Resolução**:\n```sql\n-- Criar índices estratégicos\nCREATE INDEX idx_tenants_ativo ON tenants(ativo) WHERE ativo = true;\nCREATE INDEX idx_users_tenant_id ON tenant_users(tenant_id);\nCREATE INDEX idx_clients_tenant_created ON clients(tenant_id, created_at);\nCREATE INDEX idx_loans_tenant_status ON loans(tenant_id, status);\nCREATE INDEX idx_installments_due_date ON installments(due_date) WHERE status != 'paid';\n\n-- Verificar uso de índices\nSELECT \n  tablename,\n  indexname,\n  idx_scan,\n  idx_tup_read,\n  idx_tup_fetch\nFROM pg_stat_user_indexes\nORDER BY idx_scan DESC;\n```\n\n### ⚠️ Casos que Podem Ocorrer\n\n#### 1. Timeout de Conexão com Supabase\n**Sintoma**: Erro \"connection timeout\" ou \"connection refused\"  \n**Diagnóstico**:\n```bash\n# Testar conectividade\npsql -h db.aclyrcuahiujgtjuimoh.supabase.co -U postgres -d postgres -c \"SELECT 1;\"\n\n# Verificar logs da aplicação\ndocker service logs credgestor_api --tail 1000 | grep -i \"database\\|connection\\|timeout\\|pool\"\n```\n\n#### 2. Banco de Dados com Pouco Espaço\n**Sintoma**: Erro \"out of disk space\"  \n**Diagnóstico**:\n```sql\n-- Ver tamanho de tabelas\nSELECT \n  schemaname,\n  tablename,\n  pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename)) as size\nFROM pg_stat_user_tables\nORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;\n\n-- Ver tamanho total do banco\nSELECT pg_size_pretty(pg_database_size('postgres'));\n```\n\n#### 3. Queries N+1\n**Sintoma**: Muitas queries pequenas em vez de uma query grande  \n**Diagnóstico**:\n```sql\n-- Ver queries mais executadas\nSELECT \n  query,\n  calls,\n  mean_exec_time,\n  total_exec_time\nFROM pg_stat_statements\nORDER BY calls DESC\nLIMIT 20;\n```\n\n#### 4. Problemas de Isolamento Multi-Tenant\n**Sintoma**: Dados de um tenant aparecendo para outro  \n**Diagnóstico**:\n```sql\n-- Verificar registros órfãos\nSELECT \n  'clients' as tabela,\n  COUNT(*) as registros_orfaos\nFROM clients c\nLEFT JOIN tenants t ON c.tenant_id = t.id\nWHERE t.id IS NULL\n\nUNION ALL\n\nSELECT \n  'loans' as tabela,\n  COUNT(*) as registros_orfaos\nFROM loans l\nLEFT JOIN tenants t ON l.tenant_id = t.id\nWHERE t.id IS NULL;\n```\n\n---\n\n## 💻 Especialista Fullstack\n\n### ✅ Casos Já Resolvidos\n\n#### 1. Erros 5xx em Endpoints\n**Sintoma**: `curl https://credgestor.app.br/api/tenants/{id}/resource` retorna 500  \n**Causa**: Exceções não tratadas, validação falhando, ou problemas de banco  \n**Resolução**:\n```bash\n# Ver logs detalhados\ndocker service logs credgestor_api --tail 2000 | grep -A 15 \"500\\|Internal Server Error\" | tail -100\n\n# Verificar stack traces\ndocker service logs credgestor_api --tail 5000 | grep -B 5 -A 20 \"Traceback\"\n\n# Verificar problemas de conexão com banco\ndocker service logs credgestor_api --tail 1000 | grep -i \"database\\|connection\\|timeout\\|pool\"\n```\n\n#### 2. Erros 401 em `/auth/refresh`\n**Sintoma**: Refresh token retornando 401  \n**Causa**: Token expirado, inválido, ou problema de autenticação  \n**Resolução**:\n```bash\n# Ver logs de autenticação\ndocker service logs credgestor_api --tail 1000 | grep -i \"auth\\|token\\|401\\|unauthorized\"\n\n# Verificar configuração Supabase\ndocker service inspect credgestor_api --format '{{range .Spec.TaskTemplate.ContainerSpec.Env}}{{.}}{{\"\\n\"}}{{end}}' | grep SUPABASE\n```\n\n#### 3. Frontend Não Carrega\n**Sintoma**: Página em branco ou erro no console  \n**Causa**: Build incorreto, variáveis de ambiente não configuradas, ou erro de JavaScript  \n**Resolução**:\n```bash\n# Ver logs do frontend\ndocker service logs credgestor_site --tail 100\n\n# Verificar build\ndocker images | grep credgestor-homologacao-frontend\n\n# Verificar variáveis de ambiente\ndocker service inspect credgestor_site --format '{{range .Spec.TaskTemplate.ContainerSpec.Env}}{{.}}{{\"\\n\"}}{{end}}' | grep VITE\n```\n\n#### 4. CORS Errors\n**Sintoma**: Erro \"CORS policy\" no console do navegador  \n**Causa**: CORS middleware não configurado ou origins incorretas  \n**Resolução**:\n```bash\n# Verificar configuração CORS no backend\ndocker service logs credgestor_api --tail 100 | grep -i \"cors\"\n\n# Verificar código do backend\ndocker exec -it $(docker ps -q -f name=credgestor_api) cat backend/main.py | grep -i \"cors\"\n```\n\n### ⚠️ Casos que Podem Ocorrer\n\n#### 1. Problemas de Performance no Frontend\n**Sintoma**: Página lenta para carregar ou renderizar  \n**Diagnóstico**:\n```bash\n# Verificar bundle size\ndocker exec -it $(docker ps -q -f name=credgestor_site) ls -lh /usr/share/nginx/html/assets/\n\n# Verificar console do navegador (F12)\n# Verificar Network tab para requests lentos\n```\n\n#### 2. Problemas de Integração Frontend-Backend\n**Sintoma**: Dados não aparecem ou erros de API  \n**Diagnóstico**:\n```bash\n# Verificar variável VITE_API_BASE_URL\ndocker service inspect credgestor_site --format '{{range .Spec.TaskTemplate.ContainerSpec.Env}}{{.}}{{\"\\n\"}}{{end}}' | grep VITE_API_BASE_URL\n\n# Testar API diretamente\ncurl https://credgestor.app.br/api/health\n```\n\n#### 3. Problemas de Multi-Tenancy\n**Sintoma**: Dados de um tenant aparecendo para outro  \n**Diagnóstico**:\n```bash\n# Verificar logs de tenant_id\ndocker service logs credgestor_api --tail 1000 | grep -i \"tenant_id\"\n\n# Verificar código de isolamento\ndocker exec -it $(docker ps -q -f name=credgestor_api) cat backend/main.py | grep -i \"tenant\"\n```\n\n#### 4. Problemas de Build/Deploy\n**Sintoma**: Mudanças não aparecem após deploy  \n**Diagnóstico**:\n```bash\n# Verificar versão da imagem\ndocker images | grep credgestor\n\n# Verificar se serviço foi atualizado\ndocker service ps credgestor_api --no-trunc\n\n# Forçar rebuild\ndocker service update --force credgestor_api\n```\n\n---\n\n## 🔄 Workflow de Troubleshooting Recomendado\n\n### 1. Identificar o Problema\n```bash\n# Verificar status geral\ndocker service ls\ncurl https://credgestor.app.br/api/health\n```\n\n### 2. Coletar Informações\n```bash\n# Logs\ndocker service logs credgestor_api --tail 500\ndocker service logs credgestor_site --tail 500\n\n# Recursos\ndocker stats\ntop\ndf -h\n```\n\n### 3. Diagnosticar Causa Raiz\n- Verificar logs de erro\n- Verificar recursos do sistema\n- Verificar conectividade\n- Verificar configurações\n\n### 4. Aplicar Correção\n- Seguir resoluções específicas acima\n- Testar após correção\n- Monitorar resultados\n\n### 5. Documentar\n- Registrar problema e solução\n- Atualizar este documento\n- Compartilhar conhecimento\n\n---\n\n## 📚 Referências\n\n- **VPS**: 167.235.76.26\n- **URLs**: \n  - Frontend: https://credgestor.app.br\n  - API: https://credgestor.app.br/api\n  - API Docs: https://credgestor.app.br/api/docs\n- **Documentação**: Ver `INSTRUCOES_CONEXAO_VPS.md` para mais detalhes\n\n---\n\n**Última atualização**: 2024-12-20  \n**Versão**: 1.0\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        848,
+        560
+      ],
+      "id": "c47a5363-5862-4854-ae6d-df00179f3c10",
+      "name": "Agent Troubleshooting"
+    },
+    {
+      "parameters": {
+        "text": "=# 🔧 Prompt Resolutor - CredGestor\n\n## 📋 Visão Geral\n\nEste documento contém todos os comandos já executados e que podem ser utilizados futuramente para resolver problemas da aplicação CredGestor, organizados por área de especialização.\n\n**Aplicação**: CredGestor - Sistema de Gestão de Crédito Multi-Tenancy  \n**VPS**: 167.235.76.26  \n**Stack**: Docker Swarm, Traefik, FastAPI, React, Supabase\n\n---\n\n## 🐳 Especialista em Containers\n\n### Comandos Docker Swarm - Diagnóstico\n\n#### Verificar Status de Serviços\n```bash\n# Listar todos os serviços\ndocker service ls\n\n# Ver detalhes de um serviço específico\ndocker service ps credgestor_api --no-trunc\n\n# Ver status de todos os serviços do stack\ndocker stack services credgestor\n\n# Ver informações detalhadas de um serviço\ndocker service inspect credgestor_api\n```\n\n#### Verificar Logs\n```bash\n# Logs do backend (últimas 100 linhas)\ndocker service logs credgestor_api --tail 100\n\n# Logs do frontend\ndocker service logs credgestor_site --tail 100\n\n# Logs em tempo real (follow)\ndocker service logs credgestor_api -f\n\n# Logs com filtro de erro\ndocker service logs credgestor_api --tail 500 | grep -i \"error\\|exception\\|traceback\"\n\n# Logs de um período específico\ndocker service logs credgestor_api --since 1h\n```\n\n#### Verificar Recursos\n```bash\n# Uso de recursos em tempo real\ndocker stats\n\n# Uso de recursos de um serviço específico\ndocker stats $(docker ps -q -f name=credgestor_api)\n\n# Verificar uso de disco\ndocker system df\ndocker system df -v\n```\n\n### Comandos Docker Swarm - Resolução\n\n#### Reiniciar Serviços\n```bash\n# Reiniciar serviço API\ndocker service update --force credgestor_api\n\n# Reiniciar serviço Frontend\ndocker service update --force credgestor_site\n\n# Reiniciar todos os serviços do stack\ndocker service update --force credgestor_api credgestor_site\n```\n\n#### Escalar Serviços\n```bash\n# Escalar serviço para 2 réplicas\ndocker service scale credgestor_api=2\n\n# Escalar serviço para 3 réplicas\ndocker service scale credgestor_api=3\n\n# Reduzir para 1 réplica\ndocker service scale credgestor_api=1\n```\n\n#### Rollback de Serviços\n```bash\n# Fazer rollback do serviço\ndocker service rollback credgestor_api\n\n# Ver histórico de updates\ndocker service ps credgestor_api --no-trunc\n\n# Ver versão atual\ndocker service inspect credgestor_api --format '{{.Spec.TaskTemplate.ContainerSpec.Image}}'\n```\n\n#### Atualizar Serviços\n```bash\n# Atualizar imagem de um serviço\ndocker service update --image faelsouz/credgestor-homologacao-backend:latest credgestor_api\n\n# Atualizar variáveis de ambiente\ndocker service update --env-add NEW_VAR=value credgestor_api\n\n# Atualizar recursos (CPU/Memória)\ndocker service update --limit-cpu 1 --limit-memory 512M credgestor_api\n```\n\n### Comandos Docker Swarm - Stack Management\n\n#### Gerenciar Stack\n```bash\n# Deploy do stack\ncd /var/www/credgestor-homologacao\nsource .env\ndocker stack deploy -c docker-compose.yml credgestor\n\n# Remover stack\ndocker stack rm credgestor\n\n# Ver serviços do stack\ndocker stack services credgestor\n\n# Ver logs do stack\ndocker stack ps credgestor\n```\n\n#### Verificar Rede Docker\n```bash\n# Listar redes\ndocker network ls\n\n# Ver detalhes da rede\ndocker network inspect network_public\n\n# Verificar se serviço está na rede\ndocker service inspect credgestor_api --format '{{.Spec.TaskTemplate.Networks}}'\n```\n\n### Comandos SSH para VPS\n\n#### Conectar na VPS\n```bash\n# Conectar via SSH\nssh root@167.235.76.26\n\n# Conectar com porta específica (se necessário)\nssh -p 22 root@167.235.76.26\n```\n\n#### Executar Comandos Remotamente\n```bash\n# Executar comando único\nssh root@167.235.76.26 'docker service ls'\n\n# Executar múltiplos comandos\nssh root@167.235.76.26 'cd /var/www/credgestor-homologacao && docker service ls'\n\n# Executar script\nssh root@167.235.76.26 'bash -s' < script.sh\n```\n\n---\n\n## 🖥️ Especialista em Infraestrutura\n\n### Comandos Linux - Sistema\n\n#### Verificar Recursos do Sistema\n```bash\n# CPU e memória (interativo)\ntop\nhtop\n\n# CPU e memória (uma vez)\nuptime\nfree -h\ncat /proc/cpuinfo | grep processor | wc -l\n\n# Disco\ndf -h\ndu -sh /var/www/*\ndu -sh /var/log/*\n\n# I/O\niostat -x 1\niotop\n```\n\n#### Verificar Processos\n```bash\n# Processos por CPU\nps aux --sort=-%cpu | head -20\n\n# Processos por memória\nps aux --sort=-%mem | head -20\n\n# Processos do Docker\nps aux | grep docker\n\n# Processos de um usuário\nps aux | grep root\n```\n\n#### Verificar Rede\n```bash\n# Portas abertas\nnetstat -tulpn\nss -tulpn\n\n# Conexões ativas\nnetstat -an | grep ESTABLISHED\nss -s\n\n# Testar conectividade\nping 8.8.8.8\ncurl -I https://credgestor.app.br\n```\n\n### Comandos Traefik\n\n#### Verificar Traefik\n```bash\n# Status do serviço Traefik\ndocker service ls | grep traefik\ndocker service ps traefik\n\n# Logs do Traefik\ndocker service logs traefik --tail 100\ndocker service logs traefik -f\n\n# Verificar configuração\ndocker service inspect traefik --format '{{.Spec.TaskTemplate.ContainerSpec.Config}}'\n```\n\n#### Verificar SSL/Certificados\n```bash\n# Verificar certificado SSL\ncurl -vI https://credgestor.app.br 2>&1 | grep -i certificate\n\n# Verificar expiração do certificado\necho | openssl s_client -servername credgestor.app.br -connect credgestor.app.br:443 2>/dev/null | openssl x509 -noout -dates\n\n# Ver logs de certificado no Traefik\ndocker service logs traefik --tail 200 | grep -i \"certificate\\|acme\\|ssl\"\n```\n\n#### Verificar DNS\n```bash\n# Resolver DNS\nnslookup credgestor.app.br\ndig credgestor.app.br\n\n# Verificar configuração DNS\ncat /etc/resolv.conf\n```\n\n### Comandos Firewall\n\n#### Gerenciar Firewall (UFW)\n```bash\n# Ver status\nufw status\nufw status verbose\n\n# Habilitar/desabilitar\nufw enable\nufw disable\n\n# Permitir portas\nufw allow 22/tcp\nufw allow 80/tcp\nufw allow 443/tcp\n\n# Ver regras\nufw show added\n```\n\n#### Gerenciar Firewall (iptables)\n```bash\n# Ver regras\niptables -L -n\niptables -L -n -v\n\n# Ver regras de NAT\niptables -t nat -L -n\n```\n\n### Comandos de Logs do Sistema\n\n#### Logs do Sistema\n```bash\n# Logs do systemd\njournalctl -xe\njournalctl -u docker -f\njournalctl -u traefik -f\n\n# Logs do sistema\ntail -f /var/log/syslog\ntail -f /var/log/auth.log\n\n# Limpar logs antigos\njournalctl --vacuum-time=7d\njournalctl --vacuum-size=500M\n```\n\n---\n\n## 🗄️ Especialista em Banco de Dados\n\n### Comandos SQL - Diagnóstico\n\n#### Verificar Conexões\n```sql\n-- Total de conexões\nSELECT \n  COUNT(*) as total_connections,\n  COUNT(*) FILTER (WHERE state = 'active') as active_connections,\n  COUNT(*) FILTER (WHERE state = 'idle') as idle_connections,\n  COUNT(*) FILTER (WHERE state = 'idle in transaction') as idle_in_transaction\nFROM pg_stat_activity\nWHERE datname = 'postgres';\n\n-- Conexões por aplicação\nSELECT \n  application_name, \n  COUNT(*) as connections,\n  COUNT(*) FILTER (WHERE state = 'active') as active\nFROM pg_stat_activity \nWHERE datname = 'postgres'\nGROUP BY application_name\nORDER BY connections DESC;\n\n-- Ver todas as conexões ativas\nSELECT \n  pid,\n  usename,\n  application_name,\n  client_addr,\n  state,\n  query_start,\n  state_change,\n  query\nFROM pg_stat_activity\nWHERE datname = 'postgres'\nORDER BY query_start;\n```\n\n#### Verificar Performance de Queries\n```sql\n-- Queries mais lentas\nSELECT \n  query,\n  mean_exec_time,\n  calls,\n  total_exec_time,\n  (total_exec_time / calls) as avg_time_per_call\nFROM pg_stat_statements\nORDER BY mean_exec_time DESC\nLIMIT 20;\n\n-- Queries mais executadas\nSELECT \n  query,\n  calls,\n  mean_exec_time,\n  total_exec_time\nFROM pg_stat_statements\nORDER BY calls DESC\nLIMIT 20;\n\n-- Queries com maior tempo total\nSELECT \n  query,\n  calls,\n  mean_exec_time,\n  total_exec_time\nFROM pg_stat_statements\nORDER BY total_exec_time DESC\nLIMIT 20;\n```\n\n#### Verificar Locks\n```sql\n-- Locks ativos\nSELECT \n  l.locktype,\n  l.relation::regclass as table_name,\n  l.mode,\n  l.granted,\n  a.query,\n  a.pid,\n  a.state,\n  a.query_start\nFROM pg_locks l\nJOIN pg_stat_activity a ON l.pid = a.pid\nWHERE NOT l.granted\nORDER BY a.query_start;\n\n-- Verificar deadlocks\nSELECT * FROM pg_stat_database_conflicts;\n\n-- Verificar locks em tabelas específicas\nSELECT \n  l.locktype,\n  l.relation::regclass,\n  l.mode,\n  l.granted,\n  a.pid,\n  a.query\nFROM pg_locks l\nJOIN pg_stat_activity a ON l.pid = a.pid\nWHERE l.relation::regclass::text = 'tenants';\n```\n\n#### Verificar Tamanhos\n```sql\n-- Tamanho de tabelas\nSELECT \n  schemaname,\n  tablename,\n  pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename)) as total_size,\n  pg_size_pretty(pg_relation_size(schemaname||'.'||tablename)) as table_size,\n  pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename) - pg_relation_size(schemaname||'.'||tablename)) as indexes_size\nFROM pg_stat_user_tables\nORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;\n\n-- Tamanho total do banco\nSELECT pg_size_pretty(pg_database_size('postgres'));\n\n-- Tamanho de índices\nSELECT \n  schemaname,\n  tablename,\n  indexname,\n  pg_size_pretty(pg_relation_size(indexrelid)) as index_size\nFROM pg_stat_user_indexes\nORDER BY pg_relation_size(indexrelid) DESC;\n```\n\n### Comandos SQL - Resolução\n\n#### Gerenciar Conexões\n```sql\n-- Matar conexões idle in transaction\nSELECT pg_terminate_backend(pid)\nFROM pg_stat_activity\nWHERE state = 'idle in transaction'\nAND datname = 'postgres'\nAND pid <> pg_backend_pid();\n\n-- Matar conexão específica\nSELECT pg_terminate_backend(<PID>);\n\n-- Matar todas as conexões de uma aplicação\nSELECT pg_terminate_backend(pid)\nFROM pg_stat_activity\nWHERE application_name = 'nome_da_aplicacao'\nAND datname = 'postgres';\n```\n\n#### Criar Índices\n```sql\n-- Índices estratégicos para multi-tenancy\nCREATE INDEX IF NOT EXISTS idx_tenants_ativo ON tenants(ativo) WHERE ativo = true;\nCREATE INDEX IF NOT EXISTS idx_users_tenant_id ON tenant_users(tenant_id);\nCREATE INDEX IF NOT EXISTS idx_clients_tenant_created ON clients(tenant_id, created_at);\nCREATE INDEX IF NOT EXISTS idx_loans_tenant_status ON loans(tenant_id, status);\nCREATE INDEX IF NOT EXISTS idx_installments_due_date ON installments(due_date) WHERE status != 'paid';\nCREATE INDEX IF NOT EXISTS idx_login_audit_tenant_created ON login_audit(tenant_id, created_at);\n\n-- Índices compostos\nCREATE INDEX IF NOT EXISTS idx_loans_tenant_status_created ON loans(tenant_id, status, created_at);\nCREATE INDEX IF NOT EXISTS idx_installments_loan_status ON installments(loan_id, status);\n```\n\n#### Verificar e Otimizar Índices\n```sql\n-- Ver uso de índices\nSELECT \n  schemaname,\n  tablename,\n  indexname,\n  idx_scan,\n  idx_tup_read,\n  idx_tup_fetch,\n  pg_size_pretty(pg_relation_size(indexrelid)) as index_size\nFROM pg_stat_user_indexes\nORDER BY idx_scan DESC;\n\n-- Índices não utilizados (candidatos para remoção)\nSELECT \n  schemaname,\n  tablename,\n  indexname,\n  idx_scan,\n  pg_size_pretty(pg_relation_size(indexrelid)) as index_size\nFROM pg_stat_user_indexes\nWHERE idx_scan = 0\nORDER BY pg_relation_size(indexrelid) DESC;\n```\n\n#### Verificar Integridade Multi-Tenant\n```sql\n-- Verificar registros órfãos\nSELECT \n  'clients' as tabela,\n  COUNT(*) as registros_orfaos\nFROM clients c\nLEFT JOIN tenants t ON c.tenant_id = t.id\nWHERE t.id IS NULL\n\nUNION ALL\n\nSELECT \n  'loans' as tabela,\n  COUNT(*) as registros_orfaos\nFROM loans l\nLEFT JOIN tenants t ON l.tenant_id = t.id\nWHERE t.id IS NULL\n\nUNION ALL\n\nSELECT \n  'installments' as tabela,\n  COUNT(*) as registros_orfaos\nFROM installments i\nLEFT JOIN loans l ON i.loan_id = l.id\nLEFT JOIN tenants t ON l.tenant_id = t.id\nWHERE t.id IS NULL;\n```\n\n### Comandos psql - Conexão\n\n#### Conectar no Banco\n```bash\n# Via Supabase (se configurado)\npsql postgresql://postgres:****@db.aclyrcuahiujgtjuimoh.supabase.co:5432/postgres\n\n# Via container (se houver)\ndocker exec -it <postgres_container> psql -U postgres -d postgres\n```\n\n#### Executar Queries\n```bash\n# Query única\npsql -h host -U user -d database -c \"SELECT COUNT(*) FROM tenants;\"\n\n# Executar arquivo SQL\npsql -h host -U user -d database -f script.sql\n\n# Executar com output formatado\npsql -h host -U user -d database -c \"SELECT * FROM tenants;\" -x\n```\n\n---\n\n## 💻 Especialista Fullstack\n\n### Comandos Backend (FastAPI)\n\n#### Verificar API\n```bash\n# Health check\ncurl https://credgestor.app.br/api/health\ncurl http://167.235.76.26:8000/health\n\n# Métricas\ncurl https://credgestor.app.br/api/metrics\n\n# Documentação\ncurl https://credgestor.app.br/api/docs\n```\n\n#### Testar Endpoints\n```bash\n# Login\ncurl -X POST https://credgestor.app.br/api/auth/login \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"email\": \"admin@cliente-alpha.com\",\n    \"senha\": \"senhaFort3!\",\n    \"tenant_id\": \"00000000-0000-0000-0000-000000000001\"\n  }'\n\n# Refresh token\ncurl -X POST https://credgestor.app.br/api/auth/refresh \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"refresh_token\": \"token_aqui\"}'\n\n# Listar tenants\ncurl -X GET https://credgestor.app.br/api/tenants \\\n  -H \"Authorization: Bearer token_aqui\"\n```\n\n#### Verificar Variáveis de Ambiente\n```bash\n# Ver variáveis do serviço\ndocker service inspect credgestor_api --format '{{range .Spec.TaskTemplate.ContainerSpec.Env}}{{.}}{{\"\\n\"}}{{end}}'\n\n# Ver variáveis dentro do container\ndocker exec -it $(docker ps -q -f name=credgestor_api) env | grep SUPABASE\n```\n\n### Comandos Frontend (React)\n\n#### Verificar Build\n```bash\n# Verificar imagem\ndocker images | grep credgestor-homologacao-frontend\n\n# Verificar arquivos no container\ndocker exec -it $(docker ps -q -f name=credgestor_site) ls -lh /usr/share/nginx/html/\n\n# Verificar variáveis de ambiente\ndocker service inspect credgestor_site --format '{{range .Spec.TaskTemplate.ContainerSpec.Env}}{{.}}{{\"\\n\"}}{{end}}' | grep VITE\n```\n\n#### Testar Frontend\n```bash\n# Verificar se está servindo HTML\ncurl -I https://credgestor.app.br\n\n# Verificar se assets estão sendo servidos\ncurl -I https://credgestor.app.br/assets/index.js\ncurl -I https://credgestor.app.br/assets/index.css\n```\n\n### Comandos de Deploy\n\n#### Build e Push de Imagens\n```bash\n# Build backend\ncd /var/www/credgestor-homologacao\ndocker build -f Dockerfile.backend -t faelsouz/credgestor-homologacao-backend:latest .\ndocker push faelsouz/credgestor-homologacao-backend:latest\n\n# Build frontend\ndocker build -f Dockerfile.frontend -t faelsouz/credgestor-homologacao-frontend:v1.0.3 .\ndocker push faelsouz/credgestor-homologacao-frontend:v1.0.3\n```\n\n#### Deploy Completo\n```bash\n# 1. Remover stack antigo\ndocker stack rm credgestor\nsleep 10\n\n# 2. Carregar variáveis de ambiente\ncd /var/www/credgestor-homologacao\nsource .env\n\n# 3. Deploy novo stack\ndocker stack deploy -c docker-compose.yml credgestor\n\n# 4. Verificar status\ndocker service ls\ndocker stack services credgestor\n\n# 5. Verificar logs\ndocker service logs credgestor_api --tail 50\ndocker service logs credgestor_site --tail 50\n```\n\n### Comandos de Debug\n\n#### Verificar Código no Container\n```bash\n# Ver arquivo específico\ndocker exec -it $(docker ps -q -f name=credgestor_api) cat backend/main.py\n\n# Ver estrutura de diretórios\ndocker exec -it $(docker ps -q -f name=credgestor_api) ls -la /app\n\n# Verificar Python packages\ndocker exec -it $(docker ps -q -f name=credgestor_api) pip list\n```\n\n#### Verificar Logs Específicos\n```bash\n# Erros 5xx\ndocker service logs credgestor_api --tail 2000 | grep -A 15 \"500\\|Internal Server Error\"\n\n# Erros de autenticação\ndocker service logs credgestor_api --tail 1000 | grep -i \"auth\\|token\\|401\\|unauthorized\"\n\n# Erros de banco\ndocker service logs credgestor_api --tail 1000 | grep -i \"database\\|connection\\|timeout\\|pool\"\n\n# Stack traces\ndocker service logs credgestor_api --tail 5000 | grep -B 5 -A 20 \"Traceback\"\n```\n\n---\n\n## 🔄 Scripts Úteis\n\n### Script de Health Check Completo\n```bash\n#!/bin/bash\n# health-check.sh\n\necho \"=== Health Check CredGestor ===\"\necho \"\"\n\necho \"1. Verificando serviços Docker...\"\ndocker service ls\n\necho \"\"\necho \"2. Verificando API Health...\"\ncurl -s https://credgestor.app.br/api/health | jq .\n\necho \"\"\necho \"3. Verificando recursos...\"\ndocker stats --no-stream\n\necho \"\"\necho \"4. Verificando logs recentes...\"\ndocker service logs credgestor_api --tail 10\n```\n\n### Script de Limpeza\n```bash\n#!/bin/bash\n# cleanup.sh\n\necho \"=== Limpeza do Sistema ===\"\n\n# Limpar containers parados\ndocker container prune -f\n\n# Limpar imagens não utilizadas\ndocker image prune -a -f\n\n# Limpar volumes não utilizados\ndocker volume prune -f\n\n# Limpar sistema completo\ndocker system prune -a --volumes -f\n\necho \"Limpeza concluída!\"\n```\n\n### Script de Backup\n```bash\n#!/bin/bash\n# backup.sh\n\nBACKUP_DIR=\"/var/backups/credgestor\"\nDATE=$(date +%Y%m%d_%H%M%S)\n\nmkdir -p $BACKUP_DIR\n\n# Backup de configurações\ntar -czf $BACKUP_DIR/config_$DATE.tar.gz /var/www/credgestor-homologacao/.env /var/www/credgestor-homologacao/docker-compose.yml\n\n# Backup de logs\ndocker service logs credgestor_api --tail 10000 > $BACKUP_DIR/logs_api_$DATE.log\ndocker service logs credgestor_site --tail 10000 > $BACKUP_DIR/logs_site_$DATE.log\n\necho \"Backup criado em $BACKUP_DIR\"\n```\n\n---\n\n## 📚 Referências Rápidas\n\n### Comandos Mais Usados\n\n```bash\n# Status geral\ndocker service ls\ncurl https://credgestor.app.br/api/health\n\n# Logs\ndocker service logs credgestor_api --tail 100 -f\n\n# Reiniciar\ndocker service update --force credgestor_api\n\n# Recursos\ndocker stats\ndf -h\nfree -h\n\n# Deploy\ncd /var/www/credgestor-homologacao && source .env && docker stack deploy -c docker-compose.yml credgestor\n```\n\n### URLs Importantes\n\n- **Frontend**: https://credgestor.app.br\n- **API**: https://credgestor.app.br/api\n- **API Docs**: https://credgestor.app.br/api/docs\n- **Health**: https://credgestor.app.br/api/health\n- **Métricas**: https://credgestor.app.br/api/metrics\n\n### Informações da VPS\n\n- **Host**: 167.235.76.26\n- **User**: root\n- **Diretório**: /var/www/credgestor-homologacao\n- **Rede Docker**: network_public\n\n---\n\n**Última atualização**: 2024-12-20  \n**Versão**: 1.0\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        1200,
+        560
+      ],
+      "id": "c4ba8c03-68a1-4c87-8b36-a71ea293d036",
+      "name": "Agent Resolut"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-20250514",
+          "cachedResultName": "Claude 4 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        1152,
+        688
+      ],
+      "id": "053da685-f954-43f2-b3c6-1c38a8080952",
+      "name": "Anthropic Chat Model1",
+      "credentials": {
+        "anthropicApi": {
+          "id": "QbeXtjJ3K8JigBxF",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://n8n.aiagentautomate.com.br/mcp/157a251f-822f-4461-a971-ea5b9d5b7970",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        864,
+        816
+      ],
+      "id": "bdba7dde-7290-4c9a-8efb-6434c1967936",
+      "name": "MCP Client"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://n8n.aiagentautomate.com.br/mcp/157a251f-822f-4461-a971-ea5b9d5b7970",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        1408,
+        832
+      ],
+      "id": "e69c2f07-580f-48af-9068-4dca66a628fa",
+      "name": "MCP Client1"
+    },
+    {
+      "parameters": {
+        "path": "157a251f-822f-4461-a971-ea5b9d5b7970"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        1952,
+        240
+      ],
+      "id": "e8c65b31-ceb9-405e-9f70-7a3c28912476",
+      "name": "MCP Server Trigger",
+      "webhookId": "157a251f-822f-4461-a971-ea5b9d5b7970"
+    }
+  ],
+  "pinData": {
+    "When chat message received": [
+      {
+        "json": {
+          "sessionId": "c465c46cd91a488b8df2e6a771b7137b",
+          "action": "sendMessage",
+          "chatInput": "problema na infra"
+        }
+      }
+    ]
+  },
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2026-01-23T07:42:31.940Z",
+      "updatedAt": "2026-01-23T07:42:31.940Z",
+      "role": "workflow:owner",
+      "workflowId": "UDIbr4Nrwp9FWXjh",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-25T05:35:58.243Z",
+  "versionId": "832a60f3-fefa-412d-9597-755f19467cb9"
+}

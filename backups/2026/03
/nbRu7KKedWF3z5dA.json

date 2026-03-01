@@ -1,0 +1,758 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook - Receber Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Parsear Mensagem",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Responder Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsear Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Filtrar Grupos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtrar Grupos": {
+      "main": [
+        [
+          {
+            "node": "Redis - Buscar Sessão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - Buscar Sessão": {
+      "main": [
+        [
+          {
+            "node": "Mesclar Sessão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - Criar Sessão": {
+      "main": [
+        [
+          {
+            "node": "Mesclar Sessão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mesclar Sessão": {
+      "main": [
+        [
+          {
+            "node": "Supabase - Buscar Conversa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase - Buscar Conversa": {
+      "main": [
+        [
+          {
+            "node": "RabbitMQ - Publicar Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RabbitMQ - Publicar Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Detectar Intenção",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detectar Intenção": {
+      "main": [
+        [
+          {
+            "node": "É Informação de Serviço?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "É Agendamento?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gerar Resposta Padrão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "É Informação de Serviço?": {
+      "main": [
+        [
+          {
+            "node": "Supabase - Buscar Serviços",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Redis - Cache RAG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase - Buscar Serviços": {
+      "main": [
+        [
+          {
+            "node": "RAG - Gerar Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - Cache RAG": {
+      "main": [
+        [
+          {
+            "node": "RAG - Gerar Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RAG - Gerar Resposta": {
+      "main": [
+        [
+          {
+            "node": "Consolidar Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "É Agendamento?": {
+      "main": [
+        [
+          {
+            "node": "Processar Agendamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Agendamento": {
+      "main": [
+        [
+          {
+            "node": "Google Calendar - Criar Evento",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Consolidar Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar - Criar Evento": {
+      "main": [
+        [
+          {
+            "node": "Supabase - Salvar Agendamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase - Salvar Agendamento": {
+      "main": [
+        [
+          {
+            "node": "Consolidar Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar Resposta Padrão": {
+      "main": [
+        [
+          {
+            "node": "Consolidar Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consolidar Resposta": {
+      "main": [
+        [
+          {
+            "node": "Redis - Atualizar Sessão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - Atualizar Sessão": {
+      "main": [
+        [
+          {
+            "node": "Supabase - Salvar Conversa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase - Salvar Conversa": {
+      "main": [
+        [
+          {
+            "node": "Evolution API - Enviar Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-20T05:30:15.044Z",
+  "id": "nbRu7KKedWF3z5dA",
+  "isArchived": false,
+  "meta": null,
+  "name": "WhatsApp SDR e Agendamento com RAG",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-webhook",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "b9afed90-bfe0-4ea9-a530-d16ee86c4685",
+      "name": "Webhook - Receber Mensagem",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -2208,
+        128
+      ],
+      "webhookId": "whatsapp-incoming"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"status\": \"received\", \"messageId\": $json.messageId } }}",
+        "options": {}
+      },
+      "id": "59d6ca57-7486-4783-8357-642c28be1d4e",
+      "name": "Responder Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "b800489a-9ed4-4346-9465-c3d8f67614f3",
+      "name": "Parsear Mensagem",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1984,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "filter-groups",
+              "leftValue": "={{ $json.isGroup }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "false"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "dbf9d4fd-327a-4707-99f9-dc2830e7a281",
+      "name": "Filtrar Grupos",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -1760,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "={{ 'session:' + $json.phone }}",
+        "options": {}
+      },
+      "id": "e91043a4-75bf-451f-a9fd-e98b095cd5ec",
+      "name": "Redis - Buscar Sessão",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1552,
+        32
+      ],
+      "credentials": {
+        "redis": {
+          "id": "25nYh9vN5nDeicvy",
+          "name": "Redis AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ 'session:' + $json.phone }}",
+        "value": "={{ JSON.stringify({ phone: $json.phone, step: 'greeting', context: {}, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }) }}"
+      },
+      "id": "e8ef536d-42d7-4c4a-bee6-0b69926f0bfe",
+      "name": "Redis - Criar Sessão",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1552,
+        224
+      ],
+      "credentials": {
+        "redis": {
+          "id": "25nYh9vN5nDeicvy",
+          "name": "Redis AiagentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Merge session data with message data\nconst sessionData = $input.item.json.value ? JSON.parse($input.item.json.value) : null;\nconst messageData = $('Parsear Mensagem').item.json;\n\nif (sessionData) {\n  return {\n    ...messageData,\n    session: sessionData,\n    hasSession: true\n  };\n} else {\n  return {\n    ...messageData,\n    session: null,\n    hasSession: false\n  };\n}"
+      },
+      "id": "6029e838-d618-4cd5-bd32-de6b0085d211",
+      "name": "Mesclar Sessão",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1328,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM conversations WHERE phone = $1 ORDER BY created_at DESC LIMIT 1",
+        "options": {}
+      },
+      "id": "59143e64-96b9-4e5e-b2f8-43c33e217f7e",
+      "name": "Supabase - Buscar Conversa",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        -1104,
+        128
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "CbbTX7ryuVXsyhIG",
+          "name": "Postgres_AIAgentAutomate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "publish"
+      },
+      "id": "36266241-3778-422a-b14a-4c5319bbc50b",
+      "name": "RabbitMQ - Publicar Mensagem",
+      "type": "n8n-nodes-base.rabbitmq",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Processar mensagem e determinar intenção\nconst message = ($json.message || '').toLowerCase().trim();\nconst session = $json.session || { step: 'greeting', context: {} };\n\n// Intenções\nlet intent = 'greeting';\nlet nextStep = session.step;\n\nif (message.includes('agendar') || message.includes('consulta') || message.includes('marcar')) {\n  intent = 'schedule';\n  nextStep = 'schedule_service';\n} else if (message.includes('serviço') || message.includes('quiro') || message.includes('medicina') || message.includes('acupuntura')) {\n  intent = 'service_info';\n  nextStep = 'service_info';\n} else if (message.includes('preço') || message.includes('valor') || message.includes('custo')) {\n  intent = 'pricing';\n  nextStep = 'pricing';\n} else if (message.includes('horário') || message.includes('funciona') || message.includes('aberto')) {\n  intent = 'hours';\n  nextStep = 'hours';\n} else if (message.includes('dúvida') || message.includes('pergunta') || message.includes('faq')) {\n  intent = 'faq';\n  nextStep = 'faq';\n} else if (message.includes('cancelar') || message.includes('desmarcar')) {\n  intent = 'cancel';\n  nextStep = 'cancel';\n} else if (session.step === 'schedule_service') {\n  nextStep = 'schedule_date';\n} else if (session.step === 'schedule_date') {\n  nextStep = 'schedule_time';\n} else if (session.step === 'schedule_time') {\n  nextStep = 'schedule_confirm';\n}\n\nreturn {\n  ...$json,\n  intent,\n  nextStep,\n  processedAt: new Date().toISOString()\n};"
+      },
+      "id": "0bd751a9-2f41-4284-b343-3c1e5038bc37",
+      "name": "Detectar Intenção",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -672,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check-intent",
+              "leftValue": "={{ $json.intent }}",
+              "rightValue": "service_info",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b55eb1b1-19b8-4335-8648-85449ca8da9d",
+      "name": "É Informação de Serviço?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM services WHERE active = true",
+        "options": {}
+      },
+      "id": "dd3b20d7-c429-4a20-b02e-c5a45a215eac",
+      "name": "Supabase - Buscar Serviços",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        -224,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "={{ 'rag:services' }}",
+        "options": {}
+      },
+      "id": "6acd5c4a-ec44-4d62-85de-681a5d2d3d7d",
+      "name": "Redis - Cache RAG",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// RAG - Retrieval Augmented Generation\n// Buscar informações relevantes dos serviços\nconst message = ($json.message || '').toLowerCase();\nconst services = $('Supabase - Buscar Serviços').item.json || [];\nconst cachedData = $('Redis - Cache RAG').item.json?.value;\n\n// Dados de serviços (fallback se não tiver no Supabase)\nconst servicesData = cachedData ? JSON.parse(cachedData) : {\n  quiropraxia: {\n    title: 'Quiropraxia',\n    description: 'Ajustes vertebrais e correção postural para alívio de dores e melhoria da função do sistema nervoso.',\n    content: 'A quiropraxia é uma profissão da área da saúde que se concentra no diagnóstico, tratamento e prevenção de distúrbios do sistema musculoesquelético, especialmente da coluna vertebral.',\n    whatToExpect: [\n      'Avaliação inicial completa da postura e da coluna',\n      'Análise de movimentos e amplitude de movimento',\n      'Ajustes quiropráticos específicos e controlados',\n      'Orientações sobre exercícios e cuidados posturais'\n    ],\n    whoItHelps: [\n      'Pessoas com dores nas costas, pescoço ou ombros',\n      'Indivíduos com problemas posturais',\n      'Pessoas que sofrem de dores de cabeça tensionais',\n      'Atletas buscando melhor performance e recuperação'\n    ]\n  },\n  'medicina-oriental': {\n    title: 'Medicina Oriental e Terapias Integrativas',\n    description: 'Terapias integrativas baseadas na medicina tradicional chinesa e outras práticas orientais.',\n    content: 'A medicina oriental oferece uma visão holística da saúde, focando no equilíbrio energético do corpo.',\n    therapies: [\n      { name: 'Acupuntura', description: 'Técnica milenar que utiliza agulhas finas em pontos específicos do corpo.' },\n      { name: 'Ventosaterapia', description: 'Aplicação de ventosas para melhorar circulação e reduzir tensão muscular.' },\n      { name: 'Moxabustão', description: 'Técnica de aquecimento de pontos de acupuntura para fortalecer o sistema imunológico.' }\n    ]\n  }\n};\n\n// Detectar qual serviço o usuário está perguntando\nlet relevantService = null;\nif (message.includes('quiro') || message.includes('coluna') || message.includes('postura')) {\n  relevantService = servicesData.quiropraxia || servicesData.find(s => s.slug === 'quiropraxia');\n} else if (message.includes('medicina') || message.includes('oriental') || message.includes('acupuntura') || message.includes('ventosa')) {\n  relevantService = servicesData['medicina-oriental'] || servicesData.find(s => s.slug === 'medicina-oriental');\n}\n\n// Gerar resposta contextual\nlet response = '';\nif (relevantService) {\n  response = `*${relevantService.title}*\\n\\n${relevantService.description}\\n\\n`;\n  \n  if (relevantService.whatToExpect) {\n    response += '*O que esperar:*\\n';\n    relevantService.whatToExpect.forEach(item => {\n      response += `• ${item}\\n`;\n    });\n  }\n  \n  if (relevantService.therapies) {\n    response += '\\n*Terapias oferecidas:*\\n';\n    relevantService.therapies.forEach(therapy => {\n      response += `• *${therapy.name}*: ${therapy.description}\\n`;\n    });\n  }\n  \n  if (relevantService.whoItHelps) {\n    response += '\\n*Para quem é indicado:*\\n';\n    relevantService.whoItHelps.forEach(item => {\n      response += `• ${item}\\n`;\n    });\n  }\n  \n  response += '\\nGostaria de agendar uma consulta? Digite *agendar* para começar.';\n} else {\n  response = '*Nossos Serviços:*\\n\\n';\n  response += '*1. Quiropraxia*\\n';\n  response += 'Ajustes vertebrais e correção postural\\n\\n';\n  response += '*2. Medicina Oriental*\\n';\n  response += 'Acupuntura, Ventosaterapia e Moxabustão\\n\\n';\n  response += 'Sobre qual serviço gostaria de saber mais? Ou digite *agendar* para marcar uma consulta.';\n}\n\nreturn {\n  ...$json,\n  ragResponse: response,\n  relevantService: relevantService?.title || 'Geral'\n};"
+      },
+      "id": "1db0428c-fb07-4377-9c78-9347ec98ddc9",
+      "name": "RAG - Gerar Resposta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check-schedule",
+              "leftValue": "={{ $json.intent }}",
+              "rightValue": "schedule",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "dfc8da5f-9360-4cbe-bb5d-e9e5ea7a8a57",
+      "name": "É Agendamento?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gerenciar fluxo de agendamento\nconst session = $json.session || { step: 'greeting', context: {} };\nconst message = ($json.message || '').toLowerCase().trim();\nconst step = $json.nextStep || session.step;\n\nlet response = '';\nlet updatedContext = { ...session.context };\nlet updatedStep = step;\n\nif (step === 'schedule_service') {\n  response = '*Agendamento de Consulta*\\n\\n';\n  response += 'Qual serviço você gostaria de agendar?\\n\\n';\n  response += '*1* - Quiropraxia\\n';\n  response += '*2* - Medicina Oriental\\n';\n  response += '*3* - Ambos\\n\\n';\n  response += 'Digite o número da opção desejada.';\n  \n} else if (step === 'schedule_date') {\n  // Processar seleção de serviço\n  if (message === '1' || message.includes('quiro')) {\n    updatedContext.service = 'Quiropraxia';\n  } else if (message === '2' || message.includes('medicina') || message.includes('oriental')) {\n    updatedContext.service = 'Medicina Oriental';\n  } else if (message === '3' || message.includes('ambos')) {\n    updatedContext.service = 'Quiropraxia + Medicina Oriental';\n  }\n  \n  if (updatedContext.service) {\n    response = `Ótimo! Você escolheu: *${updatedContext.service}*\\n\\n`;\n    response += 'Qual data você prefere?\\n';\n    response += 'Digite a data no formato DD/MM/AAAA ou escolha:\\n';\n    response += '*hoje* - Para hoje\\n';\n    response += '*amanhã* - Para amanhã\\n';\n    response += '*próxima semana* - Para próxima semana';\n    updatedStep = 'schedule_time';\n  } else {\n    response = 'Por favor, escolha uma opção válida (1, 2 ou 3).';\n  }\n  \n} else if (step === 'schedule_time') {\n  // Processar data\n  const today = new Date();\n  let selectedDate = null;\n  \n  if (message === 'hoje') {\n    selectedDate = today;\n  } else if (message === 'amanhã') {\n    selectedDate = new Date(today.getTime() + 24 * 60 * 60 * 1000);\n  } else if (message.includes('/')) {\n    const parts = message.split('/');\n    if (parts.length === 3) {\n      selectedDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));\n    }\n  }\n  \n  if (selectedDate && selectedDate >= today) {\n    updatedContext.date = selectedDate.toISOString().split('T')[0];\n    response = `Data selecionada: *${selectedDate.toLocaleDateString('pt-BR')}*\\n\\n`;\n    response += 'Qual horário você prefere?\\n\\n';\n    response += '*16:00* - Digite 1\\n';\n    response += '*17:00* - Digite 2\\n\\n';\n    response += 'Ou digite um horário no formato HH:MM';\n    updatedStep = 'schedule_confirm';\n  } else {\n    response = 'Por favor, digite uma data válida no formato DD/MM/AAAA ou escolha uma das opções.';\n  }\n  \n} else if (step === 'schedule_confirm') {\n  // Processar horário\n  let selectedTime = null;\n  \n  if (message === '1') {\n    selectedTime = '16:00';\n  } else if (message === '2') {\n    selectedTime = '17:00';\n  } else if (message.match(/^\\d{2}:\\d{2}$/)) {\n    selectedTime = message;\n  }\n  \n  if (selectedTime) {\n    updatedContext.time = selectedTime;\n    response = `*Resumo do Agendamento*\\n\\n`;\n    response += `Serviço: *${updatedContext.service}*\\n`;\n    response += `Data: *${updatedContext.date}*\\n`;\n    response += `Horário: *${selectedTime}*\\n\\n`;\n    response += 'Para confirmar, preciso de algumas informações:\\n';\n    response += 'Digite seu *nome completo*:';\n    updatedStep = 'schedule_name';\n  } else {\n    response = 'Por favor, digite um horário válido (ex: 16:00 ou 17:00).';\n  }\n  \n} else if (step === 'schedule_name') {\n  updatedContext.name = message;\n  response = `Obrigado, ${message}!\\n\\n`;\n  response += 'Agora digite seu *telefone* (com DDD):';\n  updatedStep = 'schedule_phone';\n  \n} else if (step === 'schedule_phone') {\n  updatedContext.phone = message.replace(/\\D/g, '');\n  response = 'Perfeito!\\n\\n';\n  response += 'Digite seu *e-mail* (opcional, pode digitar *pular*):';\n  updatedStep = 'schedule_email';\n  \n} else if (step === 'schedule_email') {\n  if (message !== 'pular' && message.includes('@')) {\n    updatedContext.email = message;\n  }\n  \n  // Agendamento completo - criar no Google Calendar\n  updatedStep = 'schedule_complete';\n  response = 'Aguarde, estou criando seu agendamento...';\n}\n\nreturn {\n  ...$json,\n  scheduleResponse: response,\n  scheduleContext: updatedContext,\n  scheduleStep: updatedStep\n};"
+      },
+      "id": "e533ca81-5e36-4b73-b33a-9efbdac1d85e",
+      "name": "Processar Agendamento",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "start": "={{ $json.scheduleContext.date + 'T' + $json.scheduleContext.time + ':00' }}",
+        "end": "={{ $json.scheduleContext.date + 'T' + (parseInt($json.scheduleContext.time.split(':')[0]) + 1) + ':' + $json.scheduleContext.time.split(':')[1] + ':00' }}",
+        "additionalFields": {}
+      },
+      "id": "2aa4bd16-fd03-4299-a735-1ba8efd57f53",
+      "name": "Google Calendar - Criar Evento",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1,
+      "position": [
+        64,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list"
+        },
+        "table": {
+          "__rl": true,
+          "value": "appointments",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "phone": "={{ $json.phone }}",
+            "name": "={{ $json.scheduleContext.name }}",
+            "email": "={{ $json.scheduleContext.email || null }}",
+            "service": "={{ $json.scheduleContext.service }}",
+            "appointment_date": "={{ $json.scheduleContext.date }}",
+            "appointment_time": "={{ $json.scheduleContext.time }}",
+            "calendar_event_id": "={{ $('Google Calendar - Criar Evento').item.json.id }}",
+            "status": "pending",
+            "created_at": "={{ new Date().toISOString() }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "d2a589ed-8742-4044-8d7f-83da86d4ff8d",
+      "name": "Supabase - Salvar Agendamento",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        288,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gerar resposta padrão baseada na intenção\nconst intent = $json.intent;\nconst session = $json.session || { step: 'greeting' };\n\nlet response = '';\n\nif (intent === 'greeting' || session.step === 'greeting') {\n  response = '👋 *Olá! Bem-vindo à Clínica J.Melo*\\n\\n';\n  response += 'Como posso ajudá-lo hoje?\\n\\n';\n  response += '*1* - Informações sobre serviços\\n';\n  response += '*2* - Agendar consulta\\n';\n  response += '*3* - Dúvidas frequentes\\n';\n  response += '*4* - Horários de funcionamento\\n';\n  response += '*5* - Valores\\n\\n';\n  response += 'Digite o número da opção ou sua pergunta.';\n  \n} else if (intent === 'pricing') {\n  response = '*Valores*\\n\\n';\n  response += '• *Quiropraxia*: R$ 150,00\\n';\n  response += '• *Medicina Oriental*: R$ 120,00\\n';\n  response += '• *Pacote (3 sessões)*: R$ 350,00\\n\\n';\n  response += 'Gostaria de agendar? Digite *agendar*';\n  \n} else if (intent === 'hours') {\n  response = '*Horários de Funcionamento*\\n\\n';\n  response += 'Segunda a Sexta: 16h às 18h\\n';\n  response += 'Sábado: 9h às 12h\\n';\n  response += 'Domingo: Fechado\\n\\n';\n  response += 'Gostaria de agendar? Digite *agendar*';\n  \n} else if (intent === 'faq') {\n  response = '*Dúvidas Frequentes*\\n\\n';\n  response += '1. Quiropraxia dói?\\n';\n  response += '2. Quantas sessões preciso?\\n';\n  response += '3. Como funciona a primeira consulta?\\n';\n  response += '4. Atende convênio?\\n\\n';\n  response += 'Digite o número da pergunta ou faça sua própria pergunta.';\n  \n} else {\n  response = 'Desculpe, não entendi. Como posso ajudá-lo?\\n\\n';\n  response += 'Digite *agendar* para marcar uma consulta ou *serviços* para conhecer nossos serviços.';\n}\n\nreturn {\n  ...$json,\n  defaultResponse: response\n};"
+      },
+      "id": "8fb777c7-458e-4a01-b652-d18bfb3dae83",
+      "name": "Gerar Resposta Padrão",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Consolidar resposta final\nlet finalResponse = '';\n\nif ($json.ragResponse) {\n  finalResponse = $json.ragResponse;\n} else if ($json.scheduleResponse) {\n  finalResponse = $json.scheduleResponse;\n  \n  // Se agendamento completo, adicionar confirmação\n  if ($json.scheduleStep === 'schedule_complete') {\n    const calendarEvent = $('Google Calendar - Criar Evento')?.item?.json;\n    if (calendarEvent) {\n      finalResponse = '✅ *Agendamento Confirmado!*\\n\\n';\n      finalResponse += `Serviço: *${$json.scheduleContext.service}*\\n`;\n      finalResponse += `Data: *${new Date($json.scheduleContext.date).toLocaleDateString('pt-BR')}*\\n`;\n      finalResponse += `Horário: *${$json.scheduleContext.time}*\\n\\n`;\n      finalResponse += 'Seu agendamento foi criado no nosso sistema.\\n';\n      finalResponse += 'Em breve entraremos em contato para confirmar.\\n\\n';\n      finalResponse += 'Obrigado por escolher a Clínica J.Melo! 🎉';\n    }\n  }\n} else if ($json.defaultResponse) {\n  finalResponse = $json.defaultResponse;\n} else {\n  finalResponse = 'Olá! Como posso ajudá-lo hoje?';\n}\n\n// Atualizar sessão no Redis\nconst session = $json.session || { step: 'greeting', context: {} };\nconst updatedStep = $json.scheduleStep || $json.nextStep || session.step;\nconst updatedContext = $json.scheduleContext || session.context;\n\nconst updatedSession = {\n  phone: $json.phone,\n  step: updatedStep,\n  context: updatedContext,\n  lastMessage: $json.message,\n  lastResponse: finalResponse,\n  updatedAt: new Date().toISOString()\n};\n\nreturn {\n  ...$json,\n  finalResponse,\n  updatedSession\n};"
+      },
+      "id": "f4480498-5462-4571-a119-149157e8fb97",
+      "name": "Consolidar Resposta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ 'session:' + $json.phone }}",
+        "value": "={{ JSON.stringify($json.updatedSession) }}"
+      },
+      "id": "9b8a0519-6280-41bb-99e9-9220034039ee",
+      "name": "Redis - Atualizar Sessão",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        656,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list"
+        },
+        "table": {
+          "__rl": true,
+          "value": "conversations",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "phone": "={{ $json.phone }}",
+            "message": "={{ $json.message }}",
+            "response": "={{ $json.finalResponse }}",
+            "intent": "={{ $json.intent }}",
+            "created_at": "={{ new Date().toISOString() }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "3036040b-91ec-4693-ac82-5714b4524a2d",
+      "name": "Supabase - Salvar Conversa",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        880,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.EVOLUTION_API_URL }}/message/sendText/{{ $env.EVOLUTION_API_INSTANCE }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.EVOLUTION_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.phone + '@s.whatsapp.net' }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.finalResponse }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "af713818-7de1-40b8-9062-baa4dcd9c663",
+      "name": "Evolution API - Enviar Mensagem",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1104,
+        128
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2026-01-20T05:30:15.044Z",
+      "updatedAt": "2026-01-20T05:30:15.044Z",
+      "role": "workflow:owner",
+      "workflowId": "nbRu7KKedWF3z5dA",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-20T05:30:15.044Z",
+  "versionId": "b5e7560a-0a78-42e4-b723-5c2d6cecf504"
+}

@@ -1,0 +1,279 @@
+{
+  "active": false,
+  "connections": {
+    "Verificar Novos Usuários": {
+      "main": [
+        [
+          {
+            "node": "Buscar Novos Usuários",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Novos Usuários": {
+      "main": [
+        [
+          {
+            "node": "Processar Dados do Usuário",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Dados do Usuário": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar Envio no Log": {
+      "main": [
+        [
+          {
+            "node": "Registrar Sucesso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Erros": {
+      "main": [
+        [
+          {
+            "node": "Registrar Erro",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Registrar Sucesso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Registrar Envio no Log",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Verificar Erros",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-17T03:17:46.962Z",
+  "id": "MwwrpqfwCWwEpeom",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Onboarding - Novo Usuário CredGestor",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 3
+            }
+          ]
+        }
+      },
+      "id": "2eb39afd-083b-49d0-aec2-46fcc97ea2a5",
+      "name": "Verificar Novos Usuários",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1536,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=SELECT\n  tu.id,\n  tu.email,\n\n  INITCAP(\n    REPLACE(\n      SPLIT_PART(tu.email, '@', 1),\n      '.',\n      ' '\n    )\n  ) AS nome_usuario,\n\n  tu.tenant_id,\n  tu.role,\n  tu.created_at,\n  t.name AS tenant_name,\n  t.slug AS tenant_slug,\n\n  (now() - tu.created_at) AS idade,\n  (tu.created_at >= now() - interval '24 hours') AS is_novo_24h,\n\n  CASE\n    WHEN tu.created_at >= now() - interval '5 minutes'  THEN '05_MIN'\n    WHEN tu.created_at >= now() - interval '15 minutes' THEN '15_MIN'\n    WHEN tu.created_at >= now() - interval '30 minutes' THEN '30_MIN'\n    WHEN tu.created_at >= now() - interval '1 hour'     THEN '01_H'\n    WHEN tu.created_at >= now() - interval '2 hours'    THEN '02_H'\n    WHEN tu.created_at >= now() - interval '3 hours'    THEN '03_H'\n    WHEN tu.created_at >= now() - interval '6 hours'    THEN '06_H'\n    WHEN tu.created_at >= now() - interval '12 hours'   THEN '12_H'\n    WHEN tu.created_at >= now() - interval '24 hours'   THEN '24_H'\n    ELSE 'OLD'\n  END AS janela_novo\n\nFROM public.tenant_users tu\nLEFT JOIN public.tenants t\n  ON t.id = tu.tenant_id\n\nWHERE tu.ativo = true\n  -- só pega usuários criados nas últimas 24h (ajuste se quiser)\n  AND tu.created_at >= now() - interval '24 hours'\n\n  -- garante que o mesmo usuário NÃO volte a passar:\n  AND NOT EXISTS (\n    SELECT 1\n    FROM public.login_audit la\n    WHERE la.user_id = tu.id\n      AND (la.context->>'action') = 'onboarding_email_sent'\n      AND la.success = true\n  )\n\nORDER BY tu.created_at ASC;\n",
+        "options": {}
+      },
+      "id": "d0676a47-d20e-4055-a1ce-2335312b9c7d",
+      "name": "Buscar Novos Usuários",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        -1248,
+        112
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "5W8bQyCCsNE27usm",
+          "name": "Postgres CredGestor-Homologação"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Processar dados do novo usuário e preparar email de onboarding\nconst items = $input.all();\nconst processedItems = [];\n\nfor (const item of items) {\n  const usuario = item.json;\n\n  // Verificar se o email é válido\n  if (!usuario.email || !usuario.email.includes('@')) {\n    continue;\n  }\n\n  // Formatar data de criação\n  const dataCriacao = new Date(usuario.created_at);\n  const dataFormatada = dataCriacao.toLocaleDateString('pt-BR', {\n    day: '2-digit',\n    month: '2-digit',\n    year: 'numeric',\n    hour: '2-digit',\n    minute: '2-digit',\n  });\n\n  // Nome do tenant ou padrão\n  const tenantName = usuario.tenant_name || 'CredGestor';\n\n  // Extrair nome do email (parte antes do @)\n  const nomeUsuario = usuario.email\n    .split('@')[0]\n    .split('.')\n    .map((palavra) => palavra.charAt(0).toUpperCase() + palavra.slice(1))\n    .join(' ');\n\n  // Montar conteúdo do email HTML (template fornecido)\n  const emailHtml = `<!DOCTYPE html>\n<html lang=\"pt-BR\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>Bem-vindo à CredGestor</title>\n  </head>\n  <body style=\"margin:0; padding:0; background-color:#f4f6f8; font-family: Arial, Helvetica, sans-serif;\">\n    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#f4f6f8; padding:20px;\">\n      <tr>\n        <td align=\"center\">\n          <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; border-radius:8px; padding:32px;\">\n            <tr>\n              <td style=\"color:#333333; font-size:16px; line-height:1.6;\">\n\n                <p style=\"font-size:18px;\">\n                  Olá, <strong>${nomeUsuario}</strong>!\n                </p>\n\n                <p>\n                  Seja muito bem-vindo(a) à <strong>CredGestor</strong>! 👋<br />\n                  Estamos muito felizes por você ter escolhido nossa plataforma para facilitar a gestão dos seus empréstimos e operações de crédito.\n                </p>\n\n                <p>\n                  A CredGestor foi criada para oferecer <strong>controle inteligente</strong>,\n                  <strong>simplicidade no uso</strong> e <strong>visibilidade total dos seus dados financeiros</strong> —\n                  tudo isso em um único lugar, de forma rápida e segura.\n                </p>\n\n                <h3 style=\"margin-top:24px; color:#1f2937;\">\n                  🔑 O que você pode fazer com a CredGestor\n                </h3>\n\n                <p>Aqui estão algumas das principais funcionalidades que você já pode começar a usar:</p>\n\n                <ul style=\"padding-left:20px;\">\n                  <li>📊 <strong>Dashboard intuitivo</strong> com visão completa das suas operações;</li>\n                  <li>📑 <strong>Controle e organização de empréstimos</strong> por cliente, status e data;</li>\n                  <li>📈 <strong>Relatórios automáticos</strong> para decisões mais rápidas;</li>\n                  <li>🔔 <strong>Notificações e lembretes</strong> para acompanhar prazos relevantes;</li>\n                  <li>🤝 <strong>Integração simples</strong> com seus processos internos.</li>\n                </ul>\n\n                <p>\n                  Tudo isso pensado para que você <strong>ganhe tempo e controle</strong> na sua rotina financeira desde o primeiro acesso.\n                </p>\n\n                <p style=\"margin-top:20px;\">\n                  <a href=\"https://credgestor.app.br\"\n                     style=\"display:inline-block; background:#111827; color:#ffffff; text-decoration:none; padding:12px 18px; border-radius:6px; font-weight:600;\">\n                    Acessar CredGestor\n                  </a>\n                </p>\n\n                <p style=\"margin-top:32px;\">\n                  Um abraço,<br />\n                  <strong>Equipe CredGestor</strong>\n                </p>\n\n              </td>\n            </tr>\n          </table>\n\n          <p style=\"font-size:12px; color:#9ca3af; margin-top:16px;\">\n            © CredGestor • Todos os direitos reservados • Conta criada em: ${dataFormatada}\n          </p>\n\n        </td>\n      </tr>\n    </table>\n  </body>\n</html>`;\n\n  processedItems.push({\n    json: {\n      usuario_id: usuario.id,\n      email: usuario.email,\n      nome_usuario: nomeUsuario,\n      tenant_id: usuario.tenant_id,\n      tenant_name: tenantName,\n      tenant_slug: usuario.tenant_slug,\n      role: usuario.role,\n      data_criacao: usuario.created_at,\n      data_formatada: dataFormatada,\n      email_html: emailHtml,\n      // email_texto removido para evitar fallback text/plain e rodapé do n8n\n      assunto: `🎉 Bem-vindo à CredGestor! Vamos começar 🚀!`,\n    },\n  });\n}\n\nreturn processedItems;\n"
+      },
+      "id": "7e247db1-45d6-4162-aa98-4e72d58e7080",
+      "name": "Processar Dados do Usuário",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -960,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO public.login_audit (\n  tenant_id,\n  user_id,\n  email,\n  success,\n  context\n) VALUES (\n  '{{ $('Buscar Novos Usuários').item.json.tenant_id }}'::uuid,\n  '{{ $('Buscar Novos Usuários').item.json.id }}'::uuid,\n  '{{ $('Buscar Novos Usuários').item.json.email }}',\n  true,\n  jsonb_build_object(\n    'action', 'onboarding_email_sent',\n    'sent_at', now()\n  )\n);\n",
+        "options": {}
+      },
+      "id": "6da28a5e-3084-43b0-a853-bbf48e1cd4ff",
+      "name": "Registrar Envio no Log",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        -240,
+        112
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "5W8bQyCCsNE27usm",
+          "name": "Postgres CredGestor-Homologação"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "error-condition",
+              "leftValue": "={{ $json.errorMessage || $json.error_message || '' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "4dcda3a2-d444-4254-ae29-b44d44572702",
+      "name": "Verificar Erros",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -224,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Log de erro para debug\nconst error = $input.first().json.error || 'Erro desconhecido';\nconst usuario = $input.first().json;\n\nconsole.error('Erro ao enviar email de onboarding:', {\n  usuario_id: usuario.usuario_id,\n  email: usuario.email,\n  erro: error\n});\n\nreturn [{\n  json: {\n    sucesso: false,\n    usuario_id: usuario.usuario_id,\n    email: usuario.email,\n    erro: error,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "46db93c1-7998-4a12-b72e-99f6dd57e1d2",
+      "name": "Registrar Erro",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Log de sucesso\nconst usuario = $input.first().json;\n\nconsole.log('Email de onboarding enviado com sucesso:', {\n  usuario_id: usuario.usuario_id,\n  email: usuario.email,\n  tenant: usuario.tenant_name\n});\n\nreturn [{\n  json: {\n    sucesso: true,\n    usuario_id: usuario.usuario_id,\n  email: usuario.email,\n    tenant_name: usuario.tenant_name,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "4d459e59-489c-4cd2-a18c-6d9dedd6684a",
+      "name": "Registrar Sucesso",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "= {{ $json.assunto }}",
+        "message": "={{ $json.email_html }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "CredGestor"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -672,
+        112
+      ],
+      "id": "2669672a-c409-4266-a240-261d852a9bf1",
+      "name": "Send a message",
+      "webhookId": "8a274f35-0fc2-4a9b-b925-eaaeb901827a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "a6p3Q2T0CPdmQVBb",
+          "name": "Gmail CredGestor"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2026-01-17T03:17:46.962Z",
+      "updatedAt": "2026-01-17T03:17:46.962Z",
+      "role": "workflow:owner",
+      "workflowId": "MwwrpqfwCWwEpeom",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": {
+    "node:Verificar Novos Usuários": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-01-20T05:20:54.694Z",
+  "versionId": "72e734b9-f476-4c35-bdb4-bf3b445203f5"
+}

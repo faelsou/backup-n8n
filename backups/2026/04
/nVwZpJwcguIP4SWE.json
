@@ -1,0 +1,825 @@
+{
+  "active": false,
+  "connections": {
+    "Verificação Periódica": {
+      "main": [
+        [
+          {
+            "node": "Health Check API",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Verificar Métricas",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Health Check Frontend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Health Check API": {
+      "main": [
+        [
+          {
+            "node": "Agregar Resultados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Métricas": {
+      "main": [
+        [
+          {
+            "node": "Agregar Resultados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Health Check Frontend": {
+      "main": [
+        [
+          {
+            "node": "Agregar Resultados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agregar Resultados": {
+      "main": [
+        [
+          {
+            "node": "Verificar Problemas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Problemas": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Resumo Sistema Saudável",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Orquestração": {
+      "main": [
+        [
+          {
+            "node": "Rotear Infra",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Rotear Database",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Rotear Development",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Troubleshooting": {
+      "main": [
+        [
+          {
+            "node": "Verificar Se Pronto para Resolução",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Se Pronto para Resolução": {
+      "main": [
+        [
+          {
+            "node": "Rotear Resolução Infra",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Rotear Resolução Database",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Rotear Resolução Dev",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Plano de Ação": {
+      "main": [
+        [
+          {
+            "node": "Formatar Notificação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar Notificação": {
+      "main": [
+        [
+          {
+            "node": "Enviar Slack",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Enviar Email Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Slack": {
+      "main": [
+        [
+          {
+            "node": "Resumo da Execução",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Email Gmail": {
+      "main": [
+        [
+          {
+            "node": "Resumo da Execução",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-23T05:23:03.634Z",
+  "id": "nVwZpJwcguIP4SWE",
+  "isArchived": false,
+  "meta": null,
+  "name": "CredGestor - Multi-Agente AI Orquestrado",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "*/15 * * * *"
+            }
+          ]
+        }
+      },
+      "id": "2a1dd2a9-148d-4f99-bd64-e0febc43f81b",
+      "name": "Verificação Periódica",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -688,
+        448
+      ],
+      "notes": "Executa a cada 15 minutos para verificar a saúde da aplicação"
+    },
+    {
+      "parameters": {
+        "url": "=https://credgestor.app.br/api/health",
+        "options": {
+          "redirect": {},
+          "timeout": 10000
+        }
+      },
+      "id": "878f8e81-47c9-4bfd-935b-1c377432eaec",
+      "name": "Health Check API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -464,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://credgestor.app.br/api/metrics",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "d1230124-cfdc-4fb2-8abe-0c564e0e5b3b",
+      "name": "Verificar Métricas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -464,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://credgestor.app.br",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "65915e3d-99ed-4d47-a987-dd11a6a4f8c1",
+      "name": "Health Check Frontend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -464,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Agregar resultados de todas as verificações\nconst healthApi = $('Health Check API').item.json;\nconst metrics = $('Verificar Métricas').item.json;\nconst frontend = $('Health Check Frontend').item.json;\n\nconst timestamp = new Date().toISOString();\n\n// Analisar status da API\nconst apiStatus = {\n  status: healthApi.statusCode === 200 ? 'healthy' : 'unhealthy',\n  statusCode: healthApi.statusCode,\n  response: healthApi.body || healthApi.data || {},\n  timestamp: timestamp\n};\n\n// Analisar métricas\nlet metricsData = {};\nif (metrics.statusCode === 200) {\n  const metricsText = typeof metrics.body === 'string' ? metrics.body : JSON.stringify(metrics.body);\n  metricsData = {\n    status: 'available',\n    hasData: true,\n    raw: metricsText.substring(0, 1000)\n  };\n} else {\n  metricsData = {\n    status: 'unavailable',\n    hasData: false\n  };\n}\n\n// Analisar frontend\nconst frontendStatus = {\n  status: frontend.statusCode === 200 ? 'healthy' : 'unhealthy',\n  statusCode: frontend.statusCode,\n  timestamp: timestamp\n};\n\n// Determinar problemas por categoria\nconst issues = {\n  infra: [],\n  database: [],\n  development: []\n};\n\nif (apiStatus.status === 'unhealthy') {\n  if (apiStatus.statusCode >= 500) {\n    issues.infra.push({\n      type: 'api_server_error',\n      severity: 'critical',\n      message: `API retornou erro ${apiStatus.statusCode}`,\n      statusCode: apiStatus.statusCode\n    });\n  } else {\n    issues.development.push({\n      type: 'api_client_error',\n      severity: 'high',\n      message: `API retornou status ${apiStatus.statusCode}`,\n      statusCode: apiStatus.statusCode\n    });\n  }\n}\n\nif (metricsData.status === 'unavailable') {\n  issues.infra.push({\n    type: 'metrics_unavailable',\n    severity: 'warning',\n    message: 'Endpoint de métricas não está respondendo'\n  });\n}\n\nif (frontendStatus.status === 'unhealthy') {\n  issues.development.push({\n    type: 'frontend_error',\n    severity: 'critical',\n    message: `Frontend retornou status ${frontendStatus.statusCode}`,\n    statusCode: frontendStatus.statusCode\n  });\n}\n\n// Verificar se há problemas de banco (simulação - você pode adicionar health check específico)\nif (apiStatus.response && apiStatus.response.database) {\n  if (apiStatus.response.database.status !== 'healthy') {\n    issues.database.push({\n      type: 'database_connection',\n      severity: 'critical',\n      message: 'Problemas de conexão com banco de dados',\n      details: apiStatus.response.database\n    });\n  }\n}\n\nconst totalIssues = issues.infra.length + issues.database.length + issues.development.length;\n\nreturn [{\n  json: {\n    timestamp: timestamp,\n    api: apiStatus,\n    metrics: metricsData,\n    frontend: frontendStatus,\n    issues: issues,\n    hasIssues: totalIssues > 0,\n    issueCount: totalIssues,\n    vpsInfo: {\n      host: process.env.VPS_HOST || 'credgestor-vps.example.com',\n      user: process.env.VPS_USER || 'deploy',\n      sshPort: process.env.VPS_SSH_PORT || 22,\n      appPath: process.env.APP_PATH || '/var/www/credgestor'\n    }\n  }\n}];"
+      },
+      "id": "5b6d2c5a-61e7-4996-92dc-eee3f311a9d4",
+      "name": "Agregar Resultados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "has-issues",
+              "leftValue": "={{ $json.hasIssues }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1d096d82-f6e9-423e-85ac-47d302fb9f61",
+      "name": "Verificar Problemas",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -16,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-20250514",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4"
+        },
+        "options": {
+          "temperature": 0.3
+        }
+      },
+      "id": "127b6c5a-e254-482f-92d3-6bbf0ec2db8a",
+      "name": "Agente Orquestrador Claude",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1,
+      "position": [
+        208,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Processar resposta do orquestrador e preparar para os agentes\nconst orchestratorResponse = $input.item.json;\nlet orchestratorData;\n\ntry {\n  // Extrair JSON da resposta\n  const responseText = orchestratorResponse.output || orchestratorResponse.text || JSON.stringify(orchestratorResponse);\n  const jsonMatch = responseText.match(/\\{[\\s\\S]*\\}/);\n  \n  if (jsonMatch) {\n    orchestratorData = JSON.parse(jsonMatch[0]);\n  } else {\n    throw new Error('No JSON found in response');\n  }\n} catch (error) {\n  // Fallback se não conseguir parsear\n  orchestratorData = {\n    summary: 'Erro ao processar resposta do orquestrador',\n    critical_level: 'medium',\n    agents_to_activate: [\n      { agent: 'infra', priority: 'high', reason: 'Verificação manual necessária' }\n    ],\n    immediate_actions_needed: true,\n    estimated_impact: 'Desconhecido'\n  };\n}\n\n// Recuperar dados originais do monitoramento\nconst monitoringData = $('Agregar Resultados').item.json;\n\n// Criar outputs para cada agente que precisa ser ativado\nconst outputs = [];\n\nfor (const agentConfig of orchestratorData.agents_to_activate) {\n  const agentType = agentConfig.agent;\n  \n  outputs.push({\n    json: {\n      agent_type: agentType,\n      priority: agentConfig.priority,\n      orchestrator_summary: orchestratorData.summary,\n      critical_level: orchestratorData.critical_level,\n      activation_reason: agentConfig.reason,\n      monitoring_data: monitoringData,\n      issues: monitoringData.issues[agentType] || [],\n      vps_info: monitoringData.vpsInfo,\n      timestamp: monitoringData.timestamp,\n      immediate_actions_needed: orchestratorData.immediate_actions_needed,\n      estimated_impact: orchestratorData.estimated_impact\n    }\n  });\n}\n\nreturn outputs.length > 0 ? outputs : [{ \n  json: { \n    skip: true, \n    message: 'Nenhum agente precisa ser ativado',\n    orchestrator_summary: orchestratorData.summary \n  } \n}];"
+      },
+      "id": "9263c381-011c-4560-bc34-8b823b18671f",
+      "name": "Processar Orquestração",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        432,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "is-infra",
+              "leftValue": "={{ $json.agent_type }}",
+              "rightValue": "infra",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f18c6b4a-9bb1-4900-91f2-a51d4de84c6c",
+      "name": "Rotear Infra",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        640,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "is-database",
+              "leftValue": "={{ $json.agent_type }}",
+              "rightValue": "database",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a46d55b1-1497-40c2-9f32-7f8492c8732e",
+      "name": "Rotear Database",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        640,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "is-dev",
+              "leftValue": "={{ $json.agent_type }}",
+              "rightValue": "development",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "30fc10a0-cace-4d15-919d-9b68490d098b",
+      "name": "Rotear Development",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        640,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-20250514",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "id": "336a8c83-3761-4575-a890-90cbbcdc8b79",
+      "name": "Agente Troubleshooting Infra",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1,
+      "position": [
+        864,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-20250514",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "id": "8ea8b995-aea5-4baa-9717-15ca399ab8b8",
+      "name": "Agente Troubleshooting Database",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1,
+      "position": [
+        864,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-20250514",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "id": "32539467-db6f-4b87-87db-79eed362013a",
+      "name": "Agente Troubleshooting Dev",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1,
+      "position": [
+        864,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Processar troubleshooting e preparar para agente resolutor\nconst troubleshootResponse = $input.item.json;\nlet troubleshootData;\n\ntry {\n  const responseText = troubleshootResponse.output || troubleshootResponse.text || JSON.stringify(troubleshootResponse);\n  const jsonMatch = responseText.match(/\\{[\\s\\S]*\\}/);\n  \n  if (jsonMatch) {\n    troubleshootData = JSON.parse(jsonMatch[0]);\n  } else {\n    throw new Error('No JSON found in troubleshoot response');\n  }\n} catch (error) {\n  console.error('Error parsing troubleshoot response:', error);\n  troubleshootData = {\n    troubleshooting_id: `manual-${Date.now()}`,\n    agent: 'unknown',\n    timestamp: new Date().toISOString(),\n    ready_for_resolution: false,\n    notes: 'Erro ao processar resposta do troubleshooting'\n  };\n}\n\n// Salvar relatório de troubleshooting\nconst report = {\n  id: troubleshootData.troubleshooting_id,\n  agent: troubleshootData.agent,\n  timestamp: troubleshootData.timestamp,\n  data: troubleshootData\n};\n\nreturn [{\n  json: {\n    troubleshoot_report: report,\n    ready_for_resolution: troubleshootData.ready_for_resolution,\n    agent_type: troubleshootData.agent,\n    problems: troubleshootData.problems_analyzed || [],\n    root_cause: troubleshootData.root_cause_hypothesis,\n    impact: troubleshootData.impact_assessment,\n    evidence: troubleshootData.evidence_collected\n  }\n}];"
+      },
+      "id": "92ebfeec-76d5-43e1-b750-6ffe21315880",
+      "name": "Processar Troubleshooting",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1088,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "ready",
+              "leftValue": "={{ $json.ready_for_resolution }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b5ec5741-89bb-45b2-8a39-349bc0c5b659",
+      "name": "Verificar Se Pronto para Resolução",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1312,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "is-infra-resolution",
+              "leftValue": "={{ $json.agent_type }}",
+              "rightValue": "infra",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7b1a363f-a572-4d06-b49b-5ee6d30ebc2f",
+      "name": "Rotear Resolução Infra",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "is-db-resolution",
+              "leftValue": "={{ $json.agent_type }}",
+              "rightValue": "database",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "55cb2844-e9b5-4a0e-a631-e86d5df849ee",
+      "name": "Rotear Resolução Database",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "is-dev-resolution",
+              "leftValue": "={{ $json.agent_type }}",
+              "rightValue": "development",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "28bb85b6-0344-4da6-aa74-78ae97e7254d",
+      "name": "Rotear Resolução Dev",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-20250514",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4"
+        },
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "id": "88b4e02a-5a7f-4d2b-bf0d-662f3a825f2a",
+      "name": "Agente Resolutor Infra",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1,
+      "position": [
+        1744,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-20250514",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4"
+        },
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "id": "4638b7ce-0b16-47b8-8437-1a365fe9050b",
+      "name": "Agente Resolutor Database",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1,
+      "position": [
+        1744,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-20250514",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4"
+        },
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "id": "8f8e0131-f663-4610-8b76-7f9472c80de2",
+      "name": "Agente Resolutor Dev",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1,
+      "position": [
+        1744,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Processar plano de ação e preparar para envio\nconst actionPlanResponse = $input.item.json;\nlet actionPlan;\n\ntry {\n  const responseText = actionPlanResponse.output || actionPlanResponse.text || JSON.stringify(actionPlanResponse);\n  const jsonMatch = responseText.match(/\\{[\\s\\S]*\\}/);\n  \n  if (jsonMatch) {\n    actionPlan = JSON.parse(jsonMatch[0]);\n  } else {\n    throw new Error('No JSON found in action plan response');\n  }\n} catch (error) {\n  console.error('Error parsing action plan:', error);\n  actionPlan = {\n    action_plan_id: `manual-${Date.now()}`,\n    agent: 'unknown',\n    timestamp: new Date().toISOString(),\n    requires_approval: true,\n    approval_reason: 'Erro ao processar plano de ação automático'\n  };\n}\n\n// Formatar para notificação\nconst formattedPlan = {\n  id: actionPlan.action_plan_id,\n  agent: actionPlan.agent,\n  timestamp: actionPlan.timestamp,\n  troubleshoot_ref: actionPlan.troubleshoot_reference,\n  requires_approval: actionPlan.requires_approval,\n  approval_reason: actionPlan.approval_reason,\n  estimated_time: actionPlan.estimated_total_time,\n  action_count: actionPlan.actions ? actionPlan.actions.length : 0,\n  vps_connection: actionPlan.vps_connection_instructions,\n  full_plan: actionPlan\n};\n\nreturn [{\n  json: formattedPlan\n}];"
+      },
+      "id": "f081b130-f159-4ea9-ba22-e97b155024b8",
+      "name": "Processar Plano de Ação",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1968,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Formatar mensagem para Slack e Email\nconst plan = $input.item.json;\nconst timestamp = new Date(plan.timestamp).toLocaleString('pt-BR');\n\n// Determinar emoji de severidade\nlet severityEmoji = '⚠️';\nlet severityText = 'ATENÇÃO';\n\nif (plan.full_plan.actions && plan.full_plan.actions.some(a => a.risk_level === 'critical')) {\n  severityEmoji = '🚨';\n  severityText = 'CRÍTICO';\n} else if (plan.full_plan.actions && plan.full_plan.actions.some(a => a.risk_level === 'high')) {\n  severityEmoji = '⛔';\n  severityText = 'ALTO RISCO';\n}\n\nconst agentNames = {\n  'infra_resolver': 'Infraestrutura',\n  'database_resolver': 'Banco de Dados',\n  'development_resolver': 'Desenvolvimento'\n};\n\nconst agentName = agentNames[plan.agent] || plan.agent;\n\n// Slack message (Markdown)\nconst slackMessage = `${severityEmoji} *${severityText} - Plano de Ação Gerado*\n\n*Agente:* ${agentName}\n*ID do Plano:* \\`${plan.id}\\`\n*Referência Troubleshooting:* \\`${plan.troubleshoot_ref}\\`\n*Timestamp:* ${timestamp}\n*Tempo Estimado:* ${plan.estimated_time}\n*Total de Ações:* ${plan.action_count}\n\n${plan.requires_approval ? '🔐 *REQUER APROVAÇÃO*' : '✅ *Pode ser executado automaticamente*'}\n${plan.approval_reason ? `*Motivo:* ${plan.approval_reason}` : ''}\n\n*Conexão VPS:*\n\\`\\`\\`\n${plan.vps_connection.command}\n\\`\\`\\`\n\n*Comandos Pós-Conexão:*\n${plan.vps_connection.post_connection_commands ? plan.vps_connection.post_connection_commands.map(cmd => `• \\`${cmd}\\``).join('\\n') : 'N/A'}\n\n*Resumo das Ações:*\n${plan.full_plan.actions ? plan.full_plan.actions.map((action, idx) => \n  `${idx + 1}. *${action.title}* (${action.estimated_duration})\n   Risco: ${action.risk_level.toUpperCase()}\n   ${action.causes_downtime ? '⏸️ Causa downtime: ' + action.downtime_duration : '✅ Zero downtime'}`\n).join('\\n\\n') : 'Nenhuma ação definida'}\n\n*Critérios de Sucesso:*\n${plan.full_plan.success_criteria ? plan.full_plan.success_criteria.map(c => `✓ ${c}`).join('\\n') : 'N/A'}\n\n*Observações:*\n${plan.full_plan.notes || 'Nenhuma observação adicional'}\n\n---\n📊 Relatório completo disponível em anexo`;\n\n// Email HTML\nconst emailHtml = `\n<!DOCTYPE html>\n<html>\n<head>\n  <style>\n    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }\n    .header { background: #2563eb; color: white; padding: 20px; border-radius: 5px 5px 0 0; }\n    .content { padding: 20px; background: #f9fafb; }\n    .section { background: white; margin: 15px 0; padding: 15px; border-radius: 5px; border-left: 4px solid #2563eb; }\n    .action-item { background: #f3f4f6; padding: 10px; margin: 10px 0; border-radius: 3px; }\n    .risk-critical { border-left-color: #dc2626; }\n    .risk-high { border-left-color: #ea580c; }\n    .risk-medium { border-left-color: #f59e0b; }\n    .risk-low { border-left-color: #10b981; }\n    code { background: #e5e7eb; padding: 2px 6px; border-radius: 3px; font-family: monospace; }\n    .approval-required { background: #fef3c7; border: 2px solid #f59e0b; padding: 15px; border-radius: 5px; margin: 15px 0; }\n  </style>\n</head>\n<body>\n  <div class=\"header\">\n    <h1>${severityEmoji} ${severityText} - Plano de Ação Gerado</h1>\n  </div>\n  \n  <div class=\"content\">\n    <div class=\"section\">\n      <h2>Informações do Plano</h2>\n      <p><strong>Agente:</strong> ${agentName}</p>\n      <p><strong>ID do Plano:</strong> <code>${plan.id}</code></p>\n      <p><strong>Referência Troubleshooting:</strong> <code>${plan.troubleshoot_ref}</code></p>\n      <p><strong>Timestamp:</strong> ${timestamp}</p>\n      <p><strong>Tempo Estimado Total:</strong> ${plan.estimated_time}</p>\n      <p><strong>Total de Ações:</strong> ${plan.action_count}</p>\n    </div>\n    \n    ${plan.requires_approval ? `\n    <div class=\"approval-required\">\n      <h3>🔐 REQUER APROVAÇÃO</h3>\n      <p><strong>Motivo:</strong> ${plan.approval_reason}</p>\n    </div>\n    ` : '<div class=\"section\"><p>✅ Este plano pode ser executado automaticamente</p></div>'}\n    \n    <div class=\"section\">\n      <h2>Conexão VPS</h2>\n      <p><strong>Método:</strong> ${plan.vps_connection.method}</p>\n      <p><strong>Comando SSH:</strong></p>\n      <code>${plan.vps_connection.command || plan.vps_connection.ssh_command}</code>\n      \n      ${plan.vps_connection.post_connection_commands ? `\n      <p><strong>Comandos Pós-Conexão:</strong></p>\n      <ul>\n        ${plan.vps_connection.post_connection_commands.map(cmd => `<li><code>${cmd}</code></li>`).join('')}\n      </ul>\n      ` : ''}\n    </div>\n    \n    <div class=\"section\">\n      <h2>Ações do Plano</h2>\n      ${plan.full_plan.actions ? plan.full_plan.actions.map((action, idx) => `\n      <div class=\"action-item risk-${action.risk_level}\">\n        <h3>Passo ${action.step}: ${action.title}</h3>\n        <p>${action.description}</p>\n        <p><strong>Duração Estimada:</strong> ${action.estimated_duration}</p>\n        <p><strong>Nível de Risco:</strong> ${action.risk_level.toUpperCase()}</p>\n        ${action.causes_downtime ? `<p><strong>⏸️ Downtime:</strong> ${action.downtime_duration}</p>` : '<p>✅ Zero downtime</p>'}\n        \n        <details>\n          <summary><strong>Comandos (${action.commands.length})</strong></summary>\n          ${action.commands.map(cmd => `\n            <p><strong>Sequência ${cmd.sequence}:</strong></p>\n            <code>${cmd.command}</code>\n            <p><em>Objetivo:</em> ${cmd.purpose || 'N/A'}</p>\n            <p><em>Resultado Esperado:</em> ${cmd.expected_result}</p>\n          `).join('<hr>')}\n        </details>\n        \n        ${action.rollback_commands && action.rollback_commands.length > 0 ? `\n        <details>\n          <summary><strong>Rollback</strong></summary>\n          ${action.rollback_commands.map(cmd => `<code>${cmd}</code><br>`).join('')}\n        </details>\n        ` : ''}\n      </div>\n      `).join('') : '<p>Nenhuma ação definida</p>'}\n    </div>\n    \n    <div class=\"section\">\n      <h2>Critérios de Sucesso</h2>\n      <ul>\n        ${plan.full_plan.success_criteria ? plan.full_plan.success_criteria.map(c => `<li>${c}</li>`).join('') : '<li>Não especificado</li>'}\n      </ul>\n    </div>\n    \n    ${plan.full_plan.notes ? `\n    <div class=\"section\">\n      <h2>Observações</h2>\n      <p>${plan.full_plan.notes}</p>\n    </div>\n    ` : ''}\n  </div>\n</body>\n</html>\n`;\n\nreturn [{\n  json: {\n    slack_message: slackMessage,\n    email_html: emailHtml,\n    email_subject: `${severityEmoji} ${severityText} - Plano de Ação: ${agentName}`,\n    plan_data: plan\n  }\n}];"
+      },
+      "id": "1c20bfe4-be0a-4482-a5de-4220cf558d34",
+      "name": "Formatar Notificação",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2192,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.slack_message }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": true
+        }
+      },
+      "id": "f65f77f9-e7c7-4092-9db6-08a478c8694a",
+      "name": "Enviar Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.1,
+      "position": [
+        2400,
+        352
+      ],
+      "webhookId": "76281ae0-e93f-401d-8eab-bc477e4a804b"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $env.ALERT_EMAIL || 'devops@credgestor.app.br' }}",
+        "subject": "={{ $json.email_subject }}",
+        "message": "={{ $json.email_html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "d8aacc51-3dd4-4f39-8b42-212517e052bf",
+      "name": "Enviar Email Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2400,
+        544
+      ],
+      "webhookId": "6307f5eb-d330-4a01-bee4-9658fee7ee59"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Criar resumo final da execução\nconst allInputs = $input.all();\n\nconst summary = {\n  execution_id: $execution.id,\n  timestamp: new Date().toISOString(),\n  total_plans_generated: allInputs.length,\n  plans: allInputs.map(item => ({\n    id: item.json.plan_data.id,\n    agent: item.json.plan_data.agent,\n    requires_approval: item.json.plan_data.requires_approval,\n    estimated_time: item.json.plan_data.estimated_time,\n    action_count: item.json.plan_data.action_count\n  }))\n};\n\nconsole.log('Execution Summary:', JSON.stringify(summary, null, 2));\n\nreturn [{ json: summary }];"
+      },
+      "id": "e1b2e067-bd49-489c-8686-31a977b10ffc",
+      "name": "Resumo da Execução",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2624,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Resumo quando não há problemas\nconst monitoringData = $input.item.json;\n\nconst summary = {\n  execution_id: $execution.id,\n  timestamp: new Date().toISOString(),\n  status: 'healthy',\n  message: 'Sistema operando normalmente',\n  checks: {\n    api: monitoringData.api.status,\n    metrics: monitoringData.metrics.status,\n    frontend: monitoringData.frontend.status\n  }\n};\n\nconsole.log('Healthy Check Summary:', JSON.stringify(summary, null, 2));\n\nreturn [{ json: summary }];"
+      },
+      "id": "dcefac92-0cd4-4908-ac56-5d6b2ea10970",
+      "name": "Resumo Sistema Saudável",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        640
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2026-01-23T05:23:03.634Z",
+      "updatedAt": "2026-01-23T05:23:03.634Z",
+      "role": "workflow:owner",
+      "workflowId": "nVwZpJwcguIP4SWE",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2026-01-23T05:21:27.103Z",
+      "updatedAt": "2026-01-23T05:21:27.103Z",
+      "id": "cQJ9M6zs6gDcOIwb",
+      "name": "Multi-Agent AI"
+    },
+    {
+      "createdAt": "2026-01-23T05:21:27.131Z",
+      "updatedAt": "2026-01-23T05:21:27.131Z",
+      "id": "ViJVX5zY7d3huOM8",
+      "name": "Monitoring"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-23T05:23:03.634Z",
+  "versionId": "85772c89-a308-49d6-b16e-ed08da135d3e"
+}

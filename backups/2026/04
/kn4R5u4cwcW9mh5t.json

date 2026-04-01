@@ -1,0 +1,1678 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook Login": {
+      "main": [
+        [
+          {
+            "node": "Validar Input Login",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Input Login": {
+      "main": [
+        [
+          {
+            "node": "Input Válido?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Válido?": {
+      "main": [
+        [
+          {
+            "node": "Buscar Usuário",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Response Validation Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Usuário": {
+      "main": [
+        [
+          {
+            "node": "Usuário Existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Usuário Existe?": {
+      "main": [
+        [
+          {
+            "node": "Validar Senha Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Response Login Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Senha Postgres": {
+      "main": [
+        [
+          {
+            "node": "Processar Validação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Validação": {
+      "main": [
+        [
+          {
+            "node": "Senha Válida?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Senha Válida?": {
+      "main": [
+        [
+          {
+            "node": "Gerar JTIs e Timestamps",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Response Login Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar JTIs e Timestamps": {
+      "main": [
+        [
+          {
+            "node": "Criar JWT Payloads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar JWT Payloads": {
+      "main": [
+        [
+          {
+            "node": "Assinar Tokens JWT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assinar Tokens JWT": {
+      "main": [
+        [
+          {
+            "node": "Formatar Tokens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar Tokens": {
+      "main": [
+        [
+          {
+            "node": "Criar Sessão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Sessão": {
+      "main": [
+        [
+          {
+            "node": "Response Login Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Criar Cliente": {
+      "main": [
+        [
+          {
+            "node": "Middleware Auth Simples",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Middleware Auth Simples": {
+      "main": [
+        [
+          {
+            "node": "Autenticado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Autenticado?": {
+      "main": [
+        [
+          {
+            "node": "Validar Input Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Response Auth Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Input Cliente": {
+      "main": [
+        [
+          {
+            "node": "Input Válido?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Dados": {
+      "main": [
+        [
+          {
+            "node": "Inserir Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inserir Cliente": {
+      "main": [
+        [
+          {
+            "node": "Response Cliente Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Válido?1": {
+      "main": [
+        [
+          {
+            "node": "Preparar Dados",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Response Validation Error1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Criar Empréstimo": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Input Empréstimo": {
+      "main": [
+        [
+          {
+            "node": "Input Válido?2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular Parcelas": {
+      "main": [
+        [
+          {
+            "node": "Extrair auth_email do JWT (Authorization Bearer)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Parcelas": {
+      "main": [
+        []
+      ]
+    },
+    "Inserir Parcelas": {
+      "main": [
+        []
+      ]
+    },
+    "Preparar Resposta": {
+      "main": [
+        [
+          {
+            "node": "Response Sucesso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Válido?2": {
+      "main": [
+        [
+          {
+            "node": "Calcular Parcelas",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Response Validation Error2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Validar Input Empréstimo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair auth_email do JWT (Authorization Bearer)": {
+      "main": [
+        [
+          {
+            "node": "Inserir Empréstimo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inserir Empréstimo": {
+      "main": [
+        [
+          {
+            "node": "Extrair ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        []
+      ]
+    },
+    "Parcelas": {
+      "main": [
+        [
+          {
+            "node": "Preparar Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Parcelas": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Prepare Parcelas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Parcelas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair ID": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-29T18:46:22.712Z",
+  "id": "kn4R5u4cwcW9mh5t",
+  "isArchived": true,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Backend-credGestor-FINAL",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "auth/login",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "9e0cc16d-5083-4a1d-9edc-7bdf690c1758",
+      "name": "Webhook Login",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1600,
+        304
+      ],
+      "webhookId": "auth-login"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body ?? {};\nconst errors = [];\n\nif (!body.email || typeof body.email !== 'string' || !body.email.includes('@')) {\n  errors.push('email é obrigatório e deve ser válido');\n}\n\nif (!body.senha || typeof body.senha !== 'string' || body.senha.length < 6) {\n  errors.push('senha é obrigatória e deve ter no mínimo 6 caracteres');\n}\n\nreturn [{\n  json: {\n    valido: errors.length === 0,\n    erro: errors.length ? 'Validação falhou' : null,\n    detalhes: errors,\n    input: {\n      email: body.email,\n      senha_fornecida: body.senha\n    }\n  }\n}];"
+      },
+      "id": "8fd1af9e-eeca-4e8d-ba8c-49a7df19807c",
+      "name": "Validar Input Login",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1408,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.valido }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "f233f673-5089-4bc7-b8f3-5c3a479dc206",
+      "name": "Input Válido?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1200,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "b8fc52fb-3d34-42d5-9804-20e1533ae2ed",
+      "name": "Response Validation Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -1008,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n  tu.id,\n  tu.tenant_id,\n  tu.email,\n  tu.password_hash,\n  tu.role,\n  tu.ativo,\n  t.nome as tenant_nome\nFROM public.tenant_users tu\nINNER JOIN public.tenants t ON t.id = tu.tenant_id\nWHERE tu.email = $1\n  AND tu.ativo = true\nLIMIT 1;",
+        "options": {
+          "queryReplacement": "={{ $items('Webhook Login')[0].json.body.email }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1008,
+        208
+      ],
+      "id": "50b37e24-508b-4a14-9587-0905cdc972de",
+      "name": "Buscar Usuário",
+      "credentials": {
+        "postgres": {
+          "id": "ISeq8ovLtFz7Vb1t",
+          "name": "Postgres CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $items().length }}",
+              "operation": "larger"
+            }
+          ]
+        }
+      },
+      "id": "f1a67ed7-796e-4528-a100-74fd8042d4a7",
+      "name": "Usuário Existe?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {\n  erro: 'CREDENCIAIS_INVALIDAS',\n  mensagem: 'Email ou senha incorretos',\n  timestamp: new Date().toISOString()\n} }}",
+        "options": {}
+      },
+      "id": "58550bac-7faf-462e-a293-82a6c6002875",
+      "name": "Response Login Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT validar_senha_bcrypt($1, $2) as senha_valida;",
+        "options": {
+          "queryReplacement": "={{ $items('Webhook Login')[0].json.body.senha }}\n={{ $json.password_hash }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -608,
+        112
+      ],
+      "id": "2763417d-0190-4f2a-ad70-0b68e41c74f9",
+      "name": "Validar Senha Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "ISeq8ovLtFz7Vb1t",
+          "name": "Postgres CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Processar validação\nconst senhaValida = $json.senha_valida;\nconst usuario = $items('Buscar Usuário')[0].json;\n\nif (!senhaValida) {\n  return [{\n    json: {\n      autenticado: false,\n      senha_valida: false\n    }\n  }];\n}\n\nreturn [{\n  json: {\n    autenticado: true,\n    senha_valida: true,\n    usuario: {\n      id: usuario.id,\n      email: usuario.email,\n      tenant_id: usuario.tenant_id,\n      tenant_nome: usuario.tenant_nome,\n      role: usuario.role\n    }\n  }\n}];"
+      },
+      "id": "36fa4542-15e2-46de-9c06-707b8b8b8696",
+      "name": "Processar Validação",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.senha_valida }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "900b8bee-07df-4940-9281-fb8b2745e7d6",
+      "name": "Senha Válida?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Gerar tokens JWT no Postgres\nSELECT \n  gen_random_uuid() as access_jti,\n  gen_random_uuid() as refresh_jti,\n  extract(epoch from now())::bigint as iat,\n  extract(epoch from now() + interval '15 minutes')::bigint as access_exp,\n  extract(epoch from now() + interval '7 days')::bigint as refresh_exp;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a0a48a46-92aa-42a0-b26a-48c983bf9419",
+      "name": "Gerar JTIs e Timestamps",
+      "credentials": {
+        "postgres": {
+          "id": "ISeq8ovLtFz7Vb1t",
+          "name": "Postgres CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Criar payloads JWT (SEM crypto, apenas base64)\nconst usuario = $items('Processar Validação')[0].json.usuario;\nconst jwtData = $json;\n\n// Header JWT fixo\nconst header = {alg: 'HS256', typ: 'JWT'};\n\n// Access token payload\nconst accessPayload = {\n  sub: usuario.id,\n  email: usuario.email,\n  tenant_id: usuario.tenant_id,\n  role: usuario.role,\n  type: 'access',\n  jti: jwtData.access_jti,\n  iat: jwtData.iat,\n  exp: jwtData.access_exp\n};\n\n// Refresh token payload\nconst refreshPayload = {\n  sub: usuario.id,\n  tenant_id: usuario.tenant_id,\n  type: 'refresh',\n  jti: jwtData.refresh_jti,\n  iat: jwtData.iat,\n  exp: jwtData.refresh_exp\n};\n\n// Criar tokens \"mock\" (sem assinatura real - apenas para estrutura)\n// A assinatura real será feita no Postgres\nfunction base64url(obj) {\n  return Buffer.from(JSON.stringify(obj))\n    .toString('base64')\n    .replace(/\\+/g, '-')\n    .replace(/\\//g, '_')\n    .replace(/=/g, '');\n}\n\nconst accessTokenUnsigned = base64url(header) + '.' + base64url(accessPayload);\nconst refreshTokenUnsigned = base64url(header) + '.' + base64url(refreshPayload);\n\nreturn [{\n  json: {\n    usuario: usuario,\n    access_token_unsigned: accessTokenUnsigned,\n    refresh_token_unsigned: refreshTokenUnsigned,\n    access_payload: accessPayload,\n    refresh_payload: refreshPayload,\n    access_jti: jwtData.access_jti,\n    refresh_jti: jwtData.refresh_jti,\n    expires_at: new Date(jwtData.access_exp * 1000).toISOString(),\n    refresh_expires_at: new Date(jwtData.refresh_exp * 1000).toISOString()\n  }\n}];"
+      },
+      "id": "7ec7dd6f-80ac-4774-a9c0-11e587ca290a",
+      "name": "Criar JWT Payloads",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Assinar tokens usando pgcrypto\nSELECT \n  $1 || '.' || encode(hmac($1, $3, 'sha256'), 'base64') as access_token_signed,\n  $2 || '.' || encode(hmac($2, $3, 'sha256'), 'base64') as refresh_token_signed;",
+        "options": {
+          "queryReplacement": "={{ $json.access_token_unsigned }}\n={{ $json.refresh_token_unsigned }}\n={{ $env.JWT_SECRET || 'YOUR_SECRET_KEY_CHANGE_ME' }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        400,
+        0
+      ],
+      "id": "ae327f25-bd0b-4f0a-9dac-ca3692428cd2",
+      "name": "Assinar Tokens JWT",
+      "credentials": {
+        "postgres": {
+          "id": "ISeq8ovLtFz7Vb1t",
+          "name": "Postgres CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Limpar assinatura base64url\nfunction cleanBase64url(str) {\n  return str.replace(/\\+/g, '-').replace(/\\//g, '_').replace(/=/g, '');\n}\n\nconst tokens = $json;\nconst payloadData = $items('Criar JWT Payloads')[0].json;\n\nreturn [{\n  json: {\n    usuario: payloadData.usuario,\n    access_token: cleanBase64url(tokens.access_token_signed),\n    refresh_token: cleanBase64url(tokens.refresh_token_signed),\n    access_jti: payloadData.access_jti,\n    refresh_jti: payloadData.refresh_jti,\n    expires_at: payloadData.expires_at,\n    refresh_expires_at: payloadData.refresh_expires_at\n  }\n}];"
+      },
+      "id": "3ee30c43-9975-49fc-9301-1e2d6473ffe1",
+      "name": "Formatar Tokens",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        608,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO public.user_sessions (\n  id,\n  user_id,\n  tenant_id,\n  access_token,\n  refresh_token,\n  access_jti,\n  refresh_jti,\n  expires_at,\n  refresh_expires_at,\n  ip_address,\n  user_agent,\n  revogado\n)\nVALUES (\n  gen_random_uuid(),\n  $1::uuid,\n  $2::uuid,\n  $3,\n  $4,\n  $5::uuid,\n  $6::uuid,\n  $7::timestamp,\n  $8::timestamp,\n  $9,\n  $10,\n  false\n)\nRETURNING id, created_at;",
+        "options": {
+          "queryReplacement": "={{ $json.usuario.id }}\n={{ $json.usuario.tenant_id }}\n={{ $json.access_token }}\n={{ $json.refresh_token }}\n={{ $json.access_jti }}\n={{ $json.refresh_jti }}\n={{ $json.expires_at }}\n={{ $json.refresh_expires_at }}\n={{ $items('Webhook Login')[0].json.headers['x-forwarded-for'] || 'unknown' }}\n={{ $items('Webhook Login')[0].json.headers['user-agent'] || 'unknown' }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        800,
+        0
+      ],
+      "id": "c3e42c60-54cb-47ef-84d1-d9283b37f5c2",
+      "name": "Criar Sessão",
+      "credentials": {
+        "postgres": {
+          "id": "ISeq8ovLtFz7Vb1t",
+          "name": "Postgres CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {\n  sucesso: true,\n  access_token: $('Formatar Tokens').item.json.access_token,\n  refresh_token: $('Formatar Tokens').item.json.refresh_token,\n  token_type: 'Bearer',\n  expires_in: 900,\n  usuario: {\n    id: $('Formatar Tokens').item.json.usuario.id,\n    email: $('Formatar Tokens').item.json.usuario.email,\n    tenant_id: $('Formatar Tokens').item.json.usuario.tenant_id,\n    tenant_nome: $('Formatar Tokens').item.json.usuario.tenant_nome,\n    role: $('Formatar Tokens').item.json.usuario.role\n  },\n  timestamp: new Date().toISOString()\n} }}",
+        "options": {}
+      },
+      "id": "34fc217b-edc0-4efa-9b95-8ce60d892150",
+      "name": "Response Login Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1008,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Login\n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/sticky-notes/)",
+        "height": 656,
+        "width": 2976,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1712,
+        -48
+      ],
+      "id": "a7c6e0c4-297c-4779-9b95-ef3f7b0fd4b7",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "clientes",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "02b8ace5-792e-406d-b389-f557894b58e2",
+      "name": "Webhook Criar Cliente",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1616,
+        1280
+      ],
+      "webhookId": "criar-cliente"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Validar JWT SEM crypto - apenas verificar estrutura\nconst headers = $json.headers || {};\nconst auth = headers.authorization || headers.Authorization || '';\n\nif (!auth.startsWith('Bearer ')) {\n  return [{\n    json: {\n      autenticado: false,\n      erro: 'TOKEN_NAO_FORNECIDO'\n    }\n  }];\n}\n\nconst token = auth.slice(7).trim();\nconst parts = token.split('.');\n\nif (parts.length !== 3) {\n  return [{\n    json: {\n      autenticado: false,\n      erro: 'TOKEN_INVALIDO'\n    }\n  }];\n}\n\n// Decodificar payload (sem validar assinatura aqui)\ntry {\n  const payloadB64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');\n  const padded = payloadB64 + '='.repeat((4 - payloadB64.length % 4) % 4);\n  const payload = JSON.parse(Buffer.from(padded, 'base64').toString('utf8'));\n  \n  return [{\n    json: {\n      autenticado: true,\n      usuario: {\n        id: payload.sub,\n        email: payload.email,\n        tenant_id: payload.tenant_id,\n        role: payload.role\n      },\n      token_completo: token\n    }\n  }];\n} catch (e) {\n  return [{\n    json: {\n      autenticado: false,\n      erro: 'PAYLOAD_INVALIDO'\n    }\n  }];\n}\n"
+      },
+      "id": "33200c92-0509-471a-808f-a8e1309ae558",
+      "name": "Middleware Auth Simples",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1408,
+        1280
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.autenticado }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "12b78a12-cffc-4636-85ec-fe09bdc7dac8",
+      "name": "Autenticado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1216,
+        1280
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {erro: 'NAO_AUTORIZADO', mensagem: 'Token inválido ou não fornecido'} }}",
+        "options": {}
+      },
+      "id": "160f82cf-c26a-4387-bcae-56d0b2ba53dd",
+      "name": "Response Auth Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -1008,
+        1424
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $items('Webhook Criar Cliente')[0].json.body || {};\nconst errors = [];\n\nif (!body.nome_completo || body.nome_completo.trim().length < 3) {\n  errors.push('nome_completo é obrigatório');\n}\n\nif (body.cpf) {\n  const cpfLimpo = String(body.cpf).replace(/\\D/g, '');\n  if (cpfLimpo.length !== 11) {\n    errors.push('CPF deve ter 11 dígitos');\n  }\n}\n\nreturn [{\n  json: {\n    valido: errors.length === 0,\n    erro: errors.length ? 'Validação falhou' : null,\n    detalhes: errors,\n    dados: body\n  }\n}];\n"
+      },
+      "id": "27bfc493-deb7-4801-85d3-575b7514796f",
+      "name": "Validar Input Cliente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1008,
+        1184
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $items('Validar Input Cliente')[0].json.dados;\nconst usuario = $items('Middleware Auth Simples')[0].json.usuario;\n\nreturn [{\n  json: {\n    tenant_id: usuario.tenant_id,\n    nome_completo: body.nome_completo,\n    cpf: String(body.cpf || '').replace(/\\D/g, ''),\n    whatsapp: body.whatsapp || null,\n    email: body.email || null,\n    cep: body.cep || null,\n    endereco: body.endereco || null,\n    complemento: body.complemento || null,\n    bairro: body.bairro || null,\n    cidade: body.cidade || null,\n    estado: body.estado || null,\n    data_nascimento: body.data_nascimento || null\n  }\n}];\n"
+      },
+      "id": "9e3f3e16-5efd-44a1-834c-28626a2e23b9",
+      "name": "Preparar Dados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -608,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO public.clientes (\n  id, tenant_id, nome_completo, cpf, whatsapp, email,\n  cep, endereco, complemento, bairro, cidade, estado, data_nascimento\n)\nVALUES (\n  gen_random_uuid(), $1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12\n)\nON CONFLICT (tenant_id, cpf)\nDO UPDATE SET\n  nome_completo = EXCLUDED.nome_completo,\n  whatsapp = EXCLUDED.whatsapp,\n  email = EXCLUDED.email,\n  updated_at = NOW()\nRETURNING *;",
+        "options": {
+          "queryReplacement": "={{ $json.tenant_id }}\n={{ $json.nome_completo }}\n={{ $json.cpf }}\n={{ $json.whatsapp }}\n={{ $json.email }}\n={{ $json.cep }}\n={{ $json.endereco }}\n={{ $json.complemento }}\n={{ $json.bairro }}\n={{ $json.cidade }}\n={{ $json.estado }}\n={{ $json.data_nascimento }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -400,
+        1072
+      ],
+      "id": "1a925bf6-cfed-44c3-b234-dfed587d56bd",
+      "name": "Inserir Cliente",
+      "credentials": {
+        "postgres": {
+          "id": "ISeq8ovLtFz7Vb1t",
+          "name": "Postgres CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {sucesso: true, cliente: $json, timestamp: new Date().toISOString()} }}",
+        "options": {}
+      },
+      "id": "73912eb0-cee6-42c7-8670-5c081f587308",
+      "name": "Response Cliente Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.valido }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "fff881a4-469f-4021-be21-2eb8093b3dee",
+      "name": "Input Válido?1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -816,
+        1184
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "1cd080ed-986e-4f69-a36f-6168ed41c6b0",
+      "name": "Response Validation Error1",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        1328
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Cadastro cliente\n\n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/sticky-notes/)",
+        "height": 704,
+        "width": 1920,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1712,
+        880
+      ],
+      "id": "f497d94e-197c-4fd0-81a9-4f131c16a77b",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Emprestimos\n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/sticky-notes/)",
+        "height": 608,
+        "width": 2272,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1712,
+        1856
+      ],
+      "id": "03069090-4a76-490a-89c9-d2d7b8127417",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "emprestimos",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "a8d50f85-6424-4235-a8db-6ace8b147ba4",
+      "name": "Webhook Criar Empréstimo",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1632,
+        2096
+      ],
+      "webhookId": "emprestimos-criar"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Function Node - Validar Input Empréstimo (robusto) + data_emissao default hoje\n\nconst errors = [];\n\n// -------------------- Helpers --------------------\nconst pickFirst = (...vals) => {\n  for (const v of vals) {\n    if (v !== undefined && v !== null && v !== '') return v;\n  }\n  return null;\n};\n\nconst toNumber = (v) => {\n  if (v === null || v === undefined || v === '') return null;\n\n  let s = String(v).trim();\n\n  // Remove tudo que não for dígito/ponto/vírgula/sinal (ex: \"R$ 1.234,56\")\n  s = s.replace(/[^\\d,.\\-+]/g, '');\n\n  // Se tiver vírgula e ponto, assume ponto=milhar e vírgula=decimal\n  if (s.includes(',') && s.includes('.')) {\n    s = s.replace(/\\./g, '').replace(',', '.');\n  } else {\n    // Se tiver só vírgula, trata como decimal\n    s = s.replace(',', '.');\n  }\n\n  const n = Number(s);\n  return Number.isFinite(n) ? n : null;\n};\n\nconst isUUID = (v) =>\n  typeof v === 'string' &&\n  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v);\n\nconst isISODateLike = (v) => {\n  if (typeof v !== 'string') return false;\n  // aceita YYYY-MM-DD ou ISO datetime\n  return /^\\d{4}-\\d{2}-\\d{2}(T.*)?$/.test(v);\n};\n\n// Data de hoje em YYYY-MM-DD\nconst today = new Date().toISOString().slice(0, 10);\n\n// -------------------- Detecta o \"body\" correto --------------------\nconst body =\n  $json.body ??\n  $json.dados ??\n  $json.loan ??\n  $json.emprestimo ??\n  $json ?? {};\n\n// -------------------- Mapeia campos com aliases --------------------\n\n// cliente_id pode vir como: cliente_id / clientId / client_id / customer_id / customerId\nconst cliente_id_raw = pickFirst(\n  body.cliente_id,\n  body.clientId,\n  body.client_id,\n  body.customer_id,\n  body.customerId\n);\n\n// Se seu banco usa UUID\nconst cliente_id = typeof cliente_id_raw === 'string' ? cliente_id_raw : null;\nif (!cliente_id || !isUUID(cliente_id)) {\n  errors.push('cliente_id (UUID) é obrigatório');\n}\n\n// valor: valor / amount / loan_value / value\nconst valor = toNumber(pickFirst(body.valor, body.amount, body.loan_value, body.value));\nif (valor === null || valor <= 0) {\n  errors.push('valor é obrigatório e deve ser maior que zero');\n}\n\n// juros: juros / interest / taxa_juros / rate\nconst juros = toNumber(pickFirst(body.juros, body.interest, body.taxa_juros, body.rate));\nif (juros === null || juros < 0) {\n  errors.push('juros é obrigatório e deve ser maior ou igual a zero');\n}\n\n// modelo_emprestimo: modelo_emprestimo / modeloEmprestimo / model / tipo\nconst modelo_emprestimo = pickFirst(\n  body.modelo_emprestimo,\n  body.modeloEmprestimo,\n  body.model,\n  body.tipo\n);\nif (!modelo_emprestimo || typeof modelo_emprestimo !== 'string') {\n  errors.push('modelo_emprestimo é obrigatório');\n}\n\n// parcelas: parcelas / installments / numero_parcelas\nconst parcelas = toNumber(pickFirst(body.parcelas, body.installments, body.numero_parcelas));\nif (parcelas === null || parcelas <= 0) {\n  errors.push('parcelas é obrigatório e deve ser maior que zero');\n}\n\n// datas\nconst data_primeira_parcela = pickFirst(\n  body.data_primeira_parcela,\n  body.first_due_date,\n  body.primeiro_vencimento\n);\nif (!data_primeira_parcela || !isISODateLike(data_primeira_parcela)) {\n  errors.push('data_primeira_parcela é obrigatória (formato ISO: YYYY-MM-DD)');\n}\n\n// ✅ data_emissao: se não vier, assume HOJE\nconst data_emissao_raw = pickFirst(body.data_emissao, body.issue_date, body.emissao);\nconst data_emissao = data_emissao_raw || today;\n\nif (!isISODateLike(data_emissao)) {\n  errors.push('data_emissao deve estar no formato ISO: YYYY-MM-DD');\n}\n\nconst data_vencimento = pickFirst(body.data_vencimento, body.due_date, body.vencimento);\nif (!data_vencimento || !isISODateLike(data_vencimento)) {\n  errors.push('data_vencimento é obrigatória (formato ISO: YYYY-MM-DD)');\n}\n\n// opcionais\nconst hash_nota = pickFirst(body.hash_nota, body.hashNota, body.nota_hash);\nconst indicacao = pickFirst(body.indicacao, body.referencia, body.ref) ?? 'Sem Garantia';\nconst observacoes = pickFirst(body.observacoes, body.obs, body.notes);\n\n// -------------------- Output final --------------------\nreturn [\n  {\n    json: {\n      valido: errors.length === 0,\n      erro: errors.length ? 'Validação falhou' : null,\n      detalhes: errors,\n      dados: {\n        cliente_id,\n        valor,\n        juros,\n        modelo_emprestimo,\n        parcelas,\n        data_primeira_parcela,\n        hash_nota: hash_nota || null,\n        indicacao,\n        data_emissao,          // ✅ agora nunca vem null (a menos que formato inválido)\n        data_vencimento,\n        observacoes: observacoes || null,\n      },\n      _debug: {\n        received_keys: Object.keys(body || {}),\n        received_sample: body,\n        computed: { today, data_emissao_raw, data_emissao },\n      },\n    },\n  },\n];\n"
+      },
+      "id": "26ba0df7-6dc0-4b51-be22-36c61c662882",
+      "name": "Validar Input Empréstimo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1232,
+        2208
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const dados = $json.dados;\nconst valor = dados.valor;\nconst juros = dados.juros;\nconst parcelas = dados.parcelas;\nconst dataPrimeira = new Date(dados.data_primeira_parcela);\n\n// Calcular valor com juros\nconst valorComJuros = valor * (1 + (juros / 100));\n\n// Calcular valor de cada parcela\nconst valorParcela = valorComJuros / parcelas;\n\n// Gerar array de parcelas\nconst parcelasArray = [];\nfor (let i = 1; i <= parcelas; i++) {\n  const dataVencimento = new Date(dataPrimeira);\n  dataVencimento.setMonth(dataVencimento.getMonth() + (i - 1));\n  \n  // Calcular juros acumulado até esta parcela\n  const jurosAcumulado = (valorParcela * i) - (valor / parcelas * i);\n  \n  parcelasArray.push({\n    numero: i,\n    valor: parseFloat(valorParcela.toFixed(2)),\n    data_vencimento: dataVencimento.toISOString().split('T')[0],\n    juros: parseFloat((valorParcela - (valor / parcelas)).toFixed(2)),\n    amortizacao: parseFloat((valor / parcelas).toFixed(2)),\n    status: 'pendente'\n  });\n}\n\nreturn [{\n  json: {\n    dados: dados,\n    calculos: {\n      valor_original: valor,\n      taxa_juros: juros,\n      numero_parcelas: parcelas,\n      valor_com_juros: parseFloat(valorComJuros.toFixed(2)),\n      valor_parcela: parseFloat(valorParcela.toFixed(2)),\n      valor_total_juros: parseFloat((valorComJuros - valor).toFixed(2))\n    },\n    parcelas: parcelasArray\n  }\n}];"
+      },
+      "id": "bfca4136-4d7b-443a-ac07-2e7cbbbdbcd4",
+      "name": "Calcular Parcelas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -832,
+        2000
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Code/Function Node: Extrair emprestimo_id (com return correto)\n\nconst getNodeFirst = (nodeName) => {\n  try {\n    const items = $items(nodeName);\n    if (!items || !items.length) return null;\n    return items[0].json;\n  } catch (e) {\n    return null;\n  }\n};\n\n// 1) Tenta pegar do node do INSERT (coloque aqui o nome exato do seu node)\nconst out =\n  getNodeFirst('Inserir Empréstimo') ||\n  getNodeFirst('Execute a SQL query') ||\n  null;\n\n// 2) Tenta extrair id de vários formatos possíveis\nlet loanId =\n  out?.id ||\n  out?.ins?.id ||\n  out?.rows?.[0]?.id ||\n  out?.data?.[0]?.id ||\n  null;\n\n// 3) Se não achou, tenta também no item atual (às vezes já vem aqui)\nif (!loanId) {\n  loanId =\n    $json?.id ||\n    $json?.rows?.[0]?.id ||\n    $json?.data?.[0]?.id ||\n    null;\n}\n\nif (!loanId) {\n  // devolve debug pra você ver o formato real do output\n  return [{\n    json: {\n      erro: 'SEM_ID',\n      msg: 'Não encontrei emprestimo.id no output do node do INSERT. Veja _debug.',\n      _debug: {\n        out_keys: out ? Object.keys(out) : null,\n        out_sample: out,\n        current_keys: Object.keys($json || {}),\n        current_sample: $json,\n      }\n    }\n  }];\n}\n\n// 4) Retorna o emprestimo_id certinho\nreturn [{\n  json: {\n    emprestimo_id: loanId\n  }\n}];\n\n"
+      },
+      "id": "894b335a-1986-4ce4-987d-a83a2542cdfb",
+      "name": "Preparar Parcelas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -288,
+        1776
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "parcelas",
+          "mode": "list",
+          "cachedResultName": "parcelas"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "emprestimo_id": "={{ $json.emprestimo_id }}",
+            "data_vencimento": "={{ $json.data_vencimento }}",
+            "status": "={{ $json.status }}",
+            "numero_parcela": 0,
+            "valor_parcela": 0,
+            "valor_juros": 0,
+            "valor_amortizacao": 0,
+            "saldo_devedor": 0,
+            "valor_pago": 0,
+            "dias_atraso": 0,
+            "valor_multa": 0,
+            "valor_juros_atraso": 0
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tenant_id",
+              "displayName": "tenant_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "emprestimo_id",
+              "displayName": "emprestimo_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cliente_id",
+              "displayName": "cliente_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "numero_parcela",
+              "displayName": "numero_parcela",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data_vencimento",
+              "displayName": "data_vencimento",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "valor_parcela",
+              "displayName": "valor_parcela",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "valor_juros",
+              "displayName": "valor_juros",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "valor_amortizacao",
+              "displayName": "valor_amortizacao",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "saldo_devedor",
+              "displayName": "saldo_devedor",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "data_pagamento",
+              "displayName": "data_pagamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "valor_pago",
+              "displayName": "valor_pago",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "dias_atraso",
+              "displayName": "dias_atraso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "valor_multa",
+              "displayName": "valor_multa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "valor_juros_atraso",
+              "displayName": "valor_juros_atraso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "recebido_por",
+              "displayName": "recebido_por",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        272,
+        1648
+      ],
+      "id": "8b205fb3-b45f-4b62-8d54-6d1ebf8adddf",
+      "name": "Inserir Parcelas",
+      "credentials": {
+        "postgres": {
+          "id": "ISeq8ovLtFz7Vb1t",
+          "name": "Postgres CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const emprestimo = $items('Inserir Empréstimo')[0].json;\nconst calculos = $items('Calcular Parcelas')[0].json.calculos;\nconst parcelas = $items('Calcular Parcelas')[0].json.parcelas;\n\nreturn [{\n  json: {\n    sucesso: true,\n    mensagem: 'Empréstimo criado com sucesso',\n    emprestimo: {\n      id: emprestimo.id,\n      cliente_id: emprestimo.cliente_id,\n      valor_original: calculos.valor_original,\n      taxa_juros: calculos.taxa_juros,\n      numero_parcelas: calculos.numero_parcelas,\n      valor_com_juros: calculos.valor_com_juros,\n      valor_parcela: calculos.valor_parcela,\n      valor_total_juros: calculos.valor_total_juros,\n      modelo_emprestimo: emprestimo.modelo_emprestimo,\n      hash_nota: emprestimo.hash_nota,\n      indicacao: emprestimo.indicacao,\n      data_emissao: emprestimo.data_emissao,\n      data_vencimento: emprestimo.data_vencimento,\n      status: emprestimo.status,\n      criado_em: emprestimo.criado_em\n    },\n    parcelas: parcelas\n  }\n}];"
+      },
+      "id": "eff281d9-645c-48d2-b2be-c8d99b7c1f15",
+      "name": "Preparar Resposta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        992,
+        2000
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 201
+        }
+      },
+      "id": "f2625dd4-95f6-4b54-8087-42e067c6f683",
+      "name": "Response Sucesso",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        2000
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.valido }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "db6b6f81-afe4-472c-9280-13e55088948f",
+      "name": "Input Válido?2",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1024,
+        2096
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { sucesso: false, erro: $json.erro, detalhes: $json.detalhes } }}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "id": "d8b482b6-ab1f-4083-8c10-f366bd83fa07",
+      "name": "Response Validation Error2",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -832,
+        2256
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c68e2675-b467-46c6-bc1e-a58b50132473",
+              "name": "emprestimo_id",
+              "value": "={{ $json.body.loan.id }}",
+              "type": "string"
+            },
+            {
+              "id": "a562b423-2286-4352-8d51-03ad2d97a40f",
+              "name": "name",
+              "value": "={{ $json.body.client.name }}",
+              "type": "string"
+            },
+            {
+              "id": "88d7efa7-f028-431d-b79e-b0e72e082096",
+              "name": "cpf",
+              "value": "={{ $json.body.client.cpf }}",
+              "type": "string"
+            },
+            {
+              "id": "2d397024-fc0d-487a-953f-56dcdd6abd9a",
+              "name": "telefone",
+              "value": "={{ $json.body.client.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "02a40ae4-0899-4fa8-877e-aec311641e8d",
+              "name": "email",
+              "value": "={{ $json.body.client.email }}",
+              "type": "string"
+            },
+            {
+              "id": "dea299b8-f622-4143-9632-2a1013a2e3d2",
+              "name": "cep",
+              "value": "={{ $json.body.client.cep }}",
+              "type": "string"
+            },
+            {
+              "id": "0a00c6b2-0d4c-4178-825a-3fd547f47c90",
+              "name": "rua",
+              "value": "={{ $json.body.client.street }}",
+              "type": "string"
+            },
+            {
+              "id": "c2aceeb9-1050-4f21-85a6-60a572ea875c",
+              "name": "complemento",
+              "value": "={{ $json.body.client.complement }}",
+              "type": "string"
+            },
+            {
+              "id": "1b3b8e24-c06b-42ee-8dca-83d1338e7d00",
+              "name": "bairro",
+              "value": "={{ $json.body.client.neighborhood }}",
+              "type": "string"
+            },
+            {
+              "id": "f7868e7a-9676-4f8b-be1b-3ebedbcc788f",
+              "name": "cidade",
+              "value": "={{ $json.body.client.city }}",
+              "type": "string"
+            },
+            {
+              "id": "f4fbba6e-3181-4f80-b247-2fde5133b34a",
+              "name": "estado",
+              "value": "={{ $json.body.client.state }}",
+              "type": "string"
+            },
+            {
+              "id": "b3b8a247-fb78-40bb-9f8f-23f8c0e6aefa",
+              "name": "status",
+              "value": "={{ $json.body.client.status }}",
+              "type": "string"
+            },
+            {
+              "id": "8e9dcf45-504c-403d-86e0-d3652e249d82",
+              "name": "valor",
+              "value": "={{ $json.body.installments[0].principalAmount }}",
+              "type": "string"
+            },
+            {
+              "id": "84028d93-969b-42d2-9a15-f7e6ec781b8c",
+              "name": "juros",
+              "value": "={{ $json.body.installments[0].interestAmount }}",
+              "type": "string"
+            },
+            {
+              "id": "ca063d65-87ea-4280-a2c0-ceac640cd739",
+              "name": "modelo_emprestimo",
+              "value": "={{ $json.body.loan.model }}",
+              "type": "string"
+            },
+            {
+              "id": "7394b465-0404-4cd7-a23b-e1ea23d03461",
+              "name": "parcelas",
+              "value": "={{ $json.body.loan.installmentsCount }}",
+              "type": "string"
+            },
+            {
+              "id": "539fc9fe-a5bf-4a38-b05c-3f74c39a6866",
+              "name": "data_primeira_parcela",
+              "value": "={{ $json.body.loan.startDate }}",
+              "type": "string"
+            },
+            {
+              "id": "964c31b6-2f6f-4427-85d2-fb09186aa62b",
+              "name": "hash_nota",
+              "value": "={{ $json.body.loan.promissoryNote.numberHash }}",
+              "type": "string"
+            },
+            {
+              "id": "24ef588c-fcb5-431b-83de-3facfdd0d81f",
+              "name": "indicacao",
+              "value": "={{ $json.body.loan.promissoryNote.indication }}",
+              "type": "string"
+            },
+            {
+              "id": "e99d62e0-4ff5-40e7-bbaf-9a57ff7e80ec",
+              "name": "data_vencimento",
+              "value": "={{ $json.body.loan.promissoryNote.dueDate }}",
+              "type": "string"
+            },
+            {
+              "id": "b8699df1-6006-419b-adfd-0ef5cc76c261",
+              "name": "observacoes",
+              "value": "={{ $json.body.loan.promissoryNote.observation }}",
+              "type": "string"
+            },
+            {
+              "id": "b92484a1-e2c5-4805-99de-e7642c338eb6",
+              "name": "clientId",
+              "value": "={{ $json.body.installments[0].clientId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1408,
+        2096
+      ],
+      "id": "dfe9f072-5cfa-4dbe-aeec-c22ba8df48bc",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Function: Extrair auth_email do JWT (robusto) - procura token em headers/query/body\n\nfunction base64UrlDecode(str) {\n  const padded =\n    str.replace(/-/g, '+').replace(/_/g, '/') +\n    '==='.slice((str.length + 3) % 4);\n  return JSON.parse(Buffer.from(padded, 'base64').toString('utf8'));\n}\n\nfunction getHeader(headers, key) {\n  if (!headers) return null;\n  // tenta várias variações de case\n  return headers[key] ?? headers[key.toLowerCase()] ?? headers[key.toUpperCase()] ?? null;\n}\n\nconst headers = $json.headers ?? $json.header ?? {};\nconst query = $json.query ?? {};\nconst body = $json.body ?? $json;\n\n// 1) tenta Authorization\nlet auth = getHeader(headers, 'authorization') || getHeader(headers, 'Authorization');\n\n// 2) tenta outros headers comuns\nlet tokenRaw =\n  auth ||\n  getHeader(headers, 'x-authorization') ||\n  getHeader(headers, 'x-access-token') ||\n  getHeader(headers, 'x-auth-token') ||\n  getHeader(headers, 'token');\n\n// 3) tenta query params\ntokenRaw =\n  tokenRaw ||\n  query.token ||\n  query.access_token ||\n  query.authorization;\n\n// 4) tenta body\ntokenRaw =\n  tokenRaw ||\n  body.token ||\n  body.access_token ||\n  body.authorization;\n\n// Se veio \"Bearer xxx\", extrai só o token\nlet token = null;\nif (typeof tokenRaw === 'string') {\n  const t = tokenRaw.trim();\n  token = t.toLowerCase().startsWith('bearer ') ? t.slice(7).trim() : t;\n}\n\n// Se ainda não achou, retorna debug (sem quebrar o workflow)\nif (!token) {\n  return [{\n    json: {\n      ...$json,\n      auth_email: null,\n      _auth_error: 'NO_TOKEN_FOUND',\n      _debug_auth: {\n        has_headers: !!$json.headers,\n        header_keys: Object.keys(headers || {}),\n        query_keys: Object.keys(query || {}),\n        body_keys: Object.keys(body || {}),\n        sample_authorization: auth ? String(auth).slice(0, 30) + '...' : null,\n      }\n    }\n  }];\n}\n\n// valida formato JWT\nconst parts = token.split('.');\nif (parts.length !== 3) {\n  return [{\n    json: {\n      ...$json,\n      auth_email: null,\n      _auth_error: 'INVALID_TOKEN_FORMAT',\n      _debug_auth: {\n        token_prefix: token.slice(0, 15) + '...',\n      }\n    }\n  }];\n}\n\n// decodifica payload\nlet payload;\ntry {\n  payload = base64UrlDecode(parts[1]);\n} catch (e) {\n  return [{\n    json: {\n      ...$json,\n      auth_email: null,\n      _auth_error: 'TOKEN_DECODE_FAILED',\n      _debug_auth: { message: e.message }\n    }\n  }];\n}\n\nconst email =\n  payload.email ??\n  payload.user_email ??\n  payload.username ??\n  payload.upn ??           // alguns IdPs usam upn\n  null;\n\nif (!email) {\n  return [{\n    json: {\n      ...$json,\n      auth_email: null,\n      _auth_error: 'EMAIL_NOT_IN_TOKEN',\n      _debug_auth: { payload_keys: Object.keys(payload || {}) }\n    }\n  }];\n}\n\nreturn [{\n  json: {\n    ...$json,\n    auth_email: String(email).toLowerCase().trim(),\n    _auth_error: null,\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -624,
+        2000
+      ],
+      "id": "30bbb7a3-2991-4c4d-9e87-3be4aa5120c3",
+      "name": "Extrair auth_email do JWT (Authorization Bearer)"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH c AS (\n  SELECT id AS cliente_id, tenant_id\n  FROM public.clientes\n  WHERE id = '{{ $json.dados?.cliente_id ?? $json.body?.loan?.clientId ?? \"\" }}'::uuid\n  LIMIT 1\n),\nins AS (\n  INSERT INTO public.emprestimos (\n    tenant_id,\n    cliente_id,\n    valor_principal,\n    taxa_juros,\n    total_com_juros,\n    modelo_calculo,\n    quantidade_parcelas,\n    data_emissao,\n    data_vencimento,\n    hash_nota,\n    indicacao,\n    observacoes\n  )\n  SELECT\n    c.tenant_id,\n    c.cliente_id,\n    {{ $json.calculos?.valor_original ?? $json.dados?.valor ?? $json.body?.loan?.amount ?? 0 }},\n    {{ $json.calculos?.taxa_juros ?? $json.dados?.juros ?? $json.body?.loan?.interestRate ?? 0 }},\n    {{ $json.calculos?.valor_com_juros ?? $json.body?.loan?.totalAmount ?? 0 }},\n    '{{ $json.dados?.modelo_emprestimo ?? $json.body?.loan?.model ?? \"\" }}',\n    {{ $json.calculos?.numero_parcelas ?? $json.dados?.parcelas ?? $json.body?.loan?.installmentsCount ?? 1 }},\n    COALESCE(NULLIF('{{ $json.dados?.data_emissao ?? $json.body?.loan?.startDate ?? \"\" }}','')::date, CURRENT_DATE),\n    COALESCE(NULLIF('{{ $json.dados?.data_primeira_parcela ?? $json.body?.loan?.startDate ?? \"\" }}','')::date, CURRENT_DATE),\n    NULLIF('{{ $json.dados?.hash_nota ?? \"\" }}',''),\n    NULLIF('{{ $json.dados?.indicacao ?? \"\" }}',''),\n    NULLIF('{{ $json.dados?.observacoes ?? \"\" }}','')\n  FROM c\n  RETURNING *\n)\nSELECT * FROM ins;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -432,
+        1968
+      ],
+      "id": "b86c98c2-9fe7-4cd5-bb86-e008f11907a6",
+      "name": "Inserir Empréstimo",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "ISeq8ovLtFz7Vb1t",
+          "name": "Postgres CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        0,
+        1744
+      ],
+      "id": "3fd48688-1046-4ff1-831d-1334fb92078f",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO public.parcelas (\n  tenant_id,\n  emprestimo_id,\n  cliente_id,\n  numero_parcela,\n  data_vencimento,\n  valor_parcela,\n  valor_juros,\n  valor_amortizacao,\n  status,\n  created_at\n)\nSELECT\n  e.tenant_id,\n  '{{ $json.emprestimo_id }}'::uuid,\n  e.cliente_id,\n  {{ $json.numero_parcela }},\n  '{{ $json.data_vencimento }}'::date,\n  {{ $json.valor_parcela }},\n  COALESCE({{ $json.valor_juros }}, 0),\n  COALESCE({{ $json.valor_amortizacao }}, 0),\n  COALESCE(NULLIF('{{ $json.status }}',''), 'Em Aberto'),\n  NOW()\nFROM public.emprestimos e\nWHERE e.id = '{{ $json.emprestimo_id }}'::uuid\nRETURNING *;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        656,
+        1968
+      ],
+      "id": "3dcfe24b-c54f-4d61-9d73-f7ddd134b0b6",
+      "name": "Parcelas",
+      "credentials": {
+        "postgres": {
+          "id": "ISeq8ovLtFz7Vb1t",
+          "name": "Postgres CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Code Node: pegar dados sem quebrar se o node não existir\n\nfunction safeItems(nodeName) {\n  try {\n    const arr = $items(nodeName);\n    return Array.isArray(arr) ? arr : [];\n  } catch (e) {\n    return [];\n  }\n}\n\nfunction firstJson(nodeName) {\n  const arr = safeItems(nodeName);\n  return arr.length ? arr[0].json : null;\n}\n\n// 1) Tenta pegar do $json (recomendado)\nconst authEmail =\n  $json?.auth?.email ||\n  $json?.auth_email ||\n  $json?.email ||\n  null;\n\n// 2) Se você AINDA quiser tentar por node, coloque aqui o NOME EXATO\n// (Se o nome estiver errado, NÃO quebra mais)\nconst jwtNode = firstJson('Extrair auth_email do JWT (Authorization Bearer)');\n\n// fallback\nconst emailFinal = authEmail || jwtNode?.auth?.email || jwtNode?.email || null;\n\nreturn [\n  {\n    json: {\n      ok: true,\n      email: emailFinal,\n      debug: {\n        tem_auth_no_json: !!$json?.auth?.email,\n        tentou_node: 'Extrair auth_email do JWT (Authorization Bearer)',\n        node_encontrado: !!jwtNode,\n        keys_json: Object.keys($json || {}),\n      },\n    },\n  },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        1968
+      ],
+      "id": "128329eb-b59e-4fc2-8bc4-f9e8fb8cbb82",
+      "name": "Prepare Parcelas"
+    },
+    {
+      "parameters": {
+        "jsCode": "const emprestimo = $items(\"Inserir Empréstimo\")[0].json;\nconst parcelas = $items(\"Calcular Parcelas\")[0].json.parcelas;\n\nreturn parcelas.map(p => ({\n  json: {\n    emprestimo_id: emprestimo.id,\n    numero_parcela: p.numero,\n    data_vencimento: String(p.data_vencimento).slice(0,10),\n    valor_parcela: p.valor,\n    valor_juros: p.juros ?? 0,\n    valor_amortizacao: p.amortizacao ?? 0,\n    status: p.status || \"Em Aberto\"\n  }\n}));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -16,
+        1968
+      ],
+      "id": "a8f06505-81c9-4f6e-9a04-15de66130e87",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "const emprestimo = $items(\"Inserir Empréstimo\")[0]?.json;\nconst parcelas = $items(\"Calcular Parcelas\")[0]?.json?.parcelas || [];\n\nif (!emprestimo?.id) throw new Error(\"SEM_EMPRESTIMO_ID\");\nif (!Array.isArray(parcelas) || parcelas.length === 0) throw new Error(\"SEM_PARCELAS\");\n\nreturn parcelas.map(p => ({\n  json: {\n    emprestimo_id: emprestimo.id,                 // UUID do INSERT\n    numero_parcela: Number(p.numero),\n    data_vencimento: String(p.data_vencimento).slice(0, 10),\n    valor_parcela: Number(p.valor ?? p.valor_parcela),\n    valor_juros: Number(p.juros ?? p.valor_juros ?? 0),\n    valor_amortizacao: Number(p.amortizacao ?? p.valor_amortizacao ?? 0),\n    status: p.status || \"Em Aberto\",\n  }\n}));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        432,
+        1968
+      ],
+      "id": "e6f8a9b4-d8ca-43a7-97b7-b68ba76fb493",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const row = $json; // output do Postgres node (1 linha)\nconst emprestimo_id = row.id || row.emprestimo_id;\n\nif (!emprestimo_id) throw new Error(\"SEM_EMPRESTIMO_ID_NO_OUTPUT_DO_INSERT\");\n\nreturn [{\n  json: {\n    ...$json,\n    emprestimo_id,\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -224,
+        1968
+      ],
+      "id": "e0e57b55-7dd2-4edf-a606-3bda07efc49b",
+      "name": "Extrair ID"
+    }
+  ],
+  "pinData": {
+    "Webhook Criar Empréstimo": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.aiagentautomate.com.br",
+            "user-agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0",
+            "content-length": "1031",
+            "accept": "application/json",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.8,en-US;q=0.5,en;q=0.3",
+            "content-type": "application/json",
+            "origin": "https://credgestor.app.br",
+            "priority": "u=0",
+            "referer": "https://credgestor.app.br/",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "te": "trailers",
+            "x-forwarded-for": "200.39.37.99",
+            "x-forwarded-host": "n8n.aiagentautomate.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "39017bc971e2",
+            "x-real-ip": "200.39.37.99"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "action": "create",
+            "confirmedAt": "2026-01-05T02:24:52.863Z",
+            "loan": {
+              "id": "qszyyb3m3",
+              "clientId": "692599d1-f94a-4ca2-b068-45c945293c38",
+              "amount": 1000,
+              "interestRate": 20,
+              "totalAmount": 1200,
+              "startDate": "2026-01-04",
+              "installmentsCount": 1,
+              "model": "PRICE",
+              "status": "ACTIVE",
+              "promissoryNote": {
+                "capital": 1000,
+                "interestRate": 20,
+                "issueDate": "2026-01-04",
+                "dueDate": "2026-01-04",
+                "indication": "Sem Garantia",
+                "numberHash": "ef015c7b982a72f9",
+                "observation": ""
+              }
+            },
+            "installments": [
+              {
+                "id": "inst_qszyyb3m3_1",
+                "loanId": "qszyyb3m3",
+                "clientId": "692599d1-f94a-4ca2-b068-45c945293c38",
+                "number": 1,
+                "dueDate": "2026-02-04",
+                "amount": 1200,
+                "interestAmount": 200,
+                "principalAmount": 1000,
+                "amountPaid": 0,
+                "status": "PENDING"
+              }
+            ],
+            "client": {
+              "id": "692599d1-f94a-4ca2-b068-45c945293c38",
+              "name": "Edson Santos",
+              "cpf": "842.984.092-84",
+              "phone": "(12)12121-2122",
+              "email": "edsantos@gmail.com",
+              "cep": "01001-010",
+              "street": "Rua Filipe de Oliveira",
+              "complement": "20",
+              "neighborhood": "Sé",
+              "city": "São Paulo",
+              "state": "SP",
+              "status": "active",
+              "birthDate": "2020-12-12T00:00:00.000Z",
+              "notes": ""
+            }
+          },
+          "webhookUrl": "https://n8n.aiagentautomate.com.br/webhook/emprestimos",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-12-29T18:46:22.712Z",
+      "updatedAt": "2025-12-29T18:46:22.712Z",
+      "role": "workflow:owner",
+      "workflowId": "kn4R5u4cwcW9mh5t",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 3,
+  "updatedAt": "2026-01-22T03:28:28.761Z",
+  "versionId": "b7c8a0f9-4d17-496a-b650-b744da8f901c"
+}

@@ -1,0 +1,451 @@
+{
+  "active": false,
+  "connections": {
+    "Agendamento Diário": {
+      "main": [
+        [
+          {
+            "node": "Buscar Parcelas Vencendo Hoje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Parcelas Vencendo Hoje": {
+      "main": [
+        [
+          {
+            "node": "Processar Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Dados": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dividir em Lotes": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp": {
+      "main": [
+        []
+      ]
+    },
+    "Verificar Sucesso": {
+      "main": [
+        [
+          {
+            "node": "Atualizar Parcela",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Registrar Log Sucesso",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Registrar Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar Parcela": {
+      "main": [
+        [
+          {
+            "node": "Resumo Execução",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar Log Sucesso": {
+      "main": [
+        [
+          {
+            "node": "Resumo Execução",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar Erro": {
+      "main": [
+        [
+          {
+            "node": "Resumo Execução",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar texto": {
+      "main": [
+        [
+          {
+            "node": "Verificar Sucesso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Dividir em Lotes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-13T02:13:49.867Z",
+  "id": "0GlOvI7HjvdbC59s",
+  "isArchived": true,
+  "meta": null,
+  "name": "Cobrança Automática - Vencimento Hoje",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      },
+      "id": "c87fdb03-6876-4c83-99d4-54b06436b73b",
+      "name": "Agendamento Diário",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1328,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=SELECT \n  inst.id as parcela_id,\n  inst.number as numero_parcela,\n  inst.amount as valor_parcela,\n  inst.due_date as data_vencimento,\n  inst.status,\n  c.id as cliente_id,\n  c.nome as cliente_nome,\n  c.whatsapp,\n  c.celular,\n  c.telefone,\n  l.id as loan_id,\n  l.total_amount as valor_aprovado,\n  l.model as modelo_emprestimo\nFROM public.installments inst\nJOIN public.loans l ON inst.loan_id = l.id\nJOIN public.clients c ON inst.client_id = c.id\nWHERE inst.due_date = CURRENT_DATE\n  AND inst.status IN ('PENDING', 'LATE')\n  AND c.ativo = true\n  AND (c.whatsapp IS NOT NULL OR c.celular IS NOT NULL OR c.telefone IS NOT NULL)\nORDER BY inst.due_date, c.nome;",
+        "options": {}
+      },
+      "id": "b4215900-6602-4ee5-8069-ce5eaf91e983",
+      "name": "Buscar Parcelas Vencendo Hoje",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        -1104,
+        112
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "5W8bQyCCsNE27usm",
+          "name": "Postgres CredGestor-Homologação"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Processar cada parcela e preparar dados para envio\nconst items = $input.all();\nconst processedItems = [];\n\nfor (const item of items) {\n  const parcela = item.json;\n  \n  // Determinar o telefone a usar (prioridade: whatsapp > celular > telefone)\n  let telefone = parcela.whatsapp || parcela.celular || parcela.telefone;\n  \n  // Remover caracteres não numéricos\n  telefone = telefone ? telefone.replace(/\\D/g, '') : null;\n  \n  // Se não começar com 55 (código do Brasil), adicionar\n  if (telefone && !telefone.startsWith('55')) {\n    telefone = '55' + telefone;\n  }\n  \n  // Formatar valor da parcela\n  const valorFormatado = new Intl.NumberFormat('pt-BR', {\n    style: 'currency',\n    currency: 'BRL'\n  }).format(parseFloat(parcela.valor_parcela || 0));\n  \n  // Formatar data de vencimento\n  const dataVenc = new Date(parcela.data_vencimento);\n  const dataFormatada = dataVenc.toLocaleDateString('pt-BR');\n  \n  // Montar mensagem\n  const mensagem = `Olá ${parcela.cliente_nome}!\\n\\n` +\n    `Lembrete: Sua parcela ${parcela.numero_parcela} no valor de ${valorFormatado} ` +\n    `vence hoje (${dataFormatada}).\\n\\n` +\n    `Por favor, realize o pagamento para evitar juros e multa.\\n\\n` +\n    `Empréstimo: ${parcela.loan_id || 'N/A'}\\n` +\n    `Obrigado!`;\n  \n  if (telefone) {\n    processedItems.push({\n      json: {\n        parcela_id: parcela.parcela_id,\n        cliente_id: parcela.cliente_id,\n        cliente_nome: parcela.cliente_nome,\n        telefone: telefone,\n        mensagem: mensagem,\n        valor_parcela: parcela.valor_parcela,\n        numero_parcela: parcela.numero_parcela,\n        data_vencimento: parcela.data_vencimento,\n        loan_id: parcela.loan_id,\n        modelo_emprestimo: parcela.modelo_emprestimo\n      }\n    });\n  }\n}\n\nreturn processedItems;"
+      },
+      "id": "37c62ee3-577b-4d7f-ad83-daaadcb18dba",
+      "name": "Processar Dados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -880,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "9d69e2f4-1d32-4d00-b806-8c894e896620",
+      "name": "Dividir em Lotes",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -512,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.WHATSAPP_API_URL || 'https://apiwp.aiagentautomate.com.br/send' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.F9B1087501F5-4FB3-96A0-4B1015E146C2 }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $json.telefone }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.mensagem }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2f0db283-06e5-4d5c-8db7-8787041d8c4b",
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -416,
+        -96
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Vg1sLZdXLdtpj9vh",
+          "name": "Header Auth account"
+        }
+      },
+      "notes": "Configure a URL da API de WhatsApp e o token nas variáveis de ambiente do n8n.\n\nExemplos de APIs compatíveis:\n- Evolution API\n- Twilio WhatsApp\n- WhatsApp Business API\n- ChatAPI\n\nOu use um webhook customizado."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.statusCode }}",
+              "rightValue": 200,
+              "operator": {
+                "type": "number",
+                "operation": "largerEqual",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "condition-2",
+              "leftValue": "={{ $json.statusCode }}",
+              "rightValue": 299,
+              "operator": {
+                "type": "number",
+                "operation": "smallerEqual",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "2548690b-7571-4914-a2d5-2eb9a8646d8b",
+      "name": "Verificar Sucesso",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -16,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=UPDATE public.installments\nSET updated_at = CURRENT_TIMESTAMP\nWHERE id = '{{ $(''Processar Dados'').item.json.parcela_id }}';",
+        "options": {}
+      },
+      "id": "18951061-0681-4a61-9752-de8b1007a26c",
+      "name": "Atualizar Parcela",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        208,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "schema": "public",
+        "table": "login_audit",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "tenant_id": "={{ $(''Buscar Parcelas Vencendo Hoje'').item.json.tenant_id || ''00000000-0000-0000-0000-000000000001'' }}",
+            "user_id": "={{ $(''Processar Dados'').item.json.cliente_id }}",
+            "email": "cobranca_automatica@system",
+            "success": true,
+            "created_at": "={{ $now }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "089664a1-9ae1-4c63-b22c-b701bc9f0ccb",
+      "name": "Registrar Log Sucesso",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        208,
+        208
+      ],
+      "notes": "Opcional: Registrar envio bem-sucedido no log de auditoria"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const raw = (item.json.telefone || item.json.whatsapp || \"\").toString();\n  const numero = raw.replace(/\\D/g, \"\");\n\n  return {\n    json: {\n      ...item.json,\n      numero_e164: numero,\n    }\n  };\n});\n"
+      },
+      "id": "e01c1080-165d-4485-a7c0-e11813e760f8",
+      "name": "Registrar Erro",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -16,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "summary-1",
+              "name": "total_processadas",
+              "value": "={{ $('Dividir em Lotes').item.json.totalItems || 0 }}",
+              "type": "number"
+            },
+            {
+              "id": "summary-2",
+              "name": "total_enviadas",
+              "value": "={{ $('Verificar Sucesso').all().filter(item => item.json.statusCode >= 200 && item.json.statusCode <= 299).length }}",
+              "type": "number"
+            },
+            {
+              "id": "summary-3",
+              "name": "total_erros",
+              "value": "={{ $('Registrar Erro').all().length }}",
+              "type": "number"
+            },
+            {
+              "id": "summary-4",
+              "name": "data_execucao",
+              "value": "={{ $now }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7008f0fd-657d-4bbf-9cfb-d0d668d30bbd",
+      "name": "Resumo Execução",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        432,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "CredGestor",
+        "remoteJid": "=5511945237617",
+        "messageText": "=Olá, lembrete dos clientes do dia.\n{{ $json.cliente_nome }} e {{ $json.telefone }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -304,
+        112
+      ],
+      "id": "7a63c9e5-d741-436b-953b-95a73da7bad9",
+      "name": "Enviar texto",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = ($json.telefone || $json.whatsapp || \"\").toString();\n\n// mantém só dígitos\nlet n = raw.replace(/\\D/g, \"\");\n\n// se vier sem 55, você pode forçar (opcional)\n// if (n.length === 11) n = \"55\" + n;\n\nreturn [{ json: { ...$json, numero_e164: n } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -672,
+        112
+      ],
+      "id": "77ac9919-8d76-43a8-9da6-a1138f00d9c2",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2026-01-13T02:13:49.867Z",
+      "updatedAt": "2026-01-13T02:13:49.867Z",
+      "role": "workflow:owner",
+      "workflowId": "0GlOvI7HjvdbC59s",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-22T04:25:30.809Z",
+  "versionId": "82b4cc07-8afa-43a1-bd92-415d8cc56522"
+}

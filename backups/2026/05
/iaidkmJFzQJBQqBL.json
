@@ -1,0 +1,424 @@
+{
+  "active": false,
+  "connections": {
+    "Agendamento Diário": {
+      "main": [
+        [
+          {
+            "node": "Buscar Parcelas Vencendo Hoje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Parcelas Vencendo Hoje": {
+      "main": [
+        [
+          {
+            "node": "Agrupar por Tenant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agrupar por Tenant": {
+      "main": [
+        [
+          {
+            "node": "Buscar Usuários do Tenant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Usuários do Tenant": {
+      "main": [
+        [
+          {
+            "node": "Formatar Email HTML para Usuários",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Formatar WhatsApp para Clientes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar Email HTML para Usuários": {
+      "main": [
+        [
+          {
+            "node": "Enviar Email HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar WhatsApp para Clientes": {
+      "main": [
+        [
+          {
+            "node": "Processar WhatsApp em Lotes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar WhatsApp em Lotes": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Sucesso WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Resumo Execução",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resumo Execução",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Verificar Sucesso WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Email HTML": {
+      "main": [
+        [
+          {
+            "node": "Resumo Execução",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-22T03:21:52.614Z",
+  "id": "iaidkmJFzQJBQqBL",
+  "isArchived": false,
+  "meta": null,
+  "name": "Agente IA - Notificações Vencimentos Diários - PRD",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      },
+      "id": "221ffe5c-071f-4673-8733-6526f0aa7039",
+      "name": "Agendamento Diário",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1616,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=SELECT \n  inst.id as parcela_id,\n  inst.loan_id,\n  inst.client_id,\n  inst.tenant_id,\n  inst.number as numero_parcela,\n  inst.due_date as data_vencimento,\n  inst.amount as valor_parcela,\n  inst.amount_paid as valor_pago,\n  inst.interest_amount,\n  inst.principal_amount,\n  inst.status,\n  c.nome as cliente_nome,\n  c.whatsapp,\n  c.celular,\n  c.telefone,\n  c.email as cliente_email,\n  l.model as modelo_emprestimo,\n  l.amount as valor_total_emprestimo,\n  (\n    SELECT COALESCE(SUM(i.principal_amount), 0)\n    FROM public.installments i\n    WHERE i.loan_id = inst.loan_id\n      AND i.status = 'PAID'\n  ) as total_principal_pago,\n  t.name as tenant_name\nFROM public.installments inst\nJOIN public.clients c ON inst.client_id = c.id\nJOIN public.loans l ON inst.loan_id = l.id\nJOIN public.tenants t ON inst.tenant_id = t.id\nWHERE inst.due_date >= CURRENT_DATE\n  AND inst.due_date <= CURRENT_DATE + INTERVAL '30 days'\n  AND c.ativo = true\n  AND l.model IN ('PRICE', 'INTEREST_ONLY')\nORDER BY inst.due_date, inst.tenant_id, c.nome\nLIMIT 20;",
+        "options": {}
+      },
+      "id": "83100264-d751-4d81-a8b7-cb3fdbb7d9df",
+      "name": "Buscar Parcelas Vencendo Hoje",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        -1376,
+        272
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "5W8bQyCCsNE27usm",
+          "name": "Postgres CredGestor-Homologação"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Processar parcelas e agrupar por tenant\nconst items = $input.all();\nconst tenantsMap = {};\n\nfor (const item of items) {\n  const parcela = item.json;\n  const tenantId = parcela.tenant_id;\n  \n  if (!tenantsMap[tenantId]) {\n    tenantsMap[tenantId] = {\n      tenant_id: tenantId,\n      tenant_name: parcela.tenant_name,\n      parcelas: [],\n      total_valor: 0,\n      total_parcelas: 0,\n      parcelas_price: [],\n      parcelas_juros: []\n    };\n  }\n  \n  // Calcular valor em aberto\n  const valorAberto = parseFloat(parcela.valor_parcela || 0) - parseFloat(parcela.valor_pago || 0);\n  const valorTotalEmprestimo = parseFloat(parcela.valor_total_emprestimo || 0);\n  const valorJuros = parseFloat(parcela.interest_amount || 0);\n  const valorPrincipal = parseFloat(parcela.principal_amount || 0);\n  const totalPrincipalPago = parseFloat(parcela.total_principal_pago || 0);\n  \n  // Calcular saldo devedor real\n  const saldoDevedor = valorTotalEmprestimo - totalPrincipalPago;\n  \n  // Determinar telefone do cliente (prioridade: whatsapp > celular > telefone)\n  let telefone = parcela.whatsapp || parcela.celular || parcela.telefone;\n  telefone = telefone ? telefone.replace(/\\D/g, '') : null;\n  if (telefone && !telefone.startsWith('55')) {\n    telefone = '55' + telefone;\n  }\n  \n  const modelo = parcela.modelo_emprestimo || 'PRICE';\n  \n  const parcelaData = {\n    parcela_id: parcela.parcela_id,\n    client_id: parcela.client_id,\n    cliente_nome: parcela.cliente_nome,\n    cliente_phone: telefone,\n    cliente_email: parcela.cliente_email,\n    numero_parcela: parcela.numero_parcela,\n    valor_parcela: parseFloat(parcela.valor_parcela || 0),\n    valor_aberto: valorAberto,\n    valor_juros: valorJuros,\n    valor_principal: valorPrincipal,\n    saldo_devedor: saldoDevedor,\n    status: parcela.status,\n    data_vencimento: parcela.data_vencimento,\n    modelo_emprestimo: modelo\n  };\n  \n  tenantsMap[tenantId].parcelas.push(parcelaData);\n  \n  // Separar por modelo para facilitar formatação\n  if (modelo === 'PRICE') {\n    tenantsMap[tenantId].parcelas_price.push(parcelaData);\n  } else if (modelo === 'INTEREST_ONLY') {\n    tenantsMap[tenantId].parcelas_juros.push(parcelaData);\n  }\n  \n  tenantsMap[tenantId].total_valor += valorAberto;\n  tenantsMap[tenantId].total_parcelas += 1;\n}\n\n// Converter para array\nconst processedItems = Object.values(tenantsMap).map(tenant => ({\n  json: tenant\n}));\n\nreturn processedItems;"
+      },
+      "id": "fa316ffa-184e-4150-b83e-6d4e18acf365",
+      "name": "Agrupar por Tenant",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1136,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=SELECT \n  tu.id,\n  tu.email,\n  tu.role,\n  tu.metadata,\n  u.name as user_name\nFROM public.tenant_users tu\nLEFT JOIN public.users u ON tu.user_id = u.id\nWHERE tu.tenant_id = '{{ $json.tenant_id }}'\n  AND tu.ativo = true;",
+        "options": {}
+      },
+      "id": "1bd397dd-0b13-41dc-9894-7e98fb143c75",
+      "name": "Buscar Usuários do Tenant",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        -896,
+        272
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "5W8bQyCCsNE27usm",
+          "name": "Postgres CredGestor-Homologação"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const tenantData = $('Agrupar por Tenant').item.json;\nconst userEmail = $json.email;\nconst userName = $json.user_name || 'Usuário';\nconst tenantName = tenantData.tenant_name;\n\nif (!userEmail || !tenantName) return [];\n\nconst hoje = new Date().toLocaleDateString('pt-BR');\nconst hora = new Date().toLocaleTimeString('pt-BR');\n\nfunction formatMoneyBR(v) {\n  return Number(v ?? 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });\n}\n\nfunction formatPhone(phone) {\n  if (!phone) return '';\n  const cleaned = phone.replace(/^55/, '');\n  if (cleaned.length === 11) {\n    return `(${cleaned.substring(0, 2)}) ${cleaned.substring(2, 7)}-${cleaned.substring(7)}`;\n  }\n  return cleaned;\n}\n\nconst parcelasPRICE = tenantData.parcelas_price || [];\nconst parcelasJUROS = tenantData.parcelas_juros || [];\n\n// Construir HTML\nlet html = `\n<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Vencimentos do Dia</title>\n  <style>\n    body {\n      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n      line-height: 1.6;\n      color: #333;\n      max-width: 800px;\n      margin: 0 auto;\n      padding: 20px;\n      background-color: #f5f5f5;\n    }\n    .container {\n      background-color: #ffffff;\n      border-radius: 8px;\n      padding: 30px;\n      box-shadow: 0 2px 4px rgba(0,0,0,0.1);\n    }\n    .header {\n      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n      color: white;\n      padding: 20px;\n      border-radius: 8px 8px 0 0;\n      margin: -30px -30px 30px -30px;\n    }\n    .header h1 {\n      margin: 0;\n      font-size: 24px;\n    }\n    .header p {\n      margin: 5px 0 0 0;\n      opacity: 0.9;\n    }\n    .summary {\n      background-color: #f8f9fa;\n      padding: 20px;\n      border-radius: 8px;\n      margin-bottom: 30px;\n      border-left: 4px solid #667eea;\n    }\n    .summary h2 {\n      margin-top: 0;\n      color: #667eea;\n      font-size: 18px;\n    }\n    .summary-item {\n      display: flex;\n      justify-content: space-between;\n      margin: 10px 0;\n      padding: 5px 0;\n    }\n    .summary-label {\n      font-weight: 600;\n      color: #555;\n    }\n    .summary-value {\n      color: #333;\n      font-weight: 700;\n    }\n    .section {\n      margin-bottom: 30px;\n    }\n    .section h2 {\n      color: #667eea;\n      border-bottom: 2px solid #667eea;\n      padding-bottom: 10px;\n      margin-bottom: 20px;\n      font-size: 20px;\n    }\n    .client-card {\n      background-color: #fff;\n      border: 1px solid #e0e0e0;\n      border-radius: 8px;\n      padding: 20px;\n      margin-bottom: 15px;\n      transition: box-shadow 0.3s ease;\n    }\n    .client-card:hover {\n      box-shadow: 0 4px 8px rgba(0,0,0,0.1);\n    }\n    .client-name {\n      font-size: 18px;\n      font-weight: 700;\n      color: #333;\n      margin-bottom: 15px;\n      display: flex;\n      align-items: center;\n    }\n    .status-badge {\n      display: inline-block;\n      padding: 4px 12px;\n      border-radius: 12px;\n      font-size: 12px;\n      font-weight: 600;\n      margin-left: 10px;\n    }\n    .status-pending {\n      background-color: #fff3cd;\n      color: #856404;\n    }\n    .status-late {\n      background-color: #f8d7da;\n      color: #721c24;\n    }\n    .client-info {\n      display: grid;\n      grid-template-columns: 1fr 1fr;\n      gap: 15px;\n      margin-top: 15px;\n    }\n    .info-item {\n      display: flex;\n      flex-direction: column;\n    }\n    .info-label {\n      font-size: 12px;\n      color: #666;\n      text-transform: uppercase;\n      letter-spacing: 0.5px;\n      margin-bottom: 5px;\n    }\n    .info-value {\n      font-size: 16px;\n      color: #333;\n      font-weight: 600;\n    }\n    .phone-link {\n      color: #25D366;\n      text-decoration: none;\n      font-weight: 600;\n      display: inline-flex;\n      align-items: center;\n      gap: 5px;\n    }\n    .phone-link:hover {\n      text-decoration: underline;\n    }\n    .value-highlight {\n      color: #667eea;\n      font-size: 20px;\n      font-weight: 700;\n    }\n    .footer {\n      text-align: center;\n      margin-top: 40px;\n      padding-top: 20px;\n      border-top: 1px solid #e0e0e0;\n      color: #666;\n      font-size: 14px;\n    }\n    .empty-state {\n      text-align: center;\n      padding: 40px;\n      color: #999;\n    }\n    @media (max-width: 600px) {\n      .client-info {\n        grid-template-columns: 1fr;\n      }\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <h1>🔔 Notificação de Vencimentos</h1>\n      <p>Tenant: ${tenantName}</p>\n      <p>${hoje} às ${hora}</p>\n    </div>\n\n    <div class=\"summary\">\n      <h2>📊 Resumo Geral</h2>\n      <div class=\"summary-item\">\n        <span class=\"summary-label\">Total de Parcelas Vencendo:</span>\n        <span class=\"summary-value\">${tenantData.total_parcelas}</span>\n      </div>\n      <div class=\"summary-item\">\n        <span class=\"summary-label\">Valor Total em Aberto:</span>\n        <span class=\"summary-value\">R$ ${formatMoneyBR(tenantData.total_valor)}</span>\n      </div>\n      <div class=\"summary-item\">\n        <span class=\"summary-label\">Modelo PRICE:</span>\n        <span class=\"summary-value\">${parcelasPRICE.length} parcela(s)</span>\n      </div>\n      <div class=\"summary-item\">\n        <span class=\"summary-label\">Modelo Somente Juros:</span>\n        <span class=\"summary-value\">${parcelasJUROS.length} parcela(s)</span>\n      </div>\n    </div>\n`;\n\n// Seção PRICE\nif (parcelasPRICE.length > 0) {\n  html += `\n    <div class=\"section\">\n      <h2>💳 Modelo PRICE - Parcelamento</h2>\n`;\n  \n  for (const p of parcelasPRICE) {\n    const statusClass = p.status === 'LATE' ? 'status-late' : 'status-pending';\n    const statusText = p.status === 'LATE' ? 'ATRASADO' : 'PENDENTE';\n    const whatsappLink = p.cliente_phone ? `https://wa.me/${p.cliente_phone}` : '#';\n    \n    html += `\n      <div class=\"client-card\">\n        <div class=\"client-name\">\n          ${p.cliente_nome}\n          <span class=\"status-badge ${statusClass}\">${statusText}</span>\n        </div>\n        <div class=\"client-info\">\n          <div class=\"info-item\">\n            <span class=\"info-label\">Telefone</span>\n            <span class=\"info-value\">\n              ${p.cliente_phone ? `<a href=\"${whatsappLink}\" class=\"phone-link\" target=\"_blank\">📱 ${formatPhone(p.cliente_phone)}</a>` : 'Não informado'}\n            </span>\n          </div>\n          <div class=\"info-item\">\n            <span class=\"info-label\">Valor da Parcela</span>\n            <span class=\"info-value value-highlight\">R$ ${formatMoneyBR(p.valor_parcela)}</span>\n          </div>\n        </div>\n      </div>\n    `;\n  }\n  \n  html += `\n    </div>\n  `;\n} else {\n  html += `\n    <div class=\"section\">\n      <h2>💳 Modelo PRICE - Parcelamento</h2>\n      <div class=\"empty-state\">Nenhuma parcela modelo PRICE vencendo hoje</div>\n    </div>\n  `;\n}\n\n// Seção Somente Juros\nif (parcelasJUROS.length > 0) {\n  html += `\n    <div class=\"section\">\n      <h2>📈 Modelo Somente Juros</h2>\n`;\n  \n  for (const p of parcelasJUROS) {\n    const statusClass = p.status === 'LATE' ? 'status-late' : 'status-pending';\n    const statusText = p.status === 'LATE' ? 'ATRASADO' : 'PENDENTE';\n    const whatsappLink = p.cliente_phone ? `https://wa.me/${p.cliente_phone}` : '#';\n    \n    html += `\n      <div class=\"client-card\">\n        <div class=\"client-name\">\n          ${p.cliente_nome}\n          <span class=\"status-badge ${statusClass}\">${statusText}</span>\n        </div>\n        <div class=\"client-info\">\n          <div class=\"info-item\">\n            <span class=\"info-label\">Telefone</span>\n            <span class=\"info-value\">\n              ${p.cliente_phone ? `<a href=\"${whatsappLink}\" class=\"phone-link\" target=\"_blank\">📱 ${formatPhone(p.cliente_phone)}</a>` : 'Não informado'}\n            </span>\n          </div>\n          <div class=\"info-item\">\n            <span class=\"info-label\">Valor dos Juros</span>\n            <span class=\"info-value value-highlight\">R$ ${formatMoneyBR(p.valor_juros)}</span>\n          </div>\n          <div class=\"info-item\">\n            <span class=\"info-label\">Saldo Devedor Restante</span>\n            <span class=\"info-value\">R$ ${formatMoneyBR(p.saldo_devedor)}</span>\n          </div>\n        </div>\n      </div>\n    `;\n  }\n  \n  html += `\n    </div>\n  `;\n} else {\n  html += `\n    <div class=\"section\">\n      <h2>📈 Modelo Somente Juros</h2>\n      <div class=\"empty-state\">Nenhuma parcela modelo Somente Juros vencendo hoje</div>\n    </div>\n  `;\n}\n\nhtml += `\n    <div class=\"footer\">\n      <p><strong>Sistema CredGestor</strong></p>\n      <p>Este é um e-mail automático. Por favor, não responda.</p>\n    </div>\n  </div>\n</body>\n</html>\n`;\n\nreturn [{\n  json: {\n    email: userEmail,\n    user_name: userName,\n    assunto: `🔔 Vencimentos do Dia - ${tenantName} - ${hoje}`,\n    html_message: html\n  }\n}];"
+      },
+      "id": "696dc314-066a-47d5-a5ef-e7ef0783aa8b",
+      "name": "Formatar Email HTML para Usuários",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -656,
+        160
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Formatar mensagens WhatsApp individuais para clientes\nconst tenantData = $('Agrupar por Tenant').item.json;\nconst processedItems = [];\n\nconst hoje = new Date().toLocaleDateString('pt-BR');\n\nfunction formatMoneyBR(v) {\n  return Number(v ?? 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });\n}\n\nfunction formatPhone(phone) {\n  if (!phone) return '';\n  const cleaned = phone.replace(/^55/, '');\n  if (cleaned.length === 11) {\n    return `(${cleaned.substring(0, 2)}) ${cleaned.substring(2, 7)}-${cleaned.substring(7)}`;\n  }\n  return cleaned;\n}\n\nfor (const parcela of tenantData.parcelas) {\n  // Só processar se tiver telefone\n  if (!parcela.cliente_phone) {\n    continue;\n  }\n  \n  let mensagem = '';\n  \n  // Mensagem para modelo PRICE\n  if (parcela.modelo_emprestimo === 'PRICE') {\n    mensagem = `🔔 *Lembrete de Vencimento*\\n\\n`;\n    mensagem += `Olá *${parcela.cliente_nome}*!\\n\\n`;\n    mensagem += `Sua parcela #${parcela.numero_parcela} vence hoje (${hoje}).\\n\\n`;\n    mensagem += `💰 *Valor da Parcela:* R$ ${formatMoneyBR(parcela.valor_parcela)}\\n\\n`;\n    mensagem += `📞 *Seu telefone:* ${formatPhone(parcela.cliente_phone)}\\n\\n`;\n    mensagem += `Por favor, realize o pagamento para evitar juros e multa.\\n\\n`;\n    mensagem += `Obrigado!\\n`;\n    mensagem += `_Sistema CredGestor_`;\n  }\n  // Mensagem para modelo INTEREST_ONLY (Somente Juros)\n  else if (parcela.modelo_emprestimo === 'INTEREST_ONLY') {\n    mensagem = `🔔 *Lembrete de Vencimento - Juros*\\n\\n`;\n    mensagem += `Olá *${parcela.cliente_nome}*!\\n\\n`;\n    mensagem += `O pagamento dos juros vence hoje (${hoje}).\\n\\n`;\n    mensagem += `💰 *Valor dos Juros:* R$ ${formatMoneyBR(parcela.valor_juros)}\\n`;\n    mensagem += `📊 *Saldo Devedor Restante:* R$ ${formatMoneyBR(parcela.saldo_devedor)}\\n\\n`;\n    mensagem += `📞 *Seu telefone:* ${formatPhone(parcela.cliente_phone)}\\n\\n`;\n    mensagem += `Por favor, realize o pagamento para evitar juros e multa.\\n\\n`;\n    mensagem += `Obrigado!\\n`;\n    mensagem += `_Sistema CredGestor_`;\n  }\n  \n  if (mensagem) {\n    processedItems.push({\n      json: {\n        telefone: parcela.cliente_phone,\n        mensagem: mensagem,\n        cliente_nome: parcela.cliente_nome,\n        parcela_id: parcela.parcela_id,\n        numero_parcela: parcela.numero_parcela,\n        modelo_emprestimo: parcela.modelo_emprestimo,\n        valor: parcela.modelo_emprestimo === 'INTEREST_ONLY' ? parcela.valor_juros : parcela.valor_parcela\n      }\n    });\n  }\n}\n\nreturn processedItems;"
+      },
+      "id": "2a37f4ee-6062-4bec-8f9c-40e01e25cf9e",
+      "name": "Formatar WhatsApp para Clientes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -656,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "4a298055-b83c-4b45-aa36-0604bf076d91",
+      "name": "Processar WhatsApp em Lotes",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -448,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.statusCode }}",
+              "rightValue": 200,
+              "operator": {
+                "type": "number",
+                "operation": "largerEqual",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "condition-2",
+              "leftValue": "={{ $json.statusCode }}",
+              "rightValue": 299,
+              "operator": {
+                "type": "number",
+                "operation": "smallerEqual",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f6c5947f-039a-42a3-886f-9bb203e4e2ad",
+      "name": "Verificar Sucesso WhatsApp",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        80,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "summary-1",
+              "name": "tenant_name",
+              "value": "={{ $('Agrupar por Tenant').item.json.tenant_name }}",
+              "type": "string"
+            },
+            {
+              "id": "summary-2",
+              "name": "total_parcelas",
+              "value": "={{ $('Agrupar por Tenant').item.json.total_parcelas }}",
+              "type": "number"
+            },
+            {
+              "id": "summary-3",
+              "name": "total_valor",
+              "value": "={{ $('Agrupar por Tenant').item.json.total_valor }}",
+              "type": "number"
+            },
+            {
+              "id": "summary-4",
+              "name": "emails_enviados",
+              "value": "={{ $('Formatar Email HTML para Usuários').all().length }}",
+              "type": "number"
+            },
+            {
+              "id": "summary-5",
+              "name": "whatsapp_enviados",
+              "value": "={{ $('Processar WhatsApp em Lotes').item.json.totalItems || 0 }}",
+              "type": "number"
+            },
+            {
+              "id": "summary-6",
+              "name": "data_execucao",
+              "value": "={{ $now }}",
+              "type": "string"
+            },
+            {
+              "id": "summary-7",
+              "name": "parcelas_price",
+              "value": "={{ $('Agrupar por Tenant').item.json.parcelas_price.length }}",
+              "type": "number"
+            },
+            {
+              "id": "summary-8",
+              "name": "parcelas_juros",
+              "value": "={{ $('Agrupar por Tenant').item.json.parcelas_juros.length }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d78ad98e-e4cb-485d-be85-e897cd8ebee2",
+      "name": "Resumo Execução",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ [{ email: $json.email }] }}",
+        "subject": "={{ $json.assunto }}",
+        "message": "={{ $json.html_message }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -176,
+        160
+      ],
+      "id": "56365514-bf10-4b5d-a8de-e7ff406b82a8",
+      "name": "Enviar Email HTML",
+      "webhookId": "05a7e4a6-e27c-4cd6-9d4e-ea8162a72f87",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "a6p3Q2T0CPdmQVBb",
+          "name": "Gmail CredGestor"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "CredGestor",
+        "remoteJid": "=5511952313944",
+        "messageText": "={{ $json.mensagem }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        400
+      ],
+      "id": "1abbcb69-156b-40af-bca8-894e293f5ded",
+      "name": "Enviar WhatsApp",
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2026-01-22T03:21:52.614Z",
+      "updatedAt": "2026-01-22T03:21:52.614Z",
+      "role": "workflow:owner",
+      "workflowId": "iaidkmJFzQJBQqBL",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-22T04:26:28.129Z",
+  "versionId": "02fb843f-a90e-4b2a-8e8e-6eff34da0547"
+}

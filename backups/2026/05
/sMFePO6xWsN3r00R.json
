@@ -1,0 +1,278 @@
+{
+  "active": true,
+  "connections": {
+    "❓ Tem instâncias DOWN?": {
+      "main": [
+        [
+          {
+            "node": "🚨 Slack — Alerta DOWN1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "✅ Slack — Tudo OK1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔍 Buscar Instâncias1": {
+      "main": [
+        [
+          {
+            "node": "⚙️ Processar Instâncias1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⚙️ Processar Instâncias1": {
+      "main": [
+        [
+          {
+            "node": "📝 Montar Mensagem1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📝 Montar Mensagem1": {
+      "main": [
+        [
+          {
+            "node": "❓ Tem instâncias DOWN?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⏰ Agendamento 1 hora": {
+      "main": [
+        [
+          {
+            "node": "🔍 Buscar Instâncias1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-28T00:40:49.141Z",
+  "id": "sMFePO6xWsN3r00R",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Evolution API - Monitor Instâncias v2",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "has-down",
+              "leftValue": "={{ $json.downCount }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "52d5ad77-e1a0-4e51-b425-2f626adfd18c",
+      "name": "❓ Tem instâncias DOWN?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -544,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://apiwp.aiagentautomate.com.br/instance/fetchInstances",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "CN4AnbOtY79Wv6wNyx88cdoKXqugcINi"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {}
+          },
+          "timeout": 15000
+        }
+      },
+      "id": "dab8e743-ddab-44b7-8765-d6e237d69586",
+      "name": "🔍 Buscar Instâncias1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1200,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.all();\nconst results = [];\n\nfor (const item of input) {\n  const data = item.json;\n\n  // A resposta pode ser array direto ou objeto com propriedade\n  const list = Array.isArray(data) ? data : (Array.isArray(data.instances) ? data.instances : [data]);\n\n  for (const inst of list) {\n    // Suporte aos dois formatos de resposta da Evolution API\n    const name = inst.instance?.instanceName || inst.instanceName || inst.name || 'Desconhecido';\n    const state = inst.instance?.state || inst.connectionStatus || inst.state || 'unknown';\n    const phone = (inst.instance?.owner || inst.ownerJid || '').replace('@s.whatsapp.net', '');\n    const profileName = inst.instance?.profileName || inst.profileName || '';\n\n    // Classificação do status\n    const isUp = ['open', 'connected', 'CONNECTED'].includes(state);\n    const isConnecting = ['connecting', 'CONNECTING', 'Connecting'].includes(state);\n\n    let status;\n    if (isUp) status = 'UP';\n    else if (isConnecting) status = 'CONNECTING';\n    else status = 'DOWN';\n\n    results.push({\n      json: {\n        name,\n        state,\n        status,\n        phone,\n        profileName,\n        isUp,\n        isConnecting,\n        emoji: isUp ? '🟢' : isConnecting ? '🟡' : '🔴'\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "71cafaea-0e43-4ed9-bbe5-67d645222641",
+      "name": "⚙️ Processar Instâncias1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -976,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nconst up = items.filter(i => i.json.status === 'UP');\nconst connecting = items.filter(i => i.json.status === 'CONNECTING');\nconst down = items.filter(i => i.json.status === 'DOWN');\n\nconst total = items.length;\nconst now = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });\n\n// Linhas individuais de cada instância\nconst lines = items.map(i => {\n  const d = i.json;\n  const phone = d.phone ? ` | 📱 ${d.phone}` : '';\n  const profile = d.profileName ? ` _(${d.profileName})_` : '';\n  return `${d.emoji} *${d.name}*${profile}${phone} — \\`${d.state}\\``;\n}).join('\\n');\n\n// Ícone de saúde geral\nlet healthIcon = '✅';\nif (down.length > 0 && down.length >= Math.ceil(total / 2)) healthIcon = '🚨';\nelse if (down.length > 0 || connecting.length > 0) healthIcon = '⚠️';\n\nconst summary = `${healthIcon} *Resumo:* 🟢 ${up.length} UP  |  🟡 ${connecting.length} Connecting  |  🔴 ${down.length} DOWN`;\n\nconst message = [\n  `*🤖 Evolution API — Status das Instâncias*`,\n  `🕐 _${now}_`,\n  `━━━━━━━━━━━━━━━━━━━━━`,\n  lines,\n  `━━━━━━━━━━━━━━━━━━━━━`,\n  summary,\n  `📊 Total monitorado: *${total}* instâncias`\n].join('\\n');\n\nreturn [{\n  json: {\n    message,\n    upCount: up.length,\n    downCount: down.length,\n    connectingCount: connecting.length,\n    total\n  }\n}];"
+      },
+      "id": "7260a4d0-4bef-4a33-92ac-355ad2f753ed",
+      "name": "📝 Montar Mensagem1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -768,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0ANZBZTH0X",
+          "mode": "id"
+        },
+        "text": "={{ $json.message }}",
+        "otherOptions": {
+          "mrkdwn": true,
+          "unfurl_links": false,
+          "unfurl_media": false
+        }
+      },
+      "id": "1c8f2d1a-62cc-46f5-8496-c015bd419cbb",
+      "name": "🚨 Slack — Alerta DOWN1",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        -320,
+        304
+      ],
+      "webhookId": "e022ed4e-3e36-4a39-825b-de2988ab5dba",
+      "credentials": {
+        "slackApi": {
+          "id": "phyRN4gE0nsEFyLC",
+          "name": "Slack-status-evoApi"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0ANZBZTH0X",
+          "mode": "id"
+        },
+        "text": "={{ $json.message }}",
+        "otherOptions": {
+          "mrkdwn": true,
+          "unfurl_links": false,
+          "unfurl_media": false
+        }
+      },
+      "id": "a7f3ea45-7911-4a8e-af1a-8bbe4cb8b3c0",
+      "name": "✅ Slack — Tudo OK1",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        -320,
+        544
+      ],
+      "webhookId": "426e7fea-8ebf-4c81-afd6-e87b17464aec",
+      "credentials": {
+        "slackApi": {
+          "id": "phyRN4gE0nsEFyLC",
+          "name": "Slack-status-evoApi"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "id": "50a1aea6-811a-4183-8113-d7bf6c491117",
+      "name": "⏰ Agendamento 1 hora",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1424,
+        432
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2026-03-28T00:40:49.141Z",
+      "updatedAt": "2026-03-28T00:40:49.141Z",
+      "role": "workflow:owner",
+      "workflowId": "sMFePO6xWsN3r00R",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": {
+    "node:⏰ Agendamento (5min)1": {
+      "recurrenceRules": []
+    },
+    "node:⏰ Agendamento 1 hora": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [
+    {
+      "createdAt": "2026-03-28T00:36:34.270Z",
+      "updatedAt": "2026-03-28T00:36:34.270Z",
+      "id": "sqBrrOQ4ljHt6z4Y",
+      "name": "evolution-api"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-03-28T09:59:26.766Z",
+  "versionId": "fa30b88e-66d6-4451-97c9-2f7b62cb0e21"
+}

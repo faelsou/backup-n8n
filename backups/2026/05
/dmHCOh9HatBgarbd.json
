@@ -1,0 +1,321 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Processar Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Processar Dados": {
+      "main": [
+        [
+          {
+            "node": "Gravar no Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gravar no Postgres": {
+      "main": [
+        [
+          {
+            "node": "Responder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "⏱️ Iniciar Timer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⏱️ Iniciar Timer": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat": {
+      "main": [
+        [
+          {
+            "node": "📊 Preparar Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📊 Preparar Log": {
+      "main": [
+        [
+          {
+            "node": "Responder1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "📝 Enviar para Logger",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-30T05:59:13.797Z",
+  "id": "dmHCOh9HatBgarbd",
+  "isArchived": true,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "EXEMPLO - Workflow com LLM Monitorado",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "log-llm",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "c346bae3-0957-47e6-875a-68b1f6a2ec5c",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "log-llm-metrics"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ========================================\n// PROCESSA DADOS DA CHAMADA LLM\n// ========================================\n\nconst input = $input.first().json;\n\n// Tabela de preços OpenAI (Janeiro 2025)\nconst PRICE_TABLE = {\n  'gpt-4o': { input: 0.0025, output: 0.01 },\n  'gpt-4o-mini': { input: 0.00015, output: 0.0006 },\n  'gpt-4o-2024-11-20': { input: 0.0025, output: 0.01 },\n  'gpt-4-turbo': { input: 0.01, output: 0.03 },\n  'gpt-4-turbo-preview': { input: 0.01, output: 0.03 },\n  'gpt-4': { input: 0.03, output: 0.06 },\n  'gpt-3.5-turbo': { input: 0.0005, output: 0.0015 },\n  'gpt-3.5-turbo-0125': { input: 0.0005, output: 0.0015 },\n  'o1': { input: 0.015, output: 0.06 },\n  'o1-preview': { input: 0.015, output: 0.06 },\n  'o1-mini': { input: 0.003, output: 0.012 },\n  'o3-mini': { input: 0.0011, output: 0.0044 },\n  'chatgpt-4o-latest': { input: 0.005, output: 0.015 }\n};\n\n// Extrai tokens (compatível com diferentes formatos de resposta)\nlet promptTokens = 0;\nlet completionTokens = 0;\nlet totalTokens = 0;\n\n// Formato 1: usage direto\nif (input.usage) {\n  promptTokens = input.usage.prompt_tokens || input.usage.promptTokens || 0;\n  completionTokens = input.usage.completion_tokens || input.usage.completionTokens || 0;\n  totalTokens = input.usage.total_tokens || input.usage.totalTokens || (promptTokens + completionTokens);\n}\n// Formato 2: resposta do node OpenAI/AI Agent do n8n\nelse if (input.response?.usage) {\n  promptTokens = input.response.usage.prompt_tokens || 0;\n  completionTokens = input.response.usage.completion_tokens || 0;\n  totalTokens = input.response.usage.total_tokens || (promptTokens + completionTokens);\n}\n// Formato 3: tokens passados diretamente\nelse {\n  promptTokens = input.prompt_tokens || input.promptTokens || 0;\n  completionTokens = input.completion_tokens || input.completionTokens || 0;\n  totalTokens = input.total_tokens || input.totalTokens || (promptTokens + completionTokens);\n}\n\n// Modelo usado\nconst model = input.model || input.response?.model || 'gpt-4o-mini';\n\n// Calcula custo\nconst prices = PRICE_TABLE[model] || PRICE_TABLE['gpt-4o-mini'];\nconst costUsd = ((promptTokens / 1000) * prices.input) + ((completionTokens / 1000) * prices.output);\n\n// Determina status\nlet status = 'success';\nlet errorType = null;\nlet httpStatus = 200;\n\nif (input.error || input.status === 'error') {\n  status = 'error';\n  errorType = input.error_type || input.errorType || 'unknown';\n  httpStatus = input.http_status || input.httpStatus || 500;\n}\n\n// Monta evento para inserção\nconst llmEvent = {\n  environment: input.environment || 'prod',\n  workflow_id: input.workflow_id || input.workflowId || $workflow.id || 'unknown',\n  workflow_name: input.workflow_name || input.workflowName || $workflow.name || 'unknown',\n  execution_id: input.execution_id || input.executionId || $execution?.id || 'unknown',\n  node_name: input.node_name || input.nodeName || 'LLM Call',\n  tenant_id: input.tenant_id || input.tenantId || null,\n  channel: input.channel || null,\n  \n  provider: input.provider || 'openai',\n  model: model,\n  temperature: input.temperature ?? null,\n  top_p: input.top_p ?? null,\n  max_tokens: input.max_tokens || input.maxTokens || null,\n  \n  prompt_tokens: promptTokens,\n  completion_tokens: completionTokens,\n  total_tokens: totalTokens,\n  cost_usd: Math.round(costUsd * 1000000) / 1000000,\n  price_version: '2025-01',\n  \n  latency_ms: input.latency_ms || input.latencyMs || input.latency || null,\n  retries: input.retries || 0,\n  status: status,\n  http_status: httpStatus,\n  error_type: errorType,\n  error_hash: errorType ? Buffer.from(errorType).toString('base64').slice(0, 16) : null,\n  \n  input_chars: input.input_chars || input.inputChars || null,\n  output_chars: input.output_chars || input.outputChars || null,\n  truncated: input.truncated || false,\n  fallback_used: input.fallback_used || input.fallbackUsed || false,\n  guardrail_triggered: input.guardrail_triggered || input.guardrailTriggered || false,\n  \n  trace_id: input.trace_id || input.traceId || crypto.randomUUID()\n};\n\nreturn { json: llmEvent };"
+      },
+      "id": "0b36868e-8926-4651-abcf-b854becee11e",
+      "name": "Processar Dados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO observability.llm_events (\n  ts, environment, workflow_id, workflow_name, execution_id, node_name,\n  tenant_id, channel, provider, model, temperature, top_p, max_tokens,\n  prompt_tokens, completion_tokens, total_tokens, cost_usd, price_version,\n  latency_ms, retries, status, http_status, error_type, error_hash,\n  input_chars, output_chars, truncated, fallback_used, guardrail_triggered, trace_id\n) VALUES (\n  NOW(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29\n)",
+        "options": {}
+      },
+      "id": "ec6b582e-e23e-4e42-ac86-263ae10d52a6",
+      "name": "Gravar no Postgres",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        448,
+        0
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "LAJU8e1BewlbISMn",
+          "name": "Postgres_n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"success\": true, \"logged\": { \"model\": $('Processar Dados').first().json.model, \"tokens\": $('Processar Dados').first().json.total_tokens, \"cost_usd\": $('Processar Dados').first().json.cost_usd } } }}",
+        "options": {}
+      },
+      "id": "97f79ba2-0b89-4123-8144-b7e7bc080b07",
+      "name": "Responder",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chat",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "abbbbb32-a5e5-4796-917e-bdfdc453089e",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        -400
+      ],
+      "webhookId": "4750fee9-95d4-47a8-8f7d-c9d017c2e8a7"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Marca o início para calcular latência\nconst startTime = Date.now();\nconst input = $input.first().json;\n\nreturn {\n  json: {\n    ...input,\n    _startTime: startTime,\n    _workflowId: $workflow.id,\n    _workflowName: $workflow.name,\n    _executionId: $execution?.id\n  }\n};"
+      },
+      "id": "dee90d6a-a779-4bd5-b518-b8c171d1727a",
+      "name": "⏱️ Iniciar Timer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        96,
+        -400
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "Você é um assistente útil.",
+              "role": "system"
+            },
+            {
+              "content": "={{ $json.message || 'Olá!' }}"
+            }
+          ]
+        },
+        "options": {
+          "maxTokens": 1000,
+          "temperature": 0.7
+        }
+      },
+      "id": "eab0cc34-622d-427e-ba9e-5a0162ddcfa5",
+      "name": "OpenAI Chat",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [
+        272,
+        -400
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Calcula latência e prepara dados para logging\nconst startTime = $('⏱️ Iniciar Timer').first().json._startTime;\nconst endTime = Date.now();\nconst latencyMs = endTime - startTime;\n\n// Dados da resposta OpenAI\nconst openaiResponse = $input.first().json;\n\n// Extrai usage (pode variar conforme o node usado)\nconst usage = openaiResponse.usage || openaiResponse.response?.usage || {};\n\nreturn {\n  json: {\n    // Resposta original para continuar o fluxo\n    response: openaiResponse,\n    \n    // Dados para o logger\n    _logData: {\n      workflow_id: $('⏱️ Iniciar Timer').first().json._workflowId,\n      workflow_name: $('⏱️ Iniciar Timer').first().json._workflowName,\n      execution_id: $('⏱️ Iniciar Timer').first().json._executionId,\n      node_name: 'OpenAI Chat',\n      \n      model: openaiResponse.model || 'gpt-4o-mini',\n      temperature: 0.7,\n      max_tokens: 1000,\n      \n      prompt_tokens: usage.prompt_tokens || 0,\n      completion_tokens: usage.completion_tokens || 0,\n      total_tokens: usage.total_tokens || 0,\n      \n      latency_ms: latencyMs,\n      \n      // Opcional: contexto adicional\n      tenant_id: $('⏱️ Iniciar Timer').first().json.tenant_id || null,\n      channel: $('⏱️ Iniciar Timer').first().json.channel || 'api',\n      environment: 'prod'\n    }\n  }\n};"
+      },
+      "id": "7de2b805-fe32-45c9-b6d0-7fe80092a5a4",
+      "name": "📊 Preparar Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        -400
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.N8N_WEBHOOK_URL || 'http://localhost:5678' }}/webhook/log-llm",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json._logData }}",
+        "options": {
+          "timeout": 5000
+        }
+      },
+      "id": "e1b6522d-da14-4020-b2b7-f59ceb62ed3d",
+      "name": "📝 Enviar para Logger",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        752,
+        -304
+      ],
+      "executeOnce": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"success\": true, \"message\": $json.response.message?.content || $json.response.text || $json.response } }}",
+        "options": {}
+      },
+      "id": "85973ef9-62a4-421a-9ae4-84e366fbc814",
+      "name": "Responder1",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        752,
+        -512
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2026-01-30T05:59:13.797Z",
+      "updatedAt": "2026-01-30T05:59:13.797Z",
+      "role": "workflow:owner",
+      "workflowId": "dmHCOh9HatBgarbd",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2026-01-23T05:21:27.131Z",
+      "updatedAt": "2026-01-23T05:21:27.131Z",
+      "id": "ViJVX5zY7d3huOM8",
+      "name": "Monitoring"
+    },
+    {
+      "createdAt": "2026-01-30T05:04:36.055Z",
+      "updatedAt": "2026-01-30T05:04:36.055Z",
+      "id": "l9vhmG27o6VAgwM0",
+      "name": "LLM"
+    },
+    {
+      "createdAt": "2026-01-30T05:59:55.278Z",
+      "updatedAt": "2026-01-30T05:59:55.278Z",
+      "id": "OTgI6ENlGl8s9AaD",
+      "name": "Exemplo"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-30T07:26:18.265Z",
+  "versionId": "220df1a4-5277-49cc-ade6-1325caea1320"
+}

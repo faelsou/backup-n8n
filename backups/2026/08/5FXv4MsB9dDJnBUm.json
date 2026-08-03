@@ -1,0 +1,2427 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Webhook Evolution": {
+      "main": [
+        [
+          {
+            "node": "Responde Webhook 200",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Responde Webhook 200": {
+      "main": [
+        [
+          {
+            "node": "Parse Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Payload": {
+      "main": [
+        [
+          {
+            "node": "Ignora fromMe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ignora fromMe": {
+      "main": [
+        [
+          {
+            "node": "Redis Get State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Get State": {
+      "main": [
+        [
+          {
+            "node": "Compute Flags",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compute Flags": {
+      "main": [
+        [
+          {
+            "node": "Roteador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Roteador": {
+      "main": [
+        [
+          {
+            "node": "Decode State",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Tipo de Mídia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decode State": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Parse Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Parse Resposta": {
+      "main": [
+        [
+          {
+            "node": "Merge Resposta no State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Resposta no State": {
+      "main": [
+        [
+          {
+            "node": "Está Completo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tipo de Mídia": {
+      "main": [
+        [
+          {
+            "node": "Get Base64 (Imagem)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Base64 (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Binary (Imagem)": {
+      "main": [
+        [
+          {
+            "node": "Upload Drive (Imagem)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "OpenAI Vision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Drive (Imagem)": {
+      "main": [
+        [
+          {
+            "node": "Merge Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Vision": {
+      "main": [
+        [
+          {
+            "node": "Merge Imagem",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Binary (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Upload Drive (PDF)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extract PDF Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Drive (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Merge PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Text": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Texto (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Texto (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Merge PDF",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Parse Extração": {
+      "main": [
+        [
+          {
+            "node": "Está Completo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Está Completo?": {
+      "main": [
+        [
+          {
+            "node": "Lookup Duplicidade",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Monta Pergunta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lookup Duplicidade": {
+      "main": [
+        [
+          {
+            "node": "Check Duplicado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Duplicado": {
+      "main": [
+        [
+          {
+            "node": "É Duplicado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "É Duplicado?": {
+      "main": [
+        [
+          {
+            "node": "Avisa Duplicado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis Delete State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Delete State": {
+      "main": [
+        [
+          {
+            "node": "Append Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Sheets": {
+      "main": [
+        [
+          {
+            "node": "Confirma Registro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monta Pergunta": {
+      "main": [
+        [
+          {
+            "node": "Redis Set State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Set State": {
+      "main": [
+        [
+          {
+            "node": "Envia Pergunta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Base64 (Imagem)": {
+      "main": [
+        [
+          {
+            "node": "Binary (Imagem)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Base64 (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Binary (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge PDF": {
+      "main": [
+        [
+          {
+            "node": "Parse Extração",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Imagem": {
+      "main": [
+        [
+          {
+            "node": "Parse Extração",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-06-08T19:48:50.186Z",
+  "id": "5FXv4MsB9dDJnBUm",
+  "isArchived": true,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Comprovantes GRD - Extração com Pergunta Adaptativa",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "comprovantes-pagamento-grdmad",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "ffcb7e86-d955-40f7-b1c1-f4f3643fb137",
+      "name": "Webhook Evolution",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1536,
+        512
+      ],
+      "webhookId": "comprovantes-grd-evo"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "OK",
+        "options": {}
+      },
+      "id": "f72b17c7-234e-4126-afe9-3486f14d525e",
+      "name": "Responde Webhook 200",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -1360,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "p1",
+              "name": "instance",
+              "value": "={{ $('Webhook Evolution').item.json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "p2",
+              "name": "numero",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.key.remoteJid.split('@')[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "p3",
+              "name": "messageId",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.key.id }}",
+              "type": "string"
+            },
+            {
+              "id": "p4",
+              "name": "messageType",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.messageType }}",
+              "type": "string"
+            },
+            {
+              "id": "p5",
+              "name": "pushName",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.pushName || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "p6",
+              "name": "fromMe",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.key.fromMe }}",
+              "type": "boolean"
+            },
+            {
+              "id": "p7",
+              "name": "mimetype",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.message?.imageMessage?.mimetype || $('Webhook Evolution').item.json.body.data.message?.documentMessage?.mimetype || $('Webhook Evolution').item.json.body.data.message?.documentWithCaptionMessage?.message?.documentMessage?.mimetype || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "p8",
+              "name": "fileName",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.message?.documentMessage?.fileName || $('Webhook Evolution').item.json.body.data.message?.documentWithCaptionMessage?.message?.documentMessage?.fileName || 'comprovante.jpg' }}",
+              "type": "string"
+            },
+            {
+              "id": "p9",
+              "name": "text",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.message?.conversation || $('Webhook Evolution').item.json.body.data.message?.extendedTextMessage?.text || $('Webhook Evolution').item.json.body.data.message?.imageMessage?.caption || $('Webhook Evolution').item.json.body.data.message?.documentMessage?.caption || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "73c61cf0-31c2-4b03-bd46-808a49bd721b",
+      "name": "Parse Payload",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1168,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "f1",
+              "leftValue": "={{ $json.fromMe }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d4f4637a-f201-4962-9a8d-8983f75bed2c",
+      "name": "Ignora fromMe",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -960,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "=pix_pending:{{ $json.numero }}",
+        "options": {
+          "dotNotation": false
+        }
+      },
+      "id": "24909e18-1c3e-4006-af86-988ea4e4be06",
+      "name": "Redis Get State",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -768,
+        512
+      ],
+      "credentials": {
+        "redis": {
+          "id": "EO4PW35QwO53zsbp",
+          "name": "Redis AnapaulaSkin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fl1",
+              "name": "has_state",
+              "value": "={{ !!$json.state_raw && $json.state_raw !== '' }}",
+              "type": "boolean"
+            },
+            {
+              "id": "fl2",
+              "name": "is_text",
+              "value": "={{ ['conversation','extendedTextMessage'].includes($('Parse Payload').item.json.messageType) }}",
+              "type": "boolean"
+            },
+            {
+              "id": "fl3",
+              "name": "is_media",
+              "value": "={{ ['imageMessage','documentMessage','documentWithCaptionMessage'].includes($('Parse Payload').item.json.messageType) || ($('Parse Payload').item.json.mimetype || '').includes('application/pdf') }}",
+              "type": "boolean"
+            },
+            {
+              "id": "fl4",
+              "name": "state_raw",
+              "value": "={{ $json.state_raw || '' }}",
+              "type": "string"
+            }
+          ],
+          "includeOtherFields": true
+        },
+        "options": {}
+      },
+      "id": "8bf27476-48d9-4398-981f-5c2cf1b54e72",
+      "name": "Compute Flags",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -560,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "r1a",
+                    "leftValue": "={{ $json.has_state }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    }
+                  },
+                  {
+                    "id": "r1b",
+                    "leftValue": "={{ $json.is_text }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "RespostaTexto"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "r2",
+                    "leftValue": "={{ $json.is_media }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Midia"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1bbd62d9-8447-46c0-ad4e-b0f09dccaf6c",
+      "name": "Roteador",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -368,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Decodifica o state Redis e expõe contexto para a IA\nconst state = JSON.parse($json.state_raw);\nconst payload = $('Parse Payload').first().json;\nreturn [{\n  json: {\n    extracted_data: state.extracted_data,\n    missing_fields: state.missing_fields,\n    retry_count: state.retry_count || 0,\n    context_text: payload.text,\n    numero: payload.numero,\n    instance: payload.instance,\n    pushName: payload.pushName\n  }\n}];"
+      },
+      "id": "818f503e-79bc-4682-8821-6bbd55ebc7aa",
+      "name": "Decode State",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Você extrai dados de respostas em português brasileiro de clientes da GRD MAD enviando comprovantes PIX.\n\nOs campos AINDA faltando são:\n{{ JSON.stringify($json.missing_fields) }}\n\nA mensagem do cliente foi:\n\"{{ $json.context_text }}\"\n\nRetorne APENAS um JSON com os campos que CONSEGUIU identificar (omita os que não foram mencionados ou são ambíguos).\n\nReferência dos campos:\n- cliente_pedido: nome do projeto/cliente final (ex: \"Lá Belle\", \"Asteca\", \"Siqueli\")\n- vendedor: primeiro nome do vendedor (ex: \"Marcus\", \"Diogo\")\n- valor: número decimal (ex: 198.45)\n- data_transacao: formato YYYY-MM-DD\n- pagador_nome: nome ou razão social\n\nPadrões comuns de resposta: \"Cliente - Vendedor\", \"Cliente / Vendedor\", \"Cliente @ Vendedor\", ou apenas o valor pedido.\n\nSe não conseguir extrair nada, retorne {}."
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {
+          "temperature": 0
+        }
+      },
+      "id": "fe1dd93c-eefa-42dd-a6da-58011872af2a",
+      "name": "OpenAI Parse Resposta",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        0,
+        0
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Mescla a resposta da IA com o state existente\nconst raw = $json.message?.content ?? $json;\nlet ai = {};\ntry {\n  ai = typeof raw === 'object' ? raw : JSON.parse(String(raw).replace(/```json|```/g, '').trim());\n} catch (e) {\n  ai = {};\n}\n\nconst state = $('Decode State').first().json;\nconst filled = Object.entries(ai).filter(([k, v]) => v !== null && v !== undefined && String(v).trim() !== '').map(([k]) => k);\nconst merged = { ...state.extracted_data };\nfilled.forEach(k => { merged[k] = ai[k]; });\n\nconst stillMissing = state.missing_fields.filter(f => !merged[f] || String(merged[f]).trim() === '');\n\nreturn [{\n  json: {\n    ...merged,\n    missing_fields: stillMissing,\n    ai_understood: filled.length > 0,\n    retry_count: state.retry_count + (filled.length > 0 ? 0 : 1),\n    _from_response_branch: true\n  }\n}];"
+      },
+      "id": "47c2a747-fe7a-417c-beb1-ee2bafcffb5f",
+      "name": "Merge Resposta no State",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "tm1",
+                    "leftValue": "={{ $('Parse Payload').item.json.messageType }}",
+                    "rightValue": "imageMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Imagem"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "tm2a",
+                    "leftValue": "={{ $('Parse Payload').item.json.mimetype }}",
+                    "rightValue": "application/pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  },
+                  {
+                    "id": "tm2b",
+                    "leftValue": "={{ $('Parse Payload').item.json.messageType }}",
+                    "rightValue": "documentMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  },
+                  {
+                    "id": "tm2c",
+                    "leftValue": "={{ $('Parse Payload').item.json.messageType }}",
+                    "rightValue": "documentWithCaptionMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "PDF"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "15f01c73-ce4c-44df-a763-dcba07c61f3a",
+      "name": "Tipo de Mídia",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -160,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "base64",
+        "options": {
+          "fileName": "={{ $('Parse Payload').item.json.fileName }}",
+          "mimeType": "={{ $json.mimetype || $('Parse Payload').item.json.mimetype }}"
+        }
+      },
+      "id": "f3bd5363-4a5f-49ce-b1bf-c47e7e6a4970",
+      "name": "Binary (Imagem)",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Parse Payload').item.json.numero }}_{{ $now.toFormat('yyyyLLdd_HHmmss') }}_{{ $('Parse Payload').item.json.fileName }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1xx_BYLovvu-YYW4nz3ODBn9AEK0iAbGL",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "704ec664-87cc-4af1-9968-e6a8948acc7a",
+      "name": "Upload Drive (Imagem)",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        448,
+        432
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "AMnU78157s5pFXnN",
+          "name": "Google AiAgent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list"
+        },
+        "text": "=Você extrai dados de COMPROVANTES PIX/TED/DOC. Retorne APENAS JSON válido (sem markdown), nesta estrutura:\n{\n  \"tipo\": \"PIX|TED|DOC|Boleto\",\n  \"valor\": 0.00,\n  \"data_transacao\": \"YYYY-MM-DD\",\n  \"hora_transacao\": \"HH:MM\",\n  \"pagador_nome\": \"\",\n  \"pagador_documento\": \"\",\n  \"pagador_banco\": \"\",\n  \"pagador_agencia_conta\": \"\",\n  \"beneficiario_nome\": \"\",\n  \"beneficiario_documento\": \"\",\n  \"beneficiario_chave_pix\": \"\",\n  \"id_transacao_e2e\": \"\",\n  \"numero_controle\": \"\",\n  \"codigo_autenticacao\": \"\"\n}\n\nRegras:\n- valor SEM \"R$\", como número (198.45 e não \"R$ 198,45\")\n- id_transacao_e2e começa geralmente com \"E\" + dígitos (ex: E60701190202606021422DY5EXO05JQL)\n- Campos não encontrados retornam string vazia (ou 0 pro valor)\n- NÃO inclua campos extras",
+        "inputType": "base64",
+        "options": {
+          "detail": "high"
+        }
+      },
+      "id": "f25348a6-246d-4686-aa10-e30f0202be3e",
+      "name": "OpenAI Vision",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        640,
+        432
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "base64",
+        "options": {
+          "fileName": "={{ $('Parse Payload').item.json.fileName }}",
+          "mimeType": "application/pdf"
+        }
+      },
+      "id": "81af2589-23a9-429b-9124-370b03876114",
+      "name": "Binary (PDF)",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        672
+      ]
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Parse Payload').item.json.numero }}_{{ $now.toFormat('yyyyLLdd_HHmmss') }}_{{ $('Parse Payload').item.json.fileName }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1xx_BYLovvu-YYW4nz3ODBn9AEK0iAbGL",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "076323b0-7162-42de-9888-6fc6b571db89",
+      "name": "Upload Drive (PDF)",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        448,
+        672
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "AMnU78157s5pFXnN",
+          "name": "Google AiAgent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {
+          "joinPages": true
+        }
+      },
+      "id": "ada7cbed-003b-4486-b330-d86f897134bf",
+      "name": "Extract PDF Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        640,
+        672
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Você extrai dados de comprovantes PIX/TED/DOC. Analise o texto abaixo e retorne APENAS JSON válido (sem markdown):\n{\n  \"tipo\": \"\",\n  \"valor\": 0.00,\n  \"data_transacao\": \"YYYY-MM-DD\",\n  \"hora_transacao\": \"HH:MM\",\n  \"pagador_nome\": \"\",\n  \"pagador_documento\": \"\",\n  \"pagador_banco\": \"\",\n  \"pagador_agencia_conta\": \"\",\n  \"beneficiario_nome\": \"\",\n  \"beneficiario_documento\": \"\",\n  \"beneficiario_chave_pix\": \"\",\n  \"id_transacao_e2e\": \"\",\n  \"numero_controle\": \"\",\n  \"codigo_autenticacao\": \"\"\n}\n\nRegras: valor como número decimal, campos não encontrados como string vazia.\n\n=== TEXTO DO PDF ===\n{{ $json.text }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {
+          "temperature": 0
+        }
+      },
+      "id": "449abd09-be57-43b2-b902-8962d787859f",
+      "name": "OpenAI Texto (PDF)",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        848,
+        672
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normaliza extração de imagem ou PDF + contexto do WhatsApp + caminho do Drive + define missing_fields\n\n// === Configuração: campos obrigatórios para registrar ===\nconst REQUIRED = [\n  'valor',\n  'data_transacao',\n  'id_transacao_e2e',\n  'pagador_nome',\n  'cliente_pedido',\n  'vendedor'\n];\n\nconst raw = $json.message?.content ?? $json;\nlet ai = {};\ntry {\n  ai = typeof raw === 'object' && !raw.text ? raw : JSON.parse(String(raw).replace(/```json|```/g, '').trim());\n} catch (e) {\n  ai = { _parse_error: true };\n}\n\nconst ctx = $('Parse Payload').first().json;\n\n// Tenta pegar a URL do Drive de qualquer um dos dois nós (imagem ou pdf)\nlet drive_url = '';\nlet drive_id = '';\ntry { const d = $('Upload Drive (Imagem)').first().json; drive_url = d.webViewLink || ''; drive_id = d.id || ''; } catch(e) {}\nif (!drive_url) {\n  try { const d = $('Upload Drive (PDF)').first().json; drive_url = d.webViewLink || ''; drive_id = d.id || ''; } catch(e) {}\n}\n\n// O texto enviado junto da mídia pode já trazer cliente/vendedor (ex: \"Siqueli @ Diogo Lourenço\")\nconst caption = (ctx.text || '').trim();\nlet cliente_pedido = '';\nlet vendedor = '';\nif (caption) {\n  const m = caption.match(/^(.+?)\\s*[@\\-\\/]\\s*(.+)$/);\n  if (m) {\n    cliente_pedido = m[1].trim();\n    vendedor = m[2].trim();\n  }\n}\n\nconst extracted = {\n  // metadados WhatsApp\n  timestamp: new Date().toISOString(),\n  whatsapp_numero: ctx.numero,\n  whatsapp_nome: ctx.pushName,\n  arquivo_drive_url: drive_url,\n  arquivo_drive_id: drive_id,\n  // dados da transação\n  tipo: ai.tipo || '',\n  valor: ai.valor || '',\n  data_transacao: ai.data_transacao || '',\n  hora_transacao: ai.hora_transacao || '',\n  pagador_nome: ai.pagador_nome || '',\n  pagador_documento: ai.pagador_documento || '',\n  pagador_banco: ai.pagador_banco || '',\n  pagador_agencia_conta: ai.pagador_agencia_conta || '',\n  beneficiario_nome: ai.beneficiario_nome || '',\n  beneficiario_documento: ai.beneficiario_documento || '',\n  beneficiario_chave_pix: ai.beneficiario_chave_pix || '',\n  id_transacao_e2e: ai.id_transacao_e2e || '',\n  numero_controle: ai.numero_controle || '',\n  codigo_autenticacao: ai.codigo_autenticacao || '',\n  // contexto GRD\n  cliente_pedido,\n  vendedor,\n  observacoes: caption || '',\n  status: 'Processado',\n  raw_json: JSON.stringify(ai)\n};\n\n// Determina campos obrigatórios faltando\nconst missing_fields = REQUIRED.filter(f => !extracted[f] || String(extracted[f]).trim() === '');\n\nreturn [{ json: { ...extracted, missing_fields, _from_media_branch: true } }];"
+      },
+      "id": "08c85af6-d5f3-44c5-92d0-4cc03fbb5c93",
+      "name": "Parse Extração",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1136,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "cc1",
+              "leftValue": "={{ $json.missing_fields.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "6ff8bba9-93dd-4d3c-a20f-de42126ba3c8",
+      "name": "Está Completo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1oyoozp6r6WrbNirYkSgXr-RtTtYbKpY_ZOZ44dDu-Bg/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oyoozp6r6WrbNirYkSgXr-RtTtYbKpY_ZOZ44dDu-Bg/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "id_transacao_e2e",
+              "lookupValue": "={{ $json.id_transacao_e2e }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "71787c45-e2e9-4f5f-b3e2-a39a4cae4e0b",
+      "name": "Lookup Duplicidade",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1568,
+        304
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CrTErpiGn7MJ9o9m",
+          "name": "Google Sheets AiAgent Automate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Detecta se já existe registro com mesmo e2e_id\nconst items = $input.all();\nconst existente = items.find(i => i.json && i.json.id_transacao_e2e);\nconst dadosNovos = $('Parse Extração').first().json;\n\nif (existente) {\n  return [{ json: { ...dadosNovos, duplicado: true, registro_anterior: existente.json } }];\n}\nreturn [{ json: { ...dadosNovos, duplicado: false } }];"
+      },
+      "id": "5fd4406b-fb6c-4972-8724-1b9f5d1a985c",
+      "name": "Check Duplicado",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "d1",
+              "leftValue": "={{ $json.duplicado }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "18fc0176-8d79-41bf-b2d6-8095175fd67d",
+      "name": "É Duplicado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1968,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "=pix_pending:{{ $('Parse Payload').item.json.numero }}"
+      },
+      "id": "75c68b67-c147-4a79-82db-aab727000dc7",
+      "name": "Redis Delete State",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2160,
+        224
+      ],
+      "credentials": {
+        "redis": {
+          "id": "EO4PW35QwO53zsbp",
+          "name": "Redis AnapaulaSkin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1oyoozp6r6WrbNirYkSgXr-RtTtYbKpY_ZOZ44dDu-Bg/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oyoozp6r6WrbNirYkSgXr-RtTtYbKpY_ZOZ44dDu-Bg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "timestamp": "={{ $json.timestamp }}",
+            "whatsapp_nome": "={{ $json.whatsapp_nome }}",
+            "arquivo_drive_url": "={{ $json.arquivo_drive_url }}",
+            "arquivo_drive_id": "={{ $json.arquivo_drive_id }}",
+            "tipo": "={{ $json.tipo }}",
+            "valor": "={{ $json.valor }}",
+            "data_transacao": "={{ $json.data_transacao }}",
+            "hora_transacao": "={{ $json.hora_transacao }}",
+            "pagador_nome": "={{ $json.pagador_nome }}",
+            "pagador_documento": "={{ $json.pagador_documento }}",
+            "pagador_banco": "={{ $json.pagador_banco }}",
+            "pagador_agencia_conta": "={{ $json.pagador_agencia_conta }}",
+            "beneficiario_nome": "={{ $json.beneficiario_nome }}",
+            "beneficiario_documento": "={{ $json.beneficiario_documento }}",
+            "beneficiario_chave_pix": "={{ $json.beneficiario_chave_pix }}",
+            "id_transacao_e2e": "={{ $json.id_transacao_e2e }}",
+            "numero_controle": "={{ $json.numero_controle }}",
+            "codigo_autenticacao": "={{ $json.codigo_autenticacao }}",
+            "cliente_pedido": "={{ $json.cliente_pedido }}",
+            "vendedor": "={{ $json.vendedor }}",
+            "observacoes": "={{ $json.observacoes }}",
+            "status": "={{ $json.status }}",
+            "raw_json": "={{ $json.raw_json }}"
+          },
+          "matchingColumns": [
+            "id_transacao_e2e"
+          ],
+          "schema": [
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp_numero",
+              "displayName": "whatsapp_numero",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp_nome",
+              "displayName": "whatsapp_nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "arquivo_drive_url",
+              "displayName": "arquivo_drive_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "arquivo_drive_id",
+              "displayName": "arquivo_drive_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "valor",
+              "displayName": "valor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_transacao",
+              "displayName": "data_transacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "hora_transacao",
+              "displayName": "hora_transacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagador_nome",
+              "displayName": "pagador_nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagador_documento",
+              "displayName": "pagador_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagador_banco",
+              "displayName": "pagador_banco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagador_agencia_conta",
+              "displayName": "pagador_agencia_conta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "beneficiario_nome",
+              "displayName": "beneficiario_nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "beneficiario_documento",
+              "displayName": "beneficiario_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "beneficiario_chave_pix",
+              "displayName": "beneficiario_chave_pix",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_transacao_e2e",
+              "displayName": "id_transacao_e2e",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "numero_controle",
+              "displayName": "numero_controle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "codigo_autenticacao",
+              "displayName": "codigo_autenticacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cliente_pedido",
+              "displayName": "cliente_pedido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "vendedor",
+              "displayName": "vendedor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "observacoes",
+              "displayName": "observacoes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "raw_json",
+              "displayName": "raw_json",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "2bda0450-912c-472a-82ee-c1512e6dafe8",
+      "name": "Append Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2368,
+        224
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CrTErpiGn7MJ9o9m",
+          "name": "Google Sheets AiAgent Automate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/message/sendText/{{ $('Parse Payload').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "CN4AnbOtY79Wv6wNyx88cdoKXqugcINi"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('Parse Payload').item.json.numero }}\",\n  \"text\": \"✅ *Comprovante registrado!*\\n\\n💰 Valor: R$ {{ $json.valor }}\\n📅 Data: {{ $json.data_transacao }}\\n👤 Cliente: {{ $json.cliente_pedido }}\\n🧑‍💼 Vendedor: {{ $json.vendedor }}\\n🔑 ID: {{ $json.id_transacao_e2e }}\\n\\nValeu! 🙌\"\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "ac9255f8-7f43-4f0c-909b-4735604ad779",
+      "name": "Confirma Registro",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2560,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/message/sendText/{{ $('Parse Payload').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "CN4AnbOtY79Wv6wNyx88cdoKXqugcINi"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('Parse Payload').item.json.numero }}\",\n  \"text\": \"⚠️ Esse comprovante (ID: {{ $json.id_transacao_e2e }}) *já foi registrado* anteriormente. Não vou duplicar. Se foi um envio errado, ignora essa mensagem.\"\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "e4756b17-475a-4898-aebd-cb1582998e04",
+      "name": "Avisa Duplicado",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2160,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Monta a pergunta dinâmica + prepara state pra salvar no Redis\nconst data = $json;\nconst missing = data.missing_fields;\nconst ai_understood = data.ai_understood !== false; // true por padrão (vindo da extração)\nconst retry = data.retry_count || 0;\n\nconst labels = {\n  cliente_pedido: 'cliente do pedido (ex: Lá Belle, Asteca, Siqueli)',\n  vendedor: 'vendedor responsável (ex: Marcus, Diogo)',\n  valor: 'valor da transferência (ex: 198,45)',\n  data_transacao: 'data da transferência (DD/MM/AAAA)',\n  pagador_nome: 'quem fez o pagamento',\n  beneficiario_nome: 'quem recebeu o pagamento',\n  id_transacao_e2e: 'ID da transação (E2E)'\n};\n\nlet pergunta;\nif (!ai_understood && retry >= 1) {\n  const list = missing.map((f, i) => `${i+1}. ${labels[f] || f}`).join('\\n');\n  pergunta = `🤔 Não entendi sua última resposta. Preciso ainda de:\\n\\n${list}\\n\\nResponde uma coisa por vez ou no formato \"Cliente - Vendedor\".`;\n} else if (missing.length === 1) {\n  pergunta = `📋 Quase lá! Me informa: *${labels[missing[0]] || missing[0]}*`;\n} else {\n  const list = missing.map((f, i) => `${i+1}. ${labels[f] || f}`).join('\\n');\n  const head = data.valor ? `📋 Recebi o comprovante de *R$ ${data.valor}*!` : '📋 Recebi o comprovante!';\n  pergunta = `${head} Pra finalizar o registro, preciso de:\\n\\n${list}\\n\\nPode responder numa mensagem só (ex: \"Lá Belle - Marcus\").`;\n}\n\n// Limpa campos auxiliares pra salvar só dados\nconst { missing_fields, ai_understood: _au, retry_count: _rc, _from_media_branch, _from_response_branch, ...extracted_data } = data;\n\nconst state = {\n  extracted_data,\n  missing_fields: missing,\n  retry_count: retry,\n  asked_at: new Date().toISOString()\n};\n\nreturn [{\n  json: {\n    pergunta,\n    state_json: JSON.stringify(state),\n    numero: $('Parse Payload').first().json.numero,\n    instance: $('Parse Payload').first().json.instance\n  }\n}];"
+      },
+      "id": "055a932b-b540-428a-b1c0-07978e60467c",
+      "name": "Monta Pergunta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1568,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=pix_pending:{{ $json.numero }}",
+        "value": "={{ $json.state_json }}",
+        "expire": true,
+        "ttl": 1800
+      },
+      "id": "3cb2f2b4-e08d-4d00-959e-c6a15fb54026",
+      "name": "Redis Set State",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        592
+      ],
+      "credentials": {
+        "redis": {
+          "id": "EO4PW35QwO53zsbp",
+          "name": "Redis AnapaulaSkin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/message/sendText/{{ $json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "CN4AnbOtY79Wv6wNyx88cdoKXqugcINi"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('Webhook Evolution').item.json.body.data.key.remoteJidAlt }}\",\n  \"text\": {{ JSON.stringify($json.pergunta) }}\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "e12e63cf-a047-4c09-81fb-66f19095cd1a",
+      "name": "Envia Pergunta",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1968,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/message/sendText/{{ $('Parse Payload').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "CN4AnbOtY79Wv6wNyx88cdoKXqugcINi"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('Parse Payload').item.json.numero }}\",\n  \"text\": \"Oi! 👋 Esse canal é só pra envio de *comprovantes PIX/TED*. Manda a foto (JPG/PNG) ou o PDF do comprovante que eu registro na hora.\"\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "48d6db62-4660-4fed-91f2-c8464e374031",
+      "name": "Mensagem de Ajuda",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -160,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/chat/getBase64FromMediaMessage/{{ $('Parse Payload').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "SUA_APIKEY_EVOLUTION"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\": { \"key\": { \"id\": \"{{ $('Parse Payload').item.json.messageId }}\" } },\n  \"convertToMp4\": false\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "77e2a576-523c-466b-b3a7-8c5ebd87a3c2",
+      "name": "Get Base64 (Imagem)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -576,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/chat/getBase64FromMediaMessage/{{ $('Parse Payload').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "CN4AnbOtY79Wv6wNyx88cdoKXqugcINi"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\": { \"key\": { \"id\": \"{{ $('Parse Payload').item.json.messageId }}\" } },\n  \"convertToMp4\": false\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "241629f7-a49d-4506-bfaf-372d10484c05",
+      "name": "Get Base64 (PDF)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -560,
+        768
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "id": "026fb02c-cfea-4b96-bd03-f16f52842299",
+      "name": "Merge PDF",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        1216,
+        688
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "id": "f5d9352a-2b21-410c-a67c-5c3e0e64f8ba",
+      "name": "Merge Imagem",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        768,
+        272
+      ]
+    }
+  ],
+  "pinData": {
+    "Webhook Evolution": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.aiagentautomate.com.br",
+            "user-agent": "axios/1.12.2",
+            "content-length": "33391",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "n8n.aiagentautomate.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "1eb385c800a8",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "comprovante-pagamento-grdmad",
+            "data": {
+              "key": {
+                "remoteJid": "271751305011249@lid",
+                "remoteJidAlt": "5511952313944@s.whatsapp.net",
+                "fromMe": false,
+                "id": "4A2A44E495B9CB20BDA1",
+                "participant": "",
+                "addressingMode": "lid"
+              },
+              "pushName": "Rafael de Souza",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "documentMessage": {
+                  "url": "https://mmg.whatsapp.net/v/t62.7119-24/659680880_1301373555308070_6385761931501502819_n.enc?ccb=11-4&oh=01_Q5Aa4wH_sq1VtpRCC4wU9TyvSc7rvY2h0l9_7oWjTh32Dqkvmw&oe=6A4E7DFB&_nc_sid=5e03e0&mms3=true",
+                  "mimetype": "application/pdf",
+                  "title": "Comprovante",
+                  "fileSha256": {
+                    "0": 166,
+                    "1": 198,
+                    "2": 41,
+                    "3": 117,
+                    "4": 129,
+                    "5": 126,
+                    "6": 53,
+                    "7": 92,
+                    "8": 42,
+                    "9": 162,
+                    "10": 89,
+                    "11": 172,
+                    "12": 37,
+                    "13": 201,
+                    "14": 185,
+                    "15": 160,
+                    "16": 237,
+                    "17": 212,
+                    "18": 182,
+                    "19": 20,
+                    "20": 100,
+                    "21": 248,
+                    "22": 77,
+                    "23": 173,
+                    "24": 88,
+                    "25": 237,
+                    "26": 218,
+                    "27": 150,
+                    "28": 170,
+                    "29": 203,
+                    "30": 2,
+                    "31": 78
+                  },
+                  "fileLength": {
+                    "low": 19793,
+                    "high": 0,
+                    "unsigned": true
+                  },
+                  "pageCount": 1,
+                  "mediaKey": {
+                    "0": 167,
+                    "1": 19,
+                    "2": 172,
+                    "3": 156,
+                    "4": 22,
+                    "5": 47,
+                    "6": 158,
+                    "7": 206,
+                    "8": 124,
+                    "9": 194,
+                    "10": 70,
+                    "11": 182,
+                    "12": 77,
+                    "13": 211,
+                    "14": 85,
+                    "15": 205,
+                    "16": 93,
+                    "17": 35,
+                    "18": 21,
+                    "19": 59,
+                    "20": 10,
+                    "21": 239,
+                    "22": 204,
+                    "23": 146,
+                    "24": 187,
+                    "25": 160,
+                    "26": 31,
+                    "27": 117,
+                    "28": 90,
+                    "29": 120,
+                    "30": 182,
+                    "31": 233
+                  },
+                  "fileName": "Comprovante.pdf",
+                  "fileEncSha256": {
+                    "0": 3,
+                    "1": 204,
+                    "2": 24,
+                    "3": 133,
+                    "4": 88,
+                    "5": 11,
+                    "6": 36,
+                    "7": 8,
+                    "8": 112,
+                    "9": 245,
+                    "10": 96,
+                    "11": 27,
+                    "12": 28,
+                    "13": 28,
+                    "14": 130,
+                    "15": 99,
+                    "16": 244,
+                    "17": 147,
+                    "18": 137,
+                    "19": 5,
+                    "20": 8,
+                    "21": 165,
+                    "22": 239,
+                    "23": 31,
+                    "24": 186,
+                    "25": 223,
+                    "26": 134,
+                    "27": 89,
+                    "28": 198,
+                    "29": 245,
+                    "30": 17,
+                    "31": 139
+                  },
+                  "directPath": "/v/t62.7119-24/659680880_1301373555308070_6385761931501502819_n.enc?ccb=11-4&oh=01_Q5Aa4wH_sq1VtpRCC4wU9TyvSc7rvY2h0l9_7oWjTh32Dqkvmw&oe=6A4E7DFB&_nc_sid=5e03e0",
+                  "mediaKeyTimestamp": {
+                    "low": 1780948654,
+                    "high": 0,
+                    "unsigned": false
+                  },
+                  "contactVcard": false,
+                  "jpegThumbnail": {
+                    "0": 255,
+                    "1": 216,
+                    "2": 255,
+                    "3": 224,
+                    "4": 0,
+                    "5": 16,
+                    "6": 74,
+                    "7": 70,
+                    "8": 73,
+                    "9": 70,
+                    "10": 0,
+                    "11": 1,
+                    "12": 1,
+                    "13": 0,
+                    "14": 0,
+                    "15": 1,
+                    "16": 0,
+                    "17": 1,
+                    "18": 0,
+                    "19": 0,
+                    "20": 255,
+                    "21": 219,
+                    "22": 0,
+                    "23": 67,
+                    "24": 0,
+                    "25": 27,
+                    "26": 18,
+                    "27": 20,
+                    "28": 23,
+                    "29": 20,
+                    "30": 17,
+                    "31": 27,
+                    "32": 23,
+                    "33": 22,
+                    "34": 23,
+                    "35": 30,
+                    "36": 28,
+                    "37": 27,
+                    "38": 32,
+                    "39": 40,
+                    "40": 66,
+                    "41": 43,
+                    "42": 40,
+                    "43": 37,
+                    "44": 37,
+                    "45": 40,
+                    "46": 81,
+                    "47": 58,
+                    "48": 61,
+                    "49": 48,
+                    "50": 66,
+                    "51": 96,
+                    "52": 85,
+                    "53": 101,
+                    "54": 100,
+                    "55": 95,
+                    "56": 85,
+                    "57": 93,
+                    "58": 91,
+                    "59": 106,
+                    "60": 120,
+                    "61": 153,
+                    "62": 129,
+                    "63": 106,
+                    "64": 113,
+                    "65": 144,
+                    "66": 115,
+                    "67": 91,
+                    "68": 93,
+                    "69": 133,
+                    "70": 181,
+                    "71": 134,
+                    "72": 144,
+                    "73": 158,
+                    "74": 163,
+                    "75": 171,
+                    "76": 173,
+                    "77": 171,
+                    "78": 103,
+                    "79": 128,
+                    "80": 188,
+                    "81": 201,
+                    "82": 186,
+                    "83": 166,
+                    "84": 199,
+                    "85": 153,
+                    "86": 168,
+                    "87": 171,
+                    "88": 164,
+                    "89": 255,
+                    "90": 219,
+                    "91": 0,
+                    "92": 67,
+                    "93": 1,
+                    "94": 28,
+                    "95": 30,
+                    "96": 30,
+                    "97": 40,
+                    "98": 35,
+                    "99": 40,
+                    "100": 78,
+                    "101": 43,
+                    "102": 43,
+                    "103": 78,
+                    "104": 164,
+                    "105": 110,
+                    "106": 93,
+                    "107": 110,
+                    "108": 164,
+                    "109": 164,
+                    "110": 164,
+                    "111": 164,
+                    "112": 164,
+                    "113": 164,
+                    "114": 164,
+                    "115": 164,
+                    "116": 164,
+                    "117": 164,
+                    "118": 164,
+                    "119": 164,
+                    "120": 164,
+                    "121": 164,
+                    "122": 164,
+                    "123": 164,
+                    "124": 164,
+                    "125": 164,
+                    "126": 164,
+                    "127": 164,
+                    "128": 164,
+                    "129": 164,
+                    "130": 164,
+                    "131": 164,
+                    "132": 164,
+                    "133": 164,
+                    "134": 164,
+                    "135": 164,
+                    "136": 164,
+                    "137": 164,
+                    "138": 164,
+                    "139": 164,
+                    "140": 164,
+                    "141": 164,
+                    "142": 164,
+                    "143": 164,
+                    "144": 164,
+                    "145": 164,
+                    "146": 164,
+                    "147": 164,
+                    "148": 164,
+                    "149": 164,
+                    "150": 164,
+                    "151": 164,
+                    "152": 164,
+                    "153": 164,
+                    "154": 164,
+                    "155": 164,
+                    "156": 164,
+                    "157": 164,
+                    "158": 255,
+                    "159": 194,
+                    "160": 0,
+                    "161": 17,
+                    "162": 8,
+                    "163": 0,
+                    "164": 72,
+                    "165": 0,
+                    "166": 46,
+                    "167": 3,
+                    "168": 1,
+                    "169": 34,
+                    "170": 0,
+                    "171": 2,
+                    "172": 17,
+                    "173": 1,
+                    "174": 3,
+                    "175": 17,
+                    "176": 1,
+                    "177": 255,
+                    "178": 196,
+                    "179": 0,
+                    "180": 24,
+                    "181": 0,
+                    "182": 1,
+                    "183": 1,
+                    "184": 1,
+                    "185": 1,
+                    "186": 1,
+                    "187": 0,
+                    "188": 0,
+                    "189": 0,
+                    "190": 0,
+                    "191": 0,
+                    "192": 0,
+                    "193": 0,
+                    "194": 0,
+                    "195": 0,
+                    "196": 0,
+                    "197": 0,
+                    "198": 0,
+                    "199": 3,
+                    "200": 1,
+                    "201": 2,
+                    "202": 6,
+                    "203": 255,
+                    "204": 196,
+                    "205": 0,
+                    "206": 20,
+                    "207": 1,
+                    "208": 1,
+                    "209": 0,
+                    "210": 0,
+                    "211": 0,
+                    "212": 0,
+                    "213": 0,
+                    "214": 0,
+                    "215": 0,
+                    "216": 0,
+                    "217": 0,
+                    "218": 0,
+                    "219": 0,
+                    "220": 0,
+                    "221": 0,
+                    "222": 0,
+                    "223": 0,
+                    "224": 0,
+                    "225": 255,
+                    "226": 218,
+                    "227": 0,
+                    "228": 12,
+                    "229": 3,
+                    "230": 1,
+                    "231": 0,
+                    "232": 2,
+                    "233": 16,
+                    "234": 3,
+                    "235": 16,
+                    "236": 0,
+                    "237": 0,
+                    "238": 0,
+                    "239": 244,
+                    "240": 155,
+                    "241": 198,
+                    "242": 21,
+                    "243": 113,
+                    "244": 167,
+                    "245": 76,
+                    "246": 19,
+                    "247": 56,
+                    "248": 47,
+                    "249": 179,
+                    "250": 160,
+                    "251": 4,
+                    "252": 217,
+                    "253": 201,
+                    "254": 116,
+                    "255": 5,
+                    "256": 211,
+                    "257": 236,
+                    "258": 52,
+                    "259": 0,
+                    "260": 0,
+                    "261": 0,
+                    "262": 1,
+                    "263": 255,
+                    "264": 196,
+                    "265": 0,
+                    "266": 20,
+                    "267": 17,
+                    "268": 1,
+                    "269": 0,
+                    "270": 0,
+                    "271": 0,
+                    "272": 0,
+                    "273": 0,
+                    "274": 0,
+                    "275": 0,
+                    "276": 0,
+                    "277": 0,
+                    "278": 0,
+                    "279": 0,
+                    "280": 0,
+                    "281": 0,
+                    "282": 0,
+                    "283": 0,
+                    "284": 48,
+                    "285": 255,
+                    "286": 218,
+                    "287": 0,
+                    "288": 8,
+                    "289": 1,
+                    "290": 2,
+                    "291": 1,
+                    "292": 1,
+                    "293": 63,
+                    "294": 0,
+                    "295": 127,
+                    "296": 255,
+                    "297": 196,
+                    "298": 0,
+                    "299": 20,
+                    "300": 17,
+                    "301": 1,
+                    "302": 0,
+                    "303": 0,
+                    "304": 0,
+                    "305": 0,
+                    "306": 0,
+                    "307": 0,
+                    "308": 0,
+                    "309": 0,
+                    "310": 0,
+                    "311": 0,
+                    "312": 0,
+                    "313": 0,
+                    "314": 0,
+                    "315": 0,
+                    "316": 0,
+                    "317": 48,
+                    "318": 255,
+                    "319": 218,
+                    "320": 0,
+                    "321": 8,
+                    "322": 1,
+                    "323": 3,
+                    "324": 1,
+                    "325": 1,
+                    "326": 63,
+                    "327": 0,
+                    "328": 127,
+                    "329": 255,
+                    "330": 196,
+                    "331": 0,
+                    "332": 36,
+                    "333": 16,
+                    "334": 0,
+                    "335": 1,
+                    "336": 3,
+                    "337": 4,
+                    "338": 1,
+                    "339": 3,
+                    "340": 5,
+                    "341": 0,
+                    "342": 0,
+                    "343": 0,
+                    "344": 0,
+                    "345": 0,
+                    "346": 0,
+                    "347": 0,
+                    "348": 0,
+                    "349": 0,
+                    "350": 1,
+                    "351": 0,
+                    "352": 2,
+                    "353": 17,
+                    "354": 3,
+                    "355": 18,
+                    "356": 33,
+                    "357": 49,
+                    "358": 32,
+                    "359": 34,
+                    "360": 65,
+                    "361": 81,
+                    "362": 50,
+                    "363": 64,
+                    "364": 66,
+                    "365": 82,
+                    "366": 145,
+                    "367": 255,
+                    "368": 218,
+                    "369": 0,
+                    "370": 8,
+                    "371": 1,
+                    "372": 1,
+                    "373": 0,
+                    "374": 1,
+                    "375": 63,
+                    "376": 0,
+                    "377": 118,
+                    "378": 253,
+                    "379": 80,
+                    "380": 174,
+                    "381": 30,
+                    "382": 71,
+                    "383": 26,
+                    "384": 150,
+                    "385": 207,
+                    "386": 82,
+                    "387": 109,
+                    "388": 135,
+                    "389": 80,
+                    "390": 141,
+                    "391": 223,
+                    "392": 24,
+                    "393": 66,
+                    "394": 232,
+                    "395": 204,
+                    "396": 44,
+                    "397": 160,
+                    "398": 170,
+                    "399": 196,
+                    "400": 247,
+                    "401": 84,
+                    "402": 233,
+                    "403": 129,
+                    "404": 146,
+                    "405": 63,
+                    "406": 120,
+                    "407": 213,
+                    "408": 4,
+                    "409": 144,
+                    "410": 133,
+                    "411": 192,
+                    "412": 230,
+                    "413": 74,
+                    "414": 105,
+                    "415": 131,
+                    "416": 223,
+                    "417": 133,
+                    "418": 70,
+                    "419": 201,
+                    "420": 220,
+                    "421": 38,
+                    "422": 67,
+                    "423": 68,
+                    "424": 76,
+                    "425": 241,
+                    "426": 170,
+                    "427": 96,
+                    "428": 140,
+                    "429": 194,
+                    "430": 25,
+                    "431": 211,
+                    "432": 211,
+                    "433": 154,
+                    "434": 116,
+                    "435": 92,
+                    "436": 81,
+                    "437": 14,
+                    "438": 6,
+                    "439": 46,
+                    "440": 42,
+                    "441": 199,
+                    "442": 125,
+                    "443": 144,
+                    "444": 16,
+                    "445": 20,
+                    "446": 5,
+                    "447": 3,
+                    "448": 199,
+                    "449": 177,
+                    "450": 255,
+                    "451": 254,
+                    "452": 0,
+                    "453": 3,
+                    "454": 0,
+                    "455": 255,
+                    "456": 217
+                  },
+                  "caption": "Labelle Design - Marcos"
+                },
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyIndexes": [],
+                    "recipientKeyIndexes": [],
+                    "senderKeyHash": {
+                      "0": 74,
+                      "1": 38,
+                      "2": 25,
+                      "3": 172,
+                      "4": 25,
+                      "5": 172,
+                      "6": 41,
+                      "7": 160,
+                      "8": 138,
+                      "9": 195
+                    },
+                    "senderTimestamp": {
+                      "low": 1780942930,
+                      "high": 0,
+                      "unsigned": true
+                    },
+                    "recipientKeyHash": {
+                      "0": 159,
+                      "1": 88,
+                      "2": 106,
+                      "3": 147,
+                      "4": 44,
+                      "5": 70,
+                      "6": 234,
+                      "7": 138,
+                      "8": 146,
+                      "9": 166
+                    },
+                    "recipientTimestamp": {
+                      "low": 1780732993,
+                      "high": 0,
+                      "unsigned": true
+                    }
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": {
+                    "0": 17,
+                    "1": 76,
+                    "2": 151,
+                    "3": 222,
+                    "4": 48,
+                    "5": 132,
+                    "6": 197,
+                    "7": 241,
+                    "8": 227,
+                    "9": 206,
+                    "10": 179,
+                    "11": 169,
+                    "12": 194,
+                    "13": 94,
+                    "14": 143,
+                    "15": 235,
+                    "16": 14,
+                    "17": 87,
+                    "18": 85,
+                    "19": 164,
+                    "20": 236,
+                    "21": 11,
+                    "22": 210,
+                    "23": 59,
+                    "24": 37,
+                    "25": 159,
+                    "26": 220,
+                    "27": 113,
+                    "28": 95,
+                    "29": 74,
+                    "30": 145,
+                    "31": 35
+                  }
+                },
+                "base64": "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"
+              },
+              "contextInfo": null,
+              "messageType": "documentMessage",
+              "messageTimestamp": 1780948964,
+              "instanceId": "f700e00a-bc61-442c-bc92-a502a28eca8b",
+              "source": "unknown"
+            },
+            "destination": "https://n8n.aiagentautomate.com.br/webhook/comprovantes-pagamento-grdmad",
+            "date_time": "2026-06-08T17:02:44.708Z",
+            "sender": "5511945237617@s.whatsapp.net",
+            "server_url": "https://apiwp.aiagentautomate.com.br",
+            "apikey": "DD365BDD9AF4-4594-B4D6-C551487C8A6D"
+          },
+          "webhookUrl": "https://n8n.aiagentautomate.com.br/webhook/comprovantes-pagamento-grdmad",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-06-08T19:48:50.186Z",
+      "createdAt": "2026-06-08T19:48:50.186Z",
+      "role": "workflow:owner",
+      "workflowId": "5FXv4MsB9dDJnBUm",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-08-03T00:33:17.513Z",
+  "versionId": "a6cf41c1-51df-4a12-86b8-b855537593bf"
+}

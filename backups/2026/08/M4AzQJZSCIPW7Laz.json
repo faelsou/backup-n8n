@@ -1,0 +1,336 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Diagnosticar Calendar": {
+      "main": [
+        [
+          {
+            "node": "Definir Janela",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Definir Janela": {
+      "main": [
+        [
+          {
+            "node": "Cal: GET Principal",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cal: GET B2B",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cal: GET B2C",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cal: GET Principal": {
+      "main": [
+        [
+          {
+            "node": "Consolidar Eventos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cal: GET B2B": {
+      "main": [
+        [
+          {
+            "node": "Consolidar Eventos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cal: GET B2C": {
+      "main": [
+        [
+          {
+            "node": "Consolidar Eventos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consolidar Eventos": {
+      "main": [
+        [
+          {
+            "node": "Data Amanha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Amanha": {
+      "main": [
+        [
+          {
+            "node": "Testar Webhook B2B",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Testar Webhook B2B": {
+      "main": [
+        [
+          {
+            "node": "Relatorio Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-06-05T01:32:17.666Z",
+  "id": "M4AzQJZSCIPW7Laz",
+  "isArchived": false,
+  "meta": null,
+  "name": "GRD MAD — Diagnostico Calendar v2 (tolerante a falhas)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "1c625f1f-832a-4783-9740-aa63dc45e427",
+      "name": "Diagnosticar Calendar",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Janela de tempo: do inicio de hoje ate o final de depois de amanha (BRT)\nconst now = new Date();\n\n// Obter componentes em BRT\nconst fmt = new Intl.DateTimeFormat('en-CA', {\n  timeZone: 'America/Sao_Paulo',\n  year: 'numeric', month: '2-digit', day: '2-digit'\n});\nconst parts = Object.fromEntries(fmt.formatToParts(now).map(p => [p.type, p.value]));\nconst yyyy = parts.year;\nconst mm = parts.month;\nconst dd = parseInt(parts.day);\n\nfunction pad(n) { return n < 10 ? '0' + n : String(n); }\n\n// Hoje 00:00 BRT\nconst inicio = `${yyyy}-${mm}-${pad(dd)}T00:00:00-03:00`;\n// Depois de amanha 23:59 BRT (3 dias de range)\nconst fimD = new Date(`${yyyy}-${mm}-${pad(dd)}T00:00:00-03:00`);\nfimD.setDate(fimD.getDate() + 3);\nconst fimYear = fimD.getFullYear();\nconst fimMonth = pad(fimD.getMonth() + 1);\nconst fimDay = pad(fimD.getDate());\nconst fim = `${fimYear}-${fimMonth}-${fimDay}T23:59:59-03:00`;\n\nreturn [{\n  json: {\n    timeMin: inicio,\n    timeMax: fim,\n    descricao_janela: `De ${inicio} ate ${fim} (BRT)`\n  }\n}];"
+      },
+      "id": "f9d61817-6c9f-400d-a0e0-f87385725c73",
+      "name": "Definir Janela",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -416,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "grdmadmoveis@gmail.com",
+          "mode": "id"
+        },
+        "returnAll": true,
+        "timeMin": "={{ $json.timeMin }}",
+        "timeMax": "={{ $json.timeMax }}",
+        "options": {
+          "orderBy": "startTime",
+          "recurringEventHandling": "expand"
+        }
+      },
+      "id": "4e33860a-69b4-4393-bbb3-ae45134a7220",
+      "name": "Cal: GET Principal",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -208,
+        -128
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ziCJIbhQxh6MsGo0",
+          "name": "Google Calendar GrdMad"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "95d149106e3cb0e6f496671aa7755f0385fca415f570b5d37b99d676a5a27347@group.calendar.google.com",
+          "mode": "id"
+        },
+        "returnAll": true,
+        "timeMin": "={{ $(\"Definir Janela\").first().json.timeMin }}",
+        "timeMax": "={{ $(\"Definir Janela\").first().json.timeMax }}",
+        "options": {
+          "orderBy": "startTime",
+          "recurringEventHandling": "expand"
+        }
+      },
+      "id": "99e88252-b221-4a67-9a3f-73445e4af20f",
+      "name": "Cal: GET B2B",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -208,
+        80
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ziCJIbhQxh6MsGo0",
+          "name": "Google Calendar GrdMad"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "9cd24c62080c6363be09c04b97c2969de0e6e4addfda19ddb03824796d10bcd8@group.calendar.google.com",
+          "mode": "id"
+        },
+        "returnAll": true,
+        "timeMin": "={{ $(\"Definir Janela\").first().json.timeMin }}",
+        "timeMax": "={{ $(\"Definir Janela\").first().json.timeMax }}",
+        "options": {
+          "orderBy": "startTime",
+          "recurringEventHandling": "expand"
+        }
+      },
+      "id": "5d810df8-051b-4714-8371-91d84951bbe8",
+      "name": "Cal: GET B2C",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -208,
+        272
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ziCJIbhQxh6MsGo0",
+          "name": "Google Calendar GrdMad"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pegar eventos de cada calendar com tratamento de erro\nfunction safeGetAll(nodeName) {\n  try {\n    return $(nodeName).all().map(i => i.json);\n  } catch (e) {\n    return { _error: e.message, _node: nodeName };\n  }\n}\n\nconst principal_raw = safeGetAll('Cal: GET Principal');\nconst b2b_raw = safeGetAll('Cal: GET B2B');\nconst b2c_raw = safeGetAll('Cal: GET B2C');\n\nconst principal = Array.isArray(principal_raw) ? principal_raw : [];\nconst b2b = Array.isArray(b2b_raw) ? b2b_raw : [];\nconst b2c = Array.isArray(b2c_raw) ? b2c_raw : [];\n\nconst erros = [];\nif (!Array.isArray(principal_raw)) erros.push(principal_raw);\nif (!Array.isArray(b2b_raw)) erros.push(b2b_raw);\nif (!Array.isArray(b2c_raw)) erros.push(b2c_raw);\n\nlet janela;\ntry {\n  janela = $('Definir Janela').first().json;\n} catch (e) {\n  janela = { descricao_janela: 'falha ao ler janela: ' + e.message };\n}\n\nfunction formatarEvento(e, origem) {\n  const start = e?.start?.dateTime || e?.start?.date;\n  const end = e?.end?.dateTime || e?.end?.date;\n  let dataBRT = 'sem hora';\n  if (start) {\n    try {\n      const d = new Date(start);\n      dataBRT = d.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });\n    } catch (e) { dataBRT = start; }\n  }\n  return {\n    origem,\n    titulo: e.summary || '(sem titulo)',\n    data_brt: dataBRT,\n    start_raw: start,\n    end_raw: end,\n    event_id: e.id,\n    organizador: e.organizer?.email || '?',\n    creator: e.creator?.email || '?'\n  };\n}\n\nconst todos = [\n  ...principal.map(e => formatarEvento(e, 'PRINCIPAL (grdmadmoveis@gmail.com)')),\n  ...b2b.map(e => formatarEvento(e, 'B2B (95d149...@group)')),\n  ...b2c.map(e => formatarEvento(e, 'B2C (9cd24c...@group)'))\n];\n\ntodos.sort((a, b) => (a.start_raw || '').localeCompare(b.start_raw || ''));\n\nreturn [{\n  json: {\n    janela: janela.descricao_janela,\n    total_principal: principal.length,\n    total_b2b: b2b.length,\n    total_b2c: b2c.length,\n    total_geral: todos.length,\n    eventos: todos,\n    erros_capturados: erros\n  }\n}];"
+      },
+      "id": "750164cf-3bc8-4295-859a-c25792ca7a4a",
+      "name": "Consolidar Eventos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        32,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Construir startDay/endDay = amanha (BRT)\nconst fmt = new Intl.DateTimeFormat('en-CA', {\n  timeZone: 'America/Sao_Paulo',\n  year: 'numeric', month: '2-digit', day: '2-digit'\n});\nconst now = new Date();\nconst parts = Object.fromEntries(fmt.formatToParts(now).map(p => [p.type, p.value]));\nconst hoje = `${parts.year}-${parts.month}-${parts.day}`;\n\n// Amanha = hoje + 1\nconst amanhaD = new Date(`${hoje}T12:00:00-03:00`);\namanhaD.setDate(amanhaD.getDate() + 1);\nfunction pad(n) { return n < 10 ? '0' + n : String(n); }\nconst amanha = `${amanhaD.getFullYear()}-${pad(amanhaD.getMonth()+1)}-${pad(amanhaD.getDate())}`;\n\nreturn [{ json: { startDay: amanha, endDay: amanha } }];"
+      },
+      "id": "0b7e8a17-306a-425d-8144-17013b824d53",
+      "name": "Data Amanha",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.aiagentautomate.com.br/webhook/grdmad-cal-check",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          },
+          "timeout": 20000
+        }
+      },
+      "id": "13357dd2-1b6a-4ed1-9009-8df9e785bf51",
+      "name": "Testar Webhook B2B",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        464,
+        80
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "function safeGet(nodeName) {\n  try {\n    return $(nodeName).first().json;\n  } catch (e) {\n    return { _error: e.message, _node: nodeName };\n  }\n}\n\nconst eventos = safeGet('Consolidar Eventos');\nconst webhook = safeGet('Testar Webhook B2B');\nconst dataAmanha = safeGet('Data Amanha');\n\nconst dataChave = dataAmanha.startDay || 'desconhecida';\n\nlet slot9livre = null, slot9ocupado = null;\nif (webhook && Array.isArray(webhook.slots_livres)) {\n  slot9livre = webhook.slots_livres.find(s => s.time === '09:00');\n}\nif (webhook && Array.isArray(webhook.slots_ocupados)) {\n  slot9ocupado = webhook.slots_ocupados.find(s => s.time === '09:00');\n}\n\nconst eventosArr = Array.isArray(eventos.eventos) ? eventos.eventos : [];\nconst eventosNoDia = eventosArr.filter(e => e.start_raw && e.start_raw.includes(dataChave));\n\nlet slot9_status;\nif (slot9livre) slot9_status = 'LIVRE';\nelse if (slot9ocupado) slot9_status = 'OCUPADO (conflito: ' + slot9ocupado.conflito_com + ')';\nelse if (webhook._error) slot9_status = 'WEBHOOK FALHOU: ' + webhook._error;\nelse slot9_status = 'NAO ENCONTRADO';\n\nreturn [{\n  json: {\n    '_____RESUMO_____': '',\n    janela_consultada: eventos.janela || '?',\n    data_amanha: dataChave,\n    \n    '_____CONTAGENS_____': '',\n    eventos_no_calendar_PRINCIPAL: eventos.total_principal,\n    eventos_no_calendar_B2B: eventos.total_b2b,\n    eventos_no_calendar_B2C: eventos.total_b2c,\n    eventos_no_dia_amanha: eventosNoDia.length,\n    \n    '_____WEBHOOK_____': '',\n    webhook_total_livres: webhook.total_livres || 0,\n    webhook_total_ocupados: webhook.total_ocupados || 0,\n    slot_09h_status: slot9_status,\n    \n    '_____EVENTOS_DO_DIA_AMANHA_____': '',\n    eventos_amanha: eventosNoDia,\n    \n    '_____TODOS_EVENTOS_NA_JANELA_____': '',\n    todos_eventos: eventosArr,\n    \n    '_____ERROS_____': '',\n    erros_calendars: eventos.erros_capturados || [],\n    erro_webhook: webhook._error || null\n  }\n}];"
+      },
+      "id": "08281c43-319b-441e-b77d-88c3142e0121",
+      "name": "Relatorio Final",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🔍 Diagnostico de Calendar\n\nEsse workflow ajuda voce a entender:\n\n**1. Em qual calendar o evento foi criado**\n   - PRINCIPAL (grdmadmoveis@gmail.com)\n   - B2B (95d149...@group)\n   - B2C (9cd24c...@group)\n\n**2. Se o webhook /grdmad-cal-check esta detectando o evento corretamente**\n\n**3. Se o bug de timezone foi corrigido na v4.26**\n\n## Como usar\n\n1. Execute manualmente\n2. Veja o no \"Relatorio Final\" - aba Output\n3. Procure por:\n   - `eventos_no_calendar_B2B` - quantos eventos no calendar B2B\n   - `slot_09h_status` - se 09h amanha esta LIVRE ou OCUPADO\n   - `eventos_amanha` - todos os eventos no dia consultado\n\n## O que esperar APOS importar v4.26\n\n- Se voce ainda tem reuniao agendada para amanha 09h:\n- `eventos_no_calendar_B2B` deveria ser >= 1\n- `slot_09h_status` deveria ser \"OCUPADO\"\n\nSe `slot_09h_status` = LIVRE mesmo com evento na agenda,\no bug AINDA esta acontecendo - me manda print pra eu investigar mais.\n",
+        "height": 500,
+        "width": 520
+      },
+      "id": "fc10e8a9-0b0a-4b75-91dd-3706cba3ec98",
+      "name": "📋 Instrucoes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -528
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-06-05T01:32:17.666Z",
+      "createdAt": "2026-06-05T01:32:17.666Z",
+      "role": "workflow:owner",
+      "workflowId": "M4AzQJZSCIPW7Laz",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-06-05T01:34:16.808Z",
+  "versionId": "94a6b410-3081-4084-90e6-89613c4874fb"
+}

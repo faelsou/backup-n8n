@@ -1,0 +1,702 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "▶ Executar Simulação": {
+      "main": [
+        [
+          {
+            "node": "Set: Configurar Simulação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set: Configurar Simulação": {
+      "main": [
+        [
+          {
+            "node": "Code: Gerar Persona",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code: Gerar Persona": {
+      "main": [
+        [
+          {
+            "node": "Code: Inicializar Turnos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code: Inicializar Turnos": {
+      "main": [
+        [
+          {
+            "node": "Loop Turnos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Turnos": {
+      "main": [
+        [
+          {
+            "node": "Code: Compilar Relatório",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code: Preparar Turno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code: Compilar Relatório": {
+      "main": [
+        [
+          {
+            "node": "PG: Salvar Simulação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Salvar Simulação": {
+      "main": [
+        [
+          {
+            "node": "Set: Resumo Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code: Preparar Turno": {
+      "main": [
+        [
+          {
+            "node": "IF: Continuar?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: Continuar?": {
+      "main": [
+        [
+          {
+            "node": "Agente: Cliente Simulador",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pular Turno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pular Turno": {
+      "main": [
+        [
+          {
+            "node": "Loop Turnos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model: 4o-mini (Sim)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente: Cliente Simulador",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memória PG (Sim)": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente: Cliente Simulador",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente: Cliente Simulador": {
+      "main": [
+        [
+          {
+            "node": "Code: Build Payload Evolution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code: Build Payload Evolution": {
+      "main": [
+        [
+          {
+            "node": "HTTP: POST Webhook Joanna",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP: POST Webhook Joanna": {
+      "main": [
+        [
+          {
+            "node": "Wait: Joanna Responder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait: Joanna Responder": {
+      "main": [
+        [
+          {
+            "node": "PG: Buscar Resposta Joanna",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Buscar Resposta Joanna": {
+      "main": [
+        [
+          {
+            "node": "Code: Append Turno + Detectar Fim",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code: Append Turno + Detectar Fim": {
+      "main": [
+        [
+          {
+            "node": "Loop Turnos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-06-18T11:22:31.295Z",
+  "id": "bAMZoINFD6yvWSWF",
+  "isArchived": false,
+  "meta": null,
+  "name": "GRD MAD — Cliente Simulador B2B/B2C v1.0",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 🤖 GRD MAD — Cliente Simulador B2B/B2C v1.0\n\nWorkflow companheiro do **Joanna SDR v4.64**. Simula clientes WhatsApp para treinar/testar o fluxo.\n\n### Como funciona\n1. Você configura no node `Set: Configurar Simulação`: audiência (b2b/b2c/aleatorio), cenário, máx. turnos.\n2. O agente `Cliente Simulador` formula mensagens como cliente real.\n3. Cada turno: envia HTTP POST no webhook da Joanna (`/webhook/grdmad_v6`) com payload Evolution.\n4. Aguarda 18s (debounce 6s + processamento da Joanna).\n5. Lê a resposta da Joanna em `grdmad_mensagens` (direcao='ia').\n6. Repete até a Joanna agendar, o cliente desistir, ou atingir máx. turnos.\n7. Salva o transcript completo em `grdmad_simulacoes`.\n\n### ⚠️ AVISOS IMPORTANTES\n- Os telefones simulados começam com `5511900000` (range reservado). NUNCA use número real.\n- A simulação cria registros REAIS em `grdmad_clientes`, `grdmad_mensagens`, `grdmad_reunioes` e Calendar.\n- Após cada bateria de testes rode a query de limpeza (sticky abaixo).\n- Pause o cron de Follow-up enquanto roda simulações em massa, ou desative o telefone simulado lá.",
+        "height": 624,
+        "width": 540,
+        "color": 4
+      },
+      "id": "0e319980-acc1-40ad-80a6-3633b58ee443",
+      "name": "📌 README — Cliente Simulador",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -816,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🗄️ Tabela de simulações — rodar uma vez\n\n```sql\nCREATE TABLE IF NOT EXISTS grdmad_simulacoes (\n  id SERIAL PRIMARY KEY,\n  telefone_sim VARCHAR(20) NOT NULL,\n  audiencia VARCHAR(10) NOT NULL,\n  persona JSONB,\n  cenario TEXT,\n  objetivo TEXT,\n  conversa JSONB,\n  total_turnos INT,\n  resultado VARCHAR(50),\n  observacoes TEXT,\n  iniciado_em TIMESTAMPTZ DEFAULT NOW(),\n  finalizado_em TIMESTAMPTZ DEFAULT NOW()\n);\nCREATE INDEX IF NOT EXISTS idx_sim_aud ON grdmad_simulacoes(audiencia);\nCREATE INDEX IF NOT EXISTS idx_sim_res ON grdmad_simulacoes(resultado);\n```\n\n## 🧹 Limpeza pós-teste (range 5511900000xxx)\n```sql\nDELETE FROM grdmad_reunioes WHERE telefone LIKE '5511900000%';\nDELETE FROM grdmad_mensagens WHERE telefone LIKE '5511900000%';\nDELETE FROM grdmad_clientes WHERE telefone LIKE '5511900000%';\n-- eventos do Google Calendar precisam ser apagados manualmente ou via query no calendar.\n```",
+        "height": 768,
+        "width": 480,
+        "color": 5
+      },
+      "id": "e3185bbe-0f4a-44db-91a0-df9d92b4d199",
+      "name": "📌 Setup SQL (rodar 1x)",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        208,
+        -272
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "316b4a37-e8ad-4c7d-b9fd-1b9b68da0612",
+      "name": "▶ Executar Simulação",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "90cf07f6-5c93-483b-8167-078b49bcbd47",
+              "name": "joanna_webhook_url",
+              "type": "string",
+              "value": "https://n8n.aiagentautomate.com.br/webhook/grdmad_v6"
+            },
+            {
+              "id": "c5f74701-d864-4d14-8d45-b5aab5a0a16e",
+              "name": "audiencia_alvo",
+              "type": "string",
+              "value": "aleatorio"
+            },
+            {
+              "id": "0ca61fd9-4b03-46b3-8964-eda3e5caed22",
+              "name": "perfil_cliente",
+              "type": "string",
+              "value": "aleatorio"
+            },
+            {
+              "id": "6317c0ce-3072-4080-8546-3fc003234dee",
+              "name": "max_turnos",
+              "type": "number",
+              "value": 12
+            },
+            {
+              "id": "53595062-c2c1-4677-9e1e-37f1b142f839",
+              "name": "wait_resposta_segundos",
+              "type": "number",
+              "value": 18
+            },
+            {
+              "id": "4368a086-cf32-40cc-b503-a0454de88781",
+              "name": "telefone_sim",
+              "type": "string",
+              "value": "={{ '5511900000' + Math.floor(100 + Math.random()*900).toString() }}"
+            },
+            {
+              "id": "a53cb770-91ec-4794-952f-4703e8fc8ac5",
+              "name": "sim_started_at",
+              "type": "string",
+              "value": "={{ $now.toISO() }}"
+            },
+            {
+              "id": "e4b06349-c0e7-4d0b-9aac-a8bee7a50045",
+              "name": "sim_id",
+              "type": "string",
+              "value": "={{ 'SIM-' + $now.toFormat('yyyyLLdd-HHmmss') + '-' + Math.floor(Math.random()*1000) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2b23891f-57a4-4936-a86a-a2c08b3abfcc",
+      "name": "Set: Configurar Simulação",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gera persona dinâmica para o agente simulador\n// Saída: { audiencia, perfil, persona_json, cenario, objetivo, pushName }\n\nconst cfg = $input.first().json;\n\nconst audReq = (cfg.audiencia_alvo || 'aleatorio').toLowerCase();\nconst perfReq = (cfg.perfil_cliente || 'aleatorio').toLowerCase();\n\nconst pick = (arr) => arr[Math.floor(Math.random() * arr.length)];\n\nconst audiencia = audReq === 'aleatorio' ? pick(['b2b', 'b2c']) : audReq;\nconst perfil = perfReq === 'aleatorio'\n  ? pick(['facil', 'dificil', 'confuso', 'fora_cobertura'])\n  : perfReq;\n\n// Bancos de personas\nconst nomesB2C = ['Mariana Souza', 'Pedro Almeida', 'Camila Ribeiro', 'Felipe Santos',\n                  'Juliana Costa', 'Rodrigo Lima', 'Beatriz Oliveira', 'Lucas Ferreira'];\nconst nomesB2B = ['Arq. Renata Cardoso', 'Arq. Gabriel Moreira', 'Designer Patricia Mendes',\n                  'Construtora Vale Verde — Sr. Marcos', 'Arq. Helena Duarte',\n                  'Loja Casa & Cia — Sr. Eduardo'];\n\nconst cidadesIN = ['São Paulo', 'Taboão da Serra', 'Osasco', 'Cotia', 'Barueri', 'Embu das Artes', 'Carapicuíba'];\nconst cidadesAMBIGUAS = ['Monte Alegre', 'São José', 'Santa Rita', 'Jardim América'];\nconst cidadesFORA = ['Manaus', 'Salvador', 'Fortaleza', 'Belém', 'Porto Alegre'];\n\nconst projetosB2C = [\n  'cozinha planejada para apartamento de 70m²',\n  'closet do casal e quarto do bebê',\n  'sala completa: estante, painel TV e rack',\n  'home office + dormitório de filha adolescente',\n  'cozinha + área gourmet integrada',\n  'banheiro com gabinete planejado e nichos'\n];\nconst projetosB2B = [\n  'apartamento de cliente alto padrão — todos os ambientes',\n  'lançamento de 12 unidades, decorado',\n  '3 lojas conceito em shopping',\n  'sala comercial de coworking, marcenaria modular',\n  'cobertura duplex, projeto autoral',\n  'showroom de revenda — 4 ambientes'\n];\n\nconst orcamentosB2C = ['R$ 18 mil', 'R$ 35 mil', 'R$ 60 mil', 'R$ 90 mil', 'ainda não sei'];\nconst orcamentosB2B = ['R$ 150 mil por unidade', 'R$ 250 mil', 'R$ 400 mil', 'a definir conforme briefing'];\n\nlet cidade;\nif (perfil === 'fora_cobertura') {\n  cidade = pick([...cidadesFORA, ...cidadesAMBIGUAS]);\n} else {\n  cidade = pick([...cidadesIN, ...cidadesIN, ...cidadesAMBIGUAS]); // viés p/ cobertura\n}\n\nconst persona = {\n  nome: audiencia === 'b2b' ? pick(nomesB2B) : pick(nomesB2C),\n  audiencia,\n  perfil,\n  cidade,\n  projeto: audiencia === 'b2b' ? pick(projetosB2B) : pick(projetosB2C),\n  orcamento: audiencia === 'b2b' ? pick(orcamentosB2B) : pick(orcamentosB2C),\n  urgencia: pick(['nenhuma — só pesquisando', 'média — quero fechar em 30 dias',\n                  'alta — preciso entregar em 2 semanas', 'baixa — obra começa em 4 meses']),\n  email: 'simulador+' + cfg.sim_id.toLowerCase() + '@aiagent.test'\n};\n\n// Cenário e objetivo do \"treino\"\nconst cenarios = {\n  facil: 'Cliente colaborativo: responde rápido, dá informações sem resistência, aceita primeira sugestão de horário.',\n  dificil: 'Cliente cético: pede desconto antes de qualificar, questiona preço, compara com concorrentes, tenta empurrar horário fora da grade.',\n  confuso: 'Cliente desorganizado: muda de ideia, mistura informações, pergunta sobre coisas off-topic (entrega, garantia, montagem), responde apenas parcialmente.',\n  fora_cobertura: 'Cliente em cidade ambígua ou claramente fora da área. Quer testar se a Joanna desambigua (\"Monte Alegre? Em qual estado?\") em vez de rejeitar direto.'\n};\n\nconst objetivos = {\n  facil: 'Verificar se a Joanna conduz o funil normal: qualificação → agendamento → confirmação. Deve concluir agendamento.',\n  dificil: 'Verificar se a Joanna sustenta preço, qualifica antes de propor, e não promete desconto sem aprovação.',\n  confuso: 'Verificar se a Joanna mantém o foco, reconduz a conversa pro funil, e não trava com informação parcial.',\n  fora_cobertura: 'Verificar se a Joanna usa a lógica de 3 estados (IN/UNKNOWN/AMBIGUOUS) e pede UF/estado em vez de rejeitar.'\n};\n\nreturn [{ json: {\n  ...cfg,\n  audiencia,\n  perfil,\n  persona,\n  cenario: cenarios[perfil],\n  objetivo: objetivos[perfil],\n  pushName: persona.nome,\n  // chave de memória do agente simulador (separada por simulação)\n  sim_memory_key: 'sim_mem:' + cfg.sim_id\n}}];\n"
+      },
+      "id": "40e2f6dd-eecb-4de7-b2e0-a31d6e665af3",
+      "name": "Code: Gerar Persona",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Inicializa o array de turnos para o SplitInBatches\nconst data = $input.first().json;\nconst max = Math.max(1, Math.min(30, Number(data.max_turnos) || 12));\n\nconst turnos = [];\nfor (let i = 1; i <= max; i++) {\n  turnos.push({\n    turno_num: i,\n    is_first: i === 1,\n    // payload da config copiado em cada item pra ficar acessível no loop\n    sim_id: data.sim_id,\n    sim_memory_key: data.sim_memory_key,\n    telefone_sim: data.telefone_sim,\n    pushName: data.pushName,\n    audiencia: data.audiencia,\n    perfil: data.perfil,\n    persona: data.persona,\n    cenario: data.cenario,\n    objetivo: data.objetivo,\n    joanna_webhook_url: data.joanna_webhook_url,\n    wait_resposta_segundos: data.wait_resposta_segundos,\n    max_turnos: max,\n    sim_started_at: data.sim_started_at\n  });\n}\n\nreturn turnos.map(t => ({ json: t }));\n"
+      },
+      "id": "9e3c8ba9-bb21-49dc-8616-2d895c504b5b",
+      "name": "Code: Inicializar Turnos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": false
+        }
+      },
+      "id": "ce15cbd5-e4d6-496c-a1e5-5ba34e67d58a",
+      "name": "Loop Turnos",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        672,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Compila o relatório da simulação\nconst turnoData = $input.first().json;\nconst sd = $getWorkflowStaticData('node');\nconst sim_id = turnoData.sim_id;\n\nconst estado = (sd.simulacoes && sd.simulacoes[sim_id]) || {\n  conversa: [], finalizado: false, resultado: 'timeout', turnos_executados: 0, observacoes: ''\n};\n\nconst resultado = estado.finalizado ? estado.resultado : 'timeout_max_turnos';\n\nreturn [{ json: {\n  sim_id,\n  telefone_sim: turnoData.telefone_sim,\n  audiencia: turnoData.audiencia,\n  persona: turnoData.persona,\n  cenario: turnoData.cenario,\n  objetivo: turnoData.objetivo,\n  conversa: estado.conversa,\n  total_turnos: estado.turnos_executados,\n  resultado,\n  observacoes: estado.observacoes || '',\n  sim_started_at: turnoData.sim_started_at,\n  sim_finished_at: new Date().toISOString()\n}}];\n"
+      },
+      "id": "64ebdc0f-c03e-4ed5-a6c5-f4f4d6cd1205",
+      "name": "Code: Compilar Relatório",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO grdmad_simulacoes\n  (telefone_sim, audiencia, persona, cenario, objetivo, conversa, total_turnos, resultado, observacoes, iniciado_em, finalizado_em)\nVALUES ($1, $2, $3::jsonb, $4, $5, $6::jsonb, $7, $8, $9, $10::timestamptz, $11::timestamptz)\nRETURNING id",
+        "options": {
+          "queryReplacement": "={{ $json.telefone_sim }},={{ $json.audiencia }},={{ JSON.stringify($json.persona) }},={{ $json.cenario }},={{ $json.objetivo }},={{ JSON.stringify($json.conversa) }},={{ $json.total_turnos }},={{ $json.resultado }},={{ $json.observacoes }},={{ $json.sim_started_at }},={{ $json.sim_finished_at }}"
+        }
+      },
+      "id": "69fa8741-7fd4-4d12-93af-85bd650ce44d",
+      "name": "PG: Salvar Simulação",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1104,
+        272
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b7200925-5ebb-4b05-a239-2b81e6158395",
+              "name": "sim_id",
+              "type": "string",
+              "value": "={{ $('Code: Compilar Relatório').first().json.sim_id }}"
+            },
+            {
+              "id": "f0fd159b-0d26-474e-91c6-a4f5c8551979",
+              "name": "audiencia",
+              "type": "string",
+              "value": "={{ $('Code: Compilar Relatório').first().json.audiencia }}"
+            },
+            {
+              "id": "b9363730-3007-4778-8746-eb98e7313b31",
+              "name": "resultado",
+              "type": "string",
+              "value": "={{ $('Code: Compilar Relatório').first().json.resultado }}"
+            },
+            {
+              "id": "91fb883a-08a0-4edd-930d-2335de9fa2f9",
+              "name": "total_turnos",
+              "type": "number",
+              "value": "={{ $('Code: Compilar Relatório').first().json.total_turnos }}"
+            },
+            {
+              "id": "a72c3094-4665-44cf-a614-7ab3fe71c3f7",
+              "name": "transcript",
+              "type": "array",
+              "value": "={{ $('Code: Compilar Relatório').first().json.conversa }}"
+            },
+            {
+              "id": "947bf45a-28f5-4463-a9c2-e97f2d0a1998",
+              "name": "telefone_sim",
+              "type": "string",
+              "value": "={{ $('Code: Compilar Relatório').first().json.telefone_sim }}"
+            },
+            {
+              "id": "6365d6d1-a6bd-4eb0-8ff6-d644b05dd23e",
+              "name": "limpeza_sugerida",
+              "type": "string",
+              "value": "=DELETE FROM grdmad_reunioes WHERE telefone='{{$('Code: Compilar Relatório').first().json.telefone_sim}}'; DELETE FROM grdmad_mensagens WHERE telefone='{{$('Code: Compilar Relatório').first().json.telefone_sim}}'; DELETE FROM grdmad_clientes WHERE telefone='{{$('Code: Compilar Relatório').first().json.telefone_sim}}';"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2662b94c-1026-42ee-8c62-d8a6442b67b4",
+      "name": "Set: Resumo Final",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1328,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Em cada iteração:\n// 1. Lê estado da simulação do staticData\n// 2. Se já finalizou, gera flag pra pular (IF vai bloquear)\n// 3. Caso contrário, monta o contexto pro agente simulador\n\nconst turno = $input.first().json;\nconst sim_id = turno.sim_id;\nconst sd = $getWorkflowStaticData('node');\n\nif (!sd.simulacoes) sd.simulacoes = {};\nif (!sd.simulacoes[sim_id]) {\n  sd.simulacoes[sim_id] = {\n    conversa: [],\n    finalizado: false,\n    resultado: null,\n    turnos_executados: 0,\n    observacoes: '',\n    last_msg_id_joanna: 0\n  };\n}\n\nconst estado = sd.simulacoes[sim_id];\n\n// Monta transcript em texto pra o prompt\nconst transcript_text = estado.conversa.map(t => {\n  if (t.de === 'cliente') return `[Você disse no turno ${t.turno}] ${t.texto}`;\n  return `[Joanna respondeu no turno ${t.turno}] ${t.texto}`;\n}).join('\\n');\n\nreturn [{\n  json: {\n    ...turno,\n    finalizado: estado.finalizado,\n    turnos_executados: estado.turnos_executados,\n    transcript_text: transcript_text || '(início da conversa)',\n    ultima_msg_joanna: estado.conversa.filter(t => t.de === 'joanna').slice(-1)[0]?.texto || '(ainda não respondeu)',\n    last_msg_id_joanna: estado.last_msg_id_joanna || 0\n  }\n}];\n"
+      },
+      "id": "0deef136-2f44-4bd8-8d38-4949ffced41d",
+      "name": "Code: Preparar Turno",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        656
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f483a019-c66c-4b14-9c96-c6b87e09bcc7",
+              "leftValue": "={{ $json.finalizado }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "false"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1c2b321c-eb23-4f44-a2ff-9a43e5ce7424",
+      "name": "IF: Continuar?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1104,
+        656
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "a521e2af-6c57-4895-9ce9-19d119e2e84d",
+      "name": "Pular Turno",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1328,
+        816
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Você é um cliente em potencial conversando via WhatsApp com a Joanna, uma assistente de vendas (SDR) da GRD MAD — empresa de móveis planejados sob medida que atende a Grande São Paulo.\n\n# SUA IDENTIDADE\nNome: {{ $json.persona.nome }}\nAudiência: {{ $json.audiencia }} ({{ $json.audiencia === 'b2b' ? 'profissional/arquiteto/lojista' : 'consumidor final' }})\nCidade: {{ $json.persona.cidade }}\nProjeto: {{ $json.persona.projeto }}\nOrçamento: {{ $json.persona.orcamento }}\nUrgência: {{ $json.persona.urgencia }}\nEmail (só forneça se Joanna pedir): {{ $json.persona.email }}\n\n# SEU PERFIL DE COMPORTAMENTO\n{{ $json.cenario }}\n\n# OBJETIVO DESTE TESTE (não revele isso à Joanna)\n{{ $json.objetivo }}\n\n# REGRAS DE INTERAÇÃO — LEIA COM ATENÇÃO\n1. Aja como pessoa real no WhatsApp: mensagens curtas (1–3 linhas), informais, com erros leves ocasionais de pontuação.\n2. Nunca diga \"sou um cliente simulador\", \"estou te testando\", ou qualquer coisa que quebre o personagem.\n3. Não despeje todas as suas informações de uma vez — vá entregando à medida que a Joanna pergunta. Comportamento natural.\n4. Se a Joanna fizer pergunta clara, responda. Se ela for vaga, peça pra esclarecer.\n5. Respeite seu perfil:\n   - facil: coopere, aceite primeira sugestão de horário válida\n   - dificil: questione preço pelo menos 1x, peça desconto pelo menos 1x antes de qualificar, tente empurrar horário fora do padrão (madrugada, domingo) ao menos 1x\n   - confuso: pelo menos 1x mude de ideia, 1x pergunte algo off-topic (entrega, montagem, garantia), 1x dê info parcial (\"acho que é uns 40 metros, sei lá\")\n   - fora_cobertura: quando a Joanna perguntar cidade, diga só o nome da cidade SEM o estado/UF (ex: \"Monte Alegre\", \"Santa Rita\"). Só revele a UF se ela perguntar de novo.\n\n# COMO ENCERRAR\n- Se você ACEITOU agendar e a Joanna confirmou data/hora/canal, responda algo natural (\"ótimo, até lá!\") e na sua MENSAGEM termine com a tag literal: [[FIM:AGENDADO]]\n- Se você DESISTIU (sem interesse, achou caro, vai pensar), termine com: [[FIM:DESISTIU]]\n- Se você está fora da cobertura e a Joanna confirmou que não atende, termine com: [[FIM:FORA_COBERTURA]]\n- Caso contrário, NÃO inclua nenhuma tag — continue a conversa.\n\n# HISTÓRICO DESTA CONVERSA (Joanna ↔ você)\n{{ $json.transcript_text }}\n\n# ÚLTIMA MENSAGEM DA JOANNA\n{{ $json.ultima_msg_joanna }}\n\n# SEU PRÓXIMO TURNO ({{ $json.turno_num }}/{{ $json.max_turnos }})\n{{ $json.is_first ? 'É a sua PRIMEIRA mensagem. Inicie a conversa de forma natural — um \"oi, vi o instagram de vocês\" ou \"olá, queria informações sobre móveis planejados\" ou similar. Sem oferecer todas as suas informações de cara.' : 'Responda a última mensagem da Joanna. Mantenha o personagem.' }}\n\nResponda SOMENTE com o texto da mensagem que você (cliente) vai mandar agora. Sem aspas externas, sem prefixos tipo \"Mensagem:\". Apenas o conteúdo da mensagem.\n",
+        "options": {
+          "systemMessage": "Você é um simulador de cliente de WhatsApp. Siga as regras do prompt à risca. Nunca quebre o personagem."
+        }
+      },
+      "id": "1302be72-3463-43a0-94a7-77b7faa906bd",
+      "name": "Agente: Cliente Simulador",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1328,
+        656
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 0.85
+        }
+      },
+      "id": "9918bbf1-fbbe-4d61-82ff-4a8d381ae59c",
+      "name": "Model: 4o-mini (Sim)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1264,
+        880
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.sim_memory_key }}",
+        "contextWindowLength": 40
+      },
+      "id": "f208ca33-37c7-4a8e-a701-670f93390697",
+      "name": "Memória PG (Sim)",
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1424,
+        880
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Constrói payload no formato Evolution API que o webhook da Joanna espera\nconst turno = $('Code: Preparar Turno').first().json;\nconst agentOut = $input.first().json;\n\n// O output do Agent vem em .output (string)\nlet mensagem = (agentOut.output || agentOut.text || '').trim();\n\n// Detecta tag de fim e remove do texto antes de enviar\nlet tagFim = null;\nconst fimRegex = /\\[\\[FIM:(AGENDADO|DESISTIU|FORA_COBERTURA)\\]\\]/;\nconst m = mensagem.match(fimRegex);\nif (m) {\n  tagFim = m[1].toLowerCase();\n  mensagem = mensagem.replace(fimRegex, '').trim();\n}\n\n// Garante mensagem não-vazia\nif (!mensagem) mensagem = '(...)';\n\nconst telefone = turno.telefone_sim;\nconst remoteJid = telefone + '@s.whatsapp.net';\nconst messageId = 'SIMMSG_' + Date.now() + '_' + Math.floor(Math.random()*10000);\n\n// Payload Evolution API (webhook event: messages.upsert)\nconst payload = {\n  event: 'messages.upsert',\n  instance: 'AiAgentAutomate',\n  data: {\n    key: {\n      remoteJid,\n      fromMe: false,\n      id: messageId\n    },\n    pushName: turno.pushName,\n    message: {\n      conversation: mensagem\n    },\n    messageType: 'conversation',\n    messageTimestamp: Math.floor(Date.now() / 1000)\n  }\n};\n\nreturn [{\n  json: {\n    ...turno,\n    payload,\n    mensagem_cliente: mensagem,\n    tag_fim: tagFim\n  }\n}];\n"
+      },
+      "id": "b23a9dd3-b8dd-47bb-80f7-ea266750d88e",
+      "name": "Code: Build Payload Evolution",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1568,
+        656
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.joanna_webhook_url }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.payload) }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 15000
+        }
+      },
+      "id": "904f1c0c-3ac9-4cb6-bad5-517b81c7e05f",
+      "name": "HTTP: POST Webhook Joanna",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1792,
+        656
+      ]
+    },
+    {
+      "parameters": {
+        "amount": "={{ $('Code: Build Payload Evolution').first().json.wait_resposta_segundos }}"
+      },
+      "id": "a82e8e26-841c-4dd3-bd1e-d3cdad33beaf",
+      "name": "Wait: Joanna Responder",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2000,
+        656
+      ],
+      "webhookId": "ec096e6b-a040-4e37-86b2-35cf6a2f8661"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT id, conteudo, created_at FROM grdmad_mensagens WHERE telefone = $1   AND direcao = 'ia'   AND id > $2 ORDER BY id DESC LIMIT 10",
+        "options": {
+          "queryReplacement": "={{ $('Code: Build Payload Evolution').first().json.telefone_sim }},={{ $('Code: Preparar Turno').first().json.last_msg_id_joanna }}"
+        }
+      },
+      "id": "f15c1ed4-27b9-4cae-927d-822e9550f8c8",
+      "name": "PG: Buscar Resposta Joanna",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2224,
+        656
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Atualiza o staticData da simulação com:\n// - mensagem do cliente do turno atual\n// - resposta(s) consolidada(s) da Joanna\n// - detecta condições de fim (tag do cliente OU keywords da Joanna)\n\nconst payloadNode = $('Code: Build Payload Evolution').first().json;\nconst turnoNode = $('Code: Preparar Turno').first().json;\nconst respostas = $input.all().map(i => i.json);\n\nconst sim_id = payloadNode.sim_id;\nconst sd = $getWorkflowStaticData('node');\nconst estado = sd.simulacoes[sim_id];\n\n// Ordena por id asc (mais antigas primeiro)\nrespostas.sort((a, b) => (a.id || 0) - (b.id || 0));\n\nconst respostasNovas = respostas.filter(r => r.id > (estado.last_msg_id_joanna || 0));\n\n// Salva último id processado\nif (respostasNovas.length > 0) {\n  estado.last_msg_id_joanna = respostasNovas[respostasNovas.length - 1].id;\n}\n\nconst respostaConsolidada = respostasNovas.map(r => r.conteudo).join(' | ') || '(sem resposta — timeout)';\n\nconst turnoAtual = turnoNode.turno_num;\nestado.turnos_executados = turnoAtual;\n\n// Append do turno do cliente\nestado.conversa.push({\n  turno: turnoAtual,\n  de: 'cliente',\n  texto: payloadNode.mensagem_cliente,\n  ts: new Date().toISOString()\n});\n\n// Append da resposta da Joanna (se houve)\nif (respostasNovas.length > 0) {\n  estado.conversa.push({\n    turno: turnoAtual,\n    de: 'joanna',\n    texto: respostaConsolidada,\n    segmentos: respostasNovas.length,\n    ts: new Date().toISOString()\n  });\n}\n\n// === Detecção de fim ===\nlet finalizou = false;\nlet resultado = null;\nlet obs = [];\n\n// 1. Tag explícita do cliente\nif (payloadNode.tag_fim) {\n  finalizou = true;\n  if (payloadNode.tag_fim === 'agendado') resultado = 'agendou';\n  else if (payloadNode.tag_fim === 'desistiu') resultado = 'desistiu';\n  else if (payloadNode.tag_fim === 'fora_cobertura') resultado = 'fora_cobertura_detectado';\n  obs.push('Tag de fim no turno ' + turnoAtual + ': ' + payloadNode.tag_fim);\n}\n\n// 2. Joanna sem resposta (provável erro/pausa)\nif (!finalizou && respostasNovas.length === 0) {\n  // Tolera 1 turno sem resposta, fecha no 2º\n  estado.turnos_sem_resposta = (estado.turnos_sem_resposta || 0) + 1;\n  if (estado.turnos_sem_resposta >= 2) {\n    finalizou = true;\n    resultado = 'joanna_sem_resposta';\n    obs.push('Joanna não respondeu por 2 turnos consecutivos.');\n  }\n} else {\n  estado.turnos_sem_resposta = 0;\n}\n\n// 3. Joanna sinalizou agendamento confirmado (heurísticas)\nif (!finalizou && respostasNovas.length > 0) {\n  const texto = respostaConsolidada.toLowerCase();\n  const sinaisAgendamento = ['confirmada', 'agendada', 'reunião marcada',\n                             'reuniao marcada', 'reservei sua', 'até lá',\n                             'até nossa reunião', 'até nossa reuniao'];\n  if (sinaisAgendamento.some(s => texto.includes(s))) {\n    // Confirmação forte se também menciona horário/data + canal\n    const temData = /(\\d{1,2}[\\/\\-]\\d{1,2}|\\d{1,2}h|\\d{1,2}:\\d{2}|amanhã|amanha|segunda|terça|terca|quarta|quinta|sexta|sábado|sabado|domingo)/i.test(texto);\n    if (temData) {\n      finalizou = true;\n      resultado = 'agendou';\n      obs.push('Joanna confirmou agendamento (heurística texto).');\n    }\n  }\n  // Joanna sinalizou fora de cobertura\n  if (texto.includes('não atendemos') || texto.includes('nao atendemos') ||\n      texto.includes('fora da nossa área') || texto.includes('fora da nossa area')) {\n    finalizou = true;\n    resultado = 'fora_cobertura_joanna';\n    obs.push('Joanna sinalizou fora de cobertura.');\n  }\n}\n\n// 4. Atingiu máx\nif (!finalizou && turnoAtual >= turnoNode.max_turnos) {\n  finalizou = true;\n  resultado = 'timeout_max_turnos';\n  obs.push('Atingiu o máximo de ' + turnoNode.max_turnos + ' turnos.');\n}\n\nif (finalizou) {\n  estado.finalizado = true;\n  estado.resultado = resultado;\n}\nestado.observacoes = (estado.observacoes ? estado.observacoes + ' | ' : '') + obs.join(' | ');\n\nreturn [{\n  json: {\n    sim_id,\n    turno: turnoAtual,\n    mensagem_cliente: payloadNode.mensagem_cliente,\n    resposta_joanna: respostaConsolidada,\n    finalizado: finalizou,\n    resultado,\n    obs: obs.join(' | ')\n  }\n}];\n"
+      },
+      "id": "69e369db-9cd0-459b-bb21-871b876a6b95",
+      "name": "Code: Append Turno + Detectar Fim",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2448,
+        656
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-06-18T11:22:31.295Z",
+      "createdAt": "2026-06-18T11:22:31.295Z",
+      "role": "workflow:owner",
+      "workflowId": "bAMZoINFD6yvWSWF",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-06-18T11:29:48.251Z",
+  "versionId": "16e6476e-5ea5-4ca3-8c11-dea7a8c07169"
+}

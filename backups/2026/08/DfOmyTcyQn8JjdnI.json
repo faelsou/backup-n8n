@@ -1,0 +1,2339 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Webhook Evolution": {
+      "main": [
+        [
+          {
+            "node": "Responde Webhook 200",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Responde Webhook 200": {
+      "main": [
+        [
+          {
+            "node": "Parse Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Payload": {
+      "main": [
+        [
+          {
+            "node": "Ignora fromMe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ignora fromMe": {
+      "main": [
+        [
+          {
+            "node": "Redis Get State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Get State": {
+      "main": [
+        [
+          {
+            "node": "Compute Flags",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compute Flags": {
+      "main": [
+        [
+          {
+            "node": "Roteador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Roteador": {
+      "main": [
+        [
+          {
+            "node": "Decode State",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Tipo de Mídia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decode State": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Parse Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Parse Resposta": {
+      "main": [
+        [
+          {
+            "node": "Merge Resposta no State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Resposta no State": {
+      "main": [
+        [
+          {
+            "node": "Está Completo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tipo de Mídia": {
+      "main": [
+        [
+          {
+            "node": "Get Base64 (Imagem)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Base64 (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Binary (Imagem)": {
+      "main": [
+        [
+          {
+            "node": "Upload Drive (Imagem)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Drive (Imagem)": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Vision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Vision": {
+      "main": [
+        [
+          {
+            "node": "Parse Extração",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Binary (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Upload Drive (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Drive (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Extract PDF Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Text": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Texto (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Texto (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Parse Extração",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Extração": {
+      "main": [
+        [
+          {
+            "node": "Está Completo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Está Completo?": {
+      "main": [
+        [
+          {
+            "node": "Lookup Duplicidade",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Monta Pergunta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lookup Duplicidade": {
+      "main": [
+        [
+          {
+            "node": "Check Duplicado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Duplicado": {
+      "main": [
+        [
+          {
+            "node": "É Duplicado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "É Duplicado?": {
+      "main": [
+        [
+          {
+            "node": "Avisa Duplicado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis Delete State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Delete State": {
+      "main": [
+        [
+          {
+            "node": "Append Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Sheets": {
+      "main": [
+        [
+          {
+            "node": "Confirma Registro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monta Pergunta": {
+      "main": [
+        [
+          {
+            "node": "Redis Set State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Set State": {
+      "main": [
+        [
+          {
+            "node": "Envia Pergunta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Base64 (Imagem)": {
+      "main": [
+        [
+          {
+            "node": "Binary (Imagem)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Base64 (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Binary (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-06-03T01:09:21.392Z",
+  "id": "DfOmyTcyQn8JjdnI",
+  "isArchived": true,
+  "meta": null,
+  "name": "Comprovantes GRD - Extração com Pergunta Adaptativa",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "comprovantes-pagamento-grdmad",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "9fd6a511-8e55-4d78-9b53-d6d46fc10a51",
+      "name": "Webhook Evolution",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1536,
+        512
+      ],
+      "webhookId": "comprovantes-grd-evo"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "OK",
+        "options": {}
+      },
+      "id": "e4a6feca-8ce1-47c1-8a0a-e7f0ce64fe06",
+      "name": "Responde Webhook 200",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -1360,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "p1",
+              "name": "instance",
+              "value": "={{ $('Webhook Evolution').item.json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "p2",
+              "name": "numero",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.key.remoteJid.split('@')[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "p3",
+              "name": "messageId",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.key.id }}",
+              "type": "string"
+            },
+            {
+              "id": "p4",
+              "name": "messageType",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.messageType }}",
+              "type": "string"
+            },
+            {
+              "id": "p5",
+              "name": "pushName",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.pushName || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "p6",
+              "name": "fromMe",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.key.fromMe }}",
+              "type": "boolean"
+            },
+            {
+              "id": "p7",
+              "name": "mimetype",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.message?.imageMessage?.mimetype || $('Webhook Evolution').item.json.body.data.message?.documentMessage?.mimetype || $('Webhook Evolution').item.json.body.data.message?.documentWithCaptionMessage?.message?.documentMessage?.mimetype || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "p8",
+              "name": "fileName",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.message?.documentMessage?.fileName || $('Webhook Evolution').item.json.body.data.message?.documentWithCaptionMessage?.message?.documentMessage?.fileName || 'comprovante.jpg' }}",
+              "type": "string"
+            },
+            {
+              "id": "p9",
+              "name": "text",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.message?.conversation || $('Webhook Evolution').item.json.body.data.message?.extendedTextMessage?.text || $('Webhook Evolution').item.json.body.data.message?.imageMessage?.caption || $('Webhook Evolution').item.json.body.data.message?.documentMessage?.caption || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9a50015f-1e86-471c-b031-516dfe729db9",
+      "name": "Parse Payload",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1168,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "f1",
+              "leftValue": "={{ $json.fromMe }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7f9df57b-c31b-4261-8df0-bc27fbe3b7fa",
+      "name": "Ignora fromMe",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -960,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "=pix_pending:{{ $json.numero }}",
+        "options": {
+          "dotNotation": false
+        }
+      },
+      "id": "f8407ab2-a44e-45b7-987d-48261c965bff",
+      "name": "Redis Get State",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -768,
+        512
+      ],
+      "credentials": {
+        "redis": {
+          "id": "EO4PW35QwO53zsbp",
+          "name": "Redis AnapaulaSkin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fl1",
+              "name": "has_state",
+              "value": "={{ !!$json.state_raw && $json.state_raw !== '' }}",
+              "type": "boolean"
+            },
+            {
+              "id": "fl2",
+              "name": "is_text",
+              "value": "={{ ['conversation','extendedTextMessage'].includes($('Parse Payload').item.json.messageType) }}",
+              "type": "boolean"
+            },
+            {
+              "id": "fl3",
+              "name": "is_media",
+              "value": "={{ ['imageMessage','documentMessage','documentWithCaptionMessage'].includes($('Parse Payload').item.json.messageType) || ($('Parse Payload').item.json.mimetype || '').includes('application/pdf') }}",
+              "type": "boolean"
+            },
+            {
+              "id": "fl4",
+              "name": "state_raw",
+              "value": "={{ $json.state_raw || '' }}",
+              "type": "string"
+            }
+          ],
+          "includeOtherFields": true
+        },
+        "options": {}
+      },
+      "id": "1d3c7ef3-8f6a-4dd7-963e-73071b39a939",
+      "name": "Compute Flags",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -560,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "r1a",
+                    "leftValue": "={{ $json.has_state }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    }
+                  },
+                  {
+                    "id": "r1b",
+                    "leftValue": "={{ $json.is_text }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "RespostaTexto"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "r2",
+                    "leftValue": "={{ $json.is_media }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Midia"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e9314705-f5fd-4e0a-b830-d0a288dd5574",
+      "name": "Roteador",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -368,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Decodifica o state Redis e expõe contexto para a IA\nconst state = JSON.parse($json.state_raw);\nconst payload = $('Parse Payload').first().json;\nreturn [{\n  json: {\n    extracted_data: state.extracted_data,\n    missing_fields: state.missing_fields,\n    retry_count: state.retry_count || 0,\n    context_text: payload.text,\n    numero: payload.numero,\n    instance: payload.instance,\n    pushName: payload.pushName\n  }\n}];"
+      },
+      "id": "1e86f909-0580-41cf-8c21-cd463c39ad32",
+      "name": "Decode State",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Você extrai dados de respostas em português brasileiro de clientes da GRD MAD enviando comprovantes PIX.\n\nOs campos AINDA faltando são:\n{{ JSON.stringify($json.missing_fields) }}\n\nA mensagem do cliente foi:\n\"{{ $json.context_text }}\"\n\nRetorne APENAS um JSON com os campos que CONSEGUIU identificar (omita os que não foram mencionados ou são ambíguos).\n\nReferência dos campos:\n- cliente_pedido: nome do projeto/cliente final (ex: \"Lá Belle\", \"Asteca\", \"Siqueli\")\n- vendedor: primeiro nome do vendedor (ex: \"Marcus\", \"Diogo\")\n- valor: número decimal (ex: 198.45)\n- data_transacao: formato YYYY-MM-DD\n- pagador_nome: nome ou razão social\n\nPadrões comuns de resposta: \"Cliente - Vendedor\", \"Cliente / Vendedor\", \"Cliente @ Vendedor\", ou apenas o valor pedido.\n\nSe não conseguir extrair nada, retorne {}."
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {
+          "temperature": 0
+        }
+      },
+      "id": "58206fd1-9ac4-41fd-94d0-2cff0920bbe5",
+      "name": "OpenAI Parse Resposta",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        0,
+        0
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Mescla a resposta da IA com o state existente\nconst raw = $json.message?.content ?? $json;\nlet ai = {};\ntry {\n  ai = typeof raw === 'object' ? raw : JSON.parse(String(raw).replace(/```json|```/g, '').trim());\n} catch (e) {\n  ai = {};\n}\n\nconst state = $('Decode State').first().json;\nconst filled = Object.entries(ai).filter(([k, v]) => v !== null && v !== undefined && String(v).trim() !== '').map(([k]) => k);\nconst merged = { ...state.extracted_data };\nfilled.forEach(k => { merged[k] = ai[k]; });\n\nconst stillMissing = state.missing_fields.filter(f => !merged[f] || String(merged[f]).trim() === '');\n\nreturn [{\n  json: {\n    ...merged,\n    missing_fields: stillMissing,\n    ai_understood: filled.length > 0,\n    retry_count: state.retry_count + (filled.length > 0 ? 0 : 1),\n    _from_response_branch: true\n  }\n}];"
+      },
+      "id": "7647396c-4350-49bb-be71-200eadf566d6",
+      "name": "Merge Resposta no State",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "tm1",
+                    "leftValue": "={{ $('Parse Payload').item.json.messageType }}",
+                    "rightValue": "imageMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Imagem"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "tm2a",
+                    "leftValue": "={{ $('Parse Payload').item.json.mimetype }}",
+                    "rightValue": "application/pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  },
+                  {
+                    "id": "tm2b",
+                    "leftValue": "={{ $('Parse Payload').item.json.messageType }}",
+                    "rightValue": "documentMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  },
+                  {
+                    "id": "tm2c",
+                    "leftValue": "={{ $('Parse Payload').item.json.messageType }}",
+                    "rightValue": "documentWithCaptionMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "PDF"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "782ca500-0c25-4d6f-85a2-7932192c747f",
+      "name": "Tipo de Mídia",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -160,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "base64",
+        "options": {
+          "fileName": "={{ $('Parse Payload').item.json.fileName }}",
+          "mimeType": "={{ $json.mimetype || $('Parse Payload').item.json.mimetype }}"
+        }
+      },
+      "id": "05b700b7-7263-46b0-8daf-5e52bb097fba",
+      "name": "Binary (Imagem)",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Parse Payload').item.json.numero }}_{{ $now.toFormat('yyyyLLdd_HHmmss') }}_{{ $('Parse Payload').item.json.fileName }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1xx_BYLovvu-YYW4nz3ODBn9AEK0iAbGL",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "f6b9b679-913a-4038-b16c-36e38af0489a",
+      "name": "Upload Drive (Imagem)",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        448,
+        432
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "AMnU78157s5pFXnN",
+          "name": "Google AiAgent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list"
+        },
+        "text": "=Você extrai dados de COMPROVANTES PIX/TED/DOC. Retorne APENAS JSON válido (sem markdown), nesta estrutura:\n{\n  \"tipo\": \"PIX|TED|DOC|Boleto\",\n  \"valor\": 0.00,\n  \"data_transacao\": \"YYYY-MM-DD\",\n  \"hora_transacao\": \"HH:MM\",\n  \"pagador_nome\": \"\",\n  \"pagador_documento\": \"\",\n  \"pagador_banco\": \"\",\n  \"pagador_agencia_conta\": \"\",\n  \"beneficiario_nome\": \"\",\n  \"beneficiario_documento\": \"\",\n  \"beneficiario_chave_pix\": \"\",\n  \"id_transacao_e2e\": \"\",\n  \"numero_controle\": \"\",\n  \"codigo_autenticacao\": \"\"\n}\n\nRegras:\n- valor SEM \"R$\", como número (198.45 e não \"R$ 198,45\")\n- id_transacao_e2e começa geralmente com \"E\" + dígitos (ex: E60701190202606021422DY5EXO05JQL)\n- Campos não encontrados retornam string vazia (ou 0 pro valor)\n- NÃO inclua campos extras",
+        "inputType": "base64",
+        "options": {
+          "detail": "high"
+        }
+      },
+      "id": "6cab4b33-6e6c-4590-8ca9-f2881ee75e09",
+      "name": "OpenAI Vision",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        640,
+        432
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "base64",
+        "options": {
+          "fileName": "={{ $('Parse Payload').item.json.fileName }}",
+          "mimeType": "application/pdf"
+        }
+      },
+      "id": "bbc82a05-3387-464a-9de4-fffa155f6288",
+      "name": "Binary (PDF)",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        672
+      ]
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Parse Payload').item.json.numero }}_{{ $now.toFormat('yyyyLLdd_HHmmss') }}_{{ $('Parse Payload').item.json.fileName }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1xx_BYLovvu-YYW4nz3ODBn9AEK0iAbGL",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "4a89b133-2f2a-4f9b-8873-691ff5dbb20c",
+      "name": "Upload Drive (PDF)",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        448,
+        672
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "AMnU78157s5pFXnN",
+          "name": "Google AiAgent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {
+          "joinPages": true
+        }
+      },
+      "id": "57650627-5188-4a3a-855d-d032d6b80bff",
+      "name": "Extract PDF Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        640,
+        672
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Você extrai dados de comprovantes PIX/TED/DOC. Analise o texto abaixo e retorne APENAS JSON válido (sem markdown):\n{\n  \"tipo\": \"\",\n  \"valor\": 0.00,\n  \"data_transacao\": \"YYYY-MM-DD\",\n  \"hora_transacao\": \"HH:MM\",\n  \"pagador_nome\": \"\",\n  \"pagador_documento\": \"\",\n  \"pagador_banco\": \"\",\n  \"pagador_agencia_conta\": \"\",\n  \"beneficiario_nome\": \"\",\n  \"beneficiario_documento\": \"\",\n  \"beneficiario_chave_pix\": \"\",\n  \"id_transacao_e2e\": \"\",\n  \"numero_controle\": \"\",\n  \"codigo_autenticacao\": \"\"\n}\n\nRegras: valor como número decimal, campos não encontrados como string vazia.\n\n=== TEXTO DO PDF ===\n{{ $json.text }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {
+          "temperature": 0
+        }
+      },
+      "id": "008e6cba-b4b7-431b-9701-5514e1e7e85c",
+      "name": "OpenAI Texto (PDF)",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        848,
+        672
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normaliza extração de imagem ou PDF + contexto do WhatsApp + caminho do Drive + define missing_fields\n\n// === Configuração: campos obrigatórios para registrar ===\nconst REQUIRED = [\n  'valor',\n  'data_transacao',\n  'id_transacao_e2e',\n  'pagador_nome',\n  'cliente_pedido',\n  'vendedor'\n];\n\nconst raw = $json.message?.content ?? $json;\nlet ai = {};\ntry {\n  ai = typeof raw === 'object' && !raw.text ? raw : JSON.parse(String(raw).replace(/```json|```/g, '').trim());\n} catch (e) {\n  ai = { _parse_error: true };\n}\n\nconst ctx = $('Parse Payload').first().json;\n\n// Tenta pegar a URL do Drive de qualquer um dos dois nós (imagem ou pdf)\nlet drive_url = '';\nlet drive_id = '';\ntry { const d = $('Upload Drive (Imagem)').first().json; drive_url = d.webViewLink || ''; drive_id = d.id || ''; } catch(e) {}\nif (!drive_url) {\n  try { const d = $('Upload Drive (PDF)').first().json; drive_url = d.webViewLink || ''; drive_id = d.id || ''; } catch(e) {}\n}\n\n// O texto enviado junto da mídia pode já trazer cliente/vendedor (ex: \"Siqueli @ Diogo Lourenço\")\nconst caption = (ctx.text || '').trim();\nlet cliente_pedido = '';\nlet vendedor = '';\nif (caption) {\n  const m = caption.match(/^(.+?)\\s*[@\\-\\/]\\s*(.+)$/);\n  if (m) {\n    cliente_pedido = m[1].trim();\n    vendedor = m[2].trim();\n  }\n}\n\nconst extracted = {\n  // metadados WhatsApp\n  timestamp: new Date().toISOString(),\n  whatsapp_numero: ctx.numero,\n  whatsapp_nome: ctx.pushName,\n  arquivo_drive_url: drive_url,\n  arquivo_drive_id: drive_id,\n  // dados da transação\n  tipo: ai.tipo || '',\n  valor: ai.valor || '',\n  data_transacao: ai.data_transacao || '',\n  hora_transacao: ai.hora_transacao || '',\n  pagador_nome: ai.pagador_nome || '',\n  pagador_documento: ai.pagador_documento || '',\n  pagador_banco: ai.pagador_banco || '',\n  pagador_agencia_conta: ai.pagador_agencia_conta || '',\n  beneficiario_nome: ai.beneficiario_nome || '',\n  beneficiario_documento: ai.beneficiario_documento || '',\n  beneficiario_chave_pix: ai.beneficiario_chave_pix || '',\n  id_transacao_e2e: ai.id_transacao_e2e || '',\n  numero_controle: ai.numero_controle || '',\n  codigo_autenticacao: ai.codigo_autenticacao || '',\n  // contexto GRD\n  cliente_pedido,\n  vendedor,\n  observacoes: caption || '',\n  status: 'Processado',\n  raw_json: JSON.stringify(ai)\n};\n\n// Determina campos obrigatórios faltando\nconst missing_fields = REQUIRED.filter(f => !extracted[f] || String(extracted[f]).trim() === '');\n\nreturn [{ json: { ...extracted, missing_fields, _from_media_branch: true } }];"
+      },
+      "id": "bd12d471-431a-4d88-bde3-b6388a5c9bc0",
+      "name": "Parse Extração",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1072,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "cc1",
+              "leftValue": "={{ $json.missing_fields.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ea211fb5-6afc-4ee7-87a9-4150cabf8023",
+      "name": "Está Completo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "lookup",
+        "documentId": {
+          "__rl": true,
+          "value": "1oyoozp6r6WrbNirYkSgXr-RtTtYbKpY_ZOZ44dDu-Bg",
+          "mode": "list",
+          "cachedResultName": "Comprovante-pagamento-grdmad",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oyoozp6r6WrbNirYkSgXr-RtTtYbKpY_ZOZ44dDu-Bg/edit?usp=drivesdk"
+        }
+      },
+      "id": "a74410f8-e137-4a99-85da-775cfd3831ba",
+      "name": "Lookup Duplicidade",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1568,
+        304
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CrTErpiGn7MJ9o9m",
+          "name": "Google Sheets AiAgent Automate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Detecta se já existe registro com mesmo e2e_id\nconst items = $input.all();\nconst existente = items.find(i => i.json && i.json.id_transacao_e2e);\nconst dadosNovos = $('Parse Extração').first().json;\n\nif (existente) {\n  return [{ json: { ...dadosNovos, duplicado: true, registro_anterior: existente.json } }];\n}\nreturn [{ json: { ...dadosNovos, duplicado: false } }];"
+      },
+      "id": "a681bf76-f974-417a-915e-b1232841d685",
+      "name": "Check Duplicado",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "d1",
+              "leftValue": "={{ $json.duplicado }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "2218da95-f566-4495-8de6-3b172926447a",
+      "name": "É Duplicado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1968,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "=pix_pending:{{ $('Parse Payload').item.json.numero }}"
+      },
+      "id": "7aaedb47-9597-4b20-9707-26904d3df267",
+      "name": "Redis Delete State",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2160,
+        224
+      ],
+      "credentials": {
+        "redis": {
+          "id": "EO4PW35QwO53zsbp",
+          "name": "Redis AnapaulaSkin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1oyoozp6r6WrbNirYkSgXr-RtTtYbKpY_ZOZ44dDu-Bg",
+          "mode": "list",
+          "cachedResultName": "Comprovante-pagamento-grdmad",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oyoozp6r6WrbNirYkSgXr-RtTtYbKpY_ZOZ44dDu-Bg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oyoozp6r6WrbNirYkSgXr-RtTtYbKpY_ZOZ44dDu-Bg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp_numero",
+              "displayName": "whatsapp_numero",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp_nome",
+              "displayName": "whatsapp_nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "arquivo_drive_url",
+              "displayName": "arquivo_drive_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "arquivo_drive_id",
+              "displayName": "arquivo_drive_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "valor",
+              "displayName": "valor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_transacao",
+              "displayName": "data_transacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "hora_transacao",
+              "displayName": "hora_transacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagador_nome",
+              "displayName": "pagador_nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagador_documento",
+              "displayName": "pagador_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagador_banco",
+              "displayName": "pagador_banco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagador_agencia_conta",
+              "displayName": "pagador_agencia_conta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "beneficiario_nome",
+              "displayName": "beneficiario_nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "beneficiario_documento",
+              "displayName": "beneficiario_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "beneficiario_chave_pix",
+              "displayName": "beneficiario_chave_pix",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_transacao_e2e",
+              "displayName": "id_transacao_e2e",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "numero_controle",
+              "displayName": "numero_controle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "codigo_autenticacao",
+              "displayName": "codigo_autenticacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cliente_pedido",
+              "displayName": "cliente_pedido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "vendedor",
+              "displayName": "vendedor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "observacoes",
+              "displayName": "observacoes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "raw_json",
+              "displayName": "raw_json",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "1208b195-ec1b-4705-ab66-0f9b1ac275ca",
+      "name": "Append Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2368,
+        224
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CrTErpiGn7MJ9o9m",
+          "name": "Google Sheets AiAgent Automate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/message/sendText/{{ $('Parse Payload').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "SUA_APIKEY_EVOLUTION"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('Parse Payload').item.json.numero }}\",\n  \"text\": \"✅ *Comprovante registrado!*\\n\\n💰 Valor: R$ {{ $json.valor }}\\n📅 Data: {{ $json.data_transacao }}\\n👤 Cliente: {{ $json.cliente_pedido }}\\n🧑‍💼 Vendedor: {{ $json.vendedor }}\\n🔑 ID: {{ $json.id_transacao_e2e }}\\n\\nValeu! 🙌\"\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "0806d170-91ff-45ff-a52b-a3bab0630216",
+      "name": "Confirma Registro",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2560,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/message/sendText/{{ $('Parse Payload').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "SUA_APIKEY_EVOLUTION"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('Parse Payload').item.json.numero }}\",\n  \"text\": \"⚠️ Esse comprovante (ID: {{ $json.id_transacao_e2e }}) *já foi registrado* anteriormente. Não vou duplicar. Se foi um envio errado, ignora essa mensagem.\"\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "9a8f34a5-d95c-4db7-baf2-27105b37809b",
+      "name": "Avisa Duplicado",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2160,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Monta a pergunta dinâmica + prepara state pra salvar no Redis\nconst data = $json;\nconst missing = data.missing_fields;\nconst ai_understood = data.ai_understood !== false; // true por padrão (vindo da extração)\nconst retry = data.retry_count || 0;\n\nconst labels = {\n  cliente_pedido: 'cliente do pedido (ex: Lá Belle, Asteca, Siqueli)',\n  vendedor: 'vendedor responsável (ex: Marcus, Diogo)',\n  valor: 'valor da transferência (ex: 198,45)',\n  data_transacao: 'data da transferência (DD/MM/AAAA)',\n  pagador_nome: 'quem fez o pagamento',\n  beneficiario_nome: 'quem recebeu o pagamento',\n  id_transacao_e2e: 'ID da transação (E2E)'\n};\n\nlet pergunta;\nif (!ai_understood && retry >= 1) {\n  const list = missing.map((f, i) => `${i+1}. ${labels[f] || f}`).join('\\n');\n  pergunta = `🤔 Não entendi sua última resposta. Preciso ainda de:\\n\\n${list}\\n\\nResponde uma coisa por vez ou no formato \"Cliente - Vendedor\".`;\n} else if (missing.length === 1) {\n  pergunta = `📋 Quase lá! Me informa: *${labels[missing[0]] || missing[0]}*`;\n} else {\n  const list = missing.map((f, i) => `${i+1}. ${labels[f] || f}`).join('\\n');\n  const head = data.valor ? `📋 Recebi o comprovante de *R$ ${data.valor}*!` : '📋 Recebi o comprovante!';\n  pergunta = `${head} Pra finalizar o registro, preciso de:\\n\\n${list}\\n\\nPode responder numa mensagem só (ex: \"Lá Belle - Marcus\").`;\n}\n\n// Limpa campos auxiliares pra salvar só dados\nconst { missing_fields, ai_understood: _au, retry_count: _rc, _from_media_branch, _from_response_branch, ...extracted_data } = data;\n\nconst state = {\n  extracted_data,\n  missing_fields: missing,\n  retry_count: retry,\n  asked_at: new Date().toISOString()\n};\n\nreturn [{\n  json: {\n    pergunta,\n    state_json: JSON.stringify(state),\n    numero: $('Parse Payload').first().json.numero,\n    instance: $('Parse Payload').first().json.instance\n  }\n}];"
+      },
+      "id": "9799c0e5-e825-4ac4-8571-f44ab97d1103",
+      "name": "Monta Pergunta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1568,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=pix_pending:{{ $json.numero }}",
+        "value": "={{ $json.state_json }}",
+        "expire": true,
+        "ttl": 1800
+      },
+      "id": "13f06ab7-f04c-4cf7-86cc-d7b6102c8fbf",
+      "name": "Redis Set State",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        592
+      ],
+      "credentials": {
+        "redis": {
+          "id": "EO4PW35QwO53zsbp",
+          "name": "Redis AnapaulaSkin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/message/sendText/{{ $json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "SUA_APIKEY_EVOLUTION"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json.numero }}\",\n  \"text\": {{ JSON.stringify($json.pergunta) }}\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "a384211b-4c6d-4791-89c9-b59dc823f389",
+      "name": "Envia Pergunta",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1968,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/message/sendText/{{ $('Parse Payload').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "SUA_APIKEY_EVOLUTION"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('Parse Payload').item.json.numero }}\",\n  \"text\": \"Oi! 👋 Esse canal é só pra envio de *comprovantes PIX/TED*. Manda a foto (JPG/PNG) ou o PDF do comprovante que eu registro na hora.\"\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "487e0500-263e-4f80-82ae-95cdd975efe2",
+      "name": "Mensagem de Ajuda",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -160,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/chat/getBase64FromMediaMessage/{{ $('Parse Payload').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "SUA_APIKEY_EVOLUTION"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\": { \"key\": { \"id\": \"{{ $('Parse Payload').item.json.messageId }}\" } },\n  \"convertToMp4\": false\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "33f30468-60f8-4e99-9d4c-8c160bbc2fb2",
+      "name": "Get Base64 (Imagem)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -560,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/chat/getBase64FromMediaMessage/{{ $('Parse Payload').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "CN4AnbOtY79Wv6wNyx88cdoKXqugcINi"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\": { \"key\": { \"id\": \"{{ $('Parse Payload').item.json.messageId }}\" } },\n  \"convertToMp4\": false\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "56e8fa61-9484-42a7-8915-d63d2074a94a",
+      "name": "Get Base64 (PDF)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -560,
+        768
+      ]
+    }
+  ],
+  "pinData": {
+    "Webhook Evolution": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.aiagentautomate.com.br",
+            "user-agent": "axios/1.12.2",
+            "content-length": "7161",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "n8n.aiagentautomate.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "1eb385c800a8",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "comprovante-pagamento-grdmad",
+            "data": {
+              "key": {
+                "remoteJid": "271751305011249@lid",
+                "remoteJidAlt": "5511952313944@s.whatsapp.net",
+                "fromMe": false,
+                "id": "3AFADE68620614EFD72D",
+                "participant": "",
+                "addressingMode": "lid"
+              },
+              "pushName": "Rafael de Souza",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "documentMessage": {
+                  "url": "https://mmg.whatsapp.net/v/t62.7119-24/710030607_1011864818021091_6356164500371892441_n.enc?ccb=11-4&oh=01_Q5Aa4gEev5wCljHHV5laPkBKgQUD3Xb59bitQL1SFro0VBl__Q&oe=6A46E920&_nc_sid=5e03e0&mms3=true",
+                  "mimetype": "application/pdf",
+                  "title": "Comprovante",
+                  "fileSha256": {
+                    "0": 39,
+                    "1": 180,
+                    "2": 247,
+                    "3": 165,
+                    "4": 174,
+                    "5": 240,
+                    "6": 73,
+                    "7": 250,
+                    "8": 85,
+                    "9": 111,
+                    "10": 197,
+                    "11": 87,
+                    "12": 113,
+                    "13": 118,
+                    "14": 101,
+                    "15": 172,
+                    "16": 14,
+                    "17": 197,
+                    "18": 5,
+                    "19": 143,
+                    "20": 160,
+                    "21": 121,
+                    "22": 1,
+                    "23": 72,
+                    "24": 135,
+                    "25": 218,
+                    "26": 69,
+                    "27": 158,
+                    "28": 243,
+                    "29": 238,
+                    "30": 25,
+                    "31": 207
+                  },
+                  "fileLength": {
+                    "low": 19475,
+                    "high": 0,
+                    "unsigned": true
+                  },
+                  "pageCount": 1,
+                  "mediaKey": {
+                    "0": 12,
+                    "1": 136,
+                    "2": 231,
+                    "3": 251,
+                    "4": 253,
+                    "5": 154,
+                    "6": 109,
+                    "7": 196,
+                    "8": 145,
+                    "9": 209,
+                    "10": 98,
+                    "11": 219,
+                    "12": 29,
+                    "13": 132,
+                    "14": 212,
+                    "15": 166,
+                    "16": 226,
+                    "17": 43,
+                    "18": 252,
+                    "19": 75,
+                    "20": 191,
+                    "21": 195,
+                    "22": 92,
+                    "23": 223,
+                    "24": 15,
+                    "25": 190,
+                    "26": 198,
+                    "27": 211,
+                    "28": 107,
+                    "29": 105,
+                    "30": 232,
+                    "31": 25
+                  },
+                  "fileName": "Comprovante.pdf",
+                  "fileEncSha256": {
+                    "0": 166,
+                    "1": 203,
+                    "2": 68,
+                    "3": 202,
+                    "4": 161,
+                    "5": 237,
+                    "6": 144,
+                    "7": 82,
+                    "8": 137,
+                    "9": 227,
+                    "10": 83,
+                    "11": 169,
+                    "12": 193,
+                    "13": 147,
+                    "14": 154,
+                    "15": 69,
+                    "16": 178,
+                    "17": 135,
+                    "18": 69,
+                    "19": 161,
+                    "20": 194,
+                    "21": 89,
+                    "22": 119,
+                    "23": 187,
+                    "24": 147,
+                    "25": 23,
+                    "26": 184,
+                    "27": 146,
+                    "28": 224,
+                    "29": 228,
+                    "30": 44,
+                    "31": 53
+                  },
+                  "directPath": "/v/t62.7119-24/710030607_1011864818021091_6356164500371892441_n.enc?ccb=11-4&oh=01_Q5Aa4gEev5wCljHHV5laPkBKgQUD3Xb59bitQL1SFro0VBl__Q&oe=6A46E920&_nc_sid=5e03e0&_nc_hot=1780449536",
+                  "mediaKeyTimestamp": {
+                    "low": 1780445982,
+                    "high": 0,
+                    "unsigned": false
+                  },
+                  "contactVcard": false,
+                  "jpegThumbnail": {
+                    "0": 255,
+                    "1": 216,
+                    "2": 255,
+                    "3": 224,
+                    "4": 0,
+                    "5": 16,
+                    "6": 74,
+                    "7": 70,
+                    "8": 73,
+                    "9": 70,
+                    "10": 0,
+                    "11": 1,
+                    "12": 1,
+                    "13": 0,
+                    "14": 0,
+                    "15": 1,
+                    "16": 0,
+                    "17": 1,
+                    "18": 0,
+                    "19": 0,
+                    "20": 255,
+                    "21": 219,
+                    "22": 0,
+                    "23": 67,
+                    "24": 0,
+                    "25": 27,
+                    "26": 18,
+                    "27": 20,
+                    "28": 23,
+                    "29": 20,
+                    "30": 17,
+                    "31": 27,
+                    "32": 23,
+                    "33": 22,
+                    "34": 23,
+                    "35": 30,
+                    "36": 28,
+                    "37": 27,
+                    "38": 32,
+                    "39": 40,
+                    "40": 66,
+                    "41": 43,
+                    "42": 40,
+                    "43": 37,
+                    "44": 37,
+                    "45": 40,
+                    "46": 81,
+                    "47": 58,
+                    "48": 61,
+                    "49": 48,
+                    "50": 66,
+                    "51": 96,
+                    "52": 85,
+                    "53": 101,
+                    "54": 100,
+                    "55": 95,
+                    "56": 85,
+                    "57": 93,
+                    "58": 91,
+                    "59": 106,
+                    "60": 120,
+                    "61": 153,
+                    "62": 129,
+                    "63": 106,
+                    "64": 113,
+                    "65": 144,
+                    "66": 115,
+                    "67": 91,
+                    "68": 93,
+                    "69": 133,
+                    "70": 181,
+                    "71": 134,
+                    "72": 144,
+                    "73": 158,
+                    "74": 163,
+                    "75": 171,
+                    "76": 173,
+                    "77": 171,
+                    "78": 103,
+                    "79": 128,
+                    "80": 188,
+                    "81": 201,
+                    "82": 186,
+                    "83": 166,
+                    "84": 199,
+                    "85": 153,
+                    "86": 168,
+                    "87": 171,
+                    "88": 164,
+                    "89": 255,
+                    "90": 219,
+                    "91": 0,
+                    "92": 67,
+                    "93": 1,
+                    "94": 28,
+                    "95": 30,
+                    "96": 30,
+                    "97": 40,
+                    "98": 35,
+                    "99": 40,
+                    "100": 78,
+                    "101": 43,
+                    "102": 43,
+                    "103": 78,
+                    "104": 164,
+                    "105": 110,
+                    "106": 93,
+                    "107": 110,
+                    "108": 164,
+                    "109": 164,
+                    "110": 164,
+                    "111": 164,
+                    "112": 164,
+                    "113": 164,
+                    "114": 164,
+                    "115": 164,
+                    "116": 164,
+                    "117": 164,
+                    "118": 164,
+                    "119": 164,
+                    "120": 164,
+                    "121": 164,
+                    "122": 164,
+                    "123": 164,
+                    "124": 164,
+                    "125": 164,
+                    "126": 164,
+                    "127": 164,
+                    "128": 164,
+                    "129": 164,
+                    "130": 164,
+                    "131": 164,
+                    "132": 164,
+                    "133": 164,
+                    "134": 164,
+                    "135": 164,
+                    "136": 164,
+                    "137": 164,
+                    "138": 164,
+                    "139": 164,
+                    "140": 164,
+                    "141": 164,
+                    "142": 164,
+                    "143": 164,
+                    "144": 164,
+                    "145": 164,
+                    "146": 164,
+                    "147": 164,
+                    "148": 164,
+                    "149": 164,
+                    "150": 164,
+                    "151": 164,
+                    "152": 164,
+                    "153": 164,
+                    "154": 164,
+                    "155": 164,
+                    "156": 164,
+                    "157": 164,
+                    "158": 255,
+                    "159": 194,
+                    "160": 0,
+                    "161": 17,
+                    "162": 8,
+                    "163": 0,
+                    "164": 72,
+                    "165": 0,
+                    "166": 46,
+                    "167": 3,
+                    "168": 1,
+                    "169": 34,
+                    "170": 0,
+                    "171": 2,
+                    "172": 17,
+                    "173": 1,
+                    "174": 3,
+                    "175": 17,
+                    "176": 1,
+                    "177": 255,
+                    "178": 196,
+                    "179": 0,
+                    "180": 24,
+                    "181": 0,
+                    "182": 1,
+                    "183": 1,
+                    "184": 1,
+                    "185": 1,
+                    "186": 1,
+                    "187": 0,
+                    "188": 0,
+                    "189": 0,
+                    "190": 0,
+                    "191": 0,
+                    "192": 0,
+                    "193": 0,
+                    "194": 0,
+                    "195": 0,
+                    "196": 0,
+                    "197": 0,
+                    "198": 0,
+                    "199": 3,
+                    "200": 2,
+                    "201": 1,
+                    "202": 6,
+                    "203": 255,
+                    "204": 196,
+                    "205": 0,
+                    "206": 20,
+                    "207": 1,
+                    "208": 1,
+                    "209": 0,
+                    "210": 0,
+                    "211": 0,
+                    "212": 0,
+                    "213": 0,
+                    "214": 0,
+                    "215": 0,
+                    "216": 0,
+                    "217": 0,
+                    "218": 0,
+                    "219": 0,
+                    "220": 0,
+                    "221": 0,
+                    "222": 0,
+                    "223": 0,
+                    "224": 0,
+                    "225": 255,
+                    "226": 218,
+                    "227": 0,
+                    "228": 12,
+                    "229": 3,
+                    "230": 1,
+                    "231": 0,
+                    "232": 2,
+                    "233": 16,
+                    "234": 3,
+                    "235": 16,
+                    "236": 0,
+                    "237": 0,
+                    "238": 0,
+                    "239": 244,
+                    "240": 157,
+                    "241": 199,
+                    "242": 10,
+                    "243": 167,
+                    "244": 163,
+                    "245": 78,
+                    "246": 9,
+                    "247": 153,
+                    "248": 43,
+                    "249": 169,
+                    "250": 208,
+                    "251": 2,
+                    "252": 110,
+                    "253": 112,
+                    "254": 170,
+                    "255": 66,
+                    "256": 172,
+                    "257": 108,
+                    "258": 232,
+                    "259": 0,
+                    "260": 0,
+                    "261": 0,
+                    "262": 0,
+                    "263": 255,
+                    "264": 196,
+                    "265": 0,
+                    "266": 20,
+                    "267": 17,
+                    "268": 1,
+                    "269": 0,
+                    "270": 0,
+                    "271": 0,
+                    "272": 0,
+                    "273": 0,
+                    "274": 0,
+                    "275": 0,
+                    "276": 0,
+                    "277": 0,
+                    "278": 0,
+                    "279": 0,
+                    "280": 0,
+                    "281": 0,
+                    "282": 0,
+                    "283": 0,
+                    "284": 48,
+                    "285": 255,
+                    "286": 218,
+                    "287": 0,
+                    "288": 8,
+                    "289": 1,
+                    "290": 2,
+                    "291": 1,
+                    "292": 1,
+                    "293": 63,
+                    "294": 0,
+                    "295": 127,
+                    "296": 255,
+                    "297": 196,
+                    "298": 0,
+                    "299": 20,
+                    "300": 17,
+                    "301": 1,
+                    "302": 0,
+                    "303": 0,
+                    "304": 0,
+                    "305": 0,
+                    "306": 0,
+                    "307": 0,
+                    "308": 0,
+                    "309": 0,
+                    "310": 0,
+                    "311": 0,
+                    "312": 0,
+                    "313": 0,
+                    "314": 0,
+                    "315": 0,
+                    "316": 0,
+                    "317": 48,
+                    "318": 255,
+                    "319": 218,
+                    "320": 0,
+                    "321": 8,
+                    "322": 1,
+                    "323": 3,
+                    "324": 1,
+                    "325": 1,
+                    "326": 63,
+                    "327": 0,
+                    "328": 127,
+                    "329": 255,
+                    "330": 196,
+                    "331": 0,
+                    "332": 35,
+                    "333": 16,
+                    "334": 0,
+                    "335": 1,
+                    "336": 3,
+                    "337": 3,
+                    "338": 4,
+                    "339": 2,
+                    "340": 3,
+                    "341": 0,
+                    "342": 0,
+                    "343": 0,
+                    "344": 0,
+                    "345": 0,
+                    "346": 0,
+                    "347": 0,
+                    "348": 0,
+                    "349": 0,
+                    "350": 1,
+                    "351": 0,
+                    "352": 2,
+                    "353": 17,
+                    "354": 3,
+                    "355": 18,
+                    "356": 33,
+                    "357": 32,
+                    "358": 49,
+                    "359": 65,
+                    "360": 81,
+                    "361": 16,
+                    "362": 50,
+                    "363": 19,
+                    "364": 34,
+                    "365": 64,
+                    "366": 255,
+                    "367": 218,
+                    "368": 0,
+                    "369": 8,
+                    "370": 1,
+                    "371": 1,
+                    "372": 0,
+                    "373": 1,
+                    "374": 63,
+                    "375": 0,
+                    "376": 118,
+                    "377": 254,
+                    "378": 208,
+                    "379": 174,
+                    "380": 29,
+                    "381": 141,
+                    "382": 53,
+                    "383": 45,
+                    "384": 159,
+                    "385": 178,
+                    "386": 109,
+                    "387": 135,
+                    "388": 104,
+                    "389": 69,
+                    "390": 206,
+                    "391": 224,
+                    "392": 132,
+                    "393": 219,
+                    "394": 163,
+                    "395": 48,
+                    "396": 178,
+                    "397": 130,
+                    "398": 171,
+                    "399": 18,
+                    "400": 169,
+                    "401": 211,
+                    "402": 27,
+                    "403": 171,
+                    "404": 71,
+                    "405": 90,
+                    "406": 42,
+                    "407": 137,
+                    "408": 59,
+                    "409": 160,
+                    "410": 215,
+                    "411": 159,
+                    "412": 87,
+                    "413": 72,
+                    "414": 77,
+                    "415": 14,
+                    "416": 7,
+                    "417": 58,
+                    "418": 42,
+                    "419": 52,
+                    "420": 29,
+                    "421": 211,
+                    "422": 33,
+                    "423": 184,
+                    "424": 1,
+                    "425": 92,
+                    "426": 7,
+                    "427": 42,
+                    "428": 71,
+                    "429": 106,
+                    "430": 71,
+                    "431": 126,
+                    "432": 42,
+                    "433": 204,
+                    "434": 140,
+                    "435": 18,
+                    "436": 131,
+                    "437": 65,
+                    "438": 225,
+                    "439": 201,
+                    "440": 212,
+                    "441": 243,
+                    "442": 16,
+                    "443": 72,
+                    "444": 70,
+                    "445": 156,
+                    "446": 24,
+                    "447": 0,
+                    "448": 194,
+                    "449": 248,
+                    "450": 135,
+                    "451": 101,
+                    "452": 1,
+                    "453": 3,
+                    "454": 241,
+                    "455": 255,
+                    "456": 0,
+                    "457": 255,
+                    "458": 254,
+                    "459": 0,
+                    "460": 3,
+                    "461": 0,
+                    "462": 255,
+                    "463": 217
+                  },
+                  "contextInfo": {
+                    "mentionedJid": [],
+                    "groupMentions": [],
+                    "pairedMediaType": 0
+                  }
+                },
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyIndexes": [],
+                    "recipientKeyIndexes": [],
+                    "senderKeyHash": {
+                      "0": 74,
+                      "1": 38,
+                      "2": 25,
+                      "3": 172,
+                      "4": 25,
+                      "5": 172,
+                      "6": 41,
+                      "7": 160,
+                      "8": 138,
+                      "9": 195
+                    },
+                    "senderTimestamp": {
+                      "low": 1780426354,
+                      "high": 0,
+                      "unsigned": true
+                    },
+                    "recipientKeyHash": {
+                      "0": 74,
+                      "1": 56,
+                      "2": 28,
+                      "3": 0,
+                      "4": 120,
+                      "5": 208,
+                      "6": 246,
+                      "7": 170,
+                      "8": 58,
+                      "9": 63
+                    },
+                    "recipientTimestamp": {
+                      "low": 1779985164,
+                      "high": 0,
+                      "unsigned": true
+                    }
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": {
+                    "0": 251,
+                    "1": 50,
+                    "2": 163,
+                    "3": 39,
+                    "4": 255,
+                    "5": 172,
+                    "6": 194,
+                    "7": 98,
+                    "8": 50,
+                    "9": 224,
+                    "10": 37,
+                    "11": 167,
+                    "12": 134,
+                    "13": 15,
+                    "14": 30,
+                    "15": 239,
+                    "16": 29,
+                    "17": 139,
+                    "18": 68,
+                    "19": 184,
+                    "20": 222,
+                    "21": 126,
+                    "22": 97,
+                    "23": 150,
+                    "24": 83,
+                    "25": 253,
+                    "26": 15,
+                    "27": 172,
+                    "28": 30,
+                    "29": 5,
+                    "30": 7,
+                    "31": 64
+                  }
+                }
+              },
+              "contextInfo": {
+                "mentionedJid": [],
+                "groupMentions": [],
+                "pairedMediaType": 0
+              },
+              "messageType": "documentMessage",
+              "messageTimestamp": 1780449537,
+              "instanceId": "f700e00a-bc61-442c-bc92-a502a28eca8b",
+              "source": "ios"
+            },
+            "destination": "https://n8n.aiagentautomate.com.br/webhook/comprovantes-pagamento-grdmad",
+            "date_time": "2026-06-02T22:18:59.215Z",
+            "sender": "5511945237617@s.whatsapp.net",
+            "server_url": "https://apiwp.aiagentautomate.com.br",
+            "apikey": "DD365BDD9AF4-4594-B4D6-C551487C8A6D"
+          },
+          "webhookUrl": "https://n8n.aiagentautomate.com.br/webhook/comprovantes-pagamento-grdmad",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-06-03T01:09:21.392Z",
+      "createdAt": "2026-06-03T01:09:21.392Z",
+      "role": "workflow:owner",
+      "workflowId": "DfOmyTcyQn8JjdnI",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-08-03T00:33:09.541Z",
+  "versionId": "8eb5ece3-06a9-493c-8e6f-ef65c60d7407"
+}

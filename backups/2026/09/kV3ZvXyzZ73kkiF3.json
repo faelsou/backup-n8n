@@ -1,0 +1,4801 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Webhook Evolution": {
+      "main": [
+        [
+          {
+            "node": "Variáveis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Variáveis": {
+      "main": [
+        [
+          {
+            "node": "Redis: Check Pausa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis: Check Pausa": {
+      "main": [
+        [
+          {
+            "node": "Decidir Fluxo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decidir Fluxo": {
+      "main": [
+        [
+          {
+            "node": "Switch Ação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Ação": {
+      "main": [
+        [
+          {
+            "node": "Redis: SET Pausa 30min",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fim: IA Pausada",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch Tipo Msg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis: SET Pausa 30min": {
+      "main": [
+        [
+          {
+            "node": "Fim: Pausa Manual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Tipo Msg": {
+      "main": [
+        [
+          {
+            "node": "Audio → Binary",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Imagem → Binary",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Mensagem (Texto)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audio → Binary": {
+      "main": [
+        [
+          {
+            "node": "Transcrever Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcrever Audio": {
+      "main": [
+        [
+          {
+            "node": "Set Mensagem (Audio)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Imagem → Binary": {
+      "main": [
+        [
+          {
+            "node": "Vision: Analisar Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vision: Analisar Imagem": {
+      "main": [
+        [
+          {
+            "node": "Set Mensagem (Imagem)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Mensagem (Audio)": {
+      "main": [
+        [
+          {
+            "node": "Redis: Push Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Mensagem (Imagem)": {
+      "main": [
+        [
+          {
+            "node": "Redis: Push Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Mensagem (Texto)": {
+      "main": [
+        [
+          {
+            "node": "Redis: Push Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis: Push Buffer": {
+      "main": [
+        [
+          {
+            "node": "Wait 6s (debounce)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 6s (debounce)": {
+      "main": [
+        [
+          {
+            "node": "Redis: Get Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis: Get Buffer": {
+      "main": [
+        [
+          {
+            "node": "Consolidar Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consolidar Buffer": {
+      "main": [
+        [
+          {
+            "node": "Redis: Clear Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis: Clear Buffer": {
+      "main": [
+        [
+          {
+            "node": "Continuar?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Continuar?": {
+      "main": [
+        [
+          {
+            "node": "Supabase: Get Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fim: Skip Debounce",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase: Get Cliente": {
+      "main": [
+        [
+          {
+            "node": "Resolver Sessão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resolver Sessão": {
+      "main": [
+        [
+          {
+            "node": "PG: Log Msg Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Log Msg Cliente": {
+      "main": [
+        [
+          {
+            "node": "SDR Agent (GPT-4o)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model: GPT-4o (SDR)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "SDR Agent (GPT-4o)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memória PG (15 msgs)": {
+      "ai_memory": [
+        [
+          {
+            "node": "SDR Agent (GPT-4o)",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Histórico Cliente": {
+      "ai_tool": [
+        [
+          {
+            "node": "SDR Agent (GPT-4o)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Detectar Sentimento": {
+      "ai_tool": [
+        [
+          {
+            "node": "SDR Agent (GPT-4o)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Handoff Humano": {
+      "ai_tool": [
+        [
+          {
+            "node": "SDR Agent (GPT-4o)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente_B2B": {
+      "ai_tool": [
+        [
+          {
+            "node": "SDR Agent (GPT-4o)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model: 4o-mini (B2B)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente_B2B",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Leads SemAg B2B": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_B2B",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente_B2C": {
+      "ai_tool": [
+        [
+          {
+            "node": "SDR Agent (GPT-4o)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model: 4o-mini (B2C)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente_B2C",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Leads SemAg B2C": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_B2C",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente_Agendamento_B2B": {
+      "ai_tool": [
+        [
+          {
+            "node": "SDR Agent (GPT-4o)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Verificar Disponibilidade B2B": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2B",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Criar Evento B2B": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2B",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Reagendar B2B": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2B",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Deletar B2B": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2B",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Buscar Evento Cliente B2B": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2B",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Sheets Agendados B2B": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2B",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Baixar PDF": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2B",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Email Confirmação B2B": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2B",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: WhatsApp Confirmação": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2B",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente_Agendamento_B2C": {
+      "ai_tool": [
+        [
+          {
+            "node": "SDR Agent (GPT-4o)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Verificar Disponibilidade B2C": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2C",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Criar Evento B2C": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2C",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Reagendar B2C": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2C",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Deletar B2C": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2C",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Buscar Evento Cliente B2C": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2C",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Sheets Agendados B2C": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2C",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Baixar PDF (B2C)": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2C",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: Email Confirmação B2C": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2C",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool: WhatsApp Confirmação B2C": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente_Agendamento_B2C",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SDR Agent (GPT-4o)": {
+      "main": [
+        [
+          {
+            "node": "Preparar Persistência",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Persistência": {
+      "main": [
+        [
+          {
+            "node": "Cliente Novo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cliente Novo?": {
+      "main": [
+        [
+          {
+            "node": "Supabase: Insert Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Supabase: Update Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase: Insert Cliente": {
+      "main": [
+        [
+          {
+            "node": "PG: Log Msg IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase: Update Cliente": {
+      "main": [
+        [
+          {
+            "node": "PG: Log Msg IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Log Msg IA": {
+      "main": [
+        [
+          {
+            "node": "Humanizador (Parser)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model: Parser (4o-mini)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Humanizador (Parser)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Humanizador (Parser)",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Humanizador (Parser)": {
+      "main": [
+        [
+          {
+            "node": "Split Segmentos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Segmentos": {
+      "main": [
+        [
+          {
+            "node": "Loop Segmentos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Segmentos": {
+      "main": [
+        [
+          {
+            "node": "Fim Envio",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis: Marcar Eco",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis: Marcar Eco": {
+      "main": [
+        [
+          {
+            "node": "Wait 1.8s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution: Enviar Msg": {
+      "main": [
+        [
+          {
+            "node": "Loop Segmentos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fim Envio": {
+      "main": [
+        [
+          {
+            "node": "PG: Contar Msgs Recentes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Contar Msgs Recentes": {
+      "main": [
+        [
+          {
+            "node": "Hora de Resumir?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hora de Resumir?": {
+      "main": [
+        [
+          {
+            "node": "Gerar Resumo Sessão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar Resumo Sessão": {
+      "main": [
+        [
+          {
+            "node": "Preparar Memória Longa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Memória Longa": {
+      "main": [
+        [
+          {
+            "node": "PG: Salvar Memória",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Salvar Memória": {
+      "main": [
+        [
+          {
+            "node": "Supabase: Update Perfil",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WH: Calendar Check": {
+      "main": [
+        [
+          {
+            "node": "Cal: Parse Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cal: Parse Input": {
+      "main": [
+        [
+          {
+            "node": "Cal: Redis GET",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cal: Redis GET": {
+      "main": [
+        [
+          {
+            "node": "Cal: Cache Hit?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cal: Cache Hit?": {
+      "main": [
+        [
+          {
+            "node": "Cal: Resp Cache",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Cal: GET Principal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cal: GET Principal": {
+      "main": [
+        [
+          {
+            "node": "Cal: GET B2B",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cal: GET B2B": {
+      "main": [
+        [
+          {
+            "node": "Cal: GET B2C",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cal: GET B2C": {
+      "main": [
+        [
+          {
+            "node": "Cal: Compute Slots",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cal: Compute Slots": {
+      "main": [
+        [
+          {
+            "node": "Cal: Redis SET",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cal: Redis SET": {
+      "main": [
+        [
+          {
+            "node": "Cal: Resp Fresh",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cron: Follow-up 2x/dia": {
+      "main": [
+        [
+          {
+            "node": "PG: Buscar Candidatos Follow-up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Buscar Candidatos Follow-up": {
+      "main": [
+        [
+          {
+            "node": "Loop Candidatos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Candidatos": {
+      "main": [
+        [
+          {
+            "node": "Fim Follow-up",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gerar Msg Follow-up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar Msg Follow-up": {
+      "main": [
+        [
+          {
+            "node": "Evolution: Send Follow-up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution: Send Follow-up": {
+      "main": [
+        [
+          {
+            "node": "PG: Update Followup Count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Update Followup Count": {
+      "main": [
+        [
+          {
+            "node": "Loop Candidatos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cron: Confirmação 24h": {
+      "main": [
+        [
+          {
+            "node": "PG: Reuniões 24h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Reuniões 24h": {
+      "main": [
+        [
+          {
+            "node": "Loop Reuniões 24h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Reuniões 24h": {
+      "main": [
+        [
+          {
+            "node": "Fim Confirmação 24h",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Evolution: Send 24h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution: Send 24h": {
+      "main": [
+        [
+          {
+            "node": "PG: Marcar Confirmação Enviada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Marcar Confirmação Enviada": {
+      "main": [
+        [
+          {
+            "node": "Loop Reuniões 24h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cron: No-Show": {
+      "main": [
+        [
+          {
+            "node": "PG: Reuniões No-Show",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Reuniões No-Show": {
+      "main": [
+        [
+          {
+            "node": "Loop No-Show",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop No-Show": {
+      "main": [
+        [
+          {
+            "node": "Fim No-Show",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Evolution: Send No-Show",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution: Send No-Show": {
+      "main": [
+        [
+          {
+            "node": "PG: Marcar No-Show",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Marcar No-Show": {
+      "main": [
+        [
+          {
+            "node": "Loop No-Show",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WH: Métricas": {
+      "main": [
+        [
+          {
+            "node": "PG: Métricas Gerais",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Métricas Gerais": {
+      "main": [
+        [
+          {
+            "node": "PG: Métricas Por Dia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Métricas Por Dia": {
+      "main": [
+        [
+          {
+            "node": "PG: Horários Populares",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Horários Populares": {
+      "main": [
+        [
+          {
+            "node": "PG: Funil",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Funil": {
+      "main": [
+        [
+          {
+            "node": "PG: Tempo Até Agendamento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PG: Tempo Até Agendamento": {
+      "main": [
+        [
+          {
+            "node": "Consolidar Métricas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consolidar Métricas": {
+      "main": [
+        [
+          {
+            "node": "Resp: Métricas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 1.8s": {
+      "main": [
+        [
+          {
+            "node": "Evolution: Enviar Msg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model: 4o (Ag B2B)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente_Agendamento_B2B",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model: 4o (Ag B2C)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente_Agendamento_B2C",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-05-28T19:26:27.554Z",
+  "id": "kV3ZvXyzZ73kkiF3",
+  "isArchived": false,
+  "meta": null,
+  "name": "GRD MAD — Joanna SDR v2.8 (Data Dinâmica + Fluxo Enxuto)",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 🚀 GRD MAD — Workflow Otimizado v2\n\n**Arquitetura AI Engineering Production-Grade**\n- Memória híbrida (Postgres + Vector)\n- Cache de Calendar com TTL\n- Buffer unificado de mensagens\n- Error handling com retry\n- Dedupe por phone_number\n- GPT-4o (orquestrador) + 4o-mini (sub-agentes)\n- Vision para análise de ambiente\n- Sentiment + Handoff humano\n- Follow-up + confirmação 24h",
+        "height": 280,
+        "width": 480,
+        "color": 4
+      },
+      "id": "1bb53927-50c6-4e75-a44b-782190a530f5",
+      "name": "📌 README",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "grdmad_v6",
+        "options": {}
+      },
+      "id": "c885629d-2e4b-4fa8-ad36-2bdb1f3ee52a",
+      "name": "Webhook Evolution",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        384
+      ],
+      "webhookId": "grdmad-v2-webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "88be9f08-37fd-4a53-b2a8-dc75a99a7616",
+              "name": "mobile",
+              "type": "string",
+              "value": "={{ ($json.body.data.key.remoteJid.includes('@lid') ? $json.body.data.key.remoteJidAlt : $json.body.data.key.remoteJid).replace(/\\D/g, '').replace(/^55(\\d{2})(\\d{8})$/, '55$19$2') }}"
+            },
+            {
+              "id": "79ca8815-f81c-4fe8-b34b-92daf747564b",
+              "name": "remoteJid",
+              "type": "string",
+              "value": "={{ $json.body.data.key.remoteJid }}"
+            },
+            {
+              "id": "5a3910ee-6c80-49eb-99cc-faf53b398518",
+              "name": "pushName",
+              "type": "string",
+              "value": "={{ $json.body.data.pushName || '' }}"
+            },
+            {
+              "id": "b62132ab-d70b-43cc-a2cc-f28467527827",
+              "name": "messageType",
+              "type": "string",
+              "value": "={{ $json.body.data.messageType }}"
+            },
+            {
+              "id": "549a80cb-66c7-46ab-8f74-286842aec133",
+              "name": "fromMe",
+              "type": "boolean",
+              "value": "={{ $json.body.data.key.fromMe === true }}"
+            },
+            {
+              "id": "4d443362-9063-4ee9-8daa-23f39597fd16",
+              "name": "rawText",
+              "type": "string",
+              "value": "={{ $json.body.data.message?.conversation || $json.body.data.message?.extendedTextMessage?.text || '' }}"
+            },
+            {
+              "id": "e7a27910-8b60-4552-b781-3e421f3af856",
+              "name": "base64Media",
+              "type": "string",
+              "value": "={{ $json.body.data.message?.base64 || '' }}"
+            },
+            {
+              "id": "05dec335-57af-48d3-a1fd-e119e5c8013d",
+              "name": "timestamp",
+              "type": "string",
+              "value": "={{ $now.toISO() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5a352ec8-9d02-46e2-99c3-9591d55269a6",
+      "name": "Variáveis",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "=grdmad:pausa:{{ $json.mobile }}",
+        "options": {}
+      },
+      "id": "bddeb760-84eb-483e-94b1-a7565c985f94",
+      "name": "Redis: Check Pausa",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        400,
+        384
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "redis": {
+          "id": "3aF3lSIIig1BrDmo",
+          "name": "Redis account 2"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Filtro consolidado: pausa manual + eco bot + horário comercial opcional\nconst vars = $('Variáveis').first().json;\nconst pausaData = $input.first().json;\n\n// 1. Mensagem enviada por nós (eco bot)\nif (vars.fromMe === true) {\n  // Marca pausa manual (intervenção humana) — TTL 30 min\n  return [{ json: { ...vars, action: 'PAUSE_MANUAL', reason: 'fromMe' } }];\n}\n\n// 2. IA pausada por intervenção manual\nif (pausaData && pausaData.propertyName) {\n  return [{ json: { ...vars, action: 'STOP', reason: 'ia_pausada' } }];\n}\n\n// 3. Continuar fluxo normal\nreturn [{ json: { ...vars, action: 'CONTINUE' } }];"
+      },
+      "id": "a57c3d0d-5185-4221-b4b5-529971ccd4d7",
+      "name": "Decidir Fluxo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        608,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "542ec030-e82b-4db3-bef6-077b2d8d10ff",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "PAUSE_MANUAL",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pause"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0378fbb1-d926-48c8-85d6-e2ff55e3d4ab",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "STOP",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "stop"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c7043d03-7035-4365-9bd1-5ecec438734a",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "CONTINUE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "continue"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "dd59428b-1cdf-419f-acd4-77e2e02edd50",
+      "name": "Switch Ação",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        800,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=grdmad:pausa:{{ $json.mobile }}",
+        "value": "manual_intervention",
+        "expire": true,
+        "ttl": 1800
+      },
+      "id": "124bc474-192e-496a-91ae-5096565a9ec0",
+      "name": "Redis: SET Pausa 30min",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1008,
+        272
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "redis": {
+          "id": "3aF3lSIIig1BrDmo",
+          "name": "Redis account 2"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {},
+      "id": "0dad0dbd-a1d3-43c3-9b75-d5f860d85a4f",
+      "name": "Fim: Pausa Manual",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        272
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "fa8b9d95-8941-4de5-b110-83333f14f1b1",
+      "name": "Fim: IA Pausada",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1008,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "62b8ca0e-8c6f-4110-8f9b-ca07305a7eab",
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "audioMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9808e056-25c0-4d78-938a-d6974a833595",
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "imageMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "22f75572-0083-4e75-83f8-2cf8bf0c5dcd",
+                    "leftValue": "={{ $json.rawText }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "id": "9f8598cb-bccf-42b7-a4a8-36ccc35cb334",
+      "name": "Switch Tipo Msg",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1008,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "base64Media",
+        "options": {
+          "fileName": "audio.ogg",
+          "mimeType": "application/ogg"
+        }
+      },
+      "id": "954dffeb-9c27-45d8-b2aa-47470beeee29",
+      "name": "Audio → Binary",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1200,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "id": "295eca13-6328-4127-baa9-7111e42ee656",
+      "name": "Transcrever Audio",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1408,
+        384
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e02af983-1e1f-4210-b94a-33638d618b83",
+              "name": "mensagem",
+              "type": "string",
+              "value": "={{ $json.text }}"
+            },
+            {
+              "id": "e9c0871d-8554-4b55-aa21-f71af170f206",
+              "name": "tipo_entrada",
+              "type": "string",
+              "value": "audio"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "35ee1f07-0b54-4fd9-a704-d1d18df36c18",
+      "name": "Set Mensagem (Audio)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1600,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "base64Media",
+        "options": {
+          "fileName": "image.jpg",
+          "mimeType": "image/jpeg"
+        }
+      },
+      "id": "d7f5cee5-1f84-4141-9ab1-d3ac14c0caef",
+      "name": "Imagem → Binary",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1200,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list"
+        },
+        "text": "=Você é especialista em móveis planejados da GRD MAD. Analise a imagem enviada pelo cliente e descreva:\n1. Tipo de ambiente (cozinha, quarto, sala, escritório, etc.)\n2. Estimativa de metragem (se identificável)\n3. Estilo predominante (moderno, clássico, industrial, etc.)\n4. Estado atual (vazio, reformar, novo, etc.)\n5. Oportunidades visíveis (ex: parede solta para armário, nicho aproveitável)\n6. Cor/material dominante\n\nResponda em texto corrido, sem markdown, máx 4 linhas. Comece com 'O cliente enviou:'.",
+        "inputType": "base64",
+        "options": {}
+      },
+      "id": "a63daa22-cffc-4f19-bee1-f40f5e2f413c",
+      "name": "Vision: Analisar Imagem",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1408,
+        592
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fc703d73-ffe4-4073-8847-43fd0aea32da",
+              "name": "mensagem",
+              "type": "string",
+              "value": "={{ '[IMAGEM ENVIADA PELO CLIENTE] ' + $json.content }}"
+            },
+            {
+              "id": "464c51f5-f854-453f-bb61-82448bd44338",
+              "name": "tipo_entrada",
+              "type": "string",
+              "value": "imagem"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "e3633200-13f1-490b-a470-ab7d02c1d2c5",
+      "name": "Set Mensagem (Imagem)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1600,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2f09e4da-25a1-45ed-9d91-d8db528085cd",
+              "name": "mensagem",
+              "type": "string",
+              "value": "={{ $json.rawText }}"
+            },
+            {
+              "id": "60edf313-ed69-4485-bb5e-f31ed74c412a",
+              "name": "tipo_entrada",
+              "type": "string",
+              "value": "texto"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "5618a0ff-4570-405a-8c71-af442edbb1d9",
+      "name": "Set Mensagem (Texto)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1200,
+        784
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "=grdmad:buffer:{{ $('Variáveis').first().json.mobile }}",
+        "messageData": "={{ JSON.stringify({ msg: $json.mensagem, tipo: $json.tipo_entrada, ts: $now.toMillis() }) }}",
+        "tail": true
+      },
+      "id": "ede3b388-1ba1-4354-944e-223c22aad4c1",
+      "name": "Redis: Push Buffer",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1808,
+        592
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "redis": {
+          "id": "3aF3lSIIig1BrDmo",
+          "name": "Redis account 2"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "amount": 6
+      },
+      "id": "8a0ac124-8380-49cb-a291-77554639130e",
+      "name": "Wait 6s (debounce)",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2000,
+        592
+      ],
+      "webhookId": "10847aa7-b836-4555-a1b6-0687ff719143"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "buffer",
+        "key": "=grdmad:buffer:{{ $('Variáveis').first().json.mobile }}",
+        "keyType": "list",
+        "options": {}
+      },
+      "id": "2d192704-19b0-4ee8-8dea-9c517fc0a21d",
+      "name": "Redis: Get Buffer",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2208,
+        592
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "redis": {
+          "id": "3aF3lSIIig1BrDmo",
+          "name": "Redis account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Debounce inteligente: só a última execução agrupa e responde\nconst myTs = parseInt($('Redis: Push Buffer').first().json.timestamp || $now.toMillis());\nconst buffer = $input.first().json.buffer || [];\n\nif (!Array.isArray(buffer) || buffer.length === 0) {\n  return [{ json: { skip: true, reason: 'empty_buffer' } }];\n}\n\nconst parsed = buffer.map(b => {\n  try { return typeof b === 'string' ? JSON.parse(b) : b; } catch { return null; }\n}).filter(Boolean);\n\nif (parsed.length === 0) {\n  return [{ json: { skip: true, reason: 'parse_failed' } }];\n}\n\n// Sou eu a última? Pego a mensagem mais nova do buffer.\nconst latest = parsed.reduce((acc, m) => (m.ts > acc.ts ? m : acc), parsed[0]);\n\n// Comparo timestamp do meu push com o mais recente. Tolerância 500ms.\nconst myPushTs = parseInt($now.toMillis()) - 6500; // wait de 6s + folga\nconst isLatest = Math.abs(latest.ts - myPushTs) < 6500 || parsed.length === 1;\n\n// Sempre processamos se for único na fila; senão só a execução mais recente\nconst allRecent = parsed.every(m => Math.abs(m.ts - latest.ts) < 7000);\n\nconst listaMensagens = parsed.map(m => m.msg).join('\\n').trim();\n\nreturn [{\n  json: {\n    skip: false,\n    listaMensagens,\n    countMsgs: parsed.length,\n    tipos: [...new Set(parsed.map(m => m.tipo))],\n    mobile: $('Variáveis').first().json.mobile,\n    pushName: $('Variáveis').first().json.pushName,\n    remoteJid: $('Variáveis').first().json.remoteJid\n  }\n}];"
+      },
+      "id": "37031065-7fcd-4547-a48f-30347f7fed74",
+      "name": "Consolidar Buffer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2400,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "=grdmad:buffer:{{ $('Variáveis').first().json.mobile }}"
+      },
+      "id": "f8a8d000-d852-4962-b630-2d71d0ce96a5",
+      "name": "Redis: Clear Buffer",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2608,
+        592
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "redis": {
+          "id": "3aF3lSIIig1BrDmo",
+          "name": "Redis account 2"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "75e55c23-7ee0-4719-8105-28412e329f68",
+              "leftValue": "={{ $('Consolidar Buffer').first().json.skip }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "false"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7178a2c5-cf16-4719-affa-68757449b4d8",
+      "name": "Continuar?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2800,
+        592
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "c77167f5-e700-4d27-b61f-1a2e336322e9",
+      "name": "Fim: Skip Debounce",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        3008,
+        704
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "keyValue": "={{ $('Variáveis').first().json.mobile }}"
+            }
+          ]
+        }
+      },
+      "id": "655585af-19b6-4c9a-bd45-fa8d4da86658",
+      "name": "Supabase: Get Cliente",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3008,
+        592
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase GrdMad"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Resolver sessionId + perfil\nconst vars = $('Variáveis').first().json;\nconst consolidado = $('Consolidar Buffer').first().json;\nconst cliente = $input.first().json;\n\nconst isNew = !cliente || !cliente.telefone;\n\nlet sessionId;\nif (isNew) {\n  // Gerar novo session ID\n  sessionId = 'grdmad:' + vars.mobile + ':' + Date.now();\n} else {\n  sessionId = cliente.sessionid || ('grdmad:' + vars.mobile);\n}\n\nreturn [{\n  json: {\n    isNewCliente: isNew,\n    sessionId,\n    sessionKey: sessionId,\n    mobile: vars.mobile,\n    pushName: vars.pushName || cliente?.push_name || '',\n    nome: cliente?.nome || vars.pushName || '',\n    email: cliente?.email || '',\n    empresa: cliente?.empresa || '',\n    cidade: cliente?.cidade || '',\n    status_atendimento: cliente?.status_atendimento || 'novo',\n    estado_funil: cliente?.estado_funil || 'onboarding',\n    perfil: cliente?.perfil || null,\n    listaMensagens: consolidado.listaMensagens,\n    tipos: consolidado.tipos,\n    countMsgs: consolidado.countMsgs,\n    remoteJid: vars.remoteJid,\n    perfil_resumo: cliente?.perfil_resumo || '',\n    qtd_interacoes: (cliente?.qtd_interacoes || 0) + 1\n  }\n}];"
+      },
+      "id": "2ed5fb1f-71ee-4730-bd7c-955b799f20c9",
+      "name": "Resolver Sessão",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3200,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO grdmad_mensagens (telefone, sessao_id, direcao, conteudo, tipo_entrada, created_at)\nVALUES ($1, $2, 'cliente', $3, $4, NOW())",
+        "options": {
+          "queryReplacement": "={{ $json.mobile }},={{ $json.sessionId }},={{ $json.listaMensagens }},={{ $json.tipos.join(',') }}"
+        }
+      },
+      "id": "0a2ea3f8-225a-4067-9914-24e4c32027d4",
+      "name": "PG: Log Msg Cliente",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3408,
+        592
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Resolver Sessão').first().json.listaMensagens }}",
+        "options": {
+          "systemMessage": "=DATA/HORA OFICIAL: {{ $now.setZone('America/Sao_Paulo').format('cccc, dd/MM/yyyy HH:mm') }}\nHOJE É: {{ $now.setZone('America/Sao_Paulo').format('cccc, dd \\'de\\' LLLL \\'de\\' yyyy') }}\nAMANHÃ SERÁ: {{ $now.setZone('America/Sao_Paulo').plus({days:1}).format('cccc, dd/MM/yyyy') }}\nPRÓXIMA SEGUNDA: {{ $now.setZone('America/Sao_Paulo').plus({days:8}).startOf('week').plus({days:1}).format('dd/MM/yyyy') }}\n\nCLIENTE: {{ $('Resolver Sessão').first().json.pushName }}\nTELEFONE: {{ $('Resolver Sessão').first().json.mobile }}\nNOME CONHECIDO: {{ $('Resolver Sessão').first().json.nome || $('Resolver Sessão').first().json.pushName }}\nESTADO ATUAL: {{ $('Resolver Sessão').first().json.estado_funil }}\n\n═══════════════════════════════════════════════════════════════\n# 👤 VOCÊ É A JOANNA — Assistente da GRD MAD\n═══════════════════════════════════════════════════════════════\n\nPara o cliente, VOCÊ é a única pessoa atendendo. As ferramentas que você usa são INVISÍVEIS para o cliente.\n\n⚠️ Você JÁ sabe o nome do cliente: **{{ $('Resolver Sessão').first().json.pushName }}**. NUNCA pergunte o nome dele.\n⚠️ Você JÁ tem o telefone: **{{ $('Resolver Sessão').first().json.mobile }}**. NUNCA peça o telefone — já temos.\n\n═══════════════════════════════════════════════════════════════\n# 🎯 FLUXO COMPLETO — SIGA EXATAMENTE\n═══════════════════════════════════════════════════════════════\n\n## TURNO 1 — Saudação (apenas se for primeiro contato)\nSe o cliente cumprimentar (\"Olá\", \"Boa tarde\", \"Oi\"), responda EXATAMENTE:\n\n\"Olá {{ $('Resolver Sessão').first().json.pushName }}! 👋 Sou a Joanna, assistente da GRD MAD, tudo bem? Você tem uma empresa (B2B) e quer revender nossos móveis, ou é consumidor final (B2C) e quer mobiliar sua casa? 😊\"\n\n⚠️ NÃO chame nenhuma tool neste turno. Apenas responda.\n\n## TURNO 2 — Cliente identificou B2B ou B2C\n- B2B / \"empresa\" / \"revenda\" / \"arquiteto\" / \"marceneiro\" → chame `Agente_B2B`\n- B2C / \"casa\" / \"apartamento\" / \"consumidor final\" → chame `Agente_B2C`\n\n## TURNOS 3-N — Continuidade\nContinue chamando o MESMO sub-agente (B2B ou B2C) em cada resposta do cliente, até ele dizer que quer agendar.\n\n## TURNO DE AGENDAMENTO\nQuando o cliente disser \"quero agendar\" / \"podemos marcar\" / \"sim, marcar\":\n- Cliente B2B → chame `Agente_Agendamento_B2B`\n- Cliente B2C → chame `Agente_Agendamento_B2C`\n\n═══════════════════════════════════════════════════════════════\n# 🚫 PROIBIÇÕES ABSOLUTAS\n═══════════════════════════════════════════════════════════════\n\n❌ NUNCA pergunte o nome do cliente — você já sabe ({{ $('Resolver Sessão').first().json.pushName }})\n❌ NUNCA pergunte o telefone — você já tem ({{ $('Resolver Sessão').first().json.mobile }})\n❌ NUNCA invente datas, horários, ou dias da semana — use SEMPRE a tool de verificar disponibilidade\n❌ NUNCA escreva `{{` ou `}}` nas suas respostas — esses são templates internos, não devem aparecer ao cliente\n❌ NUNCA diga \"Quarta é dia X\" sem ter consultado a tool — você pode estar errada\n❌ NUNCA diga \"vou encaminhar\" / \"nossa equipe entrará em contato\" — VOCÊ resolve aqui\n❌ NUNCA repita a apresentação no meio da conversa\n❌ NUNCA pergunte sobre planta, metragem ou porte da empresa\n\n═══════════════════════════════════════════════════════════════\n# 📅 SOBRE DATAS — REGRA CRÍTICA\n═══════════════════════════════════════════════════════════════\n\nVocê tem no topo deste prompt:\n- HOJE É: {{ $now.setZone('America/Sao_Paulo').format('cccc, dd/MM/yyyy') }}\n- AMANHÃ: {{ $now.setZone('America/Sao_Paulo').plus({days:1}).format('cccc, dd/MM/yyyy') }}\n\nQuando o cliente perguntar \"que dia é hoje?\", responda usando o valor acima — NUNCA o template literal.\n\nQuando o cliente pedir \"amanhã às 15h\" ou \"quarta às 10h\":\n1. Calcule mentalmente a data exata baseado em HOJE É\n2. Passe essa data para `Agente_Agendamento_*` que vai verificar disponibilidade real\n3. Se a tool retornar que NÃO tem horário naquele dia, ofereça outras opções REAIS retornadas pela tool\n\n⚠️ NUNCA diga \"infelizmente não temos amanhã às 15h\" sem ter chamado a tool. A tool é quem decide isso.\n\n═══════════════════════════════════════════════════════════════\n# 🎨 ESTILO\n═══════════════════════════════════════════════════════════════\n\n- 1-2 frases por resposta\n- Sentence case, sem ALL CAPS\n- 0-1 emoji por resposta\n- Não repete \"Perfeito!\", \"Ótimo!\", \"Excelente!\"\n- Não repete o nome do cliente em toda resposta\n\n═══════════════════════════════════════════════════════════════\n# 🛠️ FERRAMENTAS\n═══════════════════════════════════════════════════════════════\n\n| Tool | Quando usar |\n|---|---|\n| `Agente_B2B` | Cliente B2B identificado — coleta SÓ o e-mail + cidade |\n| `Agente_B2C` | Cliente B2C identificado — coleta SÓ o e-mail + cidade + ambiente |\n| `Agente_Agendamento_B2B` | Cliente B2B quer agendar/marcar |\n| `Agente_Agendamento_B2C` | Cliente B2C quer agendar/marcar |\n| `consultar_historico_cliente` | Se INTERAÇÕES ANTERIORES > 0 (cliente recorrente) |\n| `handoff_humano` | Cliente pede humano OU 2 falhas consecutivas |\n\n# REGRA FINAL\nEm dúvida sobre chamar uma tool? CHAME. É melhor chamar errado (tool retorna útil) do que improvisar texto.\n",
+          "maxIterations": 25,
+          "returnIntermediateSteps": false
+        }
+      },
+      "id": "79ca3681-b795-447c-b743-28024b59a92e",
+      "name": "SDR Agent (GPT-4o)",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        3600,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list"
+        },
+        "options": {
+          "maxTokens": 1500,
+          "temperature": 0.1
+        }
+      },
+      "id": "e6cc24f8-1482-48ab-b5c5-0cf0eb89890e",
+      "name": "Model: GPT-4o (SDR)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3408,
+        848
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Resolver Sessão').first().json.sessionKey }}",
+        "contextWindowLength": 15
+      },
+      "id": "5958327e-b90c-4524-af38-427c247b551c",
+      "name": "Memória PG (15 msgs)",
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        3568,
+        848
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  TO_CHAR(created_at, 'DD/MM/YYYY HH24:MI') AS data,\n  resumo,\n  topicos,\n  status_atendimento_apos\nFROM grdmad_memoria_cliente\nWHERE telefone = $1\nORDER BY created_at DESC\nLIMIT 5",
+        "options": {
+          "queryReplacement": "={{ $fromAI('telefone_cliente', 'Telefone do cliente em formato 5511XXXXXXXXX', 'string') }}"
+        }
+      },
+      "id": "28806dbe-c5cf-4c42-a2e1-637a69cfc9c6",
+      "name": "Tool: Histórico Cliente",
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        3728,
+        848
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Classifica o sentimento do cliente (positivo/neutro/frustrado/raivoso/urgente). Use quando perceber reclamações, urgência, agressividade ou repetição irritada.",
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4o-mini\",\n  \"response_format\": {\"type\": \"json_object\"},\n  \"messages\": [\n    {\"role\": \"system\", \"content\": \"Você é classificador de sentimento. Responda JSON: {\\\"sentimento\\\":\\\"positivo|neutro|frustrado|raivoso|urgente\\\",\\\"intensidade\\\":0-10,\\\"acao_sugerida\\\":\\\"continuar|tom_empatico|handoff_humano\\\"}\"},\n    {\"role\": \"user\", \"content\": {{ JSON.stringify($fromAI('mensagem_cliente','Última(s) mensagem(ns) do cliente')) }} }\n  ]\n}",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "9f7c928f-3d8e-4fde-aad9-01a8de4ef7df",
+      "name": "Tool: Detectar Sentimento",
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        3888,
+        848
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Aciona handoff para atendente humano. Use APENAS quando: cliente pede explicitamente humano, sentimento muito negativo, ou pergunta totalmente fora do escopo de pré-vendas. NÃO use para agendamento (use Agente_Agendamento_*).",
+        "method": "POST",
+        "url": "https://evolution.example.com/message/sendText/aiagentautomate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $credentials.evolutionApi.apiKey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"5511999999999\",\n  \"text\": \"🚨 HANDOFF GRD MAD\\nCliente: {{ $fromAI('nome_cliente', 'Nome do cliente') }}\\nTelefone: {{ $fromAI('telefone_cliente', 'Telefone do cliente') }}\\nMotivo: {{ $fromAI('motivo', 'Motivo do handoff em uma frase', 'string') }}\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "4db9f84b-8f7c-4232-865f-4a7957146526",
+      "name": "Tool: Handoff Humano",
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        4048,
+        848
+      ]
+    },
+    {
+      "parameters": {
+        "toolDescription": "QUALIFICAÇÃO B2B. Use SEMPRE que o cliente mencionar: empresa, revenda, arquiteto, marceneiro, loja, marcenaria, profissional. Esta ferramenta coleta dados corporativos (nome, e-mail, telefone, empresa, cidade, tipo de operação) fazendo UMA pergunta de cada vez. Retorna a próxima pergunta ou um resumo final. Continue chamando esta tool em CADA resposta do cliente B2B até a qualificação estar completa OU até o cliente pedir agendamento.",
+        "text": "=Última(s) mensagem(ns) do cliente Rafael de Souza neste turno:\n\"{{ $('Resolver Sessão').first().json.listaMensagens }}\"\n\nContexto do cliente:\n- Nome: {{ $('Resolver Sessão').first().json.nome || $('Resolver Sessão').first().json.pushName }}\n- Telefone: {{ $('Resolver Sessão').first().json.mobile }}\n- E-mail conhecido: {{ $('Resolver Sessão').first().json.email || '(não coletado)' }}\n- Empresa conhecida: {{ $('Resolver Sessão').first().json.empresa || '(não coletado)' }}\n- Cidade conhecida: {{ $('Resolver Sessão').first().json.cidade || '(não coletado)' }}\n- Estado do funil: {{ $('Resolver Sessão').first().json.estado_funil }}\n\nFaça sua parte do roteiro e retorne APENAS o conteúdo que a Joanna deve falar a seguir (na voz dela, sem cumprimentos repetidos).",
+        "options": {
+          "systemMessage": "DATA/HORA: {{ $now.setZone('America/Sao_Paulo').format('cccc, dd/MM/yyyy HH:mm') }}\n\n# 🎯 ESPECIALISTA INTERNO B2B — GRD MAD\n\nVocê NÃO conversa diretamente com o cliente — você retorna o que a JOANNA deve falar a seguir, na voz dela, sem cumprimentar.\n\n═══════════════════════════════════════════════════════════════\n⚠️ DADOS QUE VOCÊ JÁ TEM NO CONTEXTO (NÃO PERGUNTE DE NOVO)\n═══════════════════════════════════════════════════════════════\n\n- Nome do cliente: vem no contexto como \"Cliente: [nome]\"\n- Telefone: vem no contexto como \"Telefone: [número]\"\n\n🚫 NUNCA peça nome ou telefone — você já tem.\n\n═══════════════════════════════════════════════════════════════\n📋 SÓ COLETAR (3 PERGUNTAS, UMA POR VEZ)\n═══════════════════════════════════════════════════════════════\n\n1. **E-mail profissional**\n2. **Cidade** onde a empresa atua\n3. **Tipo de operação** (arquiteto, marceneiro, loja física, revenda online)\n\nSe já tem todos os 3 no contexto, vá direto para \"convite de agendamento\".\n\n═══════════════════════════════════════════════════════════════\n🔁 LÓGICA DE DECISÃO (faça mentalmente)\n═══════════════════════════════════════════════════════════════\n\n**Caso 1 — Falta e-mail?**\n→ Retorne: \"Qual é o seu e-mail profissional?\"\n\n**Caso 2 — Falta cidade?**\n→ Retorne: \"Em qual cidade sua empresa atua?\"\n\n**Caso 3 — Falta tipo de operação?**\n→ Retorne: \"Você trabalha com arquitetura, marcenaria, loja de móveis ou revenda online?\"\n\n**Caso 4 — Tem TODOS os 3 dados + cliente NÃO pediu agendar ainda?**\n→ Retorne CONVITE: \"Para apresentarmos as condições com mais detalhes, que tal marcarmos uma reunião online de 30 min? Posso te mostrar os horários disponíveis.\"\n\n**Caso 5 — Cliente respondeu \"sim\", \"podemos marcar\", \"quero agendar\"?**\n→ Retorne EXATAMENTE: \"AGENDAMENTO_SOLICITADO. Dados: nome=[do contexto], telefone=[do contexto], email=[coletado], cidade=[coletada], tipo=[coletado].\"\n\n═══════════════════════════════════════════════════════════════\n🎨 ESTILO\n═══════════════════════════════════════════════════════════════\n\n- 1 frase, direta, sem cumprimento.\n- ❌ NÃO diga \"Olá\", \"Bom dia\", \"Aqui é\", \"Sou\".\n- ❌ NÃO use \"Perfeito!\", \"Ótimo!\", \"Que legal!\", \"Excelente!\"\n- ❌ NÃO comente o que o cliente acabou de dizer (\"Perfeito, você tem espaço físico!\") — vá DIRETO à próxima pergunta\n- ✅ Tom direto: \"Qual é o seu e-mail?\" / \"Em qual cidade?\"\n",
+          "maxIterations": 8
+        }
+      },
+      "id": "307f8f22-5938-494d-b88c-a9c1dd57beea",
+      "name": "Agente_B2B",
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        4208,
+        848
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list"
+        },
+        "options": {
+          "temperature": 0.4
+        }
+      },
+      "id": "e0ee70c6-e267-4b96-a058-d8d0fe6e416d",
+      "name": "Model: 4o-mini (B2B)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4112,
+        1040
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1c8DDHwowpQjuy00nLDN3F0dF64QWcz1cdAq2_blPzAY",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefone": "={{ $fromAI('telefone_cliente', 'Telefone do cliente em formato 5511XXXXXXXXX', 'string') }}",
+            "Nome Completo": "={{ $fromAI('Nome_Completo', 'Nome completo do lead', 'string') }}",
+            "Email": "={{ $fromAI('Email', 'E-mail do lead', 'string') }}",
+            "Empresa": "={{ $fromAI('Empresa', 'Nome da empresa', 'string') }}",
+            "Cidade": "={{ $fromAI('Cidade', 'Cidade do lead', 'string') }}",
+            "Tipo Operação": "={{ $fromAI('Tipo_Operacao', 'Revenda/Arquiteto/Marceneiro/Loja', 'string') }}",
+            "Status": "Lead Qualificado Sem Agendamento",
+            "Volume Mensal": "={{ $fromAI('Volume_Projetos_Mes', 'Quantos projetos/mês', 'string') }}",
+            "Próxima Ação": "Follow-up em 48h",
+            "Data Cadastro": "={{ $now.format('dd/MM/yyyy HH:mm') }}",
+            "Origem": "WhatsApp"
+          },
+          "matchingColumns": [
+            "Telefone"
+          ],
+          "schema": [
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "type": "string"
+            },
+            {
+              "id": "Nome Completo",
+              "displayName": "Nome Completo",
+              "type": "string"
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "type": "string"
+            },
+            {
+              "id": "Empresa",
+              "displayName": "Empresa",
+              "type": "string"
+            },
+            {
+              "id": "Cidade",
+              "displayName": "Cidade",
+              "type": "string"
+            },
+            {
+              "id": "Tipo Operação",
+              "displayName": "Tipo Operação",
+              "type": "string"
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "type": "string"
+            },
+            {
+              "id": "Volume Mensal",
+              "displayName": "Volume Mensal",
+              "type": "string"
+            },
+            {
+              "id": "Próxima Ação",
+              "displayName": "Próxima Ação",
+              "type": "string"
+            },
+            {
+              "id": "Data Cadastro",
+              "displayName": "Data Cadastro",
+              "type": "string"
+            },
+            {
+              "id": "Origem",
+              "displayName": "Origem",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f76a6410-372f-4ca2-9d76-e0298855dfab",
+      "name": "Tool: Leads SemAg B2B",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        4304,
+        1040
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CrTErpiGn7MJ9o9m",
+          "name": "Google Sheets AiAgent Automate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "QUALIFICAÇÃO B2C. Use SEMPRE que o cliente mencionar: casa, apartamento, consumidor final, residência, clínica, lar, ambiente residencial. Esta ferramenta coleta dados (nome, e-mail, cidade, ambiente, tipo imóvel, prazo) fazendo UMA pergunta de cada vez. Continue chamando esta tool em CADA resposta do cliente B2C até a qualificação estar completa OU até o cliente pedir agendamento.",
+        "text": "=Última(s) mensagem(ns) do cliente Rafael de Souza neste turno:\n\"{{ $('Resolver Sessão').first().json.listaMensagens }}\"\n\nContexto do cliente:\n- Nome: {{ $('Resolver Sessão').first().json.nome || $('Resolver Sessão').first().json.pushName }}\n- Telefone: {{ $('Resolver Sessão').first().json.mobile }}\n- E-mail conhecido: {{ $('Resolver Sessão').first().json.email || '(não coletado)' }}\n- Empresa conhecida: {{ $('Resolver Sessão').first().json.empresa || '(não coletado)' }}\n- Cidade conhecida: {{ $('Resolver Sessão').first().json.cidade || '(não coletado)' }}\n- Estado do funil: {{ $('Resolver Sessão').first().json.estado_funil }}\n\nFaça sua parte do roteiro e retorne APENAS o conteúdo que a Joanna deve falar a seguir (na voz dela, sem cumprimentos repetidos).",
+        "options": {
+          "systemMessage": "DATA/HORA: {{ $now.setZone('America/Sao_Paulo').format('cccc, dd/MM/yyyy HH:mm') }}\n\n# 🎯 ESPECIALISTA INTERNO B2C — GRD MAD\n\nVocê retorna a próxima fala da JOANNA, sem cumprimentar.\n\n═══════════════════════════════════════════════════════════════\n⚠️ JÁ TEM NO CONTEXTO: Nome + Telefone — NÃO PERGUNTE\n═══════════════════════════════════════════════════════════════\n\n═══════════════════════════════════════════════════════════════\n📋 SÓ COLETAR (3 PERGUNTAS, UMA POR VEZ)\n═══════════════════════════════════════════════════════════════\n\n1. **E-mail**\n2. **Cidade/bairro**\n3. **Ambiente a planejar** (cozinha, quarto, sala, closet, escritório, área externa)\n\n═══════════════════════════════════════════════════════════════\n🔁 DECISÃO\n═══════════════════════════════════════════════════════════════\n\n**Falta e-mail?** → \"Qual é o seu e-mail?\"\n**Falta cidade?** → \"Em qual cidade ou bairro fica o imóvel?\"\n**Falta ambiente?** → \"Qual ambiente você gostaria de planejar — cozinha, quarto, sala, closet ou outro?\"\n**Tem tudo, sem pedido de agendar?** → \"Para apresentar ideias sob medida para o seu projeto, que tal marcarmos uma reunião online? Posso te mostrar os horários disponíveis.\"\n**Cliente quer agendar?** → \"AGENDAMENTO_SOLICITADO. Dados: nome=..., telefone=..., email=..., cidade=..., ambiente=...\"\n\n═══════════════════════════════════════════════════════════════\n🎨 ESTILO\n═══════════════════════════════════════════════════════════════\n\n- 1 frase, sem cumprimento.\n- ❌ NÃO repita \"Perfeito!\", \"Ótimo!\", \"Que legal!\"\n- ❌ NÃO comente a resposta do cliente — vá direto à próxima pergunta\n- ⚠️ NÃO pergunte sobre planta, metragem, ou porte do imóvel\n",
+          "maxIterations": 8
+        }
+      },
+      "id": "269feedb-9271-4139-b491-c2c7f4b1dab0",
+      "name": "Agente_B2C",
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        4208,
+        1248
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list"
+        },
+        "options": {
+          "temperature": 0.5
+        }
+      },
+      "id": "7ff4c22e-0baf-456e-8edb-f2a526e00a44",
+      "name": "Model: 4o-mini (B2C)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4112,
+        1440
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1c8DDHwowpQjuy00nLDN3F0dF64QWcz1cdAq2_blPzAY",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Leads B2C",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefone": "={{ $fromAI('telefone_cliente', 'Telefone do cliente em formato 5511XXXXXXXXX', 'string') }}",
+            "Nome Completo": "={{ $fromAI('Nome_Completo', 'Nome completo', 'string') }}",
+            "Email": "={{ $fromAI('Email', 'E-mail', 'string') }}",
+            "Cidade": "={{ $fromAI('Cidade', 'Cidade', 'string') }}",
+            "Ambiente": "={{ $fromAI('Ambiente_Desejado', 'Ambiente: cozinha/quarto/sala/etc', 'string') }}",
+            "Tipo Imóvel": "={{ $fromAI('Tipo_Imovel', 'Casa/Apto/Clínica', 'string') }}",
+            "Prazo": "={{ $fromAI('Prazo_Desejado', 'Urgente/1-3m/3-6m/Sem pressa', 'string') }}",
+            "Status": "Lead Qualificado Sem Agendamento",
+            "Próxima Ação": "Follow-up em 48h",
+            "Data Cadastro": "={{ $now.format('dd/MM/yyyy HH:mm') }}",
+            "Origem": "WhatsApp"
+          },
+          "matchingColumns": [
+            "Telefone"
+          ],
+          "schema": [
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "type": "string"
+            },
+            {
+              "id": "Nome Completo",
+              "displayName": "Nome Completo",
+              "type": "string"
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "type": "string"
+            },
+            {
+              "id": "Cidade",
+              "displayName": "Cidade",
+              "type": "string"
+            },
+            {
+              "id": "Ambiente",
+              "displayName": "Ambiente",
+              "type": "string"
+            },
+            {
+              "id": "Tipo Imóvel",
+              "displayName": "Tipo Imóvel",
+              "type": "string"
+            },
+            {
+              "id": "Prazo",
+              "displayName": "Prazo",
+              "type": "string"
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "type": "string"
+            },
+            {
+              "id": "Próxima Ação",
+              "displayName": "Próxima Ação",
+              "type": "string"
+            },
+            {
+              "id": "Data Cadastro",
+              "displayName": "Data Cadastro",
+              "type": "string"
+            },
+            {
+              "id": "Origem",
+              "displayName": "Origem",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1dc79f4e-fa9d-4d06-b7ed-546b26a06c3f",
+      "name": "Tool: Leads SemAg B2C",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        4304,
+        1440
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CrTErpiGn7MJ9o9m",
+          "name": "Google Sheets AiAgent Automate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "AGENDAMENTO B2B. Use SEMPRE que um cliente B2B pedir para: agendar, marcar, remarcar, reagendar, cancelar reunião, ou perguntar sobre disponibilidade/horários. Palavras-chave: 'agendar', 'marcar', 'que horário', 'amanhã', 'essa semana', 'tem disponibilidade', 'quero remarcar', 'cancelar minha reunião'. Esta ferramenta verifica os 3 calendários, oferece 3 horários reais, cria evento Google Meet, registra no Sheets, envia e-mail com PDF e WhatsApp com link. NUNCA responda sobre agendamento sem chamar esta tool.",
+        "text": "=Última(s) mensagem(ns) do cliente Rafael de Souza neste turno:\n\"{{ $('Resolver Sessão').first().json.listaMensagens }}\"\n\nContexto do cliente:\n- Nome: {{ $('Resolver Sessão').first().json.nome || $('Resolver Sessão').first().json.pushName }}\n- Telefone: {{ $('Resolver Sessão').first().json.mobile }}\n- E-mail conhecido: {{ $('Resolver Sessão').first().json.email || '(não coletado)' }}\n- Empresa conhecida: {{ $('Resolver Sessão').first().json.empresa || '(não coletado)' }}\n- Cidade conhecida: {{ $('Resolver Sessão').first().json.cidade || '(não coletado)' }}\n- Estado do funil: {{ $('Resolver Sessão').first().json.estado_funil }}\n\nFaça sua parte do roteiro e retorne APENAS o conteúdo que a Joanna deve falar a seguir (na voz dela, sem cumprimentos repetidos).",
+        "options": {
+          "systemMessage": "DATA/HORA AGORA: {{ $now.setZone('America/Sao_Paulo').format('cccc, dd/MM/yyyy HH:mm') }}\nHOJE: {{ $now.setZone('America/Sao_Paulo').format('yyyy-MM-dd') }}\nAMANHÃ: {{ $now.setZone('America/Sao_Paulo').plus({days:1}).format('yyyy-MM-dd') }}\nDAQUI 7 DIAS: {{ $now.setZone('America/Sao_Paulo').plus({days:7}).format('yyyy-MM-dd') }}\n\n# 🎯 AGENDAMENTO B2B — Você retorna a próxima fala da Joanna\n\n═══════════════════════════════════════════════════════════════\n🚨 REGRA #1 — VOCÊ EXECUTA, NÃO INVENTA\n═══════════════════════════════════════════════════════════════\n\nNUNCA diga \"amanhã é dia X\" / \"quarta é dia Y\" / \"tenho horário às X\" sem ter CHAMADO `Tool: Verificar Disponibilidade B2B` primeiro.\n\nNUNCA invente dias da semana ou números de dia. Você TEM no topo deste prompt:\n- HOJE no formato YYYY-MM-DD\n- AMANHÃ no formato YYYY-MM-DD\n\nUse esses valores como ponto de partida para chamar a tool.\n\n═══════════════════════════════════════════════════════════════\n📋 DADOS QUE VOCÊ JÁ TEM (não pergunte de novo)\n═══════════════════════════════════════════════════════════════\n\nDo contexto: nome, telefone, e-mail, cidade, tipo operação.\n\n═══════════════════════════════════════════════════════════════\n🔁 FLUXO\n═══════════════════════════════════════════════════════════════\n\n## Passo 1 — Cliente pediu um dia específico (ex: \"amanhã às 15h\", \"quarta às 10h\")\n\n1. Calcule o dia em YYYY-MM-DD:\n   - \"amanhã\" = use o valor de AMANHÃ do topo\n   - \"quarta\" = próxima quarta (se hoje for antes de quarta, esta semana; senão, próxima semana)\n   - \"próxima semana\" = adicione 7 dias a HOJE\n2. CHAME `Tool: Verificar Disponibilidade B2B` com:\n   - startDay = data calculada (YYYY-MM-DD)\n   - endDay = data calculada + 2 dias\n3. AGUARDE retorno\n4. Se a tool retornar slots_livres com o horário pedido, ofereça-o.\n   Se NÃO, ofereça 3 alternativas REAIS dos slots_livres retornados.\n\n## Passo 2 — Cliente NÃO especificou dia (\"quero agendar\")\n\n1. CHAME `Tool: Verificar Disponibilidade B2B` com:\n   - startDay = AMANHÃ (do topo) — ou próximo dia útil\n   - endDay = AMANHÃ + 5 dias\n2. Pegue 3 slots dos slots_livres (espalhados em dias diferentes).\n3. Ofereça na voz da Joanna:\n   \"Tenho essas 3 opções:\n   • [dia da semana] DD/MM às HH:mm\n   • [dia da semana] DD/MM às HH:mm\n   • [dia da semana] DD/MM às HH:mm\n   Qual prefere?\"\n\n⚠️ Os dias da semana e datas devem vir DO RETORNO da tool, não do seu chute.\n\n## Passo 3 — Cliente escolheu um horário\n\nExecute a SEQUÊNCIA OBRIGATÓRIA, na ordem:\n\n**3.1** `Tool: Criar Evento B2B`:\n- slotStart = ISO 8601 do horário escolhido (ex: 2026-05-29T14:00:00-03:00)\n- slotEnd = slotStart + 30 minutos\n- nome_cliente, email_cliente, telefone_cliente, cidade, observacao_lead (do contexto)\n\n**3.2** `Tool: Sheets Agendados B2B`:\n- Use mesmos dados + data_reuniao_formatada (formato \"DD/MM/YYYY HH:mm\") + link_meet (vem do passo 3.1)\n\n**3.3** `Tool: Baixar PDF`\n\n**3.4** `Tool: Email Confirmação B2B`:\n- email_cliente, nome_cliente, data_reuniao_formatada, link_meet (do passo 3.1)\n\n**3.5** `Tool: WhatsApp Confirmação`:\n- telefone_cliente, data_reuniao_formatada, link_meet (do passo 3.1)\n\nApós as 5 tools, retorne:\n\"Pronto! Marquei pra [dia da semana] DD/MM às HH:mm. Te enviei agora o link da reunião por e-mail junto com o PDF dos diferenciais GRD MAD, e o link também aqui pelo WhatsApp. Até lá!\"\n\n═══════════════════════════════════════════════════════════════\n🎨 ESTILO\n═══════════════════════════════════════════════════════════════\n\n- Horário comercial: seg-sex, 09:00-12:00 e 14:00-18:00.\n- NUNCA ofereça sábado/domingo, antes 9h, depois 18h, ou data já passada.\n- 1-3 frases por resposta.\n- Sem \"Perfeito!\" / \"Ótimo!\"\n",
+          "maxIterations": 20
+        }
+      },
+      "id": "f0d149c5-fcbe-47dd-9006-8f01c1c18f12",
+      "name": "Agente_Agendamento_B2B",
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        4608,
+        848
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list"
+        },
+        "options": {
+          "maxTokens": 2000,
+          "temperature": 0.1
+        }
+      },
+      "id": "5c2e1825-5f0f-49c1-b602-e49c76a54850",
+      "name": "Model: 4o (Ag B2B)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4512,
+        1040
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Verifica disponibilidade nas 3 agendas (Principal, B2B, B2C) e retorna slots livres entre 09h-12h e 14h-18h, seg-sex. Use com startDay (YYYY-MM-DD) e endDay (YYYY-MM-DD). Cache de 5min por intervalo. Retorna JSON: {slots_livres: [{date, time, datetimeISO}], slots_ocupados: [...]}",
+        "method": "POST",
+        "url": "={{ ($env.WEBHOOK_URL || $env.N8N_BASE_URL || 'http://localhost:5678').replace(/\\/$/, '') }}/webhook/grdmad-cal-check",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"startDay\": \"{{ $fromAI('startDay', 'YYYY-MM-DD', 'string') }}\",\n  \"endDay\": \"{{ $fromAI('endDay', 'YYYY-MM-DD (opcional)', 'string') || $fromAI('startDay', '', 'string') }}\",\n  \"audiencia\": \"B2B\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 20000
+        }
+      },
+      "id": "d6bef7a5-785e-4ce4-a356-8cf1b36447c1",
+      "name": "Tool: Verificar Disponibilidade B2B",
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        4704,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "95d149106e3cb0e6f496671aa7755f0385fca415f570b5d37b99d676a5a27347@group.calendar.google.com",
+          "mode": "list"
+        },
+        "start": "={{ $fromAI('slotStart', 'Start ISO 8601 timezone America/Sao_Paulo') }}",
+        "end": "={{ $fromAI('slotEnd', 'End ISO 8601') }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ $fromAI('email_cliente') }}",
+            "grdmadmoveis@gmail.com"
+          ],
+          "color": "2",
+          "conferenceDataUi": {
+            "conferenceDataValues": {
+              "conferenceSolution": "hangoutsMeet"
+            }
+          },
+          "description": "=Nome: {{ $fromAI('nome_cliente') }}\\nEmail: {{ $fromAI('email_cliente') }}\\nTelefone: {{ $fromAI('telefone_cliente') }}\\nEmpresa: {{ $fromAI('empresa') }}\\nCidade: {{ $fromAI('cidade') }}\\n\\nObservações da qualificação:\\n{{ $fromAI('observacao_lead', 'Resumo da qualificação: tipo de operação, volume, prazo, etc.') }}",
+          "sendUpdates": "all",
+          "summary": "=GRD MAD — Reunião B2B: {{ $fromAI('nome_cliente', 'Nome do lead') }}"
+        }
+      },
+      "id": "0c596371-9002-47f8-baa9-49f1d5db00d4",
+      "name": "Tool: Criar Evento B2B",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        4912,
+        1040
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ziCJIbhQxh6MsGo0",
+          "name": "Google Calendar GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "95d149106e3cb0e6f496671aa7755f0385fca415f570b5d37b99d676a5a27347@group.calendar.google.com",
+          "mode": "list"
+        },
+        "eventId": "={{ $fromAI('eventId', 'ID do evento a reagendar', 'string') }}",
+        "updateFields": {
+          "end": "={{ $fromAI('slotEnd', 'Novo fim ISO', 'string') }}",
+          "sendUpdates": "all",
+          "start": "={{ $fromAI('slotStart', 'Novo início ISO', 'string') }}"
+        }
+      },
+      "id": "2929825f-d9c6-47f8-b415-e20f7d13143f",
+      "name": "Tool: Reagendar B2B",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        5104,
+        1040
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ziCJIbhQxh6MsGo0",
+          "name": "Google Calendar GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "95d149106e3cb0e6f496671aa7755f0385fca415f570b5d37b99d676a5a27347@group.calendar.google.com",
+          "mode": "list"
+        },
+        "eventId": "={{ $fromAI('eventId', 'ID do evento a deletar', 'string') }}",
+        "options": {
+          "sendUpdates": "all"
+        }
+      },
+      "id": "b1a92d90-ad5a-4dd7-ac13-374113cb86ec",
+      "name": "Tool: Deletar B2B",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        5312,
+        1040
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ziCJIbhQxh6MsGo0",
+          "name": "Google Calendar GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "95d149106e3cb0e6f496671aa7755f0385fca415f570b5d37b99d676a5a27347@group.calendar.google.com",
+          "mode": "list"
+        },
+        "returnAll": true,
+        "timeMin": "={{ $now.minus({days:1}).toISO() }}",
+        "timeMax": "={{ $now.plus({days:60}).toISO() }}",
+        "options": {
+          "orderBy": "startTime",
+          "query": "={{ $fromAI('email_cliente_ou_nome', 'Email ou nome do cliente', 'string') }}",
+          "recurringEventHandling": "expand"
+        }
+      },
+      "id": "f300af6e-dbfc-4678-81cd-a5482f2c5222",
+      "name": "Tool: Buscar Evento Cliente B2B",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        5504,
+        1040
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ziCJIbhQxh6MsGo0",
+          "name": "Google Calendar GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1c8DDHwowpQjuy00nLDN3F0dF64QWcz1cdAq2_blPzAY",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Agendados B2B",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefone": "={{ $fromAI('telefone_cliente', 'Telefone em formato 5511XXXXXXXXX', 'string') }}",
+            "Nome Completo": "={{ $fromAI('Nome_Completo', '', 'string') }}",
+            "Email": "={{ $fromAI('Email', '', 'string') }}",
+            "Empresa": "={{ $fromAI('Empresa', '', 'string') }}",
+            "Cidade": "={{ $fromAI('Cidade', '', 'string') }}",
+            "Data Reunião": "={{ $fromAI('data_reuniao_formatada', 'DD/MM/YYYY HH:mm', 'string') }}",
+            "Link Meet": "={{ $fromAI('link_meet', 'URL do Google Meet', 'string') }}",
+            "Status": "Agendado",
+            "Data Cadastro": "={{ $now.format('dd/MM/yyyy HH:mm') }}",
+            "Observações": "={{ $fromAI('observacoes', 'Resumo da qualificação', 'string') }}"
+          },
+          "matchingColumns": [
+            "Telefone"
+          ],
+          "schema": [
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "type": "string"
+            },
+            {
+              "id": "Nome Completo",
+              "displayName": "Nome Completo",
+              "type": "string"
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "type": "string"
+            },
+            {
+              "id": "Empresa",
+              "displayName": "Empresa",
+              "type": "string"
+            },
+            {
+              "id": "Cidade",
+              "displayName": "Cidade",
+              "type": "string"
+            },
+            {
+              "id": "Data Reunião",
+              "displayName": "Data Reunião",
+              "type": "string"
+            },
+            {
+              "id": "Link Meet",
+              "displayName": "Link Meet",
+              "type": "string"
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "type": "string"
+            },
+            {
+              "id": "Data Cadastro",
+              "displayName": "Data Cadastro",
+              "type": "string"
+            },
+            {
+              "id": "Observações",
+              "displayName": "Observações",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3752ee0c-063d-4af3-8e2d-880e695669ea",
+      "name": "Tool: Sheets Agendados B2B",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        5712,
+        1040
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CrTErpiGn7MJ9o9m",
+          "name": "Google Sheets AiAgent Automate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1kZLohgAv3B83R6djbrrbEQl3LDiK-wna",
+          "mode": "list",
+          "cachedResultName": "Diferenciais GRD MAD.pdf"
+        },
+        "options": {}
+      },
+      "id": "23076aca-d6a3-46ab-9cec-36cf58b2df4d",
+      "name": "Tool: Baixar PDF",
+      "type": "n8n-nodes-base.googleDriveTool",
+      "typeVersion": 3,
+      "position": [
+        5904,
+        1040
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "lEIDsWEIbsEr4Vq9",
+          "name": "Google Drive GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $fromAI('email_cliente') }}",
+        "subject": "=GRD MAD — Reunião confirmada em {{ $fromAI('data_reuniao_formatada') }}",
+        "message": "=<div style=\"font-family: Arial, sans-serif; color: #2C2C2A; max-width: 600px;\">\n  <h2 style=\"color: #534AB7;\">Olá {{ $fromAI('nome_cliente') }}, sua reunião está confirmada! 🎉</h2>\n  <p>Obrigado por agendar uma reunião online com a <strong>GRD MAD</strong>.</p>\n  <table style=\"border-collapse: collapse; margin: 16px 0;\">\n    <tr><td style=\"padding: 8px; font-weight: bold;\">📅 Data:</td><td style=\"padding: 8px;\">{{ $fromAI('data_reuniao_formatada') }}</td></tr>\n    <tr><td style=\"padding: 8px; font-weight: bold;\">🔗 Link Meet:</td><td style=\"padding: 8px;\"><a href=\"{{ $fromAI('link_meet') }}\">{{ $fromAI('link_meet') }}</a></td></tr>\n    <tr><td style=\"padding: 8px; font-weight: bold;\">⏱️ Duração:</td><td style=\"padding: 8px;\">30 minutos</td></tr>\n  </table>\n  <p>Em anexo segue o PDF com os <strong>10 diferenciais GRD MAD</strong> para móveis planejados corporativos.</p>\n  <ol>\n    <li>Aproveitamento máximo do espaço</li>\n    <li>Design personalizado</li>\n    <li>Alta durabilidade</li>\n    <li>Valorização do ambiente</li>\n    <li>Organização e funcionalidade</li>\n    <li>Materiais premium</li>\n    <li>Garantia estendida</li>\n    <li>Instalação profissional</li>\n    <li>Acompanhamento dedicado</li>\n    <li>Pós-venda completo</li>\n  </ol>\n  <p>Te encontramos na reunião!<br>Equipe GRD MAD</p>\n  <hr style=\"border: none; border-top: 1px solid #D3D1C7;\"/>\n  <p style=\"font-size: 12px; color: #888780;\">Caso precise reagendar, basta responder a esta mensagem ou nos chamar no WhatsApp.</p>\n</div>",
+        "options": {
+          "appendAttribution": false,
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          },
+          "ccList": "grdmadmoveis@gmail.com",
+          "senderName": "Grd Mad",
+          "replyTo": "grdmadmoveis@gmail.com"
+        }
+      },
+      "id": "2c4274d6-5610-4637-b6ae-b3458b1f5428",
+      "name": "Tool: Email Confirmação B2B",
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        6112,
+        1040
+      ],
+      "webhookId": "20a2a1b6-bd55-468d-8723-af371f0ac495",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Ad3lKliEV0osSxNm",
+          "name": "Gmail GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Envia mensagem WhatsApp ao cliente com o link da reunião agendada. SEMPRE chame APÓS enviar_email_confirmacao_b2b. Garante que o cliente recebe o link mesmo se não abrir e-mail.",
+        "method": "POST",
+        "url": "={{ $env.EVOLUTION_URL || 'https://evolution.aiagentautomate.com.br' }}/message/sendText/aiagentautomate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $env.EVOLUTION_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $fromAI('telefone_cliente', 'Telefone do cliente em formato 5511XXXXXXXXX', 'string') }}\",\n  \"text\": \"✅ *Reunião confirmada!*\\n\\n📅 {{ $fromAI('data_reuniao_formatada') }}\\n🔗 Link: {{ $fromAI('link_meet') }}\\n⏱️ Duração: 30 min\\n\\nTe enviei também por e-mail o link e nosso PDF com os diferenciais GRD MAD. Até lá!\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          },
+          "timeout": 10000
+        }
+      },
+      "id": "24ee1cec-b24f-49bb-9efb-6d558294c555",
+      "name": "Tool: WhatsApp Confirmação",
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        6304,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "toolDescription": "AGENDAMENTO B2C. Use SEMPRE que um cliente B2C pedir para: agendar, marcar, remarcar, reagendar, cancelar reunião, ou perguntar sobre disponibilidade. Palavras-chave iguais ao B2B. Esta ferramenta verifica os 3 calendários, oferece 3 horários reais, cria evento Google Meet, registra no Sheets, envia e-mail com PDF e WhatsApp com link. NUNCA responda sobre agendamento sem chamar esta tool.",
+        "text": "=Última(s) mensagem(ns) do cliente Rafael de Souza neste turno:\n\"{{ $('Resolver Sessão').first().json.listaMensagens }}\"\n\nContexto do cliente:\n- Nome: {{ $('Resolver Sessão').first().json.nome || $('Resolver Sessão').first().json.pushName }}\n- Telefone: {{ $('Resolver Sessão').first().json.mobile }}\n- E-mail conhecido: {{ $('Resolver Sessão').first().json.email || '(não coletado)' }}\n- Empresa conhecida: {{ $('Resolver Sessão').first().json.empresa || '(não coletado)' }}\n- Cidade conhecida: {{ $('Resolver Sessão').first().json.cidade || '(não coletado)' }}\n- Estado do funil: {{ $('Resolver Sessão').first().json.estado_funil }}\n\nFaça sua parte do roteiro e retorne APENAS o conteúdo que a Joanna deve falar a seguir (na voz dela, sem cumprimentos repetidos).",
+        "options": {
+          "systemMessage": "DATA/HORA AGORA: {{ $now.setZone('America/Sao_Paulo').format('cccc, dd/MM/yyyy HH:mm') }}\nHOJE: {{ $now.setZone('America/Sao_Paulo').format('yyyy-MM-dd') }}\nAMANHÃ: {{ $now.setZone('America/Sao_Paulo').plus({days:1}).format('yyyy-MM-dd') }}\nDAQUI 7 DIAS: {{ $now.setZone('America/Sao_Paulo').plus({days:7}).format('yyyy-MM-dd') }}\n\n# 🎯 AGENDAMENTO B2C — Você retorna a próxima fala da Joanna\n\n═══════════════════════════════════════════════════════════════\n🚨 REGRA #1 — VOCÊ EXECUTA, NÃO INVENTA\n═══════════════════════════════════════════════════════════════\n\nNUNCA diga \"amanhã é dia X\" / \"quarta é dia Y\" / \"tenho horário às X\" sem ter CHAMADO `Tool: Verificar Disponibilidade B2C` primeiro.\n\nNUNCA invente dias da semana ou números de dia. Você TEM no topo deste prompt:\n- HOJE no formato YYYY-MM-DD\n- AMANHÃ no formato YYYY-MM-DD\n\nUse esses valores como ponto de partida para chamar a tool.\n\n═══════════════════════════════════════════════════════════════\n📋 DADOS QUE VOCÊ JÁ TEM (não pergunte de novo)\n═══════════════════════════════════════════════════════════════\n\nDo contexto: nome, telefone, e-mail, cidade, tipo operação.\n\n═══════════════════════════════════════════════════════════════\n🔁 FLUXO\n═══════════════════════════════════════════════════════════════\n\n## Passo 1 — Cliente pediu um dia específico (ex: \"amanhã às 15h\", \"quarta às 10h\")\n\n1. Calcule o dia em YYYY-MM-DD:\n   - \"amanhã\" = use o valor de AMANHÃ do topo\n   - \"quarta\" = próxima quarta (se hoje for antes de quarta, esta semana; senão, próxima semana)\n   - \"próxima semana\" = adicione 7 dias a HOJE\n2. CHAME `Tool: Verificar Disponibilidade B2C` com:\n   - startDay = data calculada (YYYY-MM-DD)\n   - endDay = data calculada + 2 dias\n3. AGUARDE retorno\n4. Se a tool retornar slots_livres com o horário pedido, ofereça-o.\n   Se NÃO, ofereça 3 alternativas REAIS dos slots_livres retornados.\n\n## Passo 2 — Cliente NÃO especificou dia (\"quero agendar\")\n\n1. CHAME `Tool: Verificar Disponibilidade B2C` com:\n   - startDay = AMANHÃ (do topo) — ou próximo dia útil\n   - endDay = AMANHÃ + 5 dias\n2. Pegue 3 slots dos slots_livres (espalhados em dias diferentes).\n3. Ofereça na voz da Joanna:\n   \"Tenho essas 3 opções:\n   • [dia da semana] DD/MM às HH:mm\n   • [dia da semana] DD/MM às HH:mm\n   • [dia da semana] DD/MM às HH:mm\n   Qual prefere?\"\n\n⚠️ Os dias da semana e datas devem vir DO RETORNO da tool, não do seu chute.\n\n## Passo 3 — Cliente escolheu um horário\n\nExecute a SEQUÊNCIA OBRIGATÓRIA, na ordem:\n\n**3.1** `Tool: Criar Evento B2C`:\n- slotStart = ISO 8601 do horário escolhido (ex: 2026-05-29T14:00:00-03:00)\n- slotEnd = slotStart + 30 minutos\n- nome_cliente, email_cliente, telefone_cliente, cidade, observacao_lead (do contexto)\n\n**3.2** `Tool: Sheets Agendados B2C`:\n- Use mesmos dados + data_reuniao_formatada (formato \"DD/MM/YYYY HH:mm\") + link_meet (vem do passo 3.1)\n\n**3.3** `Tool: Baixar PDF (B2C)`\n\n**3.4** `Tool: Email Confirmação B2C`:\n- email_cliente, nome_cliente, data_reuniao_formatada, link_meet (do passo 3.1)\n\n**3.5** `Tool: WhatsApp Confirmação B2C`:\n- telefone_cliente, data_reuniao_formatada, link_meet (do passo 3.1)\n\nApós as 5 tools, retorne:\n\"Pronto! Marquei pra [dia da semana] DD/MM às HH:mm. Te enviei agora o link da reunião por e-mail junto com o PDF dos diferenciais GRD MAD, e o link também aqui pelo WhatsApp. Até lá!\"\n\n═══════════════════════════════════════════════════════════════\n🎨 ESTILO\n═══════════════════════════════════════════════════════════════\n\n- Horário comercial: seg-sex, 09:00-12:00 e 14:00-19:00.\n- NUNCA ofereça sábado/domingo, antes 9h, depois 18h, ou data já passada.\n- 1-3 frases por resposta.\n- Sem \"Perfeito!\" / \"Ótimo!\"\n",
+          "maxIterations": 20
+        }
+      },
+      "id": "83631cd1-28a5-464c-9021-863617cb6942",
+      "name": "Agente_Agendamento_B2C",
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        4608,
+        1248
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list"
+        },
+        "options": {
+          "maxTokens": 2000,
+          "temperature": 0.1
+        }
+      },
+      "id": "e26a2347-5faf-4931-ae31-1dac0b563b95",
+      "name": "Model: 4o (Ag B2C)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4512,
+        1440
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Verifica disponibilidade nas 3 agendas (Principal, B2B, B2C). Retorna slots livres seg-sex 09h-19h. Cache 5min. Parâmetros: startDay (YYYY-MM-DD), endDay opcional.",
+        "method": "POST",
+        "url": "={{ ($env.WEBHOOK_URL || $env.N8N_BASE_URL || 'http://localhost:5678').replace(/\\/$/, '') }}/webhook/grdmad-cal-check",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"startDay\": \"{{ $fromAI('startDay', 'YYYY-MM-DD', 'string') }}\",\n  \"endDay\": \"{{ $fromAI('endDay', 'YYYY-MM-DD opcional', 'string') || $fromAI('startDay', '', 'string') }}\",\n  \"audiencia\": \"B2C\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 20000
+        }
+      },
+      "id": "9ddda836-70c3-4355-bbed-809b60e23d02",
+      "name": "Tool: Verificar Disponibilidade B2C",
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        4704,
+        1440
+      ]
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "9cd24c62080c6363be09c04b97c2969de0e6e4addfda19ddb03824796d10bcd8@group.calendar.google.com",
+          "mode": "list"
+        },
+        "start": "={{ $fromAI('slotStart') }}",
+        "end": "={{ $fromAI('slotEnd') }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ $fromAI('email_cliente') }}",
+            "grdmadmoveis@gmail.com"
+          ],
+          "color": "5",
+          "conferenceDataUi": {
+            "conferenceDataValues": {
+              "conferenceSolution": "hangoutsMeet"
+            }
+          },
+          "description": "=Nome: {{ $fromAI('nome_cliente') }}\\nEmail: {{ $fromAI('email_cliente') }}\\nTelefone: {{ $fromAI('telefone_cliente') }}\\nCidade: {{ $fromAI('cidade') }}\\nAmbiente: {{ $fromAI('ambiente') }}\\nTipo imóvel: {{ $fromAI('tipo_imovel') }}\\n\\nObservações:\\n{{ $fromAI('observacao_lead', 'Resumo da qualificação: prazo, estilo, etc.') }}",
+          "sendUpdates": "all",
+          "summary": "=GRD MAD — Reunião B2C: {{ $fromAI('nome_cliente') }}"
+        }
+      },
+      "id": "92eb2f6f-b17e-49a9-ba06-4691a75ed8d3",
+      "name": "Tool: Criar Evento B2C",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        4912,
+        1440
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ziCJIbhQxh6MsGo0",
+          "name": "Google Calendar GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "9cd24c62080c6363be09c04b97c2969de0e6e4addfda19ddb03824796d10bcd8@group.calendar.google.com",
+          "mode": "list"
+        },
+        "eventId": "={{ $fromAI('eventId') }}",
+        "updateFields": {
+          "end": "={{ $fromAI('slotEnd') }}",
+          "sendUpdates": "all",
+          "start": "={{ $fromAI('slotStart') }}"
+        }
+      },
+      "id": "303e748d-3b3a-4336-a761-595154993c8c",
+      "name": "Tool: Reagendar B2C",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        5104,
+        1440
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ziCJIbhQxh6MsGo0",
+          "name": "Google Calendar GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "9cd24c62080c6363be09c04b97c2969de0e6e4addfda19ddb03824796d10bcd8@group.calendar.google.com",
+          "mode": "list"
+        },
+        "eventId": "={{ $fromAI('eventId') }}",
+        "options": {
+          "sendUpdates": "all"
+        }
+      },
+      "id": "13c1fd1b-c188-4b59-a2a1-9cbc65512b76",
+      "name": "Tool: Deletar B2C",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        5312,
+        1440
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ziCJIbhQxh6MsGo0",
+          "name": "Google Calendar GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "9cd24c62080c6363be09c04b97c2969de0e6e4addfda19ddb03824796d10bcd8@group.calendar.google.com",
+          "mode": "list"
+        },
+        "returnAll": true,
+        "timeMin": "={{ $now.minus({days:1}).toISO() }}",
+        "timeMax": "={{ $now.plus({days:60}).toISO() }}",
+        "options": {
+          "orderBy": "startTime",
+          "query": "={{ $fromAI('email_cliente_ou_nome') }}",
+          "recurringEventHandling": "expand"
+        }
+      },
+      "id": "d303e799-0d9e-401e-b980-12130abd1cb7",
+      "name": "Tool: Buscar Evento Cliente B2C",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        5504,
+        1440
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ziCJIbhQxh6MsGo0",
+          "name": "Google Calendar GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1c8DDHwowpQjuy00nLDN3F0dF64QWcz1cdAq2_blPzAY",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Agendados B2C",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefone": "={{ $fromAI('telefone_cliente', 'Telefone em formato 5511XXXXXXXXX', 'string') }}",
+            "Nome Completo": "={{ $fromAI('Nome_Completo') }}",
+            "Email": "={{ $fromAI('Email') }}",
+            "Cidade": "={{ $fromAI('Cidade') }}",
+            "Ambiente": "={{ $fromAI('Ambiente') }}",
+            "Tipo Imóvel": "={{ $fromAI('Tipo_Imovel') }}",
+            "Data Reunião": "={{ $fromAI('data_reuniao_formatada') }}",
+            "Link Meet": "={{ $fromAI('link_meet') }}",
+            "Status": "Agendado",
+            "Data Cadastro": "={{ $now.format('dd/MM/yyyy HH:mm') }}",
+            "Observações": "={{ $fromAI('observacoes') }}"
+          },
+          "matchingColumns": [
+            "Telefone"
+          ],
+          "schema": [
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "type": "string"
+            },
+            {
+              "id": "Nome Completo",
+              "displayName": "Nome Completo",
+              "type": "string"
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "type": "string"
+            },
+            {
+              "id": "Cidade",
+              "displayName": "Cidade",
+              "type": "string"
+            },
+            {
+              "id": "Ambiente",
+              "displayName": "Ambiente",
+              "type": "string"
+            },
+            {
+              "id": "Tipo Imóvel",
+              "displayName": "Tipo Imóvel",
+              "type": "string"
+            },
+            {
+              "id": "Data Reunião",
+              "displayName": "Data Reunião",
+              "type": "string"
+            },
+            {
+              "id": "Link Meet",
+              "displayName": "Link Meet",
+              "type": "string"
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "type": "string"
+            },
+            {
+              "id": "Data Cadastro",
+              "displayName": "Data Cadastro",
+              "type": "string"
+            },
+            {
+              "id": "Observações",
+              "displayName": "Observações",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b21d10cc-55cc-4b80-8d38-35fd637bc9c3",
+      "name": "Tool: Sheets Agendados B2C",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        5712,
+        1440
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CrTErpiGn7MJ9o9m",
+          "name": "Google Sheets AiAgent Automate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1kZLohgAv3B83R6djbrrbEQl3LDiK-wna",
+          "mode": "list"
+        },
+        "options": {}
+      },
+      "id": "76fd39fb-07d7-4068-9e30-1a64cdc162a9",
+      "name": "Tool: Baixar PDF (B2C)",
+      "type": "n8n-nodes-base.googleDriveTool",
+      "typeVersion": 3,
+      "position": [
+        5904,
+        1440
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "lEIDsWEIbsEr4Vq9",
+          "name": "Google Drive GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $fromAI('email_cliente') }}",
+        "subject": "=GRD MAD — Sua reunião está confirmada em {{ $fromAI('data_reuniao_formatada') }}",
+        "message": "=<div style=\"font-family: Arial, sans-serif; color: #2C2C2A; max-width: 600px;\">\n  <h2 style=\"color: #1D9E75;\">Olá {{ $fromAI('nome_cliente') }}, sua reunião está confirmada! ✨</h2>\n  <p>Obrigado por confiar na <strong>GRD MAD</strong> para o seu projeto de móveis planejados.</p>\n  <table style=\"border-collapse: collapse; margin: 16px 0;\">\n    <tr><td style=\"padding: 8px; font-weight: bold;\">📅 Data:</td><td style=\"padding: 8px;\">{{ $fromAI('data_reuniao_formatada') }}</td></tr>\n    <tr><td style=\"padding: 8px; font-weight: bold;\">🔗 Link Meet:</td><td style=\"padding: 8px;\"><a href=\"{{ $fromAI('link_meet') }}\">{{ $fromAI('link_meet') }}</a></td></tr>\n    <tr><td style=\"padding: 8px; font-weight: bold;\">⏱️ Duração:</td><td style=\"padding: 8px;\">30 minutos</td></tr>\n    <tr><td style=\"padding: 8px; font-weight: bold;\">🏠 Ambiente:</td><td style=\"padding: 8px;\">{{ $fromAI('ambiente') }}</td></tr>\n  </table>\n  <p>Em anexo, o PDF com os <strong>10 diferenciais GRD MAD</strong> para você conhecer nosso trabalho antes da reunião.</p>\n  <p>Para aproveitar o melhor da nossa conversa, tenha em mãos:</p>\n  <ul>\n    <li>Medidas aproximadas do ambiente (se já tiver)</li>\n    <li>Referências de estilo (Pinterest, Instagram)</li>\n    <li>Lista de móveis e funcionalidades desejadas</li>\n  </ul>\n  <p>Até lá!<br>Equipe GRD MAD</p>\n  <hr style=\"border: none; border-top: 1px solid #D3D1C7;\"/>\n  <p style=\"font-size: 12px; color: #888780;\">Para reagendar ou tirar dúvidas, responda este e-mail ou chame no WhatsApp.</p>\n</div>",
+        "options": {
+          "appendAttribution": false,
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          },
+          "ccList": "grdmadmoveis@gmail.com",
+          "senderName": "Grd Mad",
+          "replyTo": "grdmadmoveis@gmail.com"
+        }
+      },
+      "id": "b7de8e2f-308e-4308-9366-41dbc9a4509d",
+      "name": "Tool: Email Confirmação B2C",
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        6112,
+        1440
+      ],
+      "webhookId": "9f415925-5a1e-48c2-878b-ad868e3d7e3e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Ad3lKliEV0osSxNm",
+          "name": "Gmail GrdMad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Envia mensagem WhatsApp ao cliente B2C com link da reunião. SEMPRE após enviar_email_confirmacao_b2c.",
+        "method": "POST",
+        "url": "={{ $env.EVOLUTION_URL || 'https://evolution.aiagentautomate.com.br' }}/message/sendText/aiagentautomate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $env.EVOLUTION_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $fromAI('telefone_cliente', 'Telefone do cliente em formato 5511XXXXXXXXX', 'string') }}\",\n  \"text\": \"✅ *Sua reunião está confirmada!*\\n\\n📅 {{ $fromAI('data_reuniao_formatada') }}\\n🔗 Link: {{ $fromAI('link_meet') }}\\n⏱️ Duração: 30 min\\n\\nTe enviei também por e-mail o link e nosso PDF de diferenciais. Até lá! 💫\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          },
+          "timeout": 10000
+        }
+      },
+      "id": "97441265-87c1-4630-b0a3-12250f4ec1c5",
+      "name": "Tool: WhatsApp Confirmação B2C",
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        6304,
+        1440
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Preparar dados consolidados para persistir\nconst vars = $('Variáveis').first().json;\nconst sessao = $('Resolver Sessão').first().json;\nconst sdr = $input.first().json;\n\nconst output = String(sdr.output ?? sdr.text ?? '').trim();\nconst now = new Date().toISOString();\n\nreturn [{\n  json: {\n    telefone: vars.mobile,\n    nome: sessao.nome,\n    sessionid: sessao.sessionId,\n    push_name: sessao.pushName,\n    email: sessao.email,\n    empresa: sessao.empresa,\n    cidade: sessao.cidade,\n    ultima_mensagem_cliente: sessao.listaMensagens,\n    ultima_resposta_ia: output,\n    ultimo_contato: now,\n    updated_at: now,\n    qtd_interacoes: sessao.qtd_interacoes,\n    estado_funil: sessao.estado_funil,\n    status_atendimento: sessao.status_atendimento,\n    isNew: sessao.isNewCliente,\n    sdrOutput: output\n  }\n}];"
+      },
+      "id": "71021201-c2df-4caa-ad64-7ef423c31bff",
+      "name": "Preparar Persistência",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3872,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "74b2e36f-e808-4082-b766-0b51404f9b83",
+              "leftValue": "={{ $json.isNew }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "26574973-3495-415a-91e7-af114c15dd4e",
+      "name": "Cliente Novo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4000,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "tableId": "dados_cliente",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "telefone",
+              "fieldValue": "={{ $json.telefone }}"
+            },
+            {
+              "fieldId": "nome",
+              "fieldValue": "={{ $json.nome }}"
+            },
+            {
+              "fieldId": "sessionid",
+              "fieldValue": "={{ $json.sessionid }}"
+            },
+            {
+              "fieldId": "push_name",
+              "fieldValue": "={{ $json.push_name }}"
+            },
+            {
+              "fieldId": "ultima_mensagem_cliente",
+              "fieldValue": "={{ $json.ultima_mensagem_cliente }}"
+            },
+            {
+              "fieldId": "ultima_resposta_ia",
+              "fieldValue": "={{ $json.ultima_resposta_ia }}"
+            },
+            {
+              "fieldId": "ultimo_contato",
+              "fieldValue": "={{ $json.ultimo_contato }}"
+            },
+            {
+              "fieldId": "qtd_interacoes",
+              "fieldValue": "=1"
+            },
+            {
+              "fieldId": "estado_funil",
+              "fieldValue": "=onboarding"
+            },
+            {
+              "fieldId": "status_atendimento",
+              "fieldValue": "=ativo"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $json.updated_at }}"
+            }
+          ]
+        }
+      },
+      "id": "53171e85-59a8-4b33-a32c-da9ffeda8322",
+      "name": "Supabase: Insert Cliente",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4208,
+        480
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase GrdMad"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $json.telefone }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "nome",
+              "fieldValue": "={{ $json.nome }}"
+            },
+            {
+              "fieldId": "ultima_mensagem_cliente",
+              "fieldValue": "={{ $json.ultima_mensagem_cliente }}"
+            },
+            {
+              "fieldId": "ultima_resposta_ia",
+              "fieldValue": "={{ $json.ultima_resposta_ia }}"
+            },
+            {
+              "fieldId": "ultimo_contato",
+              "fieldValue": "={{ $json.ultimo_contato }}"
+            },
+            {
+              "fieldId": "qtd_interacoes",
+              "fieldValue": "={{ $json.qtd_interacoes }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $json.updated_at }}"
+            }
+          ]
+        }
+      },
+      "id": "9963b53e-8e5a-4574-8293-4ebc5ae43a9d",
+      "name": "Supabase: Update Cliente",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4208,
+        688
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase GrdMad"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO grdmad_mensagens (telefone, sessao_id, direcao, conteudo, tipo_entrada, created_at)\nVALUES ($1, $2, 'ia', $3, 'texto', NOW())",
+        "options": {
+          "queryReplacement": "={{ $('Preparar Persistência').first().json.telefone }},={{ $('Preparar Persistência').first().json.sessionid }},={{ $('Preparar Persistência').first().json.ultima_resposta_ia }}"
+        }
+      },
+      "id": "a9437f25-a8b5-4566-91fc-1cdbff2a089e",
+      "name": "PG: Log Msg IA",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        4400,
+        592
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensagem para humanizar e segmentar para envio no WhatsApp:\n\n{{ $('Preparar Persistência').first().json.sdrOutput }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "Você é um humanizador de mensagens de WhatsApp para a Joanna (SDR da GRD MAD).\n\nREGRAS:\n1. Recebe a resposta da IA e segmenta para envio no WhatsApp simulando como um humano digitaria.\n2. ⚠️ MÁXIMO 3 segmentos. Idealmente 2 segmentos.\n3. Cada segmento deve ter 1-2 frases curtas, naturais.\n4. NÃO use 4 ou mais segmentos.\n5. Quando a mensagem original já for muito curta (1 frase só), retorne 1 segmento.\n6. Links (https://...) ficam em segmento próprio.\n7. NÃO adicione, remova ou invente conteúdo. Apenas decide como quebrar.\n8. Mantenha a ORDEM e o SENTIDO da mensagem original.\n\nExemplos de boa segmentação:\n\nOriginal: \"Olá Rafael! 👋 Sou a Joanna, assistente da GRD MAD. Você é uma empresa ou consumidor final?\"\nSegmentado (2): [\"Olá Rafael! 👋 Sou a Joanna, assistente da GRD MAD.\", \"Você é uma empresa ou consumidor final?\"]\n\nOriginal: \"Perfeito! Tenho 3 horários: quarta 10h, quinta 14h, sexta 11h. Qual prefere?\"\nSegmentado (3): [\"Perfeito! Tenho 3 horários:\", \"Quarta 10h, quinta 14h ou sexta 11h.\", \"Qual prefere?\"]\n\nOriginal: \"Por nada 😊\"\nSegmentado (1): [\"Por nada 😊\"]\n\nFormato JSON:\n{\"messages\": [\"segmento 1\", \"segmento 2\", \"segmento 3 (opcional)\"]}\n\nRetorne APENAS o JSON, sem markdown, sem explicação."
+            }
+          ]
+        }
+      },
+      "id": "98e18627-f8c7-4e24-a66c-5b50f33b0006",
+      "name": "Humanizador (Parser)",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        4608,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list"
+        },
+        "options": {
+          "responseFormat": "json_object",
+          "temperature": 0.3
+        }
+      },
+      "id": "e3a79d45-f003-434e-9767-35545e49cec3",
+      "name": "Model: Parser (4o-mini)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4608,
+        752
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"messages\": {\n      \"type\": \"array\",\n      \"items\": {\"type\": \"string\"}\n    }\n  },\n  \"required\": [\"messages\"]\n}"
+      },
+      "id": "c81bc667-54d5-4850-a0db-5018d54a8469",
+      "name": "Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        4752,
+        752
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.messages",
+        "options": {
+          "destinationFieldName": "message"
+        }
+      },
+      "id": "510daa04-7a2a-4b16-aba2-93af7869fc72",
+      "name": "Split Segmentos",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        4864,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "32a48b0d-251c-4fbf-862f-725e62fc243f",
+      "name": "Loop Segmentos",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        5008,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=grdmad:eco:{{ $('Variáveis').first().json.mobile }}:{{ $now.toMillis() }}",
+        "value": "1",
+        "expire": true,
+        "ttl": 30
+      },
+      "id": "75cad8c6-f247-4ec9-bb1b-8e778d755400",
+      "name": "Redis: Marcar Eco",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        5200,
+        704
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "redis": {
+          "id": "3aF3lSIIig1BrDmo",
+          "name": "Redis account 2"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "amount": 1.8
+      },
+      "id": "05805306-cefd-4ffb-9703-092eedeca607",
+      "name": "Wait 1.8s",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        5408,
+        704
+      ],
+      "webhookId": "8210e3ad-b54d-4de1-b66d-09ac86b18915"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "AiAgentAutomate",
+        "remoteJid": "={{ $('Variáveis').first().json.remoteJid }}",
+        "messageText": "={{ $json.message }}",
+        "options_message": {
+          "delay": 1200
+        }
+      },
+      "id": "03057285-147c-43e4-bf76-b8fe31d09233",
+      "name": "Evolution: Enviar Msg",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        5600,
+        704
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {},
+      "id": "e2e8fd1a-279e-4d0b-ae98-e12549173d8b",
+      "name": "Fim Envio",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        5200,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COUNT(*) AS cnt FROM grdmad_mensagens\nWHERE telefone = $1 AND created_at > NOW() - INTERVAL '7 days'",
+        "options": {
+          "queryReplacement": "={{ $('Variáveis').first().json.mobile }}"
+        }
+      },
+      "id": "98d51865-84bb-4bc7-8560-d87739c71f86",
+      "name": "PG: Contar Msgs Recentes",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        5408,
+        480
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f94df5f0-71ce-4d8f-9038-da0a5f97196e",
+              "leftValue": "={{ $json.cnt % 20 === 0 && $json.cnt > 0 }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c62523e7-91bf-4621-aaf1-2abede5e596e",
+      "name": "Hora de Resumir?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        5600,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4o-mini\",\n  \"response_format\": {\"type\": \"json_object\"},\n  \"messages\": [\n    {\"role\": \"system\", \"content\": \"Você gera resumos vetorizáveis de conversas SDR para memória de longo prazo. Saída JSON: {resumo: string max 200 palavras, topicos: string[] max 10, perfil_inferido: string, proximos_passos: string}.\"},\n    {\"role\": \"user\", \"content\": \"Resuma a conversa recente do telefone {{ $('Variáveis').first().json.mobile }} dos últimos 20 turnos.\"}\n  ]\n}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          },
+          "timeout": 20000
+        }
+      },
+      "id": "fa238760-048a-4fa9-98e1-cf6e6c754a11",
+      "name": "Gerar Resumo Sessão",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5808,
+        384
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse e prepara para upsert\nconst resp = $input.first().json;\nconst choices = resp.choices || [];\nif (choices.length === 0) return [{ json: { skip: true } }];\n\nlet parsed = {};\ntry {\n  parsed = JSON.parse(choices[0].message.content);\n} catch (e) {\n  parsed = { resumo: choices[0].message.content, topicos: [], perfil_inferido: '', proximos_passos: '' };\n}\n\nconst mobile = $('Variáveis').first().json.mobile;\nreturn [{\n  json: {\n    telefone: mobile,\n    resumo: parsed.resumo || '',\n    topicos: Array.isArray(parsed.topicos) ? parsed.topicos.join(', ') : (parsed.topicos || ''),\n    perfil_inferido: parsed.perfil_inferido || '',\n    proximos_passos: parsed.proximos_passos || '',\n    status_atendimento_apos: $('Resolver Sessão').first().json.status_atendimento || 'ativo',\n    created_at: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "fb305543-8320-4bbc-9124-af69342e74b5",
+      "name": "Preparar Memória Longa",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6000,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO grdmad_memoria_cliente\n  (telefone, resumo, topicos, perfil_inferido, proximos_passos, status_atendimento_apos, created_at)\nVALUES ($1, $2, $3, $4, $5, $6, NOW())",
+        "options": {
+          "queryReplacement": "={{ $json.telefone }},={{ $json.resumo }},={{ $json.topicos }},={{ $json.perfil_inferido }},={{ $json.proximos_passos }},={{ $json.status_atendimento_apos }}"
+        }
+      },
+      "id": "3220a4a2-3add-4c3f-8537-edcfdd7411f8",
+      "name": "PG: Salvar Memória",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        6208,
+        384
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $('Preparar Memória Longa').first().json.telefone }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "perfil_resumo",
+              "fieldValue": "={{ $('Preparar Memória Longa').first().json.resumo }}"
+            },
+            {
+              "fieldId": "topicos_chave",
+              "fieldValue": "={{ $('Preparar Memória Longa').first().json.topicos }}"
+            }
+          ]
+        }
+      },
+      "id": "044e7a48-4423-418c-9b76-5e5a93cb7077",
+      "name": "Supabase: Update Perfil",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        6400,
+        384
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "r2uQFvlq0GDUjDGV",
+          "name": "Supabase GrdMad"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "content": "## 📅 Serviço: Calendar Availability Check (Cache 5min)\n\nEndpoint interno chamado pelos agentes de agendamento.\nConsulta 3 agendas em paralelo + Redis cache de 5min.\nRetorna slots livres formatados.\n\nInput: { startDay, endDay, audiencia }",
+        "height": 200,
+        "width": 380,
+        "color": 5
+      },
+      "id": "6519a444-6ab7-4b67-93c2-7bcde6097374",
+      "name": "📌 Calendar Cache Service",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1984
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "grdmad-cal-check",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "d5ea3078-1404-48a5-b8fd-c2606a796dd7",
+      "name": "WH: Calendar Check",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        208,
+        2192
+      ],
+      "webhookId": "grdmad-cal-check-v2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body || $input.first().json;\nconst startDay = body.startDay || new Date().toISOString().slice(0,10);\nconst endDay = body.endDay || startDay;\nconst audiencia = (body.audiencia || 'B2B').toUpperCase();\n\nconst cacheKey = `grdmad:calcache:${startDay}_${endDay}_${audiencia}`;\nreturn [{ json: { startDay, endDay, audiencia, cacheKey } }];"
+      },
+      "id": "2a9f1449-905e-47f6-99e0-d41472c28c40",
+      "name": "Cal: Parse Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        2192
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "cached",
+        "key": "={{ $json.cacheKey }}",
+        "options": {}
+      },
+      "id": "6a49e51d-a7b6-4f8e-9a68-b1071503ef6d",
+      "name": "Cal: Redis GET",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        608,
+        2192
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "redis": {
+          "id": "3aF3lSIIig1BrDmo",
+          "name": "Redis account 2"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a0f4609b-f754-4dbe-898d-5b7f8a3682b3",
+              "leftValue": "={{ $json.cached }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "eb4df497-cb29-4f9a-9607-34ad9b06f209",
+      "name": "Cal: Cache Hit?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        800,
+        2192
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.cached }}",
+        "options": {}
+      },
+      "id": "9fcb0456-1391-4106-b4b5-377559f56225",
+      "name": "Cal: Resp Cache",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1008,
+        2080
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "grdmadmoveis@gmail.com",
+          "mode": "id"
+        },
+        "returnAll": true,
+        "timeMin": "={{ DateTime.fromISO($('Cal: Parse Input').first().json.startDay + 'T00:00:00', { zone: 'America/Sao_Paulo' }).toISO() }}",
+        "timeMax": "={{ DateTime.fromISO($('Cal: Parse Input').first().json.endDay + 'T23:59:59', { zone: 'America/Sao_Paulo' }).toISO() }}",
+        "options": {
+          "orderBy": "startTime",
+          "recurringEventHandling": "expand"
+        }
+      },
+      "id": "d6841395-3804-4324-b153-7798776ca8d6",
+      "name": "Cal: GET Principal",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1008,
+        2288
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ziCJIbhQxh6MsGo0",
+          "name": "Google Calendar GrdMad"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "95d149106e3cb0e6f496671aa7755f0385fca415f570b5d37b99d676a5a27347@group.calendar.google.com",
+          "mode": "list"
+        },
+        "returnAll": true,
+        "timeMin": "={{ DateTime.fromISO($('Cal: Parse Input').first().json.startDay + 'T00:00:00', { zone: 'America/Sao_Paulo' }).toISO() }}",
+        "timeMax": "={{ DateTime.fromISO($('Cal: Parse Input').first().json.endDay + 'T23:59:59', { zone: 'America/Sao_Paulo' }).toISO() }}",
+        "options": {
+          "orderBy": "startTime",
+          "recurringEventHandling": "expand"
+        }
+      },
+      "id": "7699776b-0bb7-4b0a-aa0a-0f8d3abfb03d",
+      "name": "Cal: GET B2B",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1200,
+        2288
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ziCJIbhQxh6MsGo0",
+          "name": "Google Calendar GrdMad"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "9cd24c62080c6363be09c04b97c2969de0e6e4addfda19ddb03824796d10bcd8@group.calendar.google.com",
+          "mode": "list"
+        },
+        "returnAll": true,
+        "timeMin": "={{ DateTime.fromISO($('Cal: Parse Input').first().json.startDay + 'T00:00:00', { zone: 'America/Sao_Paulo' }).toISO() }}",
+        "timeMax": "={{ DateTime.fromISO($('Cal: Parse Input').first().json.endDay + 'T23:59:59', { zone: 'America/Sao_Paulo' }).toISO() }}",
+        "options": {
+          "orderBy": "startTime",
+          "recurringEventHandling": "expand"
+        }
+      },
+      "id": "182b7cb1-25d1-45b4-8267-cd0504eccdbd",
+      "name": "Cal: GET B2C",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1408,
+        2288
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "ziCJIbhQxh6MsGo0",
+          "name": "Google Calendar GrdMad"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Mescla os 3 calendários e calcula slots livres\nconst input = $('Cal: Parse Input').first().json;\nconst principal = $('Cal: GET Principal').all().map(i => i.json);\nconst b2b = $('Cal: GET B2B').all().map(i => i.json);\nconst b2c = $('Cal: GET B2C').all().map(i => i.json);\n\n// Coletar todos os busy intervals\nconst busy = [...principal, ...b2b, ...b2c].map(e => {\n  const s = e?.start?.dateTime || e?.start?.date;\n  const en = e?.end?.dateTime || e?.end?.date;\n  if (!s || !en) return null;\n  return { start: new Date(s).getTime(), end: new Date(en).getTime(), summary: e.summary || '' };\n}).filter(Boolean).sort((a,b) => a.start - b.start);\n\n// Horário comercial por audiência\nconst ehB2C = input.audiencia === 'B2C';\nconst morningStart = 9, morningEnd = 12;\nconst afternoonStart = 14, afternoonEnd = ehB2C ? 19 : 18;\nconst slotMinutes = 30;\n\nconst slots_livres = [];\nconst slots_ocupados = [];\n\nconst startD = new Date(input.startDay + 'T00:00:00-03:00');\nconst endD = new Date(input.endDay + 'T23:59:59-03:00');\n\nfor (let d = new Date(startD); d <= endD; d.setDate(d.getDate() + 1)) {\n  const dow = d.getDay(); // 0=dom, 6=sab\n  if (dow === 0 || dow === 6) continue; // pula fim de semana\n\n  const dateStr = d.toISOString().slice(0,10);\n\n  // Construir os slots de 30min do dia\n  const periodos = [[morningStart, morningEnd], [afternoonStart, afternoonEnd]];\n  for (const [h0, h1] of periodos) {\n    for (let h = h0; h < h1; h++) {\n      for (let m = 0; m < 60; m += slotMinutes) {\n        const start = new Date(d);\n        start.setHours(h, m, 0, 0);\n        const end = new Date(start.getTime() + slotMinutes*60*1000);\n\n        // Verifica colisão\n        const colide = busy.some(b => start.getTime() < b.end && end.getTime() > b.start);\n        const slot = {\n          date: dateStr,\n          time: String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0'),\n          startISO: start.toISOString(),\n          endISO: end.toISOString()\n        };\n\n        if (colide) {\n          slots_ocupados.push(slot);\n        } else {\n          // só adiciona se for futuro\n          if (start.getTime() > Date.now()) slots_livres.push(slot);\n        }\n      }\n    }\n  }\n}\n\n// Limita a primeiros 12 slots livres pra LLM não se perder\nconst result = {\n  audiencia: input.audiencia,\n  intervalo: { startDay: input.startDay, endDay: input.endDay },\n  slots_livres: slots_livres.slice(0, 12),\n  total_livres: slots_livres.length,\n  cacheKey: input.cacheKey\n};\n\nreturn [{ json: result }];"
+      },
+      "id": "49ab93dc-7e61-47b0-b498-8c7963efd915",
+      "name": "Cal: Compute Slots",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1600,
+        2288
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $json.cacheKey }}",
+        "value": "={{ JSON.stringify($json) }}",
+        "expire": true,
+        "ttl": 300
+      },
+      "id": "d3ca298f-0155-425a-8539-ea369ccc799b",
+      "name": "Cal: Redis SET",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1808,
+        2288
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "redis": {
+          "id": "3aF3lSIIig1BrDmo",
+          "name": "Redis account 2"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($('Cal: Compute Slots').first().json) }}",
+        "options": {}
+      },
+      "id": "742eb428-e09f-4a1f-b519-431f897e3177",
+      "name": "Cal: Resp Fresh",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2000,
+        2288
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 📞 Follow-up Cron (Schedule)\n\nRoda 2x ao dia (10h e 16h).\nBusca leads qualificados sem agendamento há 48h+.\nEnvia mensagem personalizada via WhatsApp usando o histórico do cliente.",
+        "height": 200,
+        "width": 380,
+        "color": 6
+      },
+      "id": "9b425b32-197b-4d51-afa9-940884bda33f",
+      "name": "📌 Follow-up Cron",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        2592
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 10,16 * * 1-5"
+            }
+          ]
+        }
+      },
+      "id": "f8059e3b-eddc-43c3-a8cd-280e5efa7576",
+      "name": "Cron: Follow-up 2x/dia",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        2784
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  c.telefone,\n  c.nome,\n  c.push_name,\n  c.email,\n  c.empresa,\n  c.estado_funil,\n  c.perfil_resumo,\n  c.ultimo_contato,\n  c.tipo_lead\nFROM dados_cliente c\nLEFT JOIN grdmad_reunioes r ON r.telefone = c.telefone AND r.status IN ('agendado', 'realizado')\nWHERE r.id IS NULL\n  AND c.estado_funil IN ('qualificacao', 'agendamento')\n  AND c.ultimo_contato < NOW() - INTERVAL '48 hours'\n  AND c.ultimo_contato > NOW() - INTERVAL '14 days'\n  AND COALESCE(c.followup_count, 0) < 3\n  AND COALESCE(c.opt_out, false) = false\nLIMIT 50",
+        "options": {}
+      },
+      "id": "d070a5bd-3b39-4904-82af-96281ca306da",
+      "name": "PG: Buscar Candidatos Follow-up",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        400,
+        2784
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "5ba29334-4b2f-4f0b-bcb4-30b9f75b579c",
+      "name": "Loop Candidatos",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        608,
+        2784
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4o-mini\",\n  \"messages\": [\n    {\"role\": \"system\", \"content\": \"Você é Joanna, SDR da GRD MAD. Gere uma mensagem CURTA (máx 3 frases) de reengajamento para um lead que conversou conosco há 48h+ mas não agendou. Tom: leve, contextual com o histórico, sem pressão. Termine sempre com uma pergunta aberta sobre disponibilidade. Não inclua link, não cumprimente formalmente.\"},\n    {\"role\": \"user\", \"content\": \"Lead: \" + {{ JSON.stringify($json.push_name || $json.nome) }} + \" | Empresa: \" + {{ JSON.stringify($json.empresa || '') }} + \" | Estado: \" + {{ JSON.stringify($json.estado_funil) }} + \" | Resumo: \" + {{ JSON.stringify($json.perfil_resumo || 'sem resumo') }} + \" | Dias sem contato: 2-3\"}\n  ],\n  \"max_tokens\": 150\n}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          },
+          "timeout": 15000
+        }
+      },
+      "id": "7779ccc6-eb85-49a3-b355-ab3400bdf55e",
+      "name": "Gerar Msg Follow-up",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        800,
+        2784
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "aiagentautomate",
+        "remoteJid": "={{ $('Loop Candidatos').item.json.telefone }}@s.whatsapp.net",
+        "messageText": "={{ $json.choices[0].message.content }}",
+        "options_message": {
+          "delay": 1500
+        }
+      },
+      "id": "82127bfa-cb87-498c-aed5-88b314d7e345",
+      "name": "Evolution: Send Follow-up",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1008,
+        2784
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE dados_cliente\nSET followup_count = COALESCE(followup_count, 0) + 1,\n    ultimo_followup = NOW(),\n    updated_at = NOW()\nWHERE telefone = $1",
+        "options": {
+          "queryReplacement": "={{ $('Loop Candidatos').item.json.telefone }}"
+        }
+      },
+      "id": "6746585a-f1c0-4b00-acf5-c4f3fa293627",
+      "name": "PG: Update Followup Count",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1200,
+        2784
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {},
+      "id": "e81acf01-b02e-4417-b19e-bf901ce2cbf9",
+      "name": "Fim Follow-up",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        800,
+        2592
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## ⏰ Confirmação 24h Antes\n\nRoda de hora em hora.\nBusca reuniões 22-26h adiante e envia WhatsApp pedindo confirmação SIM/REAGENDAR.",
+        "height": 180,
+        "width": 380,
+        "color": 6
+      },
+      "id": "9fe600c3-ff22-484c-b04f-4d40d73b2815",
+      "name": "📌 Confirmação 24h",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        3088
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 * * * *"
+            }
+          ]
+        }
+      },
+      "id": "0f6e0584-52e2-4ac1-99b7-4cc0ca01899b",
+      "name": "Cron: Confirmação 24h",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        3280
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  r.id, r.telefone, r.audiencia, r.data_reuniao, r.link_meet,\n  c.nome, c.push_name\nFROM grdmad_reunioes r\nLEFT JOIN dados_cliente c ON c.telefone = r.telefone\nWHERE r.status = 'agendado'\n  AND r.confirmacao_enviada = false\n  AND r.data_reuniao BETWEEN NOW() + INTERVAL '22 hours' AND NOW() + INTERVAL '26 hours'\nLIMIT 100",
+        "options": {}
+      },
+      "id": "33fcee9e-a5e5-4f13-a22e-3442d09b610f",
+      "name": "PG: Reuniões 24h",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        400,
+        3280
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "3180bf35-1d1a-435a-aa24-966429262634",
+      "name": "Loop Reuniões 24h",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        608,
+        3280
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "aiagentautomate",
+        "remoteJid": "={{ $json.telefone }}@s.whatsapp.net",
+        "messageText": "=Olá {{ $json.push_name || $json.nome || 'tudo bem' }}! 👋\n\nLembrete carinhoso: nossa reunião está marcada para amanhã, {{ DateTime.fromISO($json.data_reuniao).setZone('America/Sao_Paulo').toFormat('dd/MM HH:mm') }}.\n\n🔗 {{ $json.link_meet }}\n\nVocê confirma sua presença? Responda *SIM* para confirmar ou *REAGENDAR* se precisar mudar o horário.",
+        "options_message": {
+          "delay": 1200
+        }
+      },
+      "id": "74e3ffe8-4258-4676-9ca0-d76915e3610f",
+      "name": "Evolution: Send 24h",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        800,
+        3280
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE grdmad_reunioes\nSET confirmacao_enviada = true, updated_at = NOW()\nWHERE id = $1",
+        "options": {
+          "queryReplacement": "={{ $('Loop Reuniões 24h').item.json.id }}"
+        }
+      },
+      "id": "bc212978-8d6e-46d5-ba00-ec24ad147fa4",
+      "name": "PG: Marcar Confirmação Enviada",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1008,
+        3280
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {},
+      "id": "ce8828a2-4516-4e26-a186-c8e5dec32d45",
+      "name": "Fim Confirmação 24h",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        800,
+        3088
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🔄 Re-engajamento No-Show\n\nRoda de hora em hora.\nIdentifica reuniões que terminaram há 1-2h e ainda estão como 'agendado' (presumido no-show).\nEnvia msg pedindo motivo + oferece reagendar.",
+        "height": 200,
+        "width": 380,
+        "color": 6
+      },
+      "id": "9bb54fa5-bc9f-4537-904a-80d802dd27a6",
+      "name": "📌 Re-engajamento No-Show",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        3584
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "15 * * * *"
+            }
+          ]
+        }
+      },
+      "id": "14453e36-30c8-4d9e-b575-daa2b8181c59",
+      "name": "Cron: No-Show",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        3792
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  r.id, r.telefone, r.audiencia, r.data_reuniao,\n  c.push_name, c.nome\nFROM grdmad_reunioes r\nLEFT JOIN dados_cliente c ON c.telefone = r.telefone\nWHERE r.status = 'agendado'\n  AND r.no_show_enviado = false\n  AND r.data_reuniao BETWEEN NOW() - INTERVAL '2 hours' AND NOW() - INTERVAL '1 hour'\nLIMIT 50",
+        "options": {}
+      },
+      "id": "7c84c4bb-b06f-428b-ae43-5d3524772b03",
+      "name": "PG: Reuniões No-Show",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        400,
+        3792
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "392c1fc0-699a-44a5-b9ec-ebf7a9115e5b",
+      "name": "Loop No-Show",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        608,
+        3792
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "aiagentautomate",
+        "remoteJid": "={{ $json.telefone }}@s.whatsapp.net",
+        "messageText": "=Olá {{ $json.push_name || $json.nome }}! Senti sua falta na nossa reunião agora há pouco. 🙂\n\nAconteceu algum imprevisto? Posso reagendar para um horário melhor pra você. É só me dizer qual dia/horário fica bom!",
+        "options_message": {
+          "delay": 1500
+        }
+      },
+      "id": "4892f9af-24f4-473c-88f7-ecb50de9919c",
+      "name": "Evolution: Send No-Show",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        800,
+        3792
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "vBZUmfwmCqpNUkEJ",
+          "name": "Evolution account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE grdmad_reunioes\nSET no_show_enviado = true, status = 'no_show', updated_at = NOW()\nWHERE id = $1",
+        "options": {
+          "queryReplacement": "={{ $('Loop No-Show').item.json.id }}"
+        }
+      },
+      "id": "1edd6a54-38fe-46c5-9ed3-b7de9c70c12e",
+      "name": "PG: Marcar No-Show",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1008,
+        3792
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {},
+      "id": "f4f666db-3fe0-4c2c-91e5-0a2f4e1d7d77",
+      "name": "Fim No-Show",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        800,
+        3584
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 📊 Métricas API\n\nGET /webhook/grdmad-metrics\n\nRetorna JSON com:\n- conversões B2B vs B2C\n- tempo médio de qualificação até agendamento\n- horários populares\n- taxa no-show\n- volume diário (últimos 30 dias)",
+        "height": 220,
+        "width": 380,
+        "color": 4
+      },
+      "id": "ecf7819f-7eea-4a89-859c-cb0de58623b9",
+      "name": "📌 Métricas API",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        4080
+      ]
+    },
+    {
+      "parameters": {
+        "path": "grdmad-metrics",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "990402aa-5163-43cc-9370-6cd02ad65e94",
+      "name": "WH: Métricas",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        208,
+        4288
+      ],
+      "webhookId": "grdmad-metrics-v2"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH metricas AS (\n  SELECT\n    (SELECT COUNT(*) FROM dados_cliente WHERE created_at > NOW() - INTERVAL '30 days') AS leads_30d,\n    (SELECT COUNT(*) FROM grdmad_reunioes WHERE created_at > NOW() - INTERVAL '30 days') AS reunioes_30d,\n    (SELECT COUNT(*) FROM grdmad_reunioes WHERE audiencia='B2B' AND created_at > NOW() - INTERVAL '30 days') AS reunioes_b2b_30d,\n    (SELECT COUNT(*) FROM grdmad_reunioes WHERE audiencia='B2C' AND created_at > NOW() - INTERVAL '30 days') AS reunioes_b2c_30d,\n    (SELECT COUNT(*) FROM grdmad_reunioes WHERE status='realizado' AND data_reuniao > NOW() - INTERVAL '30 days') AS realizadas_30d,\n    (SELECT COUNT(*) FROM grdmad_reunioes WHERE status='no_show' AND data_reuniao > NOW() - INTERVAL '30 days') AS no_shows_30d,\n    (SELECT COUNT(*) FROM grdmad_reunioes WHERE status='cancelado' AND data_reuniao > NOW() - INTERVAL '30 days') AS cancelados_30d\n)\nSELECT\n  m.*,\n  CASE WHEN m.leads_30d > 0\n    THEN ROUND((m.reunioes_30d::numeric / m.leads_30d::numeric) * 100, 2)\n    ELSE 0 END AS taxa_conversao_pct,\n  CASE WHEN (m.realizadas_30d + m.no_shows_30d) > 0\n    THEN ROUND((m.no_shows_30d::numeric / (m.realizadas_30d + m.no_shows_30d)::numeric) * 100, 2)\n    ELSE 0 END AS taxa_no_show_pct\nFROM metricas m",
+        "options": {}
+      },
+      "id": "4366bdd1-96e2-4de0-980e-cd6180e94996",
+      "name": "PG: Métricas Gerais",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        400,
+        4288
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  DATE(data_reuniao) AS dia,\n  audiencia,\n  COUNT(*) AS reunioes_agendadas,\n  COUNT(*) FILTER (WHERE status = 'realizado') AS realizadas,\n  COUNT(*) FILTER (WHERE status = 'no_show') AS no_shows\nFROM grdmad_reunioes\nWHERE data_reuniao > NOW() - INTERVAL '30 days'\nGROUP BY DATE(data_reuniao), audiencia\nORDER BY dia DESC",
+        "options": {}
+      },
+      "id": "5f8c5265-cee3-4ba6-ac23-c6c4f361284b",
+      "name": "PG: Métricas Por Dia",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        608,
+        4288
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  EXTRACT(HOUR FROM data_reuniao) AS hora,\n  EXTRACT(DOW FROM data_reuniao) AS dia_semana,\n  COUNT(*) AS agendamentos\nFROM grdmad_reunioes\nWHERE data_reuniao > NOW() - INTERVAL '90 days'\nGROUP BY EXTRACT(HOUR FROM data_reuniao), EXTRACT(DOW FROM data_reuniao)\nORDER BY agendamentos DESC\nLIMIT 20",
+        "options": {}
+      },
+      "id": "e4926367-1bca-4c2c-a611-1760f80a0298",
+      "name": "PG: Horários Populares",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        800,
+        4288
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  estado_funil,\n  COUNT(*) AS total\nFROM dados_cliente\nWHERE updated_at > NOW() - INTERVAL '30 days'\nGROUP BY estado_funil\nORDER BY total DESC",
+        "options": {}
+      },
+      "id": "5bf7e81a-8c7d-4337-a05d-6ad5655efe7a",
+      "name": "PG: Funil",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1008,
+        4288
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  audiencia,\n  ROUND(AVG(EXTRACT(EPOCH FROM (r.created_at - c.created_at)) / 3600), 2) AS horas_medias_ate_agendamento,\n  COUNT(*) AS amostra\nFROM grdmad_reunioes r\nJOIN dados_cliente c ON c.telefone = r.telefone\nWHERE r.created_at > NOW() - INTERVAL '30 days'\nGROUP BY audiencia",
+        "options": {}
+      },
+      "id": "69fa7a35-7283-46a0-b4e7-3ba2d0ba2693",
+      "name": "PG: Tempo Até Agendamento",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1200,
+        4288
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "F9YTJESL5BceDOve",
+          "name": "Postgres-GRD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const metricasGerais = $('PG: Métricas Gerais').first()?.json || {};\nconst porDia = $('PG: Métricas Por Dia').all().map(i => i.json);\nconst horarios = $('PG: Horários Populares').all().map(i => i.json);\nconst funil = $('PG: Funil').all().map(i => i.json);\nconst tempoAg = $('PG: Tempo Até Agendamento').all().map(i => i.json);\n\nreturn [{\n  json: {\n    timestamp: new Date().toISOString(),\n    periodo: 'últimos 30 dias',\n    overview: {\n      leads_total: parseInt(metricasGerais.leads_30d) || 0,\n      reunioes_total: parseInt(metricasGerais.reunioes_30d) || 0,\n      reunioes_b2b: parseInt(metricasGerais.reunioes_b2b_30d) || 0,\n      reunioes_b2c: parseInt(metricasGerais.reunioes_b2c_30d) || 0,\n      realizadas: parseInt(metricasGerais.realizadas_30d) || 0,\n      no_shows: parseInt(metricasGerais.no_shows_30d) || 0,\n      cancelados: parseInt(metricasGerais.cancelados_30d) || 0,\n      taxa_conversao_pct: parseFloat(metricasGerais.taxa_conversao_pct) || 0,\n      taxa_no_show_pct: parseFloat(metricasGerais.taxa_no_show_pct) || 0\n    },\n    timeseries: porDia,\n    horarios_populares: horarios,\n    funil_estado: funil,\n    tempo_medio_agendamento: tempoAg\n  }\n}];"
+      },
+      "id": "a57f31c0-e1a1-4cc4-8970-750a33730e98",
+      "name": "Consolidar Métricas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1408,
+        4288
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "09dcfe73-e3f6-430a-ac99-e84f758d836d",
+      "name": "Resp: Métricas",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1600,
+        4288
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-05-28T19:26:27.554Z",
+      "createdAt": "2026-05-28T19:26:27.554Z",
+      "role": "workflow:owner",
+      "workflowId": "kV3ZvXyzZ73kkiF3",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": {
+    "node:Cron: Follow-up 2x/dia": {
+      "recurrenceRules": []
+    },
+    "node:Cron: Confirmação 24h": {
+      "recurrenceRules": []
+    },
+    "node:Cron: No-Show": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [
+    {
+      "updatedAt": "2026-05-27T01:34:34.250Z",
+      "createdAt": "2026-05-27T01:34:34.250Z",
+      "id": "4BSx38Mg7RfBNwWg",
+      "name": "sdr-agent"
+    },
+    {
+      "updatedAt": "2026-05-27T01:34:34.207Z",
+      "createdAt": "2026-05-27T01:34:34.207Z",
+      "id": "MxncC9pN75kHuDfa",
+      "name": "v2"
+    },
+    {
+      "updatedAt": "2026-05-27T01:34:34.204Z",
+      "createdAt": "2026-05-27T01:34:34.204Z",
+      "id": "yi6SwfOQULa6VrtP",
+      "name": "production"
+    },
+    {
+      "updatedAt": "2026-05-27T01:34:34.187Z",
+      "createdAt": "2026-05-27T01:34:34.187Z",
+      "id": "QYg9gV8q799RIByt",
+      "name": "grdmad"
+    }
+  ],
+  "triggerCount": 6,
+  "updatedAt": "2026-05-28T22:49:00.123Z",
+  "versionId": "622e0413-9a81-47e6-8efc-cbab5056b5ad"
+}

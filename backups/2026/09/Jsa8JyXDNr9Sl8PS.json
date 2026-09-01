@@ -1,0 +1,1872 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Webhook Evolution": {
+      "main": [
+        [
+          {
+            "node": "Responde Webhook 200",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Responde Webhook 200": {
+      "main": [
+        [
+          {
+            "node": "Parse Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Payload": {
+      "main": [
+        [
+          {
+            "node": "Ignora fromMe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ignora fromMe": {
+      "main": [
+        [
+          {
+            "node": "Redis Get State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Get State": {
+      "main": [
+        [
+          {
+            "node": "Compute Flags",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compute Flags": {
+      "main": [
+        [
+          {
+            "node": "Roteador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Roteador": {
+      "main": [
+        [
+          {
+            "node": "Decode State",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Tipo de Mídia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decode State": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Parse Resposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Parse Resposta": {
+      "main": [
+        [
+          {
+            "node": "Merge Resposta no State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Resposta no State": {
+      "main": [
+        [
+          {
+            "node": "Está Completo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tipo de Mídia": {
+      "main": [
+        [
+          {
+            "node": "Get Base64 (Imagem)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Base64 (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Binary (Imagem)": {
+      "main": [
+        [
+          {
+            "node": "Upload Drive (Imagem)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "OpenAI Vision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Drive (Imagem)": {
+      "main": [
+        [
+          {
+            "node": "Merge Imagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Vision": {
+      "main": [
+        [
+          {
+            "node": "Merge Imagem",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Binary (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Upload Drive (PDF)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extract PDF Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Drive (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Merge PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Text": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Texto (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Texto (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Merge PDF",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Parse Extração": {
+      "main": [
+        [
+          {
+            "node": "Está Completo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Está Completo?": {
+      "main": [
+        [
+          {
+            "node": "Lookup Duplicidade",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Monta Pergunta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lookup Duplicidade": {
+      "main": [
+        [
+          {
+            "node": "Check Duplicado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Duplicado": {
+      "main": [
+        [
+          {
+            "node": "É Duplicado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "É Duplicado?": {
+      "main": [
+        [
+          {
+            "node": "Avisa Duplicado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis Delete State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Delete State": {
+      "main": [
+        [
+          {
+            "node": "Append Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Sheets": {
+      "main": [
+        [
+          {
+            "node": "Confirma Registro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monta Pergunta": {
+      "main": [
+        [
+          {
+            "node": "Redis Set State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Set State": {
+      "main": [
+        [
+          {
+            "node": "Envia Pergunta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Base64 (Imagem)": {
+      "main": [
+        [
+          {
+            "node": "Binary (Imagem)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Base64 (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Binary (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge PDF": {
+      "main": [
+        [
+          {
+            "node": "Parse Extração",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Imagem": {
+      "main": [
+        [
+          {
+            "node": "Parse Extração",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-06-08T23:30:26.888Z",
+  "id": "Jsa8JyXDNr9Sl8PS",
+  "isArchived": false,
+  "meta": null,
+  "name": "Comprovantes GRD - Extração com Pergunta Adaptativa-V8",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "comprovantes-pagamento-grdmad",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "fff24e0d-ebb9-4cbf-bc07-05da305733b7",
+      "name": "Webhook Evolution",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1536,
+        512
+      ],
+      "webhookId": "comprovantes-grd-evo"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "OK",
+        "options": {}
+      },
+      "id": "fd59302e-f4e8-4b1f-b14e-f3b949b13688",
+      "name": "Responde Webhook 200",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -1360,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "p1",
+              "name": "instance",
+              "value": "={{ $('Webhook Evolution').item.json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "p2",
+              "name": "remoteJid",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "p2b",
+              "name": "destino",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "p2c",
+              "name": "isGrupo",
+              "value": "={{ String($('Webhook Evolution').item.json.body.data.key.remoteJid).endsWith('@g.us') }}",
+              "type": "boolean"
+            },
+            {
+              "id": "p2d",
+              "name": "numero",
+              "value": "={{ String($('Webhook Evolution').item.json.body.data.key.remoteJid).split('@')[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "p2e",
+              "name": "remetente",
+              "value": "={{ String($('Webhook Evolution').item.json.body.data.key.remoteJid).endsWith('@g.us') ? String($('Webhook Evolution').item.json.body.data.key.participant || '').split('@')[0] : String($('Webhook Evolution').item.json.body.data.key.remoteJid).split('@')[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "p3",
+              "name": "messageId",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.key.id }}",
+              "type": "string"
+            },
+            {
+              "id": "p4",
+              "name": "messageType",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.messageType }}",
+              "type": "string"
+            },
+            {
+              "id": "p5",
+              "name": "pushName",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.pushName || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "p6",
+              "name": "fromMe",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.key.fromMe }}",
+              "type": "boolean"
+            },
+            {
+              "id": "p7",
+              "name": "mimetype",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.message?.imageMessage?.mimetype || $('Webhook Evolution').item.json.body.data.message?.documentMessage?.mimetype || $('Webhook Evolution').item.json.body.data.message?.documentWithCaptionMessage?.message?.documentMessage?.mimetype || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "p8",
+              "name": "fileName",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.message?.documentMessage?.fileName || $('Webhook Evolution').item.json.body.data.message?.documentWithCaptionMessage?.message?.documentMessage?.fileName || 'comprovante.jpg' }}",
+              "type": "string"
+            },
+            {
+              "id": "p9",
+              "name": "text",
+              "value": "={{ $('Webhook Evolution').item.json.body.data.message?.conversation || $('Webhook Evolution').item.json.body.data.message?.extendedTextMessage?.text || $('Webhook Evolution').item.json.body.data.message?.imageMessage?.caption || $('Webhook Evolution').item.json.body.data.message?.documentMessage?.caption || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "21f0daa8-32fc-49e4-b995-4df8db225319",
+      "name": "Parse Payload",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1168,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "f1",
+              "leftValue": "={{ $json.fromMe }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f07203c6-e5ae-4407-8426-69b48a2610bc",
+      "name": "Ignora fromMe",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -960,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "=pix_pending:{{ $('Parse Payload').item.json.remetente }}",
+        "options": {
+          "dotNotation": false
+        }
+      },
+      "id": "3de4888e-3dc5-4c91-a183-14632148ce1c",
+      "name": "Redis Get State",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -768,
+        512
+      ],
+      "credentials": {
+        "redis": {
+          "id": "EO4PW35QwO53zsbp",
+          "name": "Redis AnapaulaSkin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fl1",
+              "name": "has_state",
+              "value": "={{ !!$json.state_raw && $json.state_raw !== '' }}",
+              "type": "boolean"
+            },
+            {
+              "id": "fl2",
+              "name": "is_text",
+              "value": "={{ ['conversation','extendedTextMessage'].includes($('Parse Payload').item.json.messageType) }}",
+              "type": "boolean"
+            },
+            {
+              "id": "fl3",
+              "name": "is_media",
+              "value": "={{ ['imageMessage','documentMessage','documentWithCaptionMessage'].includes($('Parse Payload').item.json.messageType) || ($('Parse Payload').item.json.mimetype || '').includes('application/pdf') }}",
+              "type": "boolean"
+            },
+            {
+              "id": "fl4",
+              "name": "state_raw",
+              "value": "={{ $json.state_raw || '' }}",
+              "type": "string"
+            }
+          ],
+          "includeOtherFields": true
+        },
+        "options": {}
+      },
+      "id": "6f475f1e-cd15-453c-b275-5897ab02d3b2",
+      "name": "Compute Flags",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -560,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "r1a",
+                    "leftValue": "={{ $json.has_state }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    }
+                  },
+                  {
+                    "id": "r1b",
+                    "leftValue": "={{ $json.is_text }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "=RespostaTexto"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "r2",
+                    "leftValue": "={{ $json.is_media }}",
+                    "rightValue": true,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Midia"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "outro"
+        }
+      },
+      "id": "f0b4edd7-82c2-434c-8ce3-543016924128",
+      "name": "Roteador",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -368,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Decodifica o state Redis e expõe contexto para a IA\nconst state = JSON.parse($json.state_raw);\nconst payload = $('Parse Payload').first().json;\nreturn [{\n  json: {\n    extracted_data: state.extracted_data,\n    missing_fields: state.missing_fields,\n    retry_count: state.retry_count || 0,\n    context_text: payload.text,\n    numero: payload.numero,\n    instance: payload.instance,\n    pushName: payload.pushName\n  }\n}];"
+      },
+      "id": "9c37d90f-3b48-4ef4-aa6c-a8a3e12b7d73",
+      "name": "Decode State",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Você extrai dados de respostas em português brasileiro de clientes da GRD MAD enviando comprovantes PIX.\n\nOs campos AINDA faltando são:\n{{ JSON.stringify($json.missing_fields) }}\n\nA mensagem do cliente foi:\n\"{{ $json.context_text }}\"\n\nRetorne APENAS um JSON com os campos que CONSEGUIU identificar (omita os que não foram mencionados ou são ambíguos).\n\nReferência dos campos:\n- cliente_pedido: nome do projeto/cliente final (ex: \"Lá Belle\", \"Asteca\", \"Siqueli\")\n- vendedor: primeiro nome do vendedor (ex: \"Marcus\", \"Diogo\")\n- valor: número decimal (ex: 198.45)\n- data_transacao: formato YYYY-MM-DD\n- pagador_nome: nome ou razão social\n\nPadrões comuns de resposta: \"Cliente - Vendedor\", \"Cliente / Vendedor\", \"Cliente @ Vendedor\", ou apenas o valor pedido.\n\nSe não conseguir extrair nada, retorne {}."
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {
+          "temperature": 0
+        }
+      },
+      "id": "7746420f-923e-4f27-a779-7b09fc313f98",
+      "name": "OpenAI Parse Resposta",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -16,
+        16
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Mescla a resposta da IA com o state existente\nconst raw = $json.message?.content ?? $json;\nlet ai = {};\ntry {\n  ai = typeof raw === 'object' ? raw : JSON.parse(String(raw).replace(/```json|```/g, '').trim());\n} catch (e) {\n  ai = {};\n}\n\nconst state = $('Decode State').first().json;\nconst filled = Object.entries(ai).filter(([k, v]) => v !== null && v !== undefined && String(v).trim() !== '').map(([k]) => k);\nconst merged = { ...state.extracted_data };\nfilled.forEach(k => { merged[k] = ai[k]; });\n\nconst stillMissing = state.missing_fields.filter(f => !merged[f] || String(merged[f]).trim() === '');\n\nreturn [{\n  json: {\n    ...merged,\n    missing_fields: stillMissing,\n    ai_understood: filled.length > 0,\n    retry_count: state.retry_count + (filled.length > 0 ? 0 : 1),\n    _from_response_branch: true\n  }\n}];"
+      },
+      "id": "fb8d0012-9cb4-4a3b-a654-1e1fc4671820",
+      "name": "Merge Resposta no State",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "tm1",
+                    "leftValue": "={{ $('Parse Payload').item.json.messageType }}",
+                    "rightValue": "imageMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Imagem"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "tm2a",
+                    "leftValue": "={{ $('Parse Payload').item.json.mimetype }}",
+                    "rightValue": "application/pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  },
+                  {
+                    "id": "tm2b",
+                    "leftValue": "={{ $('Parse Payload').item.json.messageType }}",
+                    "rightValue": "documentMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  },
+                  {
+                    "id": "tm2c",
+                    "leftValue": "={{ $('Parse Payload').item.json.messageType }}",
+                    "rightValue": "documentWithCaptionMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "PDF"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2e84afd5-4176-40d8-9c45-abc63ed569a0",
+      "name": "Tipo de Mídia",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -112,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "base64",
+        "options": {
+          "fileName": "={{ $('Parse Payload').item.json.fileName }}",
+          "mimeType": "={{ $json.mimetype || $('Parse Payload').item.json.mimetype }}"
+        }
+      },
+      "id": "f7893c79-625e-4623-a768-b26d7588cdab",
+      "name": "Binary (Imagem)",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Parse Payload').item.json.numero }}_{{ $now.toFormat('yyyyLLdd_HHmmss') }}_{{ $('Parse Payload').item.json.fileName }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1xx_BYLovvu-YYW4nz3ODBn9AEK0iAbGL",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "3cb80ae9-e31e-43fc-a2f3-5cd1999d4c5f",
+      "name": "Upload Drive (Imagem)",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        448,
+        432
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "AMnU78157s5pFXnN",
+          "name": "Google AiAgent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list"
+        },
+        "text": "=Você extrai dados de COMPROVANTES PIX/TED/DOC. Retorne APENAS JSON válido (sem markdown), nesta estrutura:\n{\n  \"tipo\": \"PIX|TED|DOC|Boleto\",\n  \"valor\": 0.00,\n  \"data_transacao\": \"YYYY-MM-DD\",\n  \"hora_transacao\": \"HH:MM\",\n  \"pagador_nome\": \"\",\n  \"pagador_documento\": \"\",\n  \"pagador_banco\": \"\",\n  \"pagador_agencia_conta\": \"\",\n  \"beneficiario_nome\": \"\",\n  \"beneficiario_documento\": \"\",\n  \"beneficiario_chave_pix\": \"\",\n  \"id_transacao_e2e\": \"\",\n  \"numero_controle\": \"\",\n  \"codigo_autenticacao\": \"\"\n}\n\nRegras:\n- valor SEM \"R$\", como número (198.45 e não \"R$ 198,45\")\n- id_transacao_e2e começa geralmente com \"E\" + dígitos (ex: E60701190202606021422DY5EXO05JQL)\n- Campos não encontrados retornam string vazia (ou 0 pro valor)\n- NÃO inclua campos extras",
+        "inputType": "base64",
+        "options": {
+          "detail": "high"
+        }
+      },
+      "id": "66759e72-8900-43c1-ba5b-4b7a137f6d79",
+      "name": "OpenAI Vision",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        640,
+        432
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "base64",
+        "options": {
+          "fileName": "={{ $('Parse Payload').item.json.fileName }}",
+          "mimeType": "application/pdf"
+        }
+      },
+      "id": "a3c808ad-3d80-47a0-af65-d69dea0854ac",
+      "name": "Binary (PDF)",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        672
+      ]
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Parse Payload').item.json.numero }}_{{ $now.toFormat('yyyyLLdd_HHmmss') }}_{{ $('Parse Payload').item.json.fileName }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1xx_BYLovvu-YYW4nz3ODBn9AEK0iAbGL",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "56dc5f96-0c08-46ad-ba94-9af69a8b6772",
+      "name": "Upload Drive (PDF)",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        448,
+        672
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "AMnU78157s5pFXnN",
+          "name": "Google AiAgent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {
+          "joinPages": true
+        }
+      },
+      "id": "39574425-2100-4032-8c12-226c86f72f69",
+      "name": "Extract PDF Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        640,
+        672
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Você extrai dados de comprovantes PIX/TED/DOC. Analise o texto abaixo e retorne APENAS JSON válido (sem markdown):\n{\n  \"tipo\": \"\",\n  \"valor\": 0.00,\n  \"data_transacao\": \"YYYY-MM-DD\",\n  \"hora_transacao\": \"HH:MM\",\n  \"pagador_nome\": \"\",\n  \"pagador_documento\": \"\",\n  \"pagador_banco\": \"\",\n  \"pagador_agencia_conta\": \"\",\n  \"beneficiario_nome\": \"\",\n  \"beneficiario_documento\": \"\",\n  \"beneficiario_chave_pix\": \"\",\n  \"id_transacao_e2e\": \"\",\n  \"numero_controle\": \"\",\n  \"codigo_autenticacao\": \"\"\n}\n\nRegras: valor como número decimal, campos não encontrados como string vazia.\n\n=== TEXTO DO PDF ===\n{{ $json.text }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {
+          "temperature": 0
+        }
+      },
+      "id": "bae1dfcb-0999-4812-bada-33866acac49d",
+      "name": "OpenAI Texto (PDF)",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        848,
+        672
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "4CT8zdx4hKi3971O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normaliza extração de imagem ou PDF + contexto do WhatsApp + caminho do Drive + define missing_fields\n\n// === Configuração: campos obrigatórios para registrar ===\nconst REQUIRED = [\n  'valor',\n  'data_transacao',\n  'id_transacao_e2e',\n  'pagador_nome',\n  'cliente_pedido',\n  'vendedor'\n];\n\nconst raw = $json.message?.content ?? $json;\nlet ai = {};\ntry {\n  ai = typeof raw === 'object' && !raw.text ? raw : JSON.parse(String(raw).replace(/```json|```/g, '').trim());\n} catch (e) {\n  ai = { _parse_error: true };\n}\n\nconst ctx = $('Parse Payload').first().json;\n\n// Tenta pegar a URL do Drive de qualquer um dos dois nós (imagem ou pdf)\nlet drive_url = '';\nlet drive_id = '';\ntry { const d = $('Upload Drive (Imagem)').first().json; drive_url = d.webViewLink || ''; drive_id = d.id || ''; } catch(e) {}\nif (!drive_url) {\n  try { const d = $('Upload Drive (PDF)').first().json; drive_url = d.webViewLink || ''; drive_id = d.id || ''; } catch(e) {}\n}\n\n// O texto enviado junto da mídia pode já trazer cliente/vendedor (ex: \"Siqueli @ Diogo Lourenço\")\nconst caption = (ctx.text || '').trim();\nlet cliente_pedido = '';\nlet vendedor = '';\nif (caption) {\n  const m = caption.match(/^(.+?)\\s*[@\\-\\/]\\s*(.+)$/);\n  if (m) {\n    cliente_pedido = m[1].trim();\n    vendedor = m[2].trim();\n  }\n}\n\nconst extracted = {\n  // metadados WhatsApp\n  timestamp: new Date().toISOString(),\n  whatsapp_numero: ctx.numero,\n  whatsapp_remetente: ctx.remetente,\n  is_grupo: ctx.isGrupo,\n  whatsapp_nome: ctx.pushName,\n  arquivo_drive_url: drive_url,\n  arquivo_drive_id: drive_id,\n  // dados da transação\n  tipo: ai.tipo || '',\n  valor: ai.valor || '',\n  data_transacao: ai.data_transacao || '',\n  hora_transacao: ai.hora_transacao || '',\n  pagador_nome: ai.pagador_nome || '',\n  pagador_documento: ai.pagador_documento || '',\n  pagador_banco: ai.pagador_banco || '',\n  pagador_agencia_conta: ai.pagador_agencia_conta || '',\n  beneficiario_nome: ai.beneficiario_nome || '',\n  beneficiario_documento: ai.beneficiario_documento || '',\n  beneficiario_chave_pix: ai.beneficiario_chave_pix || '',\n  id_transacao_e2e: ai.id_transacao_e2e || '',\n  numero_controle: ai.numero_controle || '',\n  codigo_autenticacao: ai.codigo_autenticacao || '',\n  // contexto GRD\n  cliente_pedido,\n  vendedor,\n  observacoes: caption || '',\n  status: 'Processado',\n  raw_json: JSON.stringify(ai)\n};\n\n// Determina campos obrigatórios faltando\nconst missing_fields = REQUIRED.filter(f => !extracted[f] || String(extracted[f]).trim() === '');\n\nreturn [{ json: { ...extracted, missing_fields, _from_media_branch: true } }];"
+      },
+      "id": "1407fa6d-30a3-4d56-bbeb-a6a2a0479ce1",
+      "name": "Parse Extração",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1136,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "cc1",
+              "leftValue": "={{ $json.missing_fields.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d5322cbd-a910-428a-8661-6132f294516d",
+      "name": "Está Completo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "https://docs.google.com/spreadsheets/d/1oyoozp6r6WrbNirYkSgXr-RtTtYbKpY_ZOZ44dDu-Bg/edit?usp=drivesdk",
+          "__regex": "https:\\/\\/(?:drive|docs)\\.google\\.com(?:\\/.*|)\\/d\\/([0-9a-zA-Z\\-_]+)(?:\\/.*|)"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oyoozp6r6WrbNirYkSgXr-RtTtYbKpY_ZOZ44dDu-Bg/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "id_transacao_e2e",
+              "lookupValue": "={{ $json.id_transacao_e2e }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d7d38c48-d265-48c1-8dd9-2348197949bc",
+      "name": "Lookup Duplicidade",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1568,
+        304
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CrTErpiGn7MJ9o9m",
+          "name": "Google Sheets AiAgent Automate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Detecta se já existe registro com mesmo e2e_id\nconst items = $input.all();\nconst existente = items.find(i => i.json && i.json.id_transacao_e2e);\nconst dadosNovos = $('Parse Extração').first().json;\n\nif (existente) {\n  return [{ json: { ...dadosNovos, duplicado: true, registro_anterior: existente.json } }];\n}\nreturn [{ json: { ...dadosNovos, duplicado: false } }];"
+      },
+      "id": "0d26fe73-804d-42c4-bad7-f2da6117f2c1",
+      "name": "Check Duplicado",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "d1",
+              "leftValue": "={{ $json.duplicado }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7dfd8093-c6bb-4a63-9f1d-3e044e8525ef",
+      "name": "É Duplicado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1968,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "=pix_pending:{{ $('Parse Payload').item.json.remetente }}"
+      },
+      "id": "af71b6f4-4c62-4aac-8cc1-4df15c527e24",
+      "name": "Redis Delete State",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2160,
+        224
+      ],
+      "credentials": {
+        "redis": {
+          "id": "EO4PW35QwO53zsbp",
+          "name": "Redis AnapaulaSkin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1oyoozp6r6WrbNirYkSgXr-RtTtYbKpY_ZOZ44dDu-Bg",
+          "mode": "list",
+          "cachedResultName": "Comprovante-pagamento-grdmad",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oyoozp6r6WrbNirYkSgXr-RtTtYbKpY_ZOZ44dDu-Bg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oyoozp6r6WrbNirYkSgXr-RtTtYbKpY_ZOZ44dDu-Bg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp_numero",
+              "displayName": "whatsapp_numero",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "whatsapp_nome",
+              "displayName": "whatsapp_nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "arquivo_drive_url",
+              "displayName": "arquivo_drive_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "arquivo_drive_id",
+              "displayName": "arquivo_drive_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "valor",
+              "displayName": "valor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "data_transacao",
+              "displayName": "data_transacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "hora_transacao",
+              "displayName": "hora_transacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagador_nome",
+              "displayName": "pagador_nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagador_documento",
+              "displayName": "pagador_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagador_banco",
+              "displayName": "pagador_banco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pagador_agencia_conta",
+              "displayName": "pagador_agencia_conta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "beneficiario_nome",
+              "displayName": "beneficiario_nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "beneficiario_documento",
+              "displayName": "beneficiario_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "beneficiario_chave_pix",
+              "displayName": "beneficiario_chave_pix",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_transacao_e2e",
+              "displayName": "id_transacao_e2e",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "numero_controle",
+              "displayName": "numero_controle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "codigo_autenticacao",
+              "displayName": "codigo_autenticacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cliente_pedido",
+              "displayName": "cliente_pedido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "vendedor",
+              "displayName": "vendedor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "observacoes",
+              "displayName": "observacoes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "raw_json",
+              "displayName": "raw_json",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "eacc1136-cbbd-4cad-a7fc-e546b362be41",
+      "name": "Append Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2368,
+        224
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CrTErpiGn7MJ9o9m",
+          "name": "Google Sheets AiAgent Automate"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/message/sendText/{{ $('Parse Payload').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "SUA_APIKEY_EVOLUTION"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('Parse Payload').item.json.destino }}\",\n  \"text\": \"✅ *Comprovante registrado!*\\n\\n💰 Valor: R$ {{ $json.valor }}\\n📅 Data: {{ $json.data_transacao }}\\n👤 Cliente: {{ $json.cliente_pedido }}\\n🧑‍💼 Vendedor: {{ $json.vendedor }}\\n🔑 ID: {{ $json.id_transacao_e2e }}\\n\\nValeu! 🙌\"\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "fb2841af-4219-4d11-b63e-02594d142a77",
+      "name": "Confirma Registro",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2560,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/message/sendText/{{ $('Parse Payload').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "SUA_APIKEY_EVOLUTION"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('Parse Payload').item.json.destino }}\",\n  \"text\": \"⚠️ Esse comprovante (ID: {{ $json.id_transacao_e2e }}) *já foi registrado* anteriormente. Não vou duplicar. Se foi um envio errado, ignora essa mensagem.\"\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "91dc49e0-3142-4482-9a78-01c7071b540d",
+      "name": "Avisa Duplicado",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2160,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Monta a pergunta dinâmica + prepara state pra salvar no Redis\nconst data = $json;\nconst missing = data.missing_fields;\nconst ai_understood = data.ai_understood !== false; // true por padrão (vindo da extração)\nconst retry = data.retry_count || 0;\n\nconst labels = {\n  cliente_pedido: 'cliente do pedido (ex: Lá Belle, Asteca, Siqueli)',\n  vendedor: 'vendedor responsável (ex: Marcus, Diogo)',\n  valor: 'valor da transferência (ex: 198,45)',\n  data_transacao: 'data da transferência (DD/MM/AAAA)',\n  pagador_nome: 'quem fez o pagamento',\n  beneficiario_nome: 'quem recebeu o pagamento',\n  id_transacao_e2e: 'ID da transação (E2E)'\n};\n\nlet pergunta;\nif (!ai_understood && retry >= 1) {\n  const list = missing.map((f, i) => `${i+1}. ${labels[f] || f}`).join('\\n');\n  pergunta = `🤔 Não entendi sua última resposta. Preciso ainda de:\\n\\n${list}\\n\\nResponde uma coisa por vez ou no formato \"Cliente - Vendedor\".`;\n} else if (missing.length === 1) {\n  pergunta = `📋 Quase lá! Me informa: *${labels[missing[0]] || missing[0]}*`;\n} else {\n  const list = missing.map((f, i) => `${i+1}. ${labels[f] || f}`).join('\\n');\n  const head = data.valor ? `📋 Recebi o comprovante de *R$ ${data.valor}*!` : '📋 Recebi o comprovante!';\n  pergunta = `${head} Pra finalizar o registro, preciso de:\\n\\n${list}\\n\\nPode responder numa mensagem só (ex: \"Lá Belle - Marcus\").`;\n}\n\n// Limpa campos auxiliares pra salvar só dados\nconst { missing_fields, ai_understood: _au, retry_count: _rc, _from_media_branch, _from_response_branch, ...extracted_data } = data;\n\nconst state = {\n  extracted_data,\n  missing_fields: missing,\n  retry_count: retry,\n  asked_at: new Date().toISOString()\n};\n\nreturn [{\n  json: {\n    pergunta,\n    state_json: JSON.stringify(state),\n    destino: $('Parse Payload').first().json.destino,\n    numero: $('Parse Payload').first().json.numero,\n    remetente: $('Parse Payload').first().json.remetente,\n    instance: $('Parse Payload').first().json.instance\n  }\n}];"
+      },
+      "id": "5944fc6f-bd9d-4602-94e5-d275304f31c5",
+      "name": "Monta Pergunta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1568,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=pix_pending:{{ $('Parse Payload').item.json.remetente }}",
+        "value": "={{ $json.state_json }}",
+        "expire": true,
+        "ttl": 1800
+      },
+      "id": "c448435a-8066-425f-bb60-3e37a15dfd0d",
+      "name": "Redis Set State",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        592
+      ],
+      "credentials": {
+        "redis": {
+          "id": "EO4PW35QwO53zsbp",
+          "name": "Redis AnapaulaSkin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/message/sendText/{{ $json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "CN4AnbOtY79Wv6wNyx88cdoKXqugcINi"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('Webhook Evolution').item.json.body.data.key.remoteJidAlt }}\",\n  \"text\": {{ JSON.stringify($json.pergunta) }}\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "3ca70637-a7ad-438e-a992-a9b76f0c21bb",
+      "name": "Envia Pergunta",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1968,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/message/sendText/{{ $('Parse Payload').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "CN4AnbOtY79Wv6wNyx88cdoKXqugcINi"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('Parse Payload').item.json.destino }}\",\n  \"text\": \"Oi! 👋 Esse canal é só pra envio de *comprovantes PIX/TED*. Manda a foto (JPG/PNG) ou o PDF do comprovante que eu registro na hora.\"\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "1f1435a8-2a8c-4d32-8f85-fe0820d0fe64",
+      "name": "Mensagem de Ajuda",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -160,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/chat/getBase64FromMediaMessage/{{ $('Parse Payload').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "SUA_APIKEY_EVOLUTION"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\": { \"key\": { \"id\": \"{{ $('Parse Payload').item.json.messageId }}\" } },\n  \"convertToMp4\": false\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "cdeb16c6-31e7-42b1-9093-d944da4b5d41",
+      "name": "Get Base64 (Imagem)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -576,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://apiwp.aiagentautomate.com.br/chat/getBase64FromMediaMessage/{{ $('Parse Payload').item.json.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "CN4AnbOtY79Wv6wNyx88cdoKXqugcINi"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\": { \"key\": { \"id\": \"{{ $('Parse Payload').item.json.messageId }}\" } },\n  \"convertToMp4\": false\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "2541fe40-07ac-4b8d-a4f6-5740d04c17bc",
+      "name": "Get Base64 (PDF)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -560,
+        768
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "id": "d33f168b-47f1-482a-b7f5-fb73b4813781",
+      "name": "Merge PDF",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        1216,
+        688
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "id": "8b871c02-448b-454c-a875-563c4482b37f",
+      "name": "Merge Imagem",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        768,
+        272
+      ]
+    }
+  ],
+  "pinData": {
+    "Webhook Evolution": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.aiagentautomate.com.br",
+            "user-agent": "axios/1.12.2",
+            "content-length": "1848",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "n8n.aiagentautomate.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "1eb385c800a8",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "comprovante-pagamento-grdmad",
+            "data": {
+              "key": {
+                "remoteJid": "271751305011249@lid",
+                "remoteJidAlt": "5511952313944@s.whatsapp.net",
+                "fromMe": false,
+                "id": "3EB0B02EA7CD16D4D41838",
+                "participant": "",
+                "addressingMode": "lid"
+              },
+              "pushName": "Rafael de Souza",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyIndexes": [],
+                    "recipientKeyIndexes": [],
+                    "senderKeyHash": {
+                      "0": 145,
+                      "1": 70,
+                      "2": 75,
+                      "3": 32,
+                      "4": 246,
+                      "5": 211,
+                      "6": 96,
+                      "7": 34,
+                      "8": 202,
+                      "9": 98
+                    },
+                    "senderTimestamp": {
+                      "low": 1780942930,
+                      "high": 0,
+                      "unsigned": true
+                    },
+                    "senderAccountType": 0,
+                    "receiverAccountType": 0,
+                    "recipientKeyHash": {
+                      "0": 159,
+                      "1": 88,
+                      "2": 106,
+                      "3": 147,
+                      "4": 44,
+                      "5": 70,
+                      "6": 234,
+                      "7": 138,
+                      "8": 146,
+                      "9": 166
+                    },
+                    "recipientTimestamp": {
+                      "low": 1780920877,
+                      "high": 0,
+                      "unsigned": true
+                    }
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": {
+                    "0": 232,
+                    "1": 34,
+                    "2": 212,
+                    "3": 74,
+                    "4": 12,
+                    "5": 33,
+                    "6": 176,
+                    "7": 160,
+                    "8": 145,
+                    "9": 209,
+                    "10": 51,
+                    "11": 193,
+                    "12": 208,
+                    "13": 207,
+                    "14": 123,
+                    "15": 43,
+                    "16": 15,
+                    "17": 70,
+                    "18": 223,
+                    "19": 218,
+                    "20": 47,
+                    "21": 254,
+                    "22": 198,
+                    "23": 91,
+                    "24": 141,
+                    "25": 209,
+                    "26": 88,
+                    "27": 51,
+                    "28": 191,
+                    "29": 122,
+                    "30": 74,
+                    "31": 72
+                  },
+                  "limitSharingV2": {
+                    "sharingLimited": false,
+                    "trigger": 0,
+                    "limitSharingSettingTimestamp": {
+                      "low": 0,
+                      "high": 0,
+                      "unsigned": false
+                    },
+                    "initiatedByMe": false
+                  }
+                },
+                "conversation": "Asteca - Rafael"
+              },
+              "contextInfo": {
+                "mentionedJid": [],
+                "groupMentions": [],
+                "ephemeralSettingTimestamp": {
+                  "low": 1780788712,
+                  "high": 0,
+                  "unsigned": false
+                },
+                "disappearingMode": {
+                  "initiator": 0,
+                  "trigger": 1,
+                  "initiatedByMe": false
+                }
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1780961589,
+              "instanceId": "f700e00a-bc61-442c-bc92-a502a28eca8b",
+              "source": "web"
+            },
+            "destination": "https://n8n.aiagentautomate.com.br/webhook/comprovantes-pagamento-grdmad",
+            "date_time": "2026-06-08T20:33:09.792Z",
+            "sender": "5511945237617@s.whatsapp.net",
+            "server_url": "https://apiwp.aiagentautomate.com.br",
+            "apikey": "DD365BDD9AF4-4594-B4D6-C551487C8A6D"
+          },
+          "webhookUrl": "https://n8n.aiagentautomate.com.br/webhook/comprovantes-pagamento-grdmad",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "repo_name": "backup-n8n",
+  "repo_owner": "faelsou",
+  "repo_path": "backups",
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-06-08T23:30:26.888Z",
+      "createdAt": "2026-06-08T23:30:26.888Z",
+      "role": "workflow:owner",
+      "workflowId": "Jsa8JyXDNr9Sl8PS",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-06-09T00:21:17.135Z",
+  "versionId": "775a47f5-6023-4364-ae22-c0a37dc6abd7"
+}

